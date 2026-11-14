@@ -5,12 +5,15 @@ export const MODEL = "claude-haiku-5-5";
 
 export type LlmEnv = { ANTHROPIC_API_KEY?: string; fetchImpl?: typeof fetch };
 
-export async function callHaiku(env: LlmEnv, system: string, user: string, maxTokens = 2000, timeoutMs = 12_000): Promise<string> {
+export type ChatMessage = { role: "user" | "assistant"; content: string };
+
+/** `earlier` are already-cleaned turns of the chat, sent as alternating messages before the final user turn. */
+export async function callHaiku(env: LlmEnv, system: string, user: string, maxTokens = 2000, timeoutMs = 12_000, earlier: ChatMessage[] = []): Promise<string> {
   const res = await (env.fetchImpl ?? fetch)("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "x-api-key": env.ANTHROPIC_API_KEY!, "anthropic-version": "2023-06-01", "content-type": "application/json" },
     signal: AbortSignal.timeout(timeoutMs),
-    body: JSON.stringify({ model: MODEL, max_tokens: maxTokens, thinking: { type: "disabled" }, system, messages: [{ role: "user", content: user }] }),
+    body: JSON.stringify({ model: MODEL, max_tokens: maxTokens, thinking: { type: "disabled" }, system, messages: [...earlier, { role: "user", content: user }] }),
   });
   if (!res.ok) throw new Error(`anthropic_${res.status}`);
   const j = (await res.json()) as { content: { type: string; text?: string }[]; stop_reason?: string };
