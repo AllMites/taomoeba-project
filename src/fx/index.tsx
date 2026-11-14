@@ -132,19 +132,19 @@ export function FlameFront({
   return (
     <group>
       {x > 1e-4 && <mesh geometry={STRIP} material={char} scale={[x, 1, width]} position={[0, 0.0005, 0]} />}
-      {alive > 0.01 && (
-        <group position={[x + r * 0.15, 0, 0]}>
-          <mesh geometry={SPHERE_LO} material={halo} scale={[r * 3.2, r * 2.2, r * 2.8]} renderOrder={1} />
-          <mesh geometry={SPHERE_HI} material={shell} scale={[r * 1.25, r * 0.8, r * 1.15]} renderOrder={2} />
-          <pointLight
-            color={FX_PAINT.light}
-            position={[0, r * 2, 0]}
-            intensity={0.003 * look.brightness * alive}
-            distance={width * 12}
-            decay={2}
-          />
-        </group>
-      )}
+      {/* Always mounted, only hidden when out: adding or removing a light changes the light count, which makes
+          three.js relink every lit material in the scene (a hitch on a phone at each ignition and burnout). */}
+      <group position={[x + r * 0.15, 0, 0]} visible={alive > 0.01}>
+        <mesh geometry={SPHERE_LO} material={halo} scale={[r * 3.2, r * 2.2, r * 2.8]} renderOrder={1} />
+        <mesh geometry={SPHERE_HI} material={shell} scale={[r * 1.25, r * 0.8, r * 1.15]} renderOrder={2} />
+      </group>
+      <pointLight
+        color={FX_PAINT.light}
+        position={[x + r * 0.15, r * 2, 0]}
+        intensity={alive > 0.01 ? 0.003 * look.brightness * alive : 0}
+        distance={width * 12}
+        decay={2}
+      />
     </group>
   );
 }

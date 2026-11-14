@@ -26,6 +26,8 @@ type Props = {
   onTick: (f: ReplayFrame) => void;
   onEnd: () => void;
   leaders: RefObject<LeaderRefs>;
+  /** Changes when the shown callouts change, so a still frame redraws their leaders. */
+  leaderKey: string;
 };
 
 type Pose = { pos: Vector3; look: Vector3 };
@@ -33,7 +35,7 @@ const POSES: Record<"wide" | "tall", { establish: Pose; close: Pose }> = {
   // Landscape box: start outside the flow unit, looking down the module, then push in low over the window.
   wide: {
     establish: { pos: new Vector3(-0.62, 0.62, 1.9), look: new Vector3(0.02, -0.02, -0.4) },
-    close: { pos: new Vector3(-0.17, 0.36, 0.64), look: new Vector3(0.04, -0.04, -0.14) },
+    close: { pos: new Vector3(-0.26, 0.5, 0.86), look: new Vector3(0.04, 0.0, -0.7) },
   },
   // Portrait box (phone): higher, so the strip sits in the band between the readouts and the note.
   tall: {
@@ -95,7 +97,7 @@ function SetPieces({ rec }: { rec: SaffireRecord }) {
 }
 
 /** The burning strip (sample 2-5): advances the record clock and moves the flame front. */
-function Burning({ rec, calm, playing, loop, clock, onTick, onEnd }: Omit<Props, "leaders">) {
+function Burning({ rec, calm, playing, loop, clock, onTick, onEnd }: Omit<Props, "leaders" | "leaderKey">) {
   const [frame, setFrame] = useState<ReplayFrame>(() => frameAt(rec, clock.current));
   const span = loopSpan(rec);
   const idx = rec.card.samples.findIndex((s) => s.sample === rec.run.sample);
@@ -130,21 +132,23 @@ function Burning({ rec, calm, playing, loop, clock, onTick, onEnd }: Omit<Props,
         intensity={frame.intensity}
         calm={calm}
       />
-      {frame.phase === "igniting" && (
-        // Igniter glow at the upstream end while the 80 W igniter is on.
-        <mesh position={[0.004, 0.002, 0]}>
-          <boxGeometry args={[0.006, 0.003, SAMPLE_W]} />
-          <meshBasicMaterial color={SET_PAINT.orange} toneMapped={false} />
-        </mesh>
-      )}
+      {/* Igniter glow at the upstream end while the 80 W igniter is on. Always mounted and only hidden, so its
+          material is not rebuilt and its shader not relinked on every loop. */}
+      <mesh position={[0.004, 0.002, 0]} visible={frame.phase === "igniting"}>
+        <boxGeometry args={[0.006, 0.003, SAMPLE_W]} />
+        <meshBasicMaterial color={SET_PAINT.orange} toneMapped={false} />
+      </mesh>
     </group>
   );
 }
 
 /** Projects each callout's 3D anchor to the screen and draws its leader to the nearest edge of its box. */
-function Leaders({ leaders }: { leaders: RefObject<LeaderRefs> }) {
-  const { camera, size } = useThree();
+function Leaders({ leaders, leaderKey }: { leaders: RefObject<LeaderRefs>; leaderKey: string }) {
+  const { camera, size, invalidate } = useThree();
   const p = useMemo(() => new Vector3(), []);
+  // A still frame (calm or paused) renders on demand only: picking another note must ask for one frame,
+  // or the new note's leader stays undrawn.
+  useEffect(() => invalidate(), [leaderKey, invalidate]);
   useFrame(() => {
     const L = leaders.current;
     if (!L.root) return;
@@ -185,16 +189,16 @@ export function World(props: Props) {
   return (
     <>
       <color attach="background" args={[SET_PAINT.background]} />
-      <fog attach="fog" args={[SET_PAINT.background, 2, 9]} />
+      <fog attach="fog" args={[SET_PAINT.background, 3.5, 12]} />
       <CameraRig rec={props.rec} calm={props.calm} clock={props.clock} />
       <hemisphereLight args={[SET_PAINT.skyLight, SET_PAINT.groundLight, 1.1]} />
-      <pointLight position={[0, 1.9, -1.2]} intensity={5} distance={6} decay={2} color={SET_PAINT.ledLight} />
-      <pointLight position={[0, 1.9, -3.8]} intensity={5} distance={6} decay={2} color={SET_PAINT.ledLight} />
+      <pointLight position={[0, 1.9, -1.2]} intensity={12} distance={7} decay={2} color={SET_PAINT.ledLight} />
+      <pointLight position={[0, 1.9, -3.8]} intensity={12} distance={7} decay={2} color={SET_PAINT.ledLight} />
       {/* Camera-side fill, so the flow unit and the cargo read against the dark. */}
       <directionalLight position={[-1, 1.5, 3]} intensity={1.1} color={SET_PAINT.fillLight} />
       <SetPieces rec={props.rec} />
       <Burning {...props} />
-      <Leaders leaders={props.leaders} />
+      <Leaders leaders={props.leaders} leaderKey={props.leaderKey} />
     </>
   );
 }
