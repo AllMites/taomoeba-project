@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Claim, SceneProps, Source } from "../../contracts/index.ts";
 import { useDataset } from "../../data/useDataset.ts";
-import { frameAt, loopSpan, midBurn, PLAYBACK_SPEED, type ReplayFrame, type SaffireRecord } from "./timeline.ts";
+import { frameAt, loopSpan, midBurn, statusLine, type ReplayFrame, type SaffireRecord } from "./timeline.ts";
 import { World, type LeaderRefs } from "./World.tsx";
 import "./saffire.css";
 
@@ -175,7 +175,17 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
             });
           }}
         >
-          <World rec={ready} calm={calm} playing={playing} loop={!calm} clock={clock} onTick={onTick} onEnd={onEnd} leaders={leaders} />
+          <World
+            rec={ready}
+            calm={calm}
+            playing={playing}
+            loop={!calm}
+            clock={clock}
+            onTick={onTick}
+            onEnd={onEnd}
+            leaders={leaders}
+            leaderKey={shown.map((c) => c.claim.id).join("|")}
+          />
         </Canvas>
       ) : (
         <img className="sf-poster" src={POSTER} alt={ready ? `Still of the replay at mid-burn. ${label}` : ""} />
@@ -215,7 +225,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
             <Readout label="Flame front" value={hud.frontCm == null ? null : hud.frontCm.toFixed(1)} unit="cm" of={v.burnLengthCm.value} />
           </dl>
           <p className="sf-phase">{phaseLine(ready, hud)}</p>
-          <p className="t-readout sf-speed">{(calm || !useCanvas) && !playing ? "Still frame, mid-burn" : `Replay ${PLAYBACK_SPEED}× speed`}</p>
+          <p className="t-readout sf-speed">{statusLine(ready, hud, playing)}</p>
         </div>
       )}
 

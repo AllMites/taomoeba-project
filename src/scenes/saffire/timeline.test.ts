@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { frameAt, loopSpan, midBurn, spreadCmS, type SaffireRecord } from "./timeline.ts";
+import { frameAt, loopSpan, midBurn, spreadCmS, statusLine, type SaffireRecord } from "./timeline.ts";
 
 const rec = JSON.parse(readFileSync(new URL("../../../public/data/scenes/saffire.json", import.meta.url), "utf8")) as SaffireRecord;
 const runs = JSON.parse(readFileSync(new URL("../../../public/data/runs/PSI-99.json", import.meta.url), "utf8")) as {
@@ -74,5 +74,15 @@ describe("replay timeline", () => {
     expect(frameAt(rec, 145).intensity).toBe(0);
     expect(frameAt(rec, 142).intensity).toBeGreaterThan(0);
     expect(frameAt(rec, 142).intensity).toBeLessThan(1);
+  });
+});
+
+describe("status line", () => {
+  it("says mid-burn only when the frame on screen is mid-burn", () => {
+    expect(statusLine(rec, frameAt(rec, midBurn(rec)), false)).toBe("Still frame, mid-burn");
+    // After "Play once" ends, the clock sits at the end of the loop: the strip is burnt out.
+    expect(statusLine(rec, frameAt(rec, loopSpan(rec).end), false)).toBe("Still frame, burn over");
+    expect(statusLine(rec, frameAt(rec, 30), false)).toBe("Paused");
+    expect(statusLine(rec, frameAt(rec, 30), true)).toBe("Replay 10× speed");
   });
 });

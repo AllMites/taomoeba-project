@@ -81,3 +81,14 @@ export function frameAt(rec: SaffireRecord, t: number): ReplayFrame {
   const fade = t <= fadeFrom ? 1 : Math.max(0, 1 - (t - fadeFrom) / Math.max(burnTime - fadeFrom, 1e-6));
   return { phase: "burning", t, burnS, frontCm, intensity: grow * fade };
 }
+
+/**
+ * The small status line under the HUD. It must describe the frame on screen: a stopped replay is only
+ * "mid-burn" when the clock really sits at mid-burn (calm, the poster), not after "Play once" has ended.
+ */
+export function statusLine(rec: SaffireRecord, f: ReplayFrame, playing: boolean): string {
+  if (playing) return `Replay ${PLAYBACK_SPEED}× speed`;
+  if (f.t === midBurn(rec)) return "Still frame, mid-burn";
+  if (f.phase === "out") return "Still frame, burn over";
+  return "Paused";
+}
