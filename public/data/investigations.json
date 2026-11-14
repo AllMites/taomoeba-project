@@ -44,6 +44,54 @@
       ],
       "sourceIds": [
         "psi:PSI-10"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": "table"
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-10.json",
+        "rows": 327,
+        "columns": [
+          "flame_type",
+          "day",
+          "test",
+          "o2_percent",
+          "mo2_mg_s",
+          "mn2_mg_s",
+          "mtot_mg_s",
+          "xc2h4_initial",
+          "xc2h4_final",
+          "pressure_kpa_pinit",
+          "pfinal_atm",
+          "pressure_kpa_pmean",
+          "mean_zst",
+          "tad_k",
+          "fuel",
+          "xfuel",
+          "mfuel_mg_s",
+          "o2_percent_2",
+          "xo2_final"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-20",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-21",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-22",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-23",
+          "reason": "Same hardware: ACME (CIR)"
+        }
       ]
     },
     {
@@ -79,6 +127,43 @@
       ],
       "sourceIds": [
         "psi:PSI-20"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-20.json",
+        "rows": 18,
+        "columns": [
+          "year",
+          "month",
+          "date",
+          "burner_size_mm",
+          "fuel_bottle",
+          "o2_percent",
+          "flames_ignited",
+          "notes"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-10",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-21",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-22",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-23",
+          "reason": "Same hardware: ACME (CIR)"
+        }
       ]
     },
     {
@@ -114,6 +199,43 @@
       ],
       "sourceIds": [
         "psi:PSI-21"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-21.json",
+        "rows": 32,
+        "columns": [
+          "test_type",
+          "test_day",
+          "fuel_mfc",
+          "n2_mfc",
+          "fuel_bottle",
+          "fuel_conc_range",
+          "flames_ignited",
+          "notes"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-10",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-20",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-22",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-23",
+          "reason": "Same hardware: ACME (CIR)"
+        }
       ]
     },
     {
@@ -143,6 +265,45 @@
       ],
       "sourceIds": [
         "psi:PSI-22"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-22.json",
+        "rows": 32,
+        "columns": [
+          "test_type",
+          "test_day",
+          "year",
+          "month",
+          "date",
+          "mesh_polarity",
+          "fuel_bottle",
+          "fuel_conc",
+          "flames_ignited",
+          "notes"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-23",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-10",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-20",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-21",
+          "reason": "Same hardware: ACME (CIR)"
+        }
       ]
     },
     {
@@ -185,6 +346,44 @@
       ],
       "sourceIds": [
         "psi:PSI-23"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": "table"
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-23.json",
+        "rows": 18,
+        "columns": [
+          "test_type",
+          "test_day",
+          "year",
+          "month",
+          "date",
+          "o2_percent",
+          "fuel_bottle",
+          "flames_ignited",
+          "notes"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-10",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-20",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-21",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-22",
+          "reason": "Same hardware: ACME (CIR)"
+        }
       ]
     },
     {
@@ -222,6 +421,48 @@
       ],
       "sourceIds": [
         "psi:PSI-25"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-25.json",
+        "rows": 129,
+        "columns": [
+          "pi",
+          "test",
+          "date",
+          "gmt",
+          "sample",
+          "fuel_sample_material",
+          "flow_restrictor",
+          "fan_display",
+          "air_display",
+          "radiometer_gain_1000_250_50_10",
+          "total_frames_shot",
+          "o2_percent",
+          "calibrated_final_o2_by_vol",
+          "initial_co2_by_vol",
+          "final_co2_by_vol",
+          "initial_co_ppm",
+          "final_co_ppm"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-26",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-106",
+          "reason": "Same hardware: MSG flow duct"
+        },
+        {
+          "id": "PSI-107",
+          "reason": "Same hardware: MSG flow duct"
+        }
       ]
     },
     {
@@ -250,6 +491,37 @@
       ],
       "sourceIds": [
         "psi:PSI-26"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-26.json",
+        "rows": 122,
+        "columns": [
+          "date",
+          "gmt",
+          "as_run_test",
+          "test",
+          "sample",
+          "fuel_sample_material"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-107",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-25",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-106",
+          "reason": "Same hardware: MSG flow duct"
+        }
       ]
     },
     {
@@ -297,6 +569,37 @@
       ],
       "sourceIds": [
         "psi:PSI-39"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": "table"
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-39.json",
+        "rows": 87,
+        "columns": [
+          "flex_number",
+          "test_date",
+          "local_time",
+          "cir",
+          "pressure_kpa",
+          "o2_percent",
+          "nitrogen",
+          "helium",
+          "fiber",
+          "fuel"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-69",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-68",
+          "reason": "Same hardware: MDCA (CIR)"
+        }
       ]
     },
     {
@@ -325,6 +628,28 @@
       ],
       "sourceIds": [
         "psi:PSI-47"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-47.json",
+        "rows": 2,
+        "columns": [
+          "session_name",
+          "actual_day",
+          "hardware_description",
+          "sample_material",
+          "sampled_location"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-102",
+          "reason": "Its PSI record names SAME"
+        }
       ]
     },
     {
@@ -348,6 +673,18 @@
       "variables": [],
       "sourceIds": [
         "psi:PSI-60"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "ground",
+      "runs": null,
+      "related": [
+        {
+          "id": "PSI-107",
+          "reason": "Its PSI record names SPICE"
+        }
       ]
     },
     {
@@ -371,6 +708,22 @@
       "variables": [],
       "sourceIds": [
         "psi:PSI-62"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "ground",
+      "runs": null,
+      "related": [
+        {
+          "id": "PSI-25",
+          "reason": "Its PSI record names BASS-II"
+        },
+        {
+          "id": "PSI-26",
+          "reason": "Its PSI record names BASS"
+        }
       ]
     },
     {
@@ -427,6 +780,34 @@
       ],
       "sourceIds": [
         "psi:PSI-68"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": "table"
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-68.json",
+        "rows": 8,
+        "columns": [
+          "sample_fuel_type",
+          "initial_droplet_diameter_mm",
+          "ambient_gas_mixture",
+          "o2_percent",
+          "pressure_kpa",
+          "ambient_temperature_c",
+          "airflow_cm_s"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-39",
+          "reason": "Same hardware: MDCA (CIR)"
+        },
+        {
+          "id": "PSI-69",
+          "reason": "Same hardware: MDCA (CIR)"
+        }
       ]
     },
     {
@@ -479,6 +860,42 @@
       ],
       "sourceIds": [
         "psi:PSI-69"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": "table"
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-69.json",
+        "rows": 274,
+        "columns": [
+          "flex_test",
+          "flex_identifier",
+          "test_date",
+          "test_gmt",
+          "fuel",
+          "pressure_kpa",
+          "o2_percent",
+          "n_initial_ambient_composition_mole_fraction",
+          "co_initial_ambient_composition_mole_fraction",
+          "he_initial_ambient_composition_mole_fraction",
+          "droplet_initial_diameter_mm",
+          "visible_flame_extinction_diameter_mm",
+          "burning_rate_mm",
+          "burn_time_s",
+          "test_end"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-39",
+          "reason": "Same hardware: MDCA (CIR)"
+        },
+        {
+          "id": "PSI-68",
+          "reason": "Same hardware: MDCA (CIR)"
+        }
       ]
     },
     {
@@ -526,6 +943,44 @@
       ],
       "sourceIds": [
         "psi:PSI-98"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-98.json",
+        "rows": 4,
+        "columns": [
+          "sample_number",
+          "material",
+          "sample_thickness_cm",
+          "sample_length_cm",
+          "sample_width_cm",
+          "airflow_cm_s",
+          "o2_percent",
+          "ignition_power_w",
+          "ignition_time_s",
+          "burn_time_s",
+          "flow_direction",
+          "camera_1",
+          "camera_2"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-99",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-100",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-26",
+          "reason": "Listed as related in its PSI record"
+        }
       ]
     },
     {
@@ -574,6 +1029,44 @@
       ],
       "sourceIds": [
         "psi:PSI-99"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-99.json",
+        "rows": 15,
+        "columns": [
+          "sample_number",
+          "material",
+          "samle_thickness",
+          "sample_length",
+          "sample_width_cm",
+          "airflow_cm_s",
+          "o2_percent",
+          "ignition_power_w",
+          "ignition_time_s",
+          "burn_time_s",
+          "flow_direction",
+          "g_burn_length",
+          "g_spread_length",
+          "1_g_burn_length",
+          "1_g_spread_rate",
+          "camera_1",
+          "camera_2"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-98",
+          "reason": "Same hardware: Cygnus free-flyer"
+        },
+        {
+          "id": "PSI-100",
+          "reason": "Same hardware: Cygnus free-flyer"
+        }
       ]
     },
     {
@@ -611,6 +1104,36 @@
       ],
       "sourceIds": [
         "psi:PSI-100"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-100.json",
+        "rows": 2,
+        "columns": [
+          "sample_number",
+          "material",
+          "sample_thickness",
+          "sample_length",
+          "sample_width",
+          "airflow_cm_s",
+          "direction",
+          "camera_1",
+          "camera_2"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-99",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-98",
+          "reason": "Listed as related in its PSI record"
+        }
       ]
     },
     {
@@ -650,6 +1173,33 @@
       ],
       "sourceIds": [
         "psi:PSI-101"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-101.json",
+        "rows": 109,
+        "columns": [
+          "sample_type",
+          "same_test",
+          "description",
+          "date",
+          "airflow_cm_s",
+          "rt_r0",
+          "duration_sec",
+          "primary_aging_time_sec",
+          "primary_mixing_time_sec",
+          "net_aging_time_sec"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-102",
+          "reason": "Its PSI record names SAME"
+        }
       ]
     },
     {
@@ -689,6 +1239,28 @@
       ],
       "sourceIds": [
         "psi:PSI-102"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-102.json",
+        "rows": 8,
+        "columns": [
+          "sample",
+          "sample_material",
+          "airflow_cm_s",
+          "weight_loss_rate_mg_min",
+          "aging_duration_minutes"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-101",
+          "reason": "Listed as related in its PSI record"
+        }
       ]
     },
     {
@@ -718,6 +1290,37 @@
       ],
       "sourceIds": [
         "psi:PSI-106"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-106.json",
+        "rows": 12,
+        "columns": [
+          "test_date",
+          "fuel_type"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-107",
+          "reason": "Listed as related in its PSI record"
+        },
+        {
+          "id": "PSI-25",
+          "reason": "Same hardware: MSG flow duct"
+        },
+        {
+          "id": "PSI-26",
+          "reason": "Same hardware: MSG flow duct"
+        },
+        {
+          "id": "PSI-10",
+          "reason": "Same fuel: C2H4"
+        }
       ]
     },
     {
@@ -755,6 +1358,40 @@
       ],
       "sourceIds": [
         "psi:PSI-107"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-107.json",
+        "rows": 469,
+        "columns": [
+          "gmt_date",
+          "gmt_ignition",
+          "gmt_flame_off",
+          "fuel",
+          "nozzle_mm",
+          "fuel_rate_sccm",
+          "fuel_rate_mg_s",
+          "hc_fuel_rate_mg_s",
+          "airflow_cm_s"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-25",
+          "reason": "Same hardware: MSG flow duct"
+        },
+        {
+          "id": "PSI-26",
+          "reason": "Same hardware: MSG flow duct"
+        },
+        {
+          "id": "PSI-106",
+          "reason": "Same hardware: MSG flow duct"
+        }
       ]
     },
     {
@@ -779,7 +1416,14 @@
       "variables": [],
       "sourceIds": [
         "psi:PSI-108"
-      ]
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": null,
+      "related": []
     },
     {
       "id": "PSI-115",
@@ -800,6 +1444,18 @@
       "variables": [],
       "sourceIds": [
         "psi:PSI-115"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "ground",
+      "runs": null,
+      "related": [
+        {
+          "id": "PSI-102",
+          "reason": "Its PSI record names SAME"
+        }
       ]
     },
     {
@@ -821,6 +1477,22 @@
       "variables": [],
       "sourceIds": [
         "psi:PSI-117"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "ground",
+      "runs": null,
+      "related": [
+        {
+          "id": "PSI-69",
+          "reason": "Its PSI record names FLEX"
+        },
+        {
+          "id": "PSI-142",
+          "reason": "Listed as related in its PSI record"
+        }
       ]
     },
     {
@@ -842,6 +1514,18 @@
       "variables": [],
       "sourceIds": [
         "psi:PSI-142"
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "ground",
+      "runs": null,
+      "related": [
+        {
+          "id": "PSI-69",
+          "reason": "Its PSI record names FLEX"
+        }
       ]
     },
     {
@@ -891,6 +1575,62 @@
       ],
       "sourceIds": [
         "psi:PSI-159"
+      ],
+      "conditionBasis": {
+        "o2": "table",
+        "pressure": "table"
+      },
+      "evidence": "flight",
+      "runs": {
+        "path": "runs/PSI-159.json",
+        "rows": 333,
+        "columns": [
+          "flame_type",
+          "day",
+          "fuel",
+          "test",
+          "xf_before_test",
+          "xf_after_test",
+          "pressure_kpa",
+          "o2_percent",
+          "hc_burnrate_mg_s",
+          "o2_flow_rate_mg_s",
+          "tfp",
+          "tad_k",
+          "zst",
+          "hot_ignition",
+          "burn_time_sec",
+          "self_ext_or_flow_term",
+          "peak_burner_temp_c",
+          "peak_burner_temp_k",
+          "color",
+          "comments",
+          "cool_flame",
+          "o2_percent_2",
+          "xo2_after_test",
+          "xf",
+          "mhc_mg_s",
+          "self_ext_or_flow_term_2",
+          "peak_burner_t_c"
+        ]
+      },
+      "related": [
+        {
+          "id": "PSI-10",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-20",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-21",
+          "reason": "Same hardware: ACME (CIR)"
+        },
+        {
+          "id": "PSI-22",
+          "reason": "Same hardware: ACME (CIR)"
+        }
       ]
     },
     {
@@ -919,7 +1659,14 @@
       ],
       "sourceIds": [
         "psi:PSI-181"
-      ]
+      ],
+      "conditionBasis": {
+        "o2": null,
+        "pressure": null
+      },
+      "evidence": "flight",
+      "runs": null,
+      "related": []
     }
   ]
 }

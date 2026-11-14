@@ -1,0 +1,114 @@
+{
+ "source": "psi:PSI-68",
+ "columns": [
+  {
+   "name": "sample_fuel_type",
+   "unit": null,
+   "original": "Sample (Fuel Type)"
+  },
+  {
+   "name": "initial_droplet_diameter_mm",
+   "unit": "mm",
+   "original": "Initial Droplet Diameter (mm)"
+  },
+  {
+   "name": "ambient_gas_mixture",
+   "unit": null,
+   "original": "Ambient Gas Mixture"
+  },
+  {
+   "name": "o2_percent",
+   "unit": "%",
+   "original": "Oxygen Mole Fraction"
+  },
+  {
+   "name": "pressure_kpa",
+   "unit": "kPa",
+   "original": "Ambient Pressure (atm)"
+  },
+  {
+   "name": "ambient_temperature_c",
+   "unit": "C",
+   "original": "Ambient Temperature (C)"
+  },
+  {
+   "name": "airflow_cm_s",
+   "unit": "cm/s",
+   "original": "Flow Velocity (cm/s)"
+  }
+ ],
+ "rows": [
+  {
+   "sample_fuel_type": "IsoOctane (pure)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  },
+  {
+   "sample_fuel_type": "n-Octane (pure)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  },
+  {
+   "sample_fuel_type": "Heptane (pure)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  },
+  {
+   "sample_fuel_type": "Decane (pure)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  },
+  {
+   "sample_fuel_type": "Ethanol (pure)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  },
+  {
+   "sample_fuel_type": "Propanol (95%) Glycerol (5%) (mixture)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  },
+  {
+   "sample_fuel_type": "Heptane (50%) IsoOctane (50%) (mixture)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  },
+  {
+   "sample_fuel_type": "Propanol (80%) Glycerol (20%) (mixture)",
+   "initial_droplet_diameter_mm": "1.5 - 5",
+   "ambient_gas_mixture": "O2/N2 or O2/He",
+   "o2_percent": "17; 21; 25; 30",
+   "pressure_kpa": "50.7; 101.3; 152; 202.7; 304",
+   "ambient_temperature_c": 25,
+   "airflow_cm_s": "0.1; 5"
+  }
+ ]
+}

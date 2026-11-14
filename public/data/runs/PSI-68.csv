@@ -1,0 +1,9 @@
+sample_fuel_type,initial_droplet_diameter_mm,ambient_gas_mixture,o2_percent,pressure_kpa,ambient_temperature_c,airflow_cm_s
+IsoOctane (pure),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5
+n-Octane (pure),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5
+Heptane (pure),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5
+Decane (pure),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5
+Ethanol (pure),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5
+Propanol (95%) Glycerol (5%) (mixture),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5
+Heptane (50%) IsoOctane (50%) (mixture),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5
+Propanol (80%) Glycerol (20%) (mixture),1.5 - 5,O2/N2 or O2/He,17; 21; 25; 30,50.7; 101.3; 152; 202.7; 304,25,0.1; 5

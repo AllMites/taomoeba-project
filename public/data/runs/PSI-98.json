@@ -1,0 +1,132 @@
+{
+ "source": "psi:PSI-98",
+ "columns": [
+  {
+   "name": "sample_number",
+   "unit": null,
+   "original": "Sample Number"
+  },
+  {
+   "name": "material",
+   "unit": null,
+   "original": "Material"
+  },
+  {
+   "name": "sample_thickness_cm",
+   "unit": "cm",
+   "original": "Sample Thickness (cm)"
+  },
+  {
+   "name": "sample_length_cm",
+   "unit": "cm",
+   "original": "Sample Length (cm)"
+  },
+  {
+   "name": "sample_width_cm",
+   "unit": "cm",
+   "original": "Sample Width (cm)"
+  },
+  {
+   "name": "airflow_cm_s",
+   "unit": "cm/s",
+   "original": "Air Flow (cm/s)"
+  },
+  {
+   "name": "o2_percent",
+   "unit": "%",
+   "original": "Percent O2"
+  },
+  {
+   "name": "ignition_power_w",
+   "unit": "W",
+   "original": "Ignition Power (W)"
+  },
+  {
+   "name": "ignition_time_s",
+   "unit": "s",
+   "original": "Ignition Time (s)"
+  },
+  {
+   "name": "burn_time_s",
+   "unit": "s",
+   "original": "Burn Time (s)"
+  },
+  {
+   "name": "flow_direction",
+   "unit": null,
+   "original": "Flow Direction"
+  },
+  {
+   "name": "camera_1",
+   "unit": null,
+   "original": "Camera 1"
+  },
+  {
+   "name": "camera_2",
+   "unit": null,
+   "original": "Camera 2"
+  }
+ ],
+ "rows": [
+  {
+   "sample_number": "S1",
+   "material": "SIBAL Fabric",
+   "sample_thickness_cm": 0.37,
+   "sample_length_cm": 40.6,
+   "sample_width_cm": 94,
+   "airflow_cm_s": 20,
+   "o2_percent": "21.5; 21.7",
+   "ignition_power_w": 182,
+   "ignition_time_s": 8,
+   "burn_time_s": 420,
+   "flow_direction": "Concurrent",
+   "camera_1": "S1C1",
+   "camera_2": "S1C2"
+  },
+  {
+   "sample_number": "S2",
+   "material": "SIBAL Fabric",
+   "sample_thickness_cm": 0.37,
+   "sample_length_cm": 40.6,
+   "sample_width_cm": 94,
+   "airflow_cm_s": 20,
+   "o2_percent": 21.5,
+   "ignition_power_w": 182,
+   "ignition_time_s": 8,
+   "burn_time_s": 70,
+   "flow_direction": "Opposed",
+   "camera_1": "S2C1",
+   "camera_2": "S2C2"
+  },
+  {
+   "sample_number": "F1C1/F1C2",
+   "material": "Pre-test flow visulation data for sample 1",
+   "sample_thickness_cm": null,
+   "sample_length_cm": null,
+   "sample_width_cm": null,
+   "airflow_cm_s": null,
+   "o2_percent": null,
+   "ignition_power_w": null,
+   "ignition_time_s": null,
+   "burn_time_s": null,
+   "flow_direction": null,
+   "camera_1": null,
+   "camera_2": null
+  },
+  {
+   "sample_number": "F2C1/F2C2",
+   "material": "Pre-test flow visulation data for sample 2",
+   "sample_thickness_cm": null,
+   "sample_length_cm": null,
+   "sample_width_cm": null,
+   "airflow_cm_s": null,
+   "o2_percent": null,
+   "ignition_power_w": null,
+   "ignition_time_s": null,
+   "burn_time_s": null,
+   "flow_direction": null,
+   "camera_1": null,
+   "camera_2": null
+  }
+ ]
+}

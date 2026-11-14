@@ -25,6 +25,13 @@ Rerun (from `scripts/`, cache in `data/raw/`, network only on a cold cache):
 - Overlap formula is in the docstring of `ingest/overlap.py` (hand example in the test file).
 - Not downloaded: raw imagery, anything over 20 MB, any Test Matrix xlsx.
 
+## Round 2
+- Conditions by basis (of 26): O2 table 10, none 16. Pressure table 6, none 20. No record-based range survived review: PSI-20's psia/O2 list is a plan ("will be examined"; its table shows 25 % and 40 % runs the list lacks, and says chamber pressures are not identified), and PSI-106/107 "co-flow air" is the stream fed around the burner, not the test atmosphere. The record reader now skips sentences about co-flow or airflow and plan or design language (will, considered, proposed, up to ...). Allowed conversions stay "cabin/ambient air" = 21 % and "ambient pressure" = 101.3 kPa; neither occurs. Table ranges are never overwritten.
+- Still without O2 and pressure, and why: PSI-106, 107 (co-flow air only), PSI-21, 22 (fuel concentration only; PSI-22 coflow air does not state the ambient), 26 (table has no conditions; record only says "same pressure, oxygen"), 47, 100-102 (SAFFIRE-III, SAME: record gives no atmosphere), 108, 181 (not combustion), 60, 62, 115, 117, 142 (ground).
+- `evidence`: from the record's Flight Platform. Ground: PSI-60, 62, 115, 117, 142. PSI-108 (Shuttle) and PSI-181 (ISS) are flight.
+- `runs/`: 19 investigations x (.json + .csv), 1,066,289 bytes total. None for PSI-60, 62, 115, 117 (no table), PSI-142 (figure list, not runs), PSI-108, 181 (Other). FLEX 274 rows. Only the 3 condition columns are converted; other numbers keep PSI's full precision; a multi-value cell stays text ("21; 26.5; 40"); O2 values over 100 are blank. Column names snake_case with unit; `original` keeps PSI's header.
+- `related`: up to 4 per row, grounds are its record naming another investigation, the PSI "Related Investigations" field, same hardware group (not ground/lab), or same fuel name. ACME rows fill with same-hardware. Unicode dashes in record text are read as hyphens (PSI-25 "BASS–II" is itself, not BASS). Test Matrix files are refused by name in `psi.tables_of`.
+
 ## Contract issues (not edited)
 - `fuelKind` has no "liquid" or "unknown". PSI-108 uses "droplet" and PSI-60/142 "gas" as nearest fit; hidden or ground rows only.
 - `fuel`, `sampleShape`, `hardware` are required strings: the value "Not stated" means unknown.

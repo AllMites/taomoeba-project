@@ -1,0 +1,250 @@
+{
+ "source": "psi:PSI-23",
+ "columns": [
+  {
+   "name": "test_type",
+   "unit": null,
+   "original": "Test Type"
+  },
+  {
+   "name": "test_day",
+   "unit": null,
+   "original": "Test Day*"
+  },
+  {
+   "name": "year",
+   "unit": null,
+   "original": "Year"
+  },
+  {
+   "name": "month",
+   "unit": null,
+   "original": "Month"
+  },
+  {
+   "name": "date",
+   "unit": null,
+   "original": "Date"
+  },
+  {
+   "name": "o2_percent",
+   "unit": "%",
+   "original": "Atmosphere*"
+  },
+  {
+   "name": "fuel_bottle",
+   "unit": null,
+   "original": "Fuel Bottle"
+  },
+  {
+   "name": "flames_ignited",
+   "unit": null,
+   "original": "Flames Ignited*"
+  },
+  {
+   "name": "notes",
+   "unit": null,
+   "original": "Notes"
+  }
+ ],
+ "rows": [
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 19254,
+   "year": 2019,
+   "month": "Sept.",
+   "date": 11,
+   "o2_percent": 21,
+   "fuel_bottle": "50% C2H4 with N2",
+   "flames_ignited": 13,
+   "notes": "*Test Day is formatted YYDDD where YY identfies year and DDD identifies day of year (GMT)."
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 19256,
+   "year": 2019,
+   "month": "Sept.",
+   "date": 13,
+   "o2_percent": 21,
+   "fuel_bottle": "50% C2H4 with N3",
+   "flames_ignited": 16,
+   "notes": "*Atmosphere is ~1 atm but pressure increases and O2% drops with vitiation."
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 19304,
+   "year": 2019,
+   "month": "Oct.",
+   "date": 31,
+   "o2_percent": 21,
+   "fuel_bottle": "45% CH4 with N2",
+   "flames_ignited": 9,
+   "notes": "*Flames Ignited is the number ignited on that day (neglecting the day change on ISS)."
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 19308,
+   "year": 2019,
+   "month": "Nov.",
+   "date": 4,
+   "o2_percent": 30,
+   "fuel_bottle": "45% CH4 with N3",
+   "flames_ignited": 21,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 19352,
+   "year": 2019,
+   "month": "Dec.",
+   "date": 18,
+   "o2_percent": 21,
+   "fuel_bottle": "100% H2",
+   "flames_ignited": 10,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 20006,
+   "year": 2020,
+   "month": "Jan.",
+   "date": 6,
+   "o2_percent": 21,
+   "fuel_bottle": "44.4% H2 with CH4",
+   "flames_ignited": 17,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 20013,
+   "year": 2020,
+   "month": "Jan.",
+   "date": 13,
+   "o2_percent": 21,
+   "fuel_bottle": "66.7% H2 with CH4",
+   "flames_ignited": 22,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 20024,
+   "year": 2020,
+   "month": "Jan.",
+   "date": 24,
+   "o2_percent": 21,
+   "fuel_bottle": "100% H2",
+   "flames_ignited": 16,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 20029,
+   "year": 2020,
+   "month": "Jan.",
+   "date": 29,
+   "o2_percent": 21,
+   "fuel_bottle": "50% C2H4 with N2",
+   "flames_ignited": 21,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with nitrogen-diluted fuel and oxygen",
+   "test_day": 20132,
+   "year": 2020,
+   "month": "May",
+   "date": 11,
+   "o2_percent": 21,
+   "fuel_bottle": "25% H2, 20% CH4, with He",
+   "flames_ignited": 7,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20136,
+   "year": 2020,
+   "month": "May",
+   "date": 15,
+   "o2_percent": 21,
+   "fuel_bottle": "20% H2, 25% CH4, with He",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20142,
+   "year": 2020,
+   "month": "May",
+   "date": 21,
+   "o2_percent": 30,
+   "fuel_bottle": "30% H2, 15% CH4, with He",
+   "flames_ignited": 17,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20155,
+   "year": 2020,
+   "month": "June",
+   "date": 3,
+   "o2_percent": "30; 21",
+   "fuel_bottle": "45% H2 with He",
+   "flames_ignited": 9,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20160,
+   "year": 2020,
+   "month": "June",
+   "date": 8,
+   "o2_percent": "30; 21",
+   "fuel_bottle": "45% CH4 with He",
+   "flames_ignited": 12,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20164,
+   "year": 2020,
+   "month": "June",
+   "date": 12,
+   "o2_percent": 30,
+   "fuel_bottle": "20% C2H4 with He",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20170,
+   "year": 2020,
+   "month": "June",
+   "date": 18,
+   "o2_percent": "30; 21",
+   "fuel_bottle": "25% C2H4 with He",
+   "flames_ignited": 20,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20176,
+   "year": 2020,
+   "month": "June",
+   "date": 24,
+   "o2_percent": "30; 21",
+   "fuel_bottle": "30% C2H4 with He",
+   "flames_ignited": 23,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with helium-diluted fuel and oxygen",
+   "test_day": 20190,
+   "year": 2020,
+   "month": "July",
+   "date": 8,
+   "o2_percent": "30; 21",
+   "fuel_bottle": "35% H2 with He",
+   "flames_ignited": 21,
+   "notes": null
+  }
+ ]
+}

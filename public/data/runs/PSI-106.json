@@ -1,0 +1,65 @@
+{
+ "source": "psi:PSI-106",
+ "columns": [
+  {
+   "name": "test_date",
+   "unit": null,
+   "original": "Test Date"
+  },
+  {
+   "name": "fuel_type",
+   "unit": null,
+   "original": "Fuel Type"
+  }
+ ],
+ "rows": [
+  {
+   "test_date": "2012-FEB-09",
+   "fuel_type": "100% CH4"
+  },
+  {
+   "test_date": "2012-FEB-13 SLICE testing with",
+   "fuel_type": "40% CH4 (balance N2) including 2 pyrometry calibration tests and 2 fan calibrations"
+  },
+  {
+   "test_date": "2012-FEB-17",
+   "fuel_type": "70% CH4 (balance N2) including 1 pyrometry calibration test"
+  },
+  {
+   "test_date": "2012-FEB-20",
+   "fuel_type": "20% C2H4 (balance N2)"
+  },
+  {
+   "test_date": "2012-FEB-27",
+   "fuel_type": "100% CH4"
+  },
+  {
+   "test_date": "2012-MAR-01",
+   "fuel_type": "40% CH4 (balance N2)"
+  },
+  {
+   "test_date": "2012-MAR-05 SLICE testing with",
+   "fuel_type": "70% CH4 (balance N2) where the fuel bottle was not emptied (in contrast to most days)"
+  },
+  {
+   "test_date": "2012-MAR-09",
+   "fuel_type": "100% C2H6"
+  },
+  {
+   "test_date": "2012-MAR-12",
+   "fuel_type": "100% CH4"
+  },
+  {
+   "test_date": "2012-MAR-15",
+   "fuel_type": "20% C2H4 (balance N2)"
+  },
+  {
+   "test_date": "2012-MAR-19 SLICE testing with",
+   "fuel_type": "70% CH4 (balance N2) including 1 pyrometry calibration test and 2 fan calibrations"
+  },
+  {
+   "test_date": "2012-MAR-23 Last day of testing: SPICE testing with 100% C3H8 and then 100%",
+   "fuel_type": "100% C2H4"
+  }
+ ]
+}

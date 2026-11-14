@@ -1,0 +1,88 @@
+{
+ "source": "psi:PSI-102",
+ "columns": [
+  {
+   "name": "sample",
+   "unit": null,
+   "original": "Sample #"
+  },
+  {
+   "name": "sample_material",
+   "unit": null,
+   "original": "Sample Material"
+  },
+  {
+   "name": "airflow_cm_s",
+   "unit": "cm/s",
+   "original": "Air Flow (cm/s)"
+  },
+  {
+   "name": "weight_loss_rate_mg_min",
+   "unit": null,
+   "original": "Weight loss rate (mg/min)"
+  },
+  {
+   "name": "aging_duration_minutes",
+   "unit": "minutes",
+   "original": "Aging Duration (minutes)"
+  }
+ ],
+ "rows": [
+  {
+   "sample": 1,
+   "sample_material": "Teflon",
+   "airflow_cm_s": 5,
+   "weight_loss_rate_mg_min": 2,
+   "aging_duration_minutes": 1
+  },
+  {
+   "sample": 2,
+   "sample_material": "Teflon",
+   "airflow_cm_s": 5,
+   "weight_loss_rate_mg_min": 1,
+   "aging_duration_minutes": 1
+  },
+  {
+   "sample": 3,
+   "sample_material": "Teflon",
+   "airflow_cm_s": 5,
+   "weight_loss_rate_mg_min": 2,
+   "aging_duration_minutes": 20
+  },
+  {
+   "sample": 4,
+   "sample_material": "Teflon",
+   "airflow_cm_s": 10,
+   "weight_loss_rate_mg_min": 2,
+   "aging_duration_minutes": 1
+  },
+  {
+   "sample": 5,
+   "sample_material": "Kapton: same conditions as 1-4",
+   "airflow_cm_s": null,
+   "weight_loss_rate_mg_min": null,
+   "aging_duration_minutes": null
+  },
+  {
+   "sample": 6,
+   "sample_material": "Silicone Rubber: same conditions as 1-4",
+   "airflow_cm_s": null,
+   "weight_loss_rate_mg_min": null,
+   "aging_duration_minutes": null
+  },
+  {
+   "sample": 7,
+   "sample_material": "Lampwick: same conditions as 1-4",
+   "airflow_cm_s": null,
+   "weight_loss_rate_mg_min": null,
+   "aging_duration_minutes": null
+  },
+  {
+   "sample": 8,
+   "sample_material": "Dibutyl Phthalate: same conditions as 1-4",
+   "airflow_cm_s": null,
+   "weight_loss_rate_mg_min": null,
+   "aging_duration_minutes": null
+  }
+ ]
+}

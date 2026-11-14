@@ -7,9 +7,11 @@ import json
 import re
 from pathlib import Path
 
-from . import psi, tables
+from . import psi, runs, tables
+from .tables import UNIT_KPA
 from .overlap import HABITATS, overlap_rows
 
+RUNS_MAX = 5 * 1024 * 1024
 OUT = Path(__file__).resolve().parents[2] / "public" / "data"
 HAB_IDS = ("id", "label", "o2Percent", "pressureKPa", "note")
 
@@ -101,7 +103,7 @@ def sensors(psi_id, src):
     text = " ".join([names, clean((src.get("Experiment Hardware") or {}).get("Name")).lower(),
                      clean(src.get("Approach")).lower()])
     found = [lab for lab, rx in SENSORS if re.search(rx, text)]
-    raw_images = re.search(r"raw data/.*\.(tif|tiff|jpg|nef|avi|mp4|bmp)", names)  # image files in the repository
+    raw_images = re.search(r"raw data/.*\.(tif|tiff|jpg|nef|avi|mp4|bmp)\b", names)  # image files in the repository
     if "camera" not in found and raw_images and GROUP.get(psi_id) != "Ground study":
         found.insert(0, "camera")
     return found
@@ -121,12 +123,99 @@ def fuel_text(names):
     return ", ".join(names[:4]) + (f" and {len(names) - 4} more" if len(names) > 4 else "")
 
 
+T_KPA = {**UNIT_KPA, "psia": UNIT_KPA["psi"]}
+RECORD_FIELDS = ("Objectives", "Approach", "Hypothesis")
+RE_REC_O2 = re.compile(r"(\d+(?:\.\d+)?)\s*(?:%|percent)\s*(?:of\s+)?(?:oxygen|O2)\b", re.I)
+RE_REC_P = re.compile(r"(\d+(?:\.\d+)?)\s*(psia|psi|atm|kpa|mmhg|bar)\b", re.I)
+# Two conversions only, both applied only when the sentence itself says it:
+#   "cabin air" / "ambient air" / "air environment"  -> 21 % oxygen
+#   "ambient pressure"                                -> 101.3 kPa (1 atm)
+RE_REC_AIR = re.compile(r"\b(cabin air|ambient air|air environment|1 atm air)\b", re.I)
+RE_REC_AMB_P = re.compile(r"\bambient pressure\b", re.I)
+# Sentences that cannot state the test atmosphere: a gas stream fed to the burner or sample
+# (co-flow, airflow) rather than the surrounding atmosphere, and plans, proposals, design
+# capabilities ("will be examined", "considered", "up to") rather than conditions that were run.
+RE_REC_SKIP = re.compile(r"co-?flow|air ?flow|flow velocit|\b(will|would|shall|should|could|can|may|propos\w*|plann?\w*|"
+                         r"desired|consider\w*|capab\w*|design\w*|requirements?|up to)\b", re.I)
+RE_SPLIT = r"(?<=[^\d.][.!?])\s+(?=[A-Z])"
+
+
+def record_sentences(src):
+    text = " ".join(clean(src.get(f)) for f in RECORD_FIELDS)
+    return [x.strip() for x in re.split(RE_SPLIT, text) if x.strip()]
+
+
+def record_conditions(src, need_o2, need_p):
+    """Test atmosphere stated in the PSI record text. Returns (o2Range, pressureRange, excerpt)."""
+    o2, p, used = [], [], []
+    for sent in record_sentences(src):
+        if RE_REC_SKIP.search(sent):
+            continue
+        so = [float(v) for v in RE_REC_O2.findall(sent)] + ([21.0] if RE_REC_AIR.search(sent) else [])
+        sp = [float(n) * T_KPA[u.lower()] for n, u in RE_REC_P.findall(sent)] + ([101.325] if RE_REC_AMB_P.search(sent) else [])
+        so = [v for v in so if 0 < v <= 100]
+        if (need_o2 and so) or (need_p and sp):
+            used.append(sent)
+            o2 += so if need_o2 else []
+            p += sp if need_p else []
+    return tables.rng(o2, 2), tables.rng(p, 1), " ".join(used)
+
+
+def evidence(src):
+    plat = clean(src.get("Flight Platform"))
+    return "flight" if re.search(r"ISS|Space Station|Shuttle|Cygnus|spacecraft", plat, re.I) else "ground"
+
+
+# explicit names of other investigations (case-sensitive acronyms, longest first)
+MENTION = [("BASS-II", "PSI-25"), ("BASS", "PSI-26"), ("FLEX-2", "PSI-68"), ("FLEX", "PSI-69"), ("SAME-R", "PSI-101"),
+           ("SAME", "PSI-102"), ("SPICE", "PSI-107"), ("SLICE", "PSI-106"), ("DAFT", "PSI-47"),
+           ("SAFFIRE-III", "PSI-100"), ("SAFFIRE-II", "PSI-99"), ("SAFFIRE-I", "PSI-98"),
+           ("Smoke Aerosol Measurement Experiment", "PSI-102"), ("Smoke Point in Coflow Experiment", "PSI-107")]
+NO_GROUP = {"Ground study", "PI laboratory", "Not stated"}
+
+
+def record_text_dashes(src):
+    """Record text with Unicode hyphens and dashes as '-', so 'BASS–II' is read as BASS-II, not BASS."""
+    return re.sub("[‐-―−]", "-", " ".join(clean(src.get(f)) for f in RECORD_FIELDS))
+
+
+def related(inv, srcs, invs):
+    me, text = inv["id"], record_text_dashes(srcs[inv["id"]])
+    out = {}
+    for key, oid in MENTION:
+        if oid != me and re.search(rf"(?<![\w-]){re.escape(key)}(?![\w-])", text, re.I if " " in key else 0):
+            out.setdefault(oid, f"Its PSI record names {key}")
+    for oid in re.findall(r"PSI-\d+", clean(srcs[me].get("Related Investigations"))):
+        if oid != me and oid in srcs:
+            out.setdefault(oid, "Listed as related in its PSI record")
+    mine = {n for n in inv["fuel"].split(", ") if n != "Not stated" and not n.startswith("and ")}
+    for o in invs:
+        if o["id"] != me and inv["hardwareGroup"] == o["hardwareGroup"] and inv["hardwareGroup"] not in NO_GROUP:
+            out.setdefault(o["id"], f"Same hardware: {inv['hardwareGroup']}")
+    for o in invs:
+        shared = sorted(mine & {n for n in o["fuel"].split(", ")})
+        if o["id"] != me and shared:
+            out.setdefault(o["id"], f"Same fuel: {shared[0]}")
+    return [{"id": k, "reason": v} for k, v in list(out.items())[:4]]
+
+
 def investigation(src):
     i = src["Accession"]
     tabs = [tables.read_rows(psi.download_table(i, n, v)) for n, v, _ in psi.tables_of(i)]
     c = tables.conditions(tabs)
     pds, basis = PDS[i]
     other = pds == "Other"
+    # table-derived ranges win; the record text only fills a dimension the table left null
+    # ground and modeling records state simulated or planned-lab conditions, not a test atmosphere: flight only
+    flight = evidence(src) == "flight"
+    r_o2, r_p, excerpt = record_conditions(src, flight and c["o2Range"] is None, flight and c["pressureRange"] is None)
+    o2_range, p_range = c["o2Range"] or r_o2, c["pressureRange"] or r_p
+    basis_ = {"o2": "table" if c["o2Range"] else "record" if r_o2 else None,
+              "pressure": "table" if c["pressureRange"] else "record" if r_p else None}
+    if excerpt and "record" in basis_.values():
+        basis_["excerpt"] = excerpt
+    usable = not other and i not in runs.SKIP and any(rows for _, rows in tabs)
+    run_cols, run_rows = runs.build_table(tabs) if usable else ([], [])
     return {
         "id": i,
         "title": clean(src.get("Acronym")) or clean(src["Title"]),
@@ -139,12 +228,16 @@ def investigation(src):
         "fuelKind": KIND[i],
         "fuel": "Not stated" if other else fuel_text(tables.fuel_names(c["fuels"])),
         "sampleShape": "Not stated" if other else shape(c["fuels"] + c["samples"], KIND[i], bool(c["fuels"])),
-        "o2Range": c["o2Range"],
-        "pressureRange": c["pressureRange"],
+        "o2Range": o2_range,
+        "pressureRange": p_range,
         "airflowRange": c["airflowRange"],
         "measurements": tables.measurements(c["headers"]),
         "variables": c["variables"],
         "sourceIds": [f"psi:{i}"],
+        "conditionBasis": basis_,
+        "evidence": evidence(src),
+        "runs": {"path": f"runs/{i}.json", "rows": len(run_rows), "columns": [x["name"] for x in run_cols]} if usable else None,
+        "_runs": (run_cols, run_rows),
     }
 
 
@@ -153,12 +246,35 @@ def write(name, items):
     (OUT / name).write_text(json.dumps({"items": items}, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
+def write_runs(invs):
+    """Write public/data/runs/<id>.json and .csv; pops the private _runs key from each investigation."""
+    d = OUT / "runs"
+    d.mkdir(parents=True, exist_ok=True)
+    for old in d.glob("*"):
+        old.unlink()
+    total = 0
+    for inv in invs:
+        cols, rows = inv.pop("_runs")
+        if inv["runs"] is None:
+            continue
+        i = inv["id"]
+        (d / f"{i}.json").write_text(json.dumps({"source": f"psi:{i}", "columns": cols, "rows": rows},
+                                                ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        (d / f"{i}.csv").write_text(runs.to_csv(cols, rows), encoding="utf-8", newline="")
+    total = sum(f.stat().st_size for f in d.glob("*"))
+    assert total < RUNS_MAX, f"runs/ is {total} bytes"
+    print(f"runs/: {len(list(d.glob('*.json')))} files x2, {total} bytes")
+
+
 def main():
     srcs = {s["Accession"]: s for s in psi.search()}
     for i in psi.EXTRA_IDS:
         if i not in srcs and (s := psi.search_by_id(i)):
             srcs[i] = s
     invs = [investigation(srcs[i]) for i in sorted(srcs, key=lambda k: int(k.split("-")[1]))]
+    write_runs(invs)
+    for inv in invs:
+        inv["related"] = related(inv, srcs, invs)
     habs = [dict(zip(HAB_IDS, h)) for h in HABITATS]
     write("investigations.json", invs)
     write("habitats.json", habs)

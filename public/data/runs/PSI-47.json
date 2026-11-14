@@ -1,0 +1,46 @@
+{
+ "source": "psi:PSI-47",
+ "columns": [
+  {
+   "name": "session_name",
+   "unit": null,
+   "original": "Session Name"
+  },
+  {
+   "name": "actual_day",
+   "unit": null,
+   "original": "Actual Day"
+  },
+  {
+   "name": "hardware_description",
+   "unit": null,
+   "original": "Hardware Description"
+  },
+  {
+   "name": "sample_material",
+   "unit": null,
+   "original": "Sample Material"
+  },
+  {
+   "name": "sampled_location",
+   "unit": null,
+   "original": "Sampled Location"
+  }
+ ],
+ "rows": [
+  {
+   "session_name": "D1",
+   "actual_day": "GMT 54 (2005)",
+   "hardware_description": "Contained the modified P-Trak with Alcohol Wick and batteries",
+   "sample_material": "Arizona Road Dust (ARD Fine) in combination with ISS GN2 to create an aerosol for measurement purposes.",
+   "sampled_location": "Sampled air near Express rack 4"
+  },
+  {
+   "session_name": "D2",
+   "actual_day": "GMT 63 (2005)",
+   "hardware_description": "Contained DustTrak and batteries",
+   "sample_material": "Arizona Road Dust (ARD Fine) in combination with ISS GN2 to create an aerosol for measurement purposes.",
+   "sampled_location": "Sampled separated Velcro and the air near Port rack 6 and in Node 1"
+  }
+ ]
+}

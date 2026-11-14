@@ -1,0 +1,441 @@
+{
+ "source": "psi:PSI-22",
+ "columns": [
+  {
+   "name": "test_type",
+   "unit": null,
+   "original": "Test Type"
+  },
+  {
+   "name": "test_day",
+   "unit": null,
+   "original": "Test Day"
+  },
+  {
+   "name": "year",
+   "unit": null,
+   "original": "Year"
+  },
+  {
+   "name": "month",
+   "unit": null,
+   "original": "Month"
+  },
+  {
+   "name": "date",
+   "unit": null,
+   "original": "Date"
+  },
+  {
+   "name": "mesh_polarity",
+   "unit": null,
+   "original": "Mesh Polarity"
+  },
+  {
+   "name": "fuel_bottle",
+   "unit": null,
+   "original": "Fuel Bottle"
+  },
+  {
+   "name": "fuel_conc",
+   "unit": null,
+   "original": "Fuel Conc"
+  },
+  {
+   "name": "flames_ignited",
+   "unit": null,
+   "original": "Flames Ignited"
+  },
+  {
+   "name": "notes",
+   "unit": null,
+   "original": "Notes"
+  }
+ ],
+ "rows": [
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18073,
+   "year": 2018,
+   "month": 3,
+   "date": 14,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "100% CH4",
+   "fuel_conc": "100%",
+   "flames_ignited": 10,
+   "notes": "Test day is formatted YYDDD where YY identifies year and DDD identifies day of year (GMT)."
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18078,
+   "year": 2018,
+   "month": 3,
+   "date": 19,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "100% CH4",
+   "fuel_conc": "70%",
+   "flames_ignited": 10,
+   "notes": "Mesh polarity refers to the polarity of the high-voltage power supply and the copper electrode relative to the burner."
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "100%",
+   "flames_ignited": null,
+   "notes": "Fuel Conc. (diluted with nitrogen on a volume basis) was varied between tests, but typically matched the bottle. The list only accounts for flames ignited."
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18080,
+   "year": 2018,
+   "month": 3,
+   "date": 21,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "40% CH4",
+   "fuel_conc": "40%",
+   "flames_ignited": 8,
+   "notes": "Flames Ignited is the number ignited on that day (neglecting the day change on ISS)."
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18087,
+   "year": 2018,
+   "month": 3,
+   "date": 28,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "100% C2H4",
+   "fuel_conc": "80%",
+   "flames_ignited": 10,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "100%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18092,
+   "year": 2018,
+   "month": 4,
+   "date": 2,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "30% C2H4",
+   "fuel_conc": "30%",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18095,
+   "year": 2018,
+   "month": 4,
+   "date": 5,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "30% C2H4",
+   "fuel_conc": "30%",
+   "flames_ignited": 10,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18102,
+   "year": 2018,
+   "month": 4,
+   "date": 12,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "40% CH4",
+   "fuel_conc": "40%",
+   "flames_ignited": 8,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18106,
+   "year": 2018,
+   "month": 4,
+   "date": 16,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "40% CH4",
+   "fuel_conc": "40%",
+   "flames_ignited": 13,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18113,
+   "year": 2018,
+   "month": 4,
+   "date": 23,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "100% CH4",
+   "fuel_conc": "100%",
+   "flames_ignited": 15,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18130,
+   "year": 2018,
+   "month": 5,
+   "date": 10,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "100% CH4",
+   "fuel_conc": "70%",
+   "flames_ignited": 13,
+   "notes": null
+  },
+  {
+   "test_type": "First round of tests with coflow burner",
+   "test_day": 18137,
+   "year": 2018,
+   "month": 5,
+   "date": 17,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "100% C2H4",
+   "fuel_conc": "80%",
+   "flames_ignited": 12,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "100%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18269,
+   "year": 2018,
+   "month": 9,
+   "date": 26,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "40% CH4",
+   "fuel_conc": "40%",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18274,
+   "year": 2018,
+   "month": 10,
+   "date": 1,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "30% C2H4",
+   "fuel_conc": "30%",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18282,
+   "year": 2018,
+   "month": 10,
+   "date": 9,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "100% CH4",
+   "fuel_conc": "70%",
+   "flames_ignited": 13,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "100%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18285,
+   "year": 2018,
+   "month": 10,
+   "date": 12,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "100% C2H4",
+   "fuel_conc": "100%",
+   "flames_ignited": 10,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18290,
+   "year": 2018,
+   "month": 10,
+   "date": 17,
+   "mesh_polarity": "negative",
+   "fuel_bottle": "100% C2H4",
+   "fuel_conc": "80%",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18298,
+   "year": 2018,
+   "month": 10,
+   "date": 25,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "40% CH4",
+   "fuel_conc": "40%",
+   "flames_ignited": 9,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18302,
+   "year": 2018,
+   "month": 10,
+   "date": 29,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "30% C2H4",
+   "fuel_conc": "30%",
+   "flames_ignited": 10,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18312,
+   "year": 2018,
+   "month": 11,
+   "date": 8,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "100% CH4",
+   "fuel_conc": "70%",
+   "flames_ignited": 13,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "100%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18319,
+   "year": 2018,
+   "month": 11,
+   "date": 15,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "100% C2H4",
+   "fuel_conc": "25%",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "50%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "80%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "100%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": "Second round of tests with gas-jet burner",
+   "test_day": 18319,
+   "year": 2018,
+   "month": 11,
+   "date": 15,
+   "mesh_polarity": "positive",
+   "fuel_bottle": "100% C2H4",
+   "fuel_conc": "25%",
+   "flames_ignited": 11,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "50%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "80%",
+   "flames_ignited": null,
+   "notes": null
+  },
+  {
+   "test_type": null,
+   "test_day": null,
+   "year": null,
+   "month": null,
+   "date": null,
+   "mesh_polarity": null,
+   "fuel_bottle": null,
+   "fuel_conc": "100%",
+   "flames_ignited": null,
+   "notes": null
+  }
+ ]
+}
