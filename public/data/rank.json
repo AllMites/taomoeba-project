@@ -7,7 +7,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.478,
-      "score": 0.783,
+      "score": 0.854,
       "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -33,8 +33,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -53,7 +53,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.52,
-      "score": 0.789,
+      "score": 0.86,
       "rationale": "Strong oxygen match; partial link to fire safety.",
       "claimIds": [],
       "provenance": "measured",
@@ -79,8 +79,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -99,7 +99,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.52,
-      "score": 0.789,
+      "score": 0.86,
       "rationale": "Strong oxygen match; partial link to fire safety.",
       "claimIds": [],
       "provenance": "measured",
@@ -125,8 +125,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -145,8 +145,8 @@
       "overlap": 0.859,
       "dimsUsed": 2,
       "siRelevance": 0.535,
-      "score": 0.71,
-      "rationale": "Strong pressure match; partial link to fire safety.",
+      "score": 0.782,
+      "rationale": "Strong evidence type; partial link to fire safety.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -171,8 +171,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -191,7 +191,7 @@
       "overlap": 1,
       "dimsUsed": 1,
       "siRelevance": 0.403,
-      "score": 0.7,
+      "score": 0.772,
       "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -217,8 +217,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -237,7 +237,7 @@
       "overlap": 1,
       "dimsUsed": 1,
       "siRelevance": 0.46,
-      "score": 0.709,
+      "score": 0.78,
       "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -263,8 +263,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -283,7 +283,7 @@
       "overlap": 1,
       "dimsUsed": 1,
       "siRelevance": 0.46,
-      "score": 0.709,
+      "score": 0.78,
       "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -309,8 +309,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -329,7 +329,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.51,
-      "score": 0.43,
+      "score": 0.501,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -355,8 +355,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -375,8 +375,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.37,
-      "score": 0.481,
-      "rationale": "Partial link to fire safety; weak goal fit.",
+      "score": 0.553,
+      "rationale": "Strong evidence type; weak goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -401,8 +401,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -421,8 +421,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.415,
-      "score": 0.488,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.559,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -447,8 +447,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -467,8 +467,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.415,
-      "score": 0.488,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.559,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -493,8 +493,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -513,8 +513,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.395,
-      "score": 0.485,
-      "rationale": "Partial link to fire safety; weak goal fit.",
+      "score": 0.556,
+      "rationale": "Strong evidence type; weak goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -539,8 +539,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -559,8 +559,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.423,
-      "score": 0.489,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.56,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -585,8 +585,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -605,8 +605,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.48,
-      "score": 0.497,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.569,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -631,8 +631,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -651,8 +651,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.48,
-      "score": 0.497,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.569,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -677,8 +677,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -697,8 +697,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.48,
-      "score": 0.497,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.569,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -723,8 +723,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -743,7 +743,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.373,
-      "score": 0.768,
+      "score": 0.839,
       "rationale": "Strong oxygen match; weak goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -769,8 +769,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -789,7 +789,7 @@
       "overlap": 0.5,
       "dimsUsed": 2,
       "siRelevance": 0.37,
-      "score": 0.481,
+      "score": 0.553,
       "rationale": "Strong oxygen match; weak pressure match.",
       "claimIds": [],
       "provenance": "measured",
@@ -815,8 +815,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -835,7 +835,7 @@
       "overlap": 0.5,
       "dimsUsed": 2,
       "siRelevance": 0.37,
-      "score": 0.481,
+      "score": 0.553,
       "rationale": "Strong oxygen match; weak pressure match.",
       "claimIds": [],
       "provenance": "measured",
@@ -861,8 +861,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -881,8 +881,8 @@
       "overlap": 0,
       "dimsUsed": 2,
       "siRelevance": 0.385,
-      "score": 0.198,
-      "rationale": "Partial link to fire safety; weak oxygen match.",
+      "score": 0.269,
+      "rationale": "Strong evidence type; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -907,8 +907,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -927,7 +927,7 @@
       "overlap": 1,
       "dimsUsed": 1,
       "siRelevance": 0.688,
-      "score": 0.741,
+      "score": 0.813,
       "rationale": "Strong oxygen match; pressure is not on record.",
       "claimIds": [],
       "provenance": "measured",
@@ -953,8 +953,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -973,7 +973,7 @@
       "overlap": 0.093,
       "dimsUsed": 1,
       "siRelevance": 0.753,
-      "score": 0.491,
+      "score": 0.563,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -999,8 +999,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1019,7 +1019,7 @@
       "overlap": 0.093,
       "dimsUsed": 1,
       "siRelevance": 0.753,
-      "score": 0.491,
+      "score": 0.563,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -1045,8 +1045,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1065,7 +1065,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.763,
-      "score": 0.466,
+      "score": 0.538,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -1091,8 +1091,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1111,7 +1111,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.455,
-      "score": 0.565,
+      "score": 0.636,
       "rationale": "Strong link to fire safety; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1137,8 +1137,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1157,7 +1157,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.625,
-      "score": 0.589,
+      "score": 0.661,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1183,8 +1183,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1203,7 +1203,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.625,
-      "score": 0.589,
+      "score": 0.661,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1229,8 +1229,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1249,7 +1249,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.625,
-      "score": 0.589,
+      "score": 0.661,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1275,8 +1275,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1295,7 +1295,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.39,
-      "score": 0.77,
+      "score": 0.841,
       "rationale": "Strong oxygen match; weak goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -1321,8 +1321,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1341,7 +1341,7 @@
       "overlap": 0.5,
       "dimsUsed": 2,
       "siRelevance": 0.513,
-      "score": 0.502,
+      "score": 0.573,
       "rationale": "Strong pressure match; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -1367,8 +1367,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1387,7 +1387,7 @@
       "overlap": 0.5,
       "dimsUsed": 2,
       "siRelevance": 0.513,
-      "score": 0.502,
+      "score": 0.573,
       "rationale": "Strong pressure match; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -1413,8 +1413,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1433,8 +1433,8 @@
       "overlap": 0.477,
       "dimsUsed": 2,
       "siRelevance": 0.49,
-      "score": 0.485,
-      "rationale": "Strong pressure match; weak oxygen match.",
+      "score": 0.557,
+      "rationale": "Strong evidence type; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -1459,8 +1459,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1479,7 +1479,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.63,
-      "score": 0.59,
+      "score": 0.661,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1505,8 +1505,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1525,7 +1525,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.575,
-      "score": 0.582,
+      "score": 0.654,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1551,8 +1551,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1571,7 +1571,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.575,
-      "score": 0.582,
+      "score": 0.654,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1597,8 +1597,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1617,7 +1617,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.628,
-      "score": 0.59,
+      "score": 0.661,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -1643,8 +1643,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -1689,8 +1689,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -1735,8 +1735,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -1781,8 +1781,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -1827,8 +1827,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -1873,8 +1873,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -1919,8 +1919,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -1965,8 +1965,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -2011,8 +2011,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -2031,7 +2031,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.285,
-      "score": 0.826,
+      "score": 0.898,
       "rationale": "Strong oxygen match; weak goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -2057,8 +2057,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2077,7 +2077,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.385,
-      "score": 0.841,
+      "score": 0.912,
       "rationale": "Strong oxygen match; weak goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -2103,8 +2103,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2123,7 +2123,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.385,
-      "score": 0.841,
+      "score": 0.912,
       "rationale": "Strong oxygen match; weak goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -2149,8 +2149,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2169,7 +2169,7 @@
       "overlap": 0.458,
       "dimsUsed": 2,
       "siRelevance": 0.383,
-      "score": 0.531,
+      "score": 0.602,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2195,8 +2195,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2215,7 +2215,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.49,
-      "score": 0.856,
+      "score": 0.927,
       "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -2241,8 +2241,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2261,8 +2261,8 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.725,
-      "score": 0.889,
-      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "score": 0.961,
+      "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2287,8 +2287,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2307,8 +2307,8 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.725,
-      "score": 0.889,
-      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "score": 0.961,
+      "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2333,8 +2333,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2353,7 +2353,7 @@
       "overlap": 0.415,
       "dimsUsed": 2,
       "siRelevance": 0.63,
-      "score": 0.541,
+      "score": 0.613,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2379,8 +2379,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2399,7 +2399,7 @@
       "overlap": 0.9,
       "dimsUsed": 1,
       "siRelevance": 0.535,
-      "score": 0.691,
+      "score": 0.762,
       "rationale": "Strong link to fire safety; pressure is not on record.",
       "claimIds": [],
       "provenance": "measured",
@@ -2425,8 +2425,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2445,7 +2445,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.668,
-      "score": 0.453,
+      "score": 0.524,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2471,8 +2471,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2491,7 +2491,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.668,
-      "score": 0.453,
+      "score": 0.524,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2517,8 +2517,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2537,7 +2537,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.74,
-      "score": 0.463,
+      "score": 0.534,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2563,8 +2563,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2583,7 +2583,7 @@
       "overlap": 0.9,
       "dimsUsed": 1,
       "siRelevance": 0.51,
-      "score": 0.687,
+      "score": 0.759,
       "rationale": "Strong link to fire safety; pressure is not on record.",
       "claimIds": [],
       "provenance": "measured",
@@ -2609,8 +2609,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2629,7 +2629,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.705,
-      "score": 0.458,
+      "score": 0.529,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2655,8 +2655,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2675,7 +2675,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.705,
-      "score": 0.458,
+      "score": 0.529,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2701,8 +2701,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2721,7 +2721,7 @@
       "overlap": 0,
       "dimsUsed": 1,
       "siRelevance": 0.743,
-      "score": 0.463,
+      "score": 0.535,
       "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
@@ -2747,8 +2747,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2767,7 +2767,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.535,
-      "score": 0.576,
+      "score": 0.648,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -2793,8 +2793,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2813,7 +2813,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.668,
-      "score": 0.595,
+      "score": 0.667,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -2839,8 +2839,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2859,7 +2859,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.668,
-      "score": 0.595,
+      "score": 0.667,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -2885,8 +2885,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2905,7 +2905,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.74,
-      "score": 0.606,
+      "score": 0.677,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -2931,8 +2931,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2951,7 +2951,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.428,
-      "score": 0.561,
+      "score": 0.633,
       "rationale": "Strong link to fire safety; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -2977,8 +2977,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -2997,7 +2997,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.505,
-      "score": 0.572,
+      "score": 0.644,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -3023,8 +3023,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3043,7 +3043,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.505,
-      "score": 0.572,
+      "score": 0.644,
       "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -3069,8 +3069,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3089,7 +3089,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.395,
-      "score": 0.556,
+      "score": 0.628,
       "rationale": "Strong link to fire safety; weak goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -3115,8 +3115,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3135,7 +3135,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.348,
-      "score": 0.55,
+      "score": 0.621,
       "rationale": "Strong link to fire safety; weak goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -3161,8 +3161,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3181,7 +3181,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.458,
-      "score": 0.565,
+      "score": 0.637,
       "rationale": "Strong link to fire safety; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -3207,8 +3207,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3227,7 +3227,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.458,
-      "score": 0.565,
+      "score": 0.637,
       "rationale": "Strong link to fire safety; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -3253,8 +3253,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3273,7 +3273,7 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.4,
-      "score": 0.557,
+      "score": 0.629,
       "rationale": "Strong link to fire safety; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
@@ -3299,8 +3299,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3319,8 +3319,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.305,
-      "score": 0.472,
-      "rationale": "Partial link to fire safety; weak goal fit.",
+      "score": 0.544,
+      "rationale": "Strong evidence type; weak goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3345,8 +3345,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3365,8 +3365,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.443,
-      "score": 0.492,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.563,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3391,8 +3391,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3411,8 +3411,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.443,
-      "score": 0.492,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.563,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3437,8 +3437,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3457,8 +3457,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.41,
-      "score": 0.487,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.559,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3483,8 +3483,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3503,8 +3503,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.45,
-      "score": 0.493,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.564,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3529,8 +3529,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3549,8 +3549,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.507,
-      "score": 0.501,
-      "rationale": "Partial goal fit; partial link to fire safety.",
+      "score": 0.572,
+      "rationale": "Strong evidence type; partial link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3575,8 +3575,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3595,8 +3595,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.507,
-      "score": 0.501,
-      "rationale": "Partial goal fit; partial link to fire safety.",
+      "score": 0.572,
+      "rationale": "Strong evidence type; partial link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3621,8 +3621,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3641,8 +3641,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.48,
-      "score": 0.497,
-      "rationale": "Partial link to fire safety; partial goal fit.",
+      "score": 0.569,
+      "rationale": "Strong evidence type; partial goal fit.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3667,8 +3667,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3687,8 +3687,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.075,
-      "score": 0.368,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.439,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3713,8 +3713,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3733,8 +3733,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.093,
-      "score": 0.37,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.442,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3759,8 +3759,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3779,8 +3779,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.093,
-      "score": 0.37,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.442,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3805,8 +3805,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3825,8 +3825,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.073,
-      "score": 0.368,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.439,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3851,8 +3851,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -3897,8 +3897,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -3943,8 +3943,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -3989,8 +3989,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4035,8 +4035,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4081,8 +4081,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4127,8 +4127,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4173,8 +4173,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4219,8 +4219,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4265,8 +4265,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4311,8 +4311,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4357,8 +4357,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4403,8 +4403,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 0.5,
+          "reason": "Ground test or computer model."
         },
         {
           "key": "goalFit",
@@ -4423,7 +4423,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.498,
-      "score": 0.785,
+      "score": 0.857,
       "rationale": "Strong oxygen match; partial goal fit.",
       "claimIds": [],
       "provenance": "measured",
@@ -4449,8 +4449,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -4469,7 +4469,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.735,
-      "score": 0.819,
+      "score": 0.891,
       "rationale": "Strong oxygen match; partial link to fire safety.",
       "claimIds": [],
       "provenance": "measured",
@@ -4495,8 +4495,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -4515,7 +4515,7 @@
       "overlap": 1,
       "dimsUsed": 2,
       "siRelevance": 0.735,
-      "score": 0.819,
+      "score": 0.891,
       "rationale": "Strong oxygen match; partial link to fire safety.",
       "claimIds": [],
       "provenance": "measured",
@@ -4541,8 +4541,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -4561,8 +4561,8 @@
       "overlap": 0.862,
       "dimsUsed": 2,
       "siRelevance": 0.693,
-      "score": 0.734,
-      "rationale": "Strong pressure match; partial link to fire safety.",
+      "score": 0.806,
+      "rationale": "Strong evidence type; partial link to fire safety.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -4587,8 +4587,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -4607,8 +4607,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.065,
-      "score": 0.366,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.438,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4633,8 +4633,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -4653,8 +4653,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.065,
-      "score": 0.366,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.438,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4679,8 +4679,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -4699,8 +4699,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.065,
-      "score": 0.366,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.438,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4725,8 +4725,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
@@ -4745,8 +4745,8 @@
       "overlap": null,
       "dimsUsed": 0,
       "siRelevance": 0.053,
-      "score": 0.365,
-      "rationale": "Weak goal fit; weak link to fire safety.",
+      "score": 0.436,
+      "rationale": "Strong evidence type; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4771,8 +4771,8 @@
         {
           "key": "evidence",
           "label": "Flight or ground",
-          "value": null,
-          "reason": "Not stated."
+          "value": 1,
+          "reason": "Flown in microgravity."
         },
         {
           "key": "goalFit",
