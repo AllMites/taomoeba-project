@@ -1,7 +1,7 @@
 // Data facts: numbers computed by code from the team's data (public/data/facts.json, built by
 // scripts/rag/build_facts.py). The SI never writes these numbers; it only links papers to them.
 // find() matches a question to facts; ported from the measured Python version (facts.py).
-import { isScopeWord, terms } from "./checks.ts";
+import { inScope, isScopeWord, terms } from "./checks.ts";
 
 export type DataFact = {
   id: string;
@@ -86,6 +86,7 @@ export function findFacts(facts: DataFact[], question: string, k = 2): DataFact[
   if (q.some((w) => !(w in ix.idf) && isScopeWord(w))) return [];
   const scored: { s: number; f: DataFact }[] = [];
   const allowed = dashboardAllowed(question);
+  const scoped = inScope(question);
   ix.tf.forEach((m, i) => {
     if (!allowed(ix.facts[i])) return;
     const dl = [...m.values()].reduce((a, b) => a + b, 0);
@@ -95,7 +96,9 @@ export function findFacts(facts: DataFact[], question: string, k = 2): DataFact[
       if (c) s += ix.idf[w] * ((c * 2.2) / (c + 1.2 * (0.25 + (0.75 * dl) / ix.avg)));
     }
     const cov = q.filter((w) => m.has(w)).length / q.length;
-    if (s > 0 && cov >= MIN_COVERAGE) scored.push({ s, f: ix.facts[i] });
+    // A question with no fire-science word must match a fact completely ("What is dark matter?" shares only "matter");
+    // dashboard ranking questions ("Which experiment ranks highest for ISS?") keep the usual rule.
+    if (s > 0 && cov >= (scoped || isDashboard(ix.facts[i]) ? MIN_COVERAGE : 1)) scored.push({ s, f: ix.facts[i] });
   });
   const best = scored.sort((a, b) => b.s - a.s).slice(0, k).map((x) => x.f);
   // A ranking question answered by the dashboard gets ranking facts only, not a table fact that shares a word.

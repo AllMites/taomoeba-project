@@ -63,6 +63,23 @@ add("flex-runs", FLEX, "PSI-69",
     f"on {len(dates)} test dates from {dates[0]} to {dates[-1]}.",
     "FLEX runs droplets methanol heptane how many tests dates data size", "row counts of out/flex_clean.csv (ok_features)")
 
+def _n(col):
+    sub = [x for x in rows if num(x[col]) is not None]
+    return len(sub), len({x["group_date"] for x in sub})
+(nb, db), (ne, de) = _n("br"), _n("dext")
+nt = sum(1 for x in rows if x["end"]); dt = len({x["group_date"] for x in rows if x["end"]})
+add("flex-model-data", FLEX, "PSI-69",
+    f"The team models were trained on cleaned FLEX runs: {nb} runs with a burning rate ({db} test dates), {ne} with a flame "
+    f"extinction diameter ({de} dates) and {nt} with a recorded test end ({dt} dates).",
+    "how many runs rows data trained train training models model data set size FLEX used",
+    "row counts of out/flex_clean.csv with each value present (ok_features)",
+    "Runs missing a value are left out of that model only.")
+add("flex-br-unit", FLEX, "PSI-69",
+    "FLEX burning rates are burning-rate constants in mm2/s: the slope of droplet diameter squared against time, as NASA's "
+    "FLEX Detailed Results report (NASA/TP-2015-216046) gives them; the PSI table header shows only mm.",
+    "unit units burning rate mm2/s mm per second what measured meaning constant d2 law",
+    "unit checked against NASA/TP-2015-216046 (model package REPORT.md section 9)")
+
 bands = [(0.0, 0.18, "below 18%"), (0.18, 0.25, "18% to 25%"), (0.25, 1.01, "25% or more")]
 for fuel in ("Methanol", "Heptane"):
     sub = [x for x in rows if x["fuel"] == fuel and num(x["br"]) is not None]
