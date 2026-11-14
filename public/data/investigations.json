@@ -26,7 +26,6 @@
       ],
       "airflowRange": null,
       "measurements": [
-        "flame temperature",
         "fuel flow rate"
       ],
       "variables": [
@@ -308,7 +307,6 @@
       "pds": "Detection",
       "pdsBasis": "Tests particle counters for smoke detection in weightlessness.",
       "sensors": [
-        "camera",
         "particle counter"
       ],
       "objectives": "The focus of DAFT / DAFT-2 was to mitigate the risk for the Smoke Aerosol Measurement Experiment (SAME). SAME relied on a commercially available condensate nuclei counter, the TSI P-Trak, to quantify smoke aerosols in a microgravity environment, however there were concerns that th P-Trak would not be reliable in microgravity as it relies on gravity to recycle isopropyl alcohol used in the measurement process.",
@@ -459,8 +457,7 @@
         "burn time",
         "burning rate",
         "droplet diameter",
-        "extinction diameter",
-        "CO and CO2 levels"
+        "extinction diameter"
       ],
       "variables": [
         {
@@ -740,7 +737,7 @@
       "o2Range": null,
       "pressureRange": null,
       "airflowRange": [
-        0.28,
+        0.66,
         85.28
       ],
       "measurements": [
@@ -875,7 +872,6 @@
       "measurements": [
         "burn time",
         "burning rate",
-        "flame temperature",
         "burner temperature",
         "fuel flow rate"
       ],

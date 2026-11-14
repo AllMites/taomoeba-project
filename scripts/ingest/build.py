@@ -95,7 +95,9 @@ def hardware(src):
 
 
 def sensors(psi_id, src):
-    names = " ".join(f["key"].lower() for f in psi.walk(psi.file_tree(psi_id)["tree"]))
+    # a representative photo of the hardware is not evidence of an on-board camera
+    names = " ".join(f["key"].lower() for f in psi.walk(psi.file_tree(psi_id)["tree"])
+                     if f.get("sortingCategory") != "Representative Image(s)")
     text = " ".join([names, clean((src.get("Experiment Hardware") or {}).get("Name")).lower(),
                      clean(src.get("Approach")).lower()])
     found = [lab for lab, rx in SENSORS if re.search(rx, text)]

@@ -7,7 +7,8 @@ import csv
 import io
 import re
 
-NUM = re.compile(r"\d+(?:\.\d+)?|\.\d+")
+# Signed numbers. Not a digit glued to a letter ("O2", "C2H4") and not a "-" that joins a range ("10-20").
+NUM = re.compile(r"(?<![A-Za-z\d.])-?(?:\d+(?:\.\d+)?|\.\d+)")
 UNIT_KPA = {"atm": 101.325, "bar": 100.0, "mmhg": 0.133322, "torr": 0.133322, "kpa": 1.0, "psi": 6.894757}
 # varies:true needs a spread bigger than this (noise floor): 1 point O2, 5 kPa, 1 cm/s.
 TOL = {"oxygen": 1.0, "pressure": 5.0, "airflow": 1.0}
@@ -24,8 +25,11 @@ RE_DILUENT = re.compile(r"nitrogen|helium|^n2|^he\b|diluent|ambient gas", re.I)
 MEASURE = [  # (label, header regex)
     ("burn time", r"burn time"), ("burning rate", r"burn(ing)? ?rate"),
     ("droplet diameter", r"droplet.*diameter"), ("extinction diameter", r"extinction diameter"),
-    ("flame temperature", r"tad|flame temp"), ("burner temperature", r"burner t|peak burner"),
-    ("weight loss rate", r"weight loss"), ("CO and CO2 levels", r"\bco\b|co2 %|\(ppm\)|initial co|final co"),
+    # "Tad" is the computed adiabatic flame temperature, not a measurement; an initial ambient
+    # CO2 fraction is a test condition, not a measured level.
+    ("flame temperature", r"flame temp"), ("burner temperature", r"burner t|peak burner"),
+    ("weight loss rate", r"weight loss"),
+    ("CO and CO2 levels", r"\bco\b(?!.*ambient composition)|co2 %|\(ppm\)|initial co|final co"),
     ("ignition power and time", r"ignition (power|time)"), ("flame spread", r"spread"),
     ("smoke aging time", r"aging"), ("soot ratio", r"rt/r0"),
     ("fuel flow rate", r"fuel (rate|mfc)|mfuel|mtot|hc burnrate|mhc"),
@@ -93,7 +97,7 @@ def airflow_values(head, rows):
         for c in cells:
             if "cm/s" in c.lower() or "cm/s" in h.lower():
                 out += numbers(c)
-    return out
+    return [v for v in out if v >= 0]  # a negative air rate is a sensor offset, not a tested flow
 
 
 def text_values(head, rows, regex):

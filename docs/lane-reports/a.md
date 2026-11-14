@@ -16,7 +16,7 @@ Rerun (from `scripts/`, cache in `data/raw/`, network only on a cold cache):
 - Tables with no usable condition columns: PSI-21 and PSI-22 (fuel concentration only), PSI-26 BASS (6 columns, no O2/pressure; they sit only in a planned-matrix xlsx that was not read), PSI-106 (date and fuel), PSI-47, PSI-108, PSI-142, PSI-181.
 
 ## Method notes
-- Table values only. Pressure: atm/bar/mmHg/kPa converted to kPa. O2: fractions x100, "21; 26.5; 40" lists and "~30% and ~21%" text parsed; values over 100 dropped (spreadsheet artefacts). "final/after" columns skipped, initial ones used.
+- Table values only. Pressure: atm/bar/mmHg/kPa converted to kPa. O2: fractions x100, "21; 26.5; 40" lists and "~30% and ~21%" text parsed; values over 100 dropped (spreadsheet artefacts). Airflow: negative readings dropped (SPICE logs -5.92 and -0.28 cm/s, a sensor offset). "final/after" columns skipped, initial ones used.
 - `varies`: spread above 1 point O2, 5 kPa or 1 cm/s; fuel and diluent: more than one distinct label.
 - PSI-23 pressure [101.3, 101.3] comes from its Notes column ("~1 atm"), approximate (pressure rises as O2 drops).
 - Fuel names: spreadsheet auto-increment labels in PSI-21 (C2H10, CH5, C2H5 ...) are dropped by a chemistry check (stable hydrocarbon: even H count, at most 2C+2). Notes that landed in material columns are dropped.
