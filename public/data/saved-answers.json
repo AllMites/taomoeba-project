@@ -881,39 +881,138 @@
    }
   },
   {
-   "question": "How do measured burning rates compare with droplet combustion theory?",
+   "question": "Would a droplet burn faster on the Moon than on the ISS?",
    "result": {
-    "answer": "Models predict higher spread rates than observed, so need improvement. [nasa:glenn-bass]",
+    "answer": "FM2 investigates burning materials on the Moon at its 1/6 reduced gravity level. [nasa:glenn-fm2] Previous computational modeling and experiments suggest that materials may burn at lower oxygen concentrations in lunar gravity than on Earth. [nasa:glenn-fm2] FLEX burns small fuel droplets in microgravity, where the flame forms a roughly spherical shape around the droplet. [nasa:glenn-flex]",
     "claims": [
      {
       "id": "ask-1",
       "investigationId": "",
       "kind": "finding",
-      "text": "Models predict higher spread rates than observed, so need improvement.",
+      "text": "FM2 investigates burning materials on the Moon at its 1/6 reduced gravity level.",
       "sourceIds": [
-       "nasa:glenn-bass"
+       "nasa:glenn-fm2"
       ],
-      "excerpt": "Models predict higher spread rates than observed, so need improvement."
+      "excerpt": "Building on the success of the decades-long combustion science ground (1g) program and International Space Station (ISS) microgravity (~0g) combustion experiment campaigns, FM2 investigates burning materials on the Moon at its 1/6 reduced gravity level."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Previous computational modeling and experiments suggest that materials may burn at lower oxygen concentrations in lunar gravity than on Earth.",
+      "sourceIds": [
+       "nasa:glenn-fm2"
+      ],
+      "excerpt": "Previous computational modeling, bolstered by experiments aboard parabolicflight aircraft and the ISS, suggest that materials may burn at lower oxygen concentrations in lunar gravity compared to Earth."
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "FLEX burns small fuel droplets in microgravity, where the flame forms a roughly spherical shape around the droplet.",
+      "sourceIds": [
+       "nasa:glenn-flex"
+      ],
+      "excerpt": "In the absence of gravity, small droplets of fuel (i.e., from 2 mm to 4 mm in diameter) burn \"onedimensionally\" , which means the flame will be shaped a like ball about the size of a large olive that will be centered around the droplet."
      }
     ],
     "investigationIds": [],
     "mode": "live",
     "model": "claude-haiku-5-5",
     "steps": {
-     "searched": 59,
+     "searched": 84,
      "matched": 6,
-     "facts": 0,
+     "facts": 1,
      "reranked": 20,
-     "kept": 1,
+     "kept": 3,
      "dropped": 0,
-     "checked": 1
+     "checked": 3
     },
-    "summary": "The evidence only says that models predict higher spread rates than observed, so the models need improvement. In other words, measured burning was slower than the models forecast. It does not give measured burning rates for droplets or compare them in detail with droplet combustion theory, so I can't say more than that.",
+    "facts": [
+     {
+      "id": "physics-gravity-estimate",
+      "statement": "A textbook buoyancy estimate, not a measurement, says a 2 mm droplet in air at sea-level pressure would burn about 1.5 times as fast on Earth, 1.4 times on Mars and 1.3 times on the Moon as on the ISS; in Moon Base air (30% oxygen, 527.5 mmHg) the Moon factor is about 1.3.",
+      "dataset": "Team physics check",
+      "caveat": "No partial-gravity droplet data exists in PSI to check this against.",
+      "source": "team:model-report"
+     }
+    ],
+    "relations": {
+     "ask-1": "related",
+     "ask-2": "related",
+     "ask-3": "related"
+    },
+    "summary": "Yes, the evidence suggests a 2 mm droplet would burn faster on the Moon than on the ISS. A textbook buoyancy estimate gives a factor of about 1.3 for the Moon compared with the ISS. That figure is an estimate, not a measurement, and it applies to Moon Base air at 30% oxygen and 527.5 mmHg, which is not the same as the ISS air the comparison uses.",
     "sources": {
-     "nasa:glenn-bass": {
-      "title": "NASA Glenn experiment summary: Burning and Suppression of Solids (BASS)",
+     "nasa:glenn-fm2": {
+      "title": "NASA Glenn: Flammability of Materials on the Moon (FM2)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-of-materials-on-the-moon-fm2/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     },
+     "nasa:glenn-flex": {
+      "title": "NASA Glenn experiment summary: Flame Extinguishment Experiment (FLEX)",
       "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
       "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "How do measured burning rates compare with droplet combustion theory?",
+   "result": {
+    "answer": "The experimental burning-rate constants were obtained by linear least-square fitting of the droplet diameter squared versus time curves. [ntrs:20130014061]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "PSI-69",
+      "kind": "finding",
+      "text": "The experimental burning-rate constants were obtained by linear least-square fitting of the droplet diameter squared versus time curves.",
+      "sourceIds": [
+       "ntrs:20130014061"
+      ],
+      "excerpt": "The experimental Kex values were obtained by linear least-square fitting of the D2-versus-time curves.",
+      "verdict": "supports"
+     }
+    ],
+    "investigationIds": [
+     "PSI-69"
+    ],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 84,
+     "matched": 6,
+     "facts": 2,
+     "reranked": 20,
+     "kept": 1,
+     "dropped": 3,
+     "checked": 1
+    },
+    "facts": [
+     {
+      "id": "physics-textbook-gap",
+      "statement": "FLEX droplets burn well below the textbook (classical droplet-combustion theory) burning rate: the median run reaches about 0.67 of the textbook value for methanol and 0.35 for heptane (257 runs).",
+      "dataset": "Team physics check",
+      "caveat": "The textbook formula leaves out radiation heat loss, soot and unsteady effects, and the team's gas property values are rough: trust the direction and rough size, not the exact ratios.",
+      "source": "team:model-report"
+     },
+     {
+      "id": "flex-br-unit",
+      "statement": "FLEX burning rates are burning-rate constants in mm2/s: the slope of droplet diameter squared against time, as NASA's FLEX Detailed Results report (NASA/TP-2015-216046) gives them; the PSI table header shows only mm.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     }
+    ],
+    "relations": {
+     "ask-1": "explains"
+    },
+    "summary": "Measured burning rates in the FLEX experiments fell well short of droplet combustion theory. The median run reached about 0.67 of the textbook value for methanol and about 0.35 for heptane, across 257 runs. The evidence covers droplets burning in the FLEX tests, not any particular habitat's air or gravity.",
+    "sources": {
+     "ntrs:20130014061": {
+      "title": "Methanol Droplet Combustion in Oxygen-Inert Environments in Microgravity",
+      "url": "https://ntrs.nasa.gov/citations/20130014061",
+      "license": "NTRS: public use permitted (short quotes only)"
      }
     }
    }
