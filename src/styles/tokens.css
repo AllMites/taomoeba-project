@@ -27,6 +27,11 @@
  *   --color-glow            soft glow colour of the one focal visual per screen (= flame, decorative)
  *   --color-badge-bg / -text  "sample data" badge, alerts
  *   --color-pill / --color-pill-text  primary pill button: off-white fill, dark mono capitals
+ * COLOUR - the flame sphere (decorative drawing only; never text or a mark that carries meaning)
+ *   --sphere-core           blue core of the flame
+ *   --sphere-warm           coral edge
+ *   --sphere-hot            amber rim
+ *   --porthole-sky          the glass inside the porthole frame
  * COLOUR - meters (oxygen and pressure bars)
  *   --color-meter-track     empty bar (= depth)
  *   --color-meter-fill      a plain amount on a bar (= accent)
@@ -78,6 +83,11 @@
   --color-badge-text: #ffd9a0;
   --color-pill: #f0efec;
   --color-pill-text: #15171c;
+
+  --sphere-core: #5b9dff;
+  --sphere-warm: #ff8a73;
+  --sphere-hot: #ffbb5c;
+  --porthole-sky: radial-gradient(120% 90% at 72% 42%, var(--color-depth) 0%, #061a30 42%, var(--color-bg) 100%);
 
   --color-meter-track: var(--color-depth);
   --color-meter-fill: var(--color-accent);
@@ -155,6 +165,11 @@
     --color-badge-text: #5a2c08;
     --color-pill: #15171c;
     --color-pill-text: #f0efec;
+
+    --sphere-core: #3d7fe0;
+    --sphere-warm: #ff7a5c;
+    --sphere-hot: #f2a33a;
+    --porthole-sky: radial-gradient(120% 90% at 72% 42%, #ffffff 0%, #e2e8ec 45%, var(--color-depth) 100%);
 
     --material-bg: rgb(235 230 218 / 0.8);
     --porthole-edge: rgb(255 255 255 / 0.85);

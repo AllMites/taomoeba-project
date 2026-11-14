@@ -1,81 +1,190 @@
-/* Page shell: hero, picker, sticky bar, column layout, limits, footer. Colours come from tokens only. */
+/* Page shell: hero porthole, picker, sticky bar, column layout, limits, footer. Colours come from tokens only. */
+
+/* The two sphere properties are registered so a habitat change can transition them. */
+@property --flame-size { syntax: "<number>"; inherits: true; initial-value: 1; }
+@property --flame-glow { syntax: "<number>"; inherits: true; initial-value: 0; }
 
 .hero {
+  --sphere-base: min(26rem, 64vw);
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-5) var(--space-4) 0;
+  transition: --flame-size var(--motion-mid) var(--ease), --flame-glow var(--motion-mid) var(--ease);
+}
+
+/* ---- Porthole: thick raised frame, inner light edge, deep inset shadow ---- */
+.porthole {
+  width: 100%;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: clamp(10px, 1.5vw, 20px);
+  background: var(--color-surface-2);
+  border-radius: var(--radius-3);
+  box-shadow: inset 0 1px 0 var(--porthole-edge);
+}
+.porthole-glass {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-6);
+  min-height: clamp(20rem, 50vh, 28rem);
+  padding: clamp(1.5rem, 4.5vw, 4.5rem);
+  border-radius: calc(var(--radius-3) - clamp(6px, 1vw, 12px));
+  background: var(--porthole-sky);
+}
+/* The glass: inset shadow and light edge painted over the scene, under the words. */
+.porthole-glass::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  box-shadow: var(--shadow-porthole);
+  pointer-events: none;
+}
+.porthole-slot { position: absolute; inset: 0; z-index: 0; }
+.porthole-slot > img, .porthole-slot > picture > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.hero-copy { position: relative; z-index: 3; display: flex; flex-direction: column; gap: var(--space-5); min-width: 0; container-type: inline-size; }
+/* "FREEFALL" set wide is about 7em, so the size follows the column: two lines, never a broken word. */
+.brand { font-size: clamp(2rem, 13.5cqi, 6.5rem); line-height: 0.95; overflow-wrap: normal; }
+.brand-line { display: block; }
+.lede { font-size: clamp(1.25rem, 1rem + 0.9vw, 1.75rem); max-width: 26ch; color: var(--color-text); }
+
+/* ---- Stage: the flame sphere, its leader line and the readout ---- */
+.hero-stage {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 26rem;
+  justify-self: center;
+  --leader-x: 64%;
+  --leader-len: clamp(2.5rem, 6vw, 5.5rem);
+}
+.sphere-drift { position: absolute; inset: 0; display: grid; place-items: center; }
+/* A flame in microgravity is round: blue core, warm edge. Tighter and brighter at 30% oxygen. */
+.sphere {
+  position: relative;
+  width: 78%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  scale: var(--flame-size);
+  background: radial-gradient(
+    circle closest-side,
+    color-mix(in srgb, var(--sphere-core) 55%, white) 0%,
+    var(--sphere-core) 22%,
+    color-mix(in srgb, var(--sphere-core) 45%, transparent) 50%,
+    color-mix(in srgb, var(--sphere-warm) 45%, transparent) 70%,
+    var(--sphere-warm) 84%,
+    var(--sphere-hot) 92%,
+    transparent 100%
+  );
+  filter: blur(calc(1.5px + (1 - var(--flame-glow)) * 6px)) brightness(calc(0.82 + var(--flame-glow) * 0.3));
+  opacity: calc(0.78 + var(--flame-glow) * 0.22);
+}
+/* Halo: wider and dimmer at sea-level air, tight and hot at 30%. */
+.sphere::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle closest-side, color-mix(in srgb, var(--sphere-hot) 40%, transparent) 55%, transparent 100%);
+  opacity: calc(0.35 + var(--flame-glow) * 0.45);
+  z-index: -1;
+}
+/* One leader line, at 45 degrees from the sphere's lower right edge to the readout. */
+.leader {
+  position: absolute;
+  left: var(--leader-x);
+  top: var(--leader-x);
+  width: var(--leader-len);
+  height: 1px;
+  background: var(--color-text);
+  rotate: 45deg;
+  transform-origin: 0 50%;
+  opacity: 0.85;
+}
+.leader::before {
+  content: "";
+  position: absolute;
+  left: -3.5px;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-text);
+}
+.readout {
+  position: absolute;
+  left: calc(var(--leader-x) + var(--leader-len) * 0.7071);
+  top: calc(var(--leader-x) + var(--leader-len) * 0.7071);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: var(--space-4);
-  padding: var(--space-7) var(--space-4) var(--space-6);
+  gap: 2px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-1);
+  background: var(--material-bg);
+  color: var(--color-text);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  z-index: 3;
 }
-.brand { font-size: var(--text-3xl); font-weight: 750; letter-spacing: -0.02em; }
-.lede { font-size: var(--text-lg); color: var(--color-text-muted); max-width: 34rem; }
+.readout b { font-weight: 700; font-size: 0.875rem; color: var(--color-accent); }
+.readout-name { color: var(--color-text-muted); }
 
-/* The one focal point: a round flame. In microgravity a flame is a sphere, not a teardrop. */
-.glow {
-  position: absolute;
-  z-index: -1;
-  top: -6rem;
-  left: 50%;
-  width: min(34rem, 120vw);
-  aspect-ratio: 1;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--color-glow) 0%, transparent 62%);
-  opacity: 0.4;
-  filter: blur(8px);
-  animation: pulse calc(var(--motion-slow) * 9) ease-in-out infinite alternate;
-}
-@keyframes pulse { from { opacity: 0.3; scale: 0.94; } to { opacity: 0.45; scale: 1.04; } }
-
-.picker { border: 0; margin: var(--space-4) 0 0; padding: 0; min-width: 0; width: 100%; max-width: 60rem; text-align: left; }
+/* ---- Habitat picker: three choice cards ---- */
+.picker { border: 0; margin: 0 auto; padding: 0; min-width: 0; width: 100%; max-width: 76rem; }
 .picker legend {
   display: block;
-  width: 100%;
   padding: 0;
   margin-bottom: var(--space-3);
-  text-align: center;
-  font-size: var(--text-sm);
-  font-weight: 650;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--color-accent);
 }
 .choices { display: grid; gap: var(--space-3); grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.picker-wait { min-height: 14rem; }
+.picker-wait { min-height: 11rem; }
 
 .choice {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  min-height: 15rem;
-  padding: var(--space-4);
+  padding: var(--space-4) var(--space-5) var(--space-5);
   background: var(--color-surface);
-  border: 2px solid var(--color-border);
-  border-radius: var(--radius-3);
-  box-shadow: var(--shadow-1);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-2);
   cursor: pointer;
-  transition: border-color var(--motion-fast), background var(--motion-fast);
+  transition: border-color var(--motion-fast) var(--ease), background-color var(--motion-fast) var(--ease), box-shadow var(--motion-fast) var(--ease);
 }
-.choice:hover { border-color: var(--color-edge); }
+.choice:hover { border-color: var(--color-accent); }
 .choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-.choice:has(input:checked) { border-color: var(--color-highlight); background: var(--color-highlight-bg); }
-.choice:has(input:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 3px; }
-.choice-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); min-height: 1.75rem; }
-.choice-name { font-size: var(--text-xl); font-weight: 700; font-family: var(--font-display); }
-.choice-check { font-size: var(--text-sm); font-weight: 700; color: var(--color-accent); white-space: nowrap; visibility: hidden; }
+.choice:has(input:checked) { border-color: var(--color-highlight); background: var(--color-highlight-bg); box-shadow: 0 0 0 2px var(--color-highlight); }
+.choice:has(input:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 4px; }
+.choice-top { display: flex; align-items: center; gap: var(--space-3); min-height: 1.75rem; }
+.choice-dot {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-border-strong);
+  transition: background-color var(--motion-fast) var(--ease), border-color var(--motion-fast) var(--ease);
+}
+.choice:has(input:checked) .choice-dot { background: var(--color-accent); border-color: var(--color-accent); box-shadow: inset 0 0 0 2px var(--color-highlight-bg); }
+.choice-name { flex: 1 1 auto; min-width: 0; font-size: var(--text-lg); }
+.choice-check { color: var(--color-accent); white-space: nowrap; visibility: hidden; }
 .choice:has(input:checked) .choice-check { visibility: visible; }
-.choice-stat { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--text-sm); }
-.choice-stat b { font-size: var(--text-base); }
-.bar { display: block; height: 6px; border-radius: 3px; background: var(--color-meter-track); overflow: hidden; }
-.bar > span { display: block; height: 100%; background: var(--color-meter-fill); border-radius: 3px; }
-.choice-note { margin-top: auto; font-size: var(--text-sm); color: var(--color-text-muted); }
+.choice-stat { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); color: var(--color-text-muted); }
+.choice-stat b { color: var(--color-text); font-weight: 700; }
+.choice-note { color: var(--color-text-muted); font-size: var(--text-sm); }
 
-/* Sticky bar: fixed, so it never moves the page. */
+/* ---- Sticky bar: fixed, so it never moves the page. Blurred material, solid fallback. ---- */
 .sticky {
   position: fixed;
   top: 0;
@@ -87,34 +196,40 @@
   justify-content: center;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-4);
-  background: var(--color-surface);
+  background: var(--color-surface-2);
   border-bottom: 1px solid var(--color-border);
-  box-shadow: var(--shadow-2);
-  font-size: var(--text-sm);
 }
-.sticky label { font-weight: 650; color: var(--color-text-muted); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sticky {
+    background: var(--material-bg);
+    -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.2);
+    backdrop-filter: blur(var(--material-blur)) saturate(1.2);
+  }
+}
+.sticky label { color: var(--color-text-muted); }
 .sticky select {
   font: inherit;
+  font-weight: 600;
   color: var(--color-text);
-  background: var(--color-surface-2);
-  border: 1px solid var(--color-edge);
-  border-radius: var(--radius-1);
-  padding: var(--space-1) var(--space-3);
-  min-height: 2.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-4);
+  min-height: 2.5rem;
 }
 
 main {
   display: flex;
   flex-direction: column;
-  gap: var(--space-7);
-  max-width: 60rem;
+  gap: var(--section-gap);
+  max-width: 76rem;
   margin: 0 auto;
-  padding: var(--space-6) var(--space-4) var(--space-7);
+  padding: var(--section-gap) var(--space-4) var(--section-gap);
 }
-main > * { min-width: 0; }
+main > * { min-width: 0; margin-block: 0; }
 
-/* Limits strip */
-.limits h2 { font-size: var(--text-2xl); margin-bottom: var(--space-4); }
+/* ---- Limits strip ---- */
+.limits .sec-h { margin-bottom: var(--space-5); }
 .limit-cards {
   list-style: none;
   margin: 0;
@@ -127,25 +242,23 @@ main > * { min-width: 0; }
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4);
+  padding: var(--space-5);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-2);
-  box-shadow: var(--shadow-1);
 }
-.limit-n { font-size: var(--text-2xl); font-weight: 750; font-family: var(--font-display); color: var(--color-accent); }
+.limit-n { font-size: var(--text-xl); color: var(--color-accent); }
 .limit-t { font-weight: 600; }
 .dots { display: flex; flex-wrap: wrap; gap: 4px; margin: var(--space-1) 0; }
-.dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--color-edge); }
+.dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--color-border-strong); }
 .dot.on { background: var(--color-accent); border-color: var(--color-accent); }
-.limit-note { margin-top: var(--space-4); max-width: 42rem; color: var(--color-text-muted); }
+.limit-note { margin-top: var(--space-5); max-width: 42rem; color: var(--color-text-muted); }
 
 .foot {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2) var(--space-4);
-  max-width: 60rem;
+  max-width: 76rem;
   margin: 0 auto;
   padding: var(--space-5) var(--space-4) var(--space-6);
   border-top: 1px solid var(--color-border);
@@ -154,6 +267,11 @@ main > * { min-width: 0; }
 
 @media (max-width: 52rem) {
   .choices { grid-template-columns: 1fr; }
-  .choice { min-height: 0; }
-  .hero { padding-top: var(--space-6); }
+  .porthole-glass { grid-template-columns: 1fr; gap: var(--space-2); min-height: 0; }
+  .hero-stage { max-width: 19rem; width: 88%; justify-self: start; }
+}
+@media (max-width: 30rem) {
+  .hero { padding-inline: var(--space-3); }
+  .hero-stage { width: 80%; }
+  .hero-stage { --leader-len: 1.75rem; }
 }
