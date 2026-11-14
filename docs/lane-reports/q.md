@@ -34,7 +34,7 @@ No missing tokens. Used `--color-bg/surface/border/text/text-muted/accent/accent
 
 ## Verified (what I ran)
 
-- `npm run gate`: green (tsc; vitest 66 passed 1 skipped before the new files, 13 more in the two new test files pass; vite build; pytest 67 passed 9 skipped).
+- `npm run gate`: green (tsc; vitest 66 passed 1 skipped across 6 files, including the 13 new tests in my two test files; vite build; pytest 67 passed 9 skipped).
 - New tests: `src/brief/brief.test.ts` (ordering per habitat with real claims, unknown slugs last, two counts, no count, single-experiment test) and `src/ask/respond.test.ts` (live, extractive, mock, no-cover, 429, 400 too long, 400 other, 500, network failure, HTML reply with 200 and 404, wrong-shape JSON, readable text).
 - `npm run build` then `npx wrangler dev --port 8788` (mock, no keys, no `.env` read): in the built-in browser I ran the example "Why does smoke detection matter on a spacecraft?" and got a mock answer with the "Sample answer, the live service is off" label and a source disclosure.
 - Extractive reply with `investigationIds`: wrangler is pinned to mock, so I replaced `window.fetch` in the page with a canned extractive JSON reply, typed a question and pressed Enter at 375 wide. Saw the label, the two quotes, "2 experiments light up below", two sources with excerpts, two "See experiment" buttons, and a Clear button. This proves the UI path only, not the live server's output.
