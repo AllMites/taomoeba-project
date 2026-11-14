@@ -76,7 +76,7 @@ for fuel in ("Methanol", "Heptane"):
         f"In the FLEX table, the mean burning rate of {fuel.lower()} droplets is " + ", ".join(parts) +
         f"; rank correlation between oxygen fraction and burning rate is {r(rho)}.",
         f"burning rate oxygen O2 {fuel} droplet FLEX increase rise faster", "binned means and Spearman correlation over runs with a burning rate",
-        "Burning-rate unit is not verified (the table header says mm); other conditions (pressure, diluent, droplet size) also vary.")
+        "Burning rate is the burning-rate constant in mm2/s (NASA's FLEX Detailed Results report; the PSI table header says only mm); other conditions (pressure, diluent, droplet size) also vary.")
 
 for fuel in ("Methanol", "Heptane"):
     sub = [x for x in rows if x["fuel"] == fuel and num(x["dext"]) is not None]
@@ -161,7 +161,7 @@ try:
             "tested range only) and CatBoost for whether a gas flame self-extinguishes; the other models are kept for comparison only.",
             "which model recommended use ship burning rate extinction diameter self-extinguish team models", "verdict table, REPORT.md section 1")
     add("model-br-accuracy", TEAM, "x3:report",
-        "For FLEX burning rate, the linear Ridge model has error (RMSE) 0.074 against 0.082 for CatBoost and 0.138 for always guessing the mean.",
+        "For FLEX burning rate (in mm2/s), the linear Ridge model has error (RMSE) 0.074 against 0.082 for CatBoost and 0.138 for always guessing the mean.",
         "burning rate model accuracy error RMSE Ridge CatBoost how good", "grouped cross-validation, REPORT.md section 1")
     add("model-dext-accuracy", TEAM, "x3:report",
         "For flame extinction diameter, CatBoost has error (RMSE) 0.497 mm against 0.566 mm for Ridge and 1.037 mm for always guessing the mean.",
@@ -198,7 +198,7 @@ for fuel, d in pd_.items():
         f"{r(hi['ridge'])} at {int(round(hi['o2'] * 100))}% oxygen (sea-level pressure, droplet {r(d['d0_used'])} mm); CatBoost gives "
         f"{r(lo['catboost'])} to {r(hi['catboost'])}.",
         f"model predict prediction burning rate oxygen O2 {fuel} trend rise partial dependence", "partial dependence, all other inputs fixed",
-        "Above about 28% oxygen the two models diverge; burning-rate unit not verified.")
+        "Above about 28% oxygen the two models diverge. Burning rate is in mm2/s (burning-rate constant).")
 
 if ref:
     e, dz, hi, mp = ref["ext_diameter_v2"], ref["disruption"], ref["high_o2_runs"], ref["moon_point"]

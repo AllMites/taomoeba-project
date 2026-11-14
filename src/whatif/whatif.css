@@ -1,0 +1,72 @@
+/* What-if tool: team model predictions. Colours come from tokens only. */
+.whatif {
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+}
+.whatif-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
+.whatif-grid { display: grid; gap: var(--space-6); grid-template-columns: minmax(15rem, 1fr) minmax(0, 2fr); align-items: start; }
+@media (max-width: 52rem) { .whatif-grid { grid-template-columns: 1fr; } }
+
+.whatif-controls { display: grid; gap: var(--space-4); }
+.whatif-seg { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.whatif-seg legend { font-weight: 600; margin-bottom: var(--space-2); padding: 0; }
+.whatif-seg label { position: relative; }
+.whatif-seg input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.whatif-seg span {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-full, 999px);
+  min-height: 2.75rem;
+  line-height: 1.6;
+}
+.whatif-seg input:checked + span { background: var(--color-pill); color: var(--color-pill-text); border-color: var(--color-pill); }
+.whatif-seg input:focus-visible + span { outline: 3px solid var(--color-focus); outline-offset: 2px; }
+
+.whatif-field { display: grid; gap: var(--space-2); }
+.whatif-field > span { font-weight: 600; display: flex; justify-content: space-between; gap: var(--space-3); }
+.whatif-field b { color: var(--color-accent); font-weight: 600; }
+.whatif-field select {
+  font: inherit;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-1);
+  padding: var(--space-2) var(--space-3);
+  min-height: 2.75rem;
+}
+.whatif-field input[type="range"] { width: 100%; accent-color: var(--color-accent); min-height: 2.75rem; }
+.whatif-habitat { margin: 0; }
+
+.whatif-support { margin: 0 0 var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-1); font-weight: 600; border-left: 3px solid; }
+.whatif-support-good { border-color: var(--color-match); background: var(--color-bg); }
+.whatif-support-sparse { border-color: var(--color-accent); background: var(--color-highlight-bg); }
+.whatif-support-out { border-color: var(--color-flame); background: var(--color-badge-bg); color: var(--color-badge-text); }
+
+.whatif-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.whatif-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-1);
+  min-width: 0;
+}
+.whatif-label { font-weight: 600; }
+.whatif-value { font-size: var(--text-xl); line-height: 1.1; }
+.whatif-value small { font-size: var(--text-sm); color: var(--color-text-muted); }
+.whatif-card .muted { font-size: var(--text-sm); }
+.whatif-warn { font-size: var(--text-sm); font-weight: 600; color: var(--color-badge-text); background: var(--color-badge-bg); padding: var(--space-2) var(--space-3); border-radius: var(--radius-1); }
+
+.whatif-trend { width: 100%; height: auto; margin-top: var(--space-1); }
+.whatif-trend-line { fill: none; stroke: var(--color-accent); stroke-width: 2; }
+.whatif-trend-typical { stroke: var(--color-border-strong); stroke-width: 1; stroke-dasharray: 3 3; }
+.whatif-trend-dot { fill: var(--color-flame); }
+.whatif-trend-axis { fill: var(--color-text-muted); font-size: 9px; font-family: var(--font-mono); }
+
+.whatif-foot { margin: var(--space-4) 0 0; font-size: var(--text-sm); max-width: 70ch; }
+.whatif-dim { color: var(--color-text-muted); text-decoration: line-through; text-decoration-thickness: 2px; }
