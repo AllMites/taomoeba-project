@@ -6,6 +6,7 @@ import { pickerHabitats } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import Evidence from "../evidence/index.tsx";
 import Ranking from "../ranking/index.tsx";
+import WhatIf from "../whatif/index.tsx";
 import Stage from "../scenes/Stage.tsx";
 import "./app.css";
 import { FLAME_O2, flameVars } from "./flame.ts";
@@ -172,7 +173,7 @@ function StickyBar({ habitats }: { habitats: HabitatPreset[] }) {
   );
 }
 
-// One page, top to bottom: hero + habitat picker, ask box, habitat brief, ranked experiments, limits.
+// One page, top to bottom: hero + habitat picker, ask box, habitat brief, ranked experiments, model what-ifs, limits.
 // Evidence is the detail drawer; it shows itself when the store has a selected investigation.
 export default function App() {
   const habitats = useDataset("habitats");
@@ -214,6 +215,7 @@ export default function App() {
         <Brief />
         <Stage />
         <Ranking />
+        <WhatIf />
         <aside className="limits" aria-labelledby="limits-h">
           <h2 id="limits-h" className="sec-h">What this data cannot tell you</h2>
           {limits && (

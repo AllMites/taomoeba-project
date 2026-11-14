@@ -38,7 +38,7 @@
   ],
   "keywords": "burning rate oxygen O2 Methanol droplet FLEX increase rise faster",
   "method": "binned means and Spearman correlation over runs with a burning rate",
-  "caveat": "Burning-rate unit is not verified (the table header says mm); other conditions (pressure, diluent, droplet size) also vary."
+  "caveat": "Burning rate is the burning-rate constant in mm2/s (NASA's FLEX Detailed Results report; the PSI table header says only mm); other conditions (pressure, diluent, droplet size) also vary."
  },
  {
   "id": "flex-br-o2-heptane",
@@ -58,7 +58,7 @@
   ],
   "keywords": "burning rate oxygen O2 Heptane droplet FLEX increase rise faster",
   "method": "binned means and Spearman correlation over runs with a burning rate",
-  "caveat": "Burning-rate unit is not verified (the table header says mm); other conditions (pressure, diluent, droplet size) also vary."
+  "caveat": "Burning rate is the burning-rate constant in mm2/s (NASA's FLEX Detailed Results report; the PSI table header says only mm); other conditions (pressure, diluent, droplet size) also vary."
  },
  {
   "id": "flex-dext-d0-methanol",
@@ -231,7 +231,7 @@
   "id": "model-br-accuracy",
   "dataset": "Team model results",
   "source": "team:model-report",
-  "statement": "For FLEX burning rate, the linear Ridge model has error (RMSE) 0.074 against 0.082 for CatBoost and 0.138 for always guessing the mean.",
+  "statement": "For FLEX burning rate (in mm2/s), the linear Ridge model has error (RMSE) 0.074 against 0.082 for CatBoost and 0.138 for always guessing the mean.",
   "numbers": [
    "0.074",
    "0.082",
@@ -342,7 +342,7 @@
   ],
   "keywords": "model predict prediction burning rate oxygen O2 Methanol trend rise partial dependence",
   "method": "partial dependence, all other inputs fixed",
-  "caveat": "Above about 28% oxygen the two models diverge; burning-rate unit not verified."
+  "caveat": "Above about 28% oxygen the two models diverge. Burning rate is in mm2/s (burning-rate constant)."
  },
  {
   "id": "model-pd-br-o2-heptane",
@@ -360,7 +360,7 @@
   ],
   "keywords": "model predict prediction burning rate oxygen O2 Heptane trend rise partial dependence",
   "method": "partial dependence, all other inputs fixed",
-  "caveat": "Above about 28% oxygen the two models diverge; burning-rate unit not verified."
+  "caveat": "Above about 28% oxygen the two models diverge. Burning rate is in mm2/s (burning-rate constant)."
  },
  {
   "id": "model-dext-refined",
