@@ -250,6 +250,14 @@ REJECTED = {  # id -> (rejected text, reason)
                                    "gas-delivery line; the objective says 0.25 to 5 atm, so 'below habitat pressure' misleads"),
     "clm:PSI-60:rationale:iss": ("PSI states its results support safer fire detection and suppression for long-duration space missions, which includes the ISS (about 21% oxygen at 101.3 kPa).",
                                  "generic benefit statement with the habitat condition appended"),
+    "clm:PSI-25:rationale:iss": ("PSI investigation BASS-II varied oxygen below 21% by adding nitrogen, so its tests stayed at or under the ISS's roughly 21% oxygen level.",
+                                 "excerpt says 'below 21%' but Lane A's table has BASS-II up to 22.2%; the brief states the table's range"),
+    "clm:PSI-68:rationale:iss": ("PSI reports FLEX-2 atmospheres spanned 0.1 to 0.4 mole fraction oxygen and 0.5 to 3.0 atm, covering ISS's 21% oxygen and 1 atm.",
+                                 "facility envelope called 'covering'; Lane A's tested oxygen is 17 to 30%"),
+    "clm:PSI-68:rationale:moon": ("PSI reports FLEX-2 tested 0.1 to 0.4 mole fraction oxygen and 0.5 to 3.0 atm, covering Moon Base's 30% oxygen and 70.3 kPa (0.69 atm).",
+                                  "facility envelope called 'tested'/'covering'; Lane A's tested oxygen is 17 to 30%"),
+    "clm:PSI-68:rationale:rover": ("PSI reports FLEX-2 tested 0.1 to 0.4 mole fraction oxygen and 0.5 to 3.0 atm, covering the rover's 30% oxygen and 70.3 kPa (0.69 atm).",
+                                   "facility envelope called 'tested'/'covering'; Lane A's tested oxygen is 17 to 30%"),
     "clm:PSI-98:rationale:moon": ("PSI says fire behavior differs greatly between normal and reduced gravity, so Earth fire standards carry uncertainty, and PSI holds no Moon gravity data.",
                                   "states a hypothesis as fact; the Moon link is an injected corpus claim, not the excerpt"),
     "clm:PSI-98:rationale:rover": ("PSI says fire behavior differs greatly between normal and reduced gravity, so Earth fire standards carry uncertainty, and PSI holds no partial-gravity data.",
@@ -295,18 +303,23 @@ EDITED = {  # id -> (model text, reviewed text, reason)
 
 def review(claims: list[dict]) -> list[dict]:
     """Apply the human review: drop retired ids and rejected texts, apply edits, renumber takeaways per habitat."""
-    from rag import brief
+    from rag import brief, brief_facts
     rejected_texts = {t for t, _ in REJECTED.values()} | set(brief.REJECTED)
-    out, n = [], {}
+    out, seen = [], set()
     for c in claims:
         if c["id"] in REJECTED or c["text"] in rejected_texts:
             continue
         c = dict(c)
-        if c["kind"] == "takeaway":
+        if c["kind"] == "takeaway" and c["id"].rsplit(":", 1)[1] in brief_facts.TOPICS:
+            pass  # computed takeaway: owned by brief_facts, never edited here
+        elif c["kind"] == "takeaway":
             if c["text"] in brief.EDITED:
                 c["text"] = brief.EDITED[c["text"]][0]
-            n[c["habitat"]] = n.get(c["habitat"], 0) + 1
-            c["id"] = f"clm:brief:{c['habitat']}:{n[c['habitat']]}"
+            topic = brief.TOPIC_BY_INV.get(c["investigationId"], "si-" + c["investigationId"].lower())
+            c["id"] = f"clm:brief:{c['habitat']}:{topic}"  # stable by topic, not by position
+            if c["id"] in seen:
+                continue
+            seen.add(c["id"])
         elif c["id"] in EDITED and c["text"] == EDITED[c["id"]][0]:
             c["text"] = EDITED[c["id"]][1]
         out.append(c)
@@ -341,11 +354,48 @@ def live(client, inv: str, title: str, us: list[dict], tok: dict) -> list[dict]:
     return out
 
 
+def guard(is_live: bool, argv: list[str]) -> None:
+    """Refuse the silent downgrade: no key + live claims on disk replaces SI-written claims with extractive ones."""
+    if is_live or "--extractive" in argv or "--brief" in argv:
+        return
+    if INFO.exists() and json.loads(INFO.read_text(encoding="utf-8")).get("mode") == "live":
+        sys.exit("precompute: no ANTHROPIC_API_KEY and live claims are on disk; pass --extractive to overwrite them "
+                 "(drops rationales), or --brief to refresh the computed takeaways only.")
+
+
+def apply_brief(claims: list[dict]) -> list[dict]:
+    """Replace the computed takeaways (pure data, no model) and keep the SI-written ones."""
+    from rag import brief_facts
+    keep = [c for c in claims if not (c["kind"] == "takeaway" and c["id"].rsplit(":", 1)[1] in brief_facts.TOPICS)]
+    return keep + brief_facts.build()
+
+
+def write_claims(claims: list[dict]) -> dict:
+    (DATA / "claims.json").write_text(json.dumps({"items": claims}, indent=2, ensure_ascii=False) + "\n",
+                                      encoding="utf-8", newline="\n")
+    return {"claims": len(claims), "over25": sum(1 for c in claims if words(c["text"]) > MAX_WORDS),
+            "byKind": {k: sum(1 for c in claims if c["kind"] == k) for k in ("summary", "finding", "rationale", "takeaway")}}
+
+
+def refresh_brief() -> None:
+    """--brief: reapply the review and rebuild the computed takeaways in the existing claims.json. No model call."""
+    items = json.loads((DATA / "claims.json").read_text(encoding="utf-8"))["items"]
+    claims = apply_brief(review(items))
+    info = json.loads(INFO.read_text(encoding="utf-8"))
+    info.update(write_claims(claims))
+    INFO.write_text(json.dumps(info, indent=2) + "\n", encoding="utf-8", newline="\n")
+    print(json.dumps(info))
+
+
 def main() -> None:
+    argv = sys.argv[1:]
+    if "--brief" in argv:
+        return refresh_brief()
     corpus = load_corpus()
     invs = sorted((s.split(":", 1)[1] for s in corpus if s.startswith("psi:")), key=lambda p: int(p.split("-")[1]))
     invs = [i for i in invs if i not in NOT_COMBUSTION]
-    is_live = bool(os.environ.get("ANTHROPIC_API_KEY"))
+    is_live = bool(os.environ.get("ANTHROPIC_API_KEY")) and "--extractive" not in argv
+    guard(is_live, argv)
     client = None
     if is_live:
         import anthropic  # lazy: stdlib-only in extractive mode
@@ -357,19 +407,17 @@ def main() -> None:
         title = corpus[f"psi:{inv}"]["meta"]["title"]
         claims += live(client, inv, title, us, tok) if is_live else extractive(inv, us)
     claims = review(claims)  # before the brief, so rejected claims' excerpts never reach its sentence pool
-    if is_live:  # habitat brief: takeaways across investigations (extractive mode emits none)
+    if is_live:  # SI-written takeaways: one call per habitat. Extractive mode writes none.
         from rag import brief
         for hab in brief.HABITATS:
             claims += brief.generate(hab, claims, corpus, lambda s, u, t: call_model(client, s, u, t), check_text, tok)
         claims = review(claims)
-    (DATA / "claims.json").write_text(json.dumps({"items": claims}, indent=2, ensure_ascii=False) + "\n",
-                                      encoding="utf-8", newline="\n")
-    kinds = {k: sum(1 for c in claims if c["kind"] == k) for k in ("summary", "finding", "rationale", "takeaway")}
-    over = sum(1 for c in claims if words(c["text"]) > MAX_WORDS)
+    claims = apply_brief(claims)  # computed takeaways: pure data, both modes
+    counts = write_claims(claims)
     log = [json.loads(x) for x in USAGE.read_text(encoding="utf-8").splitlines()] if USAGE.exists() else []
     total = {"in": sum(x["in"] for x in log), "out": sum(x["out"] for x in log), "calls": len(log)}
     info = {"mode": "live" if is_live else "extractive", "model": MODEL if is_live else None,
-            "date": date.today().isoformat(), "claims": len(claims), "byKind": kinds, "over25": over,
+            "date": date.today().isoformat(), **counts,
             "tokens": total if is_live else None,  # cumulative over every live run (cache hits cost nothing)
             "usd": round(total["in"] * PRICE_IN / 1e6 + total["out"] * PRICE_OUT / 1e6, 4) if is_live else 0,
             "rerun": "python scripts/rag/precompute.py"}

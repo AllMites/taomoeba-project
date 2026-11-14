@@ -18,3 +18,13 @@ def test_index_shape_and_retrieval():
     assert any("smoke" in r["chunk"]["text"].lower() for r in top)
     scoped = retrieve("flame", k=5, index=idx, investigation_id="psi:PSI-99".split(":")[1])
     assert scoped and all(r["chunk"]["investigationId"] == "PSI-99" for r in scoped)
+
+
+def test_synonyms_find_flex_for_the_co2_question():
+    from rag.retrieve import expand_query
+
+    q = "does carbon dioxide put out a droplet flame"
+    assert "co2" in expand_query(q) and "extinguish" in expand_query(q)
+    assert "carbon dioxide" in expand_query("CO2 and helium") and "helium" in expand_query("he")
+    top = retrieve(q, k=3)
+    assert "PSI-69" in {r["chunk"]["investigationId"] for r in top}, [r["chunk"]["id"] for r in top]

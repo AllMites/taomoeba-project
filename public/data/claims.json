@@ -92,17 +92,6 @@
       "excerpt": "Fuel samples were mounted inside a small wind tunnel which could impose airflow speeds up to 40 cm/s."
     },
     {
-      "id": "clm:PSI-25:rationale:iss",
-      "investigationId": "PSI-25",
-      "kind": "rationale",
-      "habitat": "iss",
-      "text": "PSI investigation BASS-II varied oxygen below 21% by adding nitrogen, so its tests stayed at or under the ISS's roughly 21% oxygen level.",
-      "sourceIds": [
-        "psi:PSI-25"
-      ],
-      "excerpt": "Main variables are airflow speed and oxygen concentration (oxygen varied below 21% by adding nitrogen)."
-    },
-    {
       "id": "clm:PSI-26:summary",
       "investigationId": "PSI-26",
       "kind": "summary",
@@ -168,39 +157,6 @@
       "investigationId": "PSI-68",
       "kind": "summary",
       "text": "PSI investigation FLEX-2 varied chamber pressure from 0.5 to 3.0 atm and oxygen from 0.1 to 0.4 mole fraction.",
-      "sourceIds": [
-        "psi:PSI-68"
-      ],
-      "excerpt": "The chamber was filled with the appropriate atmosphere, which was varied in pressure between 0.5 atm to 3.0 atm and O2 concentration between 0.1 to 0.4 mole fraction with the diluent gas making up the balance."
-    },
-    {
-      "id": "clm:PSI-68:rationale:iss",
-      "investigationId": "PSI-68",
-      "kind": "rationale",
-      "habitat": "iss",
-      "text": "PSI reports FLEX-2 atmospheres spanned 0.1 to 0.4 mole fraction oxygen and 0.5 to 3.0 atm, covering ISS's 21% oxygen and 1 atm.",
-      "sourceIds": [
-        "psi:PSI-68"
-      ],
-      "excerpt": "The chamber was filled with the appropriate atmosphere, which was varied in pressure between 0.5 atm to 3.0 atm and O2 concentration between 0.1 to 0.4 mole fraction with the diluent gas making up the balance."
-    },
-    {
-      "id": "clm:PSI-68:rationale:moon",
-      "investigationId": "PSI-68",
-      "kind": "rationale",
-      "habitat": "moon",
-      "text": "PSI reports FLEX-2 tested 0.1 to 0.4 mole fraction oxygen and 0.5 to 3.0 atm, covering Moon Base's 30% oxygen and 70.3 kPa (0.69 atm).",
-      "sourceIds": [
-        "psi:PSI-68"
-      ],
-      "excerpt": "The chamber was filled with the appropriate atmosphere, which was varied in pressure between 0.5 atm to 3.0 atm and O2 concentration between 0.1 to 0.4 mole fraction with the diluent gas making up the balance."
-    },
-    {
-      "id": "clm:PSI-68:rationale:rover",
-      "investigationId": "PSI-68",
-      "kind": "rationale",
-      "habitat": "rover",
-      "text": "PSI reports FLEX-2 tested 0.1 to 0.4 mole fraction oxygen and 0.5 to 3.0 atm, covering the rover's 30% oxygen and 70.3 kPa (0.69 atm).",
       "sourceIds": [
         "psi:PSI-68"
       ],
@@ -401,7 +357,7 @@
       "excerpt": "Perform spherical diffusion flame tests aboard the International Space Station."
     },
     {
-      "id": "clm:brief:iss:1",
+      "id": "clm:brief:iss:bre-airflow",
       "investigationId": "PSI-20",
       "kind": "takeaway",
       "habitat": "iss",
@@ -412,7 +368,7 @@
       "excerpt": "The ongoing combustion without air flow was notably seen in elevated-oxygen atmospheres which are being considered for use in future spacecraft, whereas such flames in a normal atmosphere of 21% oxygen self-extinguished in a short time."
     },
     {
-      "id": "clm:brief:moon:1",
+      "id": "clm:brief:moon:bre-airflow",
       "investigationId": "PSI-20",
       "kind": "takeaway",
       "habitat": "moon",
@@ -423,7 +379,7 @@
       "excerpt": "The ongoing combustion without air flow was notably seen in elevated-oxygen atmospheres which are being considered for use in future spacecraft, whereas such flames in a normal atmosphere of 21% oxygen self-extinguished in a short time."
     },
     {
-      "id": "clm:brief:rover:1",
+      "id": "clm:brief:rover:bre-airflow",
       "investigationId": "PSI-20",
       "kind": "takeaway",
       "habitat": "rover",
@@ -432,6 +388,197 @@
         "psi:PSI-20"
       ],
       "excerpt": "The ongoing combustion without air flow was notably seen in elevated-oxygen atmospheres which are being considered for use in future spacecraft, whereas such flames in a normal atmosphere of 21% oxygen self-extinguished in a short time."
+    },
+    {
+      "id": "clm:brief:iss:o2-coverage",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "iss",
+      "text": "8 of 24 experiments covered 21% oxygen in their tested range, for example ACME/Flame Design, ACME BRE, ACME s-Flame, BASS-II.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-20",
+        "psi:PSI-23",
+        "psi:PSI-25",
+        "psi:PSI-39",
+        "psi:PSI-68"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design 19.8 to 85% O2; PSI-20 ACME BRE 21 to 40% O2; PSI-23 ACME s-Flame 21 to 30% O2; PSI-25 BASS-II 13.6 to 22.2% O2; PSI-39 CFI 17 to 21% O2; PSI-68 FLEX-2 17 to 30% O2; PSI-69 FLEX 12 to 34% O2; PSI-159 ACME CFI-G 12 to 85% O2; 8 of 24 combustion experiments include 21% O2."
+    },
+    {
+      "id": "clm:brief:iss:pressure-coverage",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "iss",
+      "text": "Only 6 of 24 experiments record a tested pressure; all 6 include 101.3 kPa, and 18 list none.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-23",
+        "psi:PSI-39",
+        "psi:PSI-68",
+        "psi:PSI-69",
+        "psi:PSI-159"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design 43 to 305.8 kPa; PSI-23 ACME s-Flame 101.3 to 101.3 kPa; PSI-39 CFI 50.7 to 506.6 kPa; PSI-68 FLEX-2 50.7 to 304 kPa; PSI-69 FLEX 70.2 to 309.3 kPa; PSI-159 ACME CFI-G 49.5 to 331 kPa; 6 of 6 include 101.3 kPa; 18 of 24 have no pressure on record."
+    },
+    {
+      "id": "clm:brief:iss:saffire-gravity",
+      "investigationId": "PSI-99",
+      "kind": "takeaway",
+      "habitat": "iss",
+      "text": "SAFFIRE-II silicone burned about 0 cm in microgravity in all 4 samples; in normal gravity 3 of 4 burned (sample 2-2: 7.6 cm).",
+      "sourceIds": [
+        "psi:PSI-99"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-99 Silicone rows, sample 2-1 0.27 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete; sample 2-2 0.61 mm: ?-g Burn Length ~ 0, 1-g Burn Length 7.6 cm; sample 2-3 1.03 mm: ?-g Burn Length ~ 0, 1-g Burn Length ~ 0; sample 2-4 037 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete. ('?-g' is the table's microgravity column; its mu sign was lost.)"
+    },
+    {
+      "id": "clm:brief:moon:o2-coverage",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "moon",
+      "text": "6 of 24 experiments covered 30% oxygen in their tested range (ACME/Flame Design, ACME BRE, ACME s-Flame, FLEX-2); all burned liquid-droplet or gas fuels.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-20",
+        "psi:PSI-23",
+        "psi:PSI-68",
+        "psi:PSI-69",
+        "psi:PSI-159"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design 19.8 to 85% O2; PSI-20 ACME BRE 21 to 40% O2; PSI-23 ACME s-Flame 21 to 30% O2; PSI-68 FLEX-2 17 to 30% O2; PSI-69 FLEX 12 to 34% O2; PSI-159 ACME CFI-G 12 to 85% O2; 6 of 24 combustion experiments include 30% O2."
+    },
+    {
+      "id": "clm:brief:moon:fuel-gap",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "moon",
+      "text": "None of the 6 experiments that cover 30% oxygen burned solid materials; they are liquid-droplet and gas flames.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-20",
+        "psi:PSI-23",
+        "psi:PSI-68",
+        "psi:PSI-69",
+        "psi:PSI-159"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design fuel gas; PSI-20 ACME BRE fuel gas; PSI-23 ACME s-Flame fuel gas; PSI-68 FLEX-2 fuel droplet; PSI-69 FLEX fuel droplet; PSI-159 ACME CFI-G fuel gas; solid-fuel experiments with an oxygen range: PSI-25 BASS-II 13.6 to 22.2% O2; PSI-98 SAFFIRE-I 21.5 to 21.7% O2; PSI-99 SAFFIRE-II 21.5 to 22.1% O2; none of them include 30% O2."
+    },
+    {
+      "id": "clm:brief:moon:pressure-coverage",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "moon",
+      "text": "Only 6 of 24 experiments record a tested pressure; 5 of those include 70.3 kPa, and 18 list none.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-39",
+        "psi:PSI-68",
+        "psi:PSI-69",
+        "psi:PSI-159"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design 43 to 305.8 kPa; PSI-23 ACME s-Flame 101.3 to 101.3 kPa; PSI-39 CFI 50.7 to 506.6 kPa; PSI-68 FLEX-2 50.7 to 304 kPa; PSI-69 FLEX 70.2 to 309.3 kPa; PSI-159 ACME CFI-G 49.5 to 331 kPa; 5 of 6 include 70.3 kPa; 18 of 24 have no pressure on record."
+    },
+    {
+      "id": "clm:brief:moon:gravity-limit",
+      "investigationId": "PSI-60",
+      "kind": "takeaway",
+      "habitat": "moon",
+      "text": "None of the 24 PSI combustion experiments ran in partial gravity such as the Moon's: 19 flew in microgravity, 5 were ground studies.",
+      "sourceIds": [
+        "psi:PSI-60",
+        "psi:PSI-62",
+        "psi:PSI-115",
+        "psi:PSI-117",
+        "psi:PSI-142",
+        "psi:PSI-10"
+      ],
+      "excerpt": "Computed from PSI run tables: evidence flag per experiment: flight PSI-10, PSI-20, PSI-21, PSI-22, PSI-23, PSI-25, PSI-26, PSI-39, PSI-47, PSI-68, PSI-69, PSI-98, PSI-99, PSI-100, PSI-101, PSI-102, PSI-106, PSI-107, PSI-159; ground PSI-60, PSI-62, PSI-115, PSI-117, PSI-142."
+    },
+    {
+      "id": "clm:brief:moon:saffire-gravity",
+      "investigationId": "PSI-99",
+      "kind": "takeaway",
+      "habitat": "moon",
+      "text": "SAFFIRE-II silicone burned about 0 cm in microgravity in all 4 samples; in normal gravity 3 of 4 burned (sample 2-2: 7.6 cm).",
+      "sourceIds": [
+        "psi:PSI-99"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-99 Silicone rows, sample 2-1 0.27 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete; sample 2-2 0.61 mm: ?-g Burn Length ~ 0, 1-g Burn Length 7.6 cm; sample 2-3 1.03 mm: ?-g Burn Length ~ 0, 1-g Burn Length ~ 0; sample 2-4 037 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete. ('?-g' is the table's microgravity column; its mu sign was lost.)"
+    },
+    {
+      "id": "clm:brief:rover:o2-coverage",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "rover",
+      "text": "6 of 24 experiments covered 30% oxygen in their tested range (ACME/Flame Design, ACME BRE, ACME s-Flame, FLEX-2); all burned liquid-droplet or gas fuels.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-20",
+        "psi:PSI-23",
+        "psi:PSI-68",
+        "psi:PSI-69",
+        "psi:PSI-159"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design 19.8 to 85% O2; PSI-20 ACME BRE 21 to 40% O2; PSI-23 ACME s-Flame 21 to 30% O2; PSI-68 FLEX-2 17 to 30% O2; PSI-69 FLEX 12 to 34% O2; PSI-159 ACME CFI-G 12 to 85% O2; 6 of 24 combustion experiments include 30% O2."
+    },
+    {
+      "id": "clm:brief:rover:fuel-gap",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "rover",
+      "text": "None of the 6 experiments that cover 30% oxygen burned solid materials; they are liquid-droplet and gas flames.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-20",
+        "psi:PSI-23",
+        "psi:PSI-68",
+        "psi:PSI-69",
+        "psi:PSI-159"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design fuel gas; PSI-20 ACME BRE fuel gas; PSI-23 ACME s-Flame fuel gas; PSI-68 FLEX-2 fuel droplet; PSI-69 FLEX fuel droplet; PSI-159 ACME CFI-G fuel gas; solid-fuel experiments with an oxygen range: PSI-25 BASS-II 13.6 to 22.2% O2; PSI-98 SAFFIRE-I 21.5 to 21.7% O2; PSI-99 SAFFIRE-II 21.5 to 22.1% O2; none of them include 30% O2."
+    },
+    {
+      "id": "clm:brief:rover:pressure-coverage",
+      "investigationId": "PSI-10",
+      "kind": "takeaway",
+      "habitat": "rover",
+      "text": "Only 6 of 24 experiments record a tested pressure; 5 of those include 70.3 kPa, and 18 list none.",
+      "sourceIds": [
+        "psi:PSI-10",
+        "psi:PSI-39",
+        "psi:PSI-68",
+        "psi:PSI-69",
+        "psi:PSI-159"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-10 ACME/Flame Design 43 to 305.8 kPa; PSI-23 ACME s-Flame 101.3 to 101.3 kPa; PSI-39 CFI 50.7 to 506.6 kPa; PSI-68 FLEX-2 50.7 to 304 kPa; PSI-69 FLEX 70.2 to 309.3 kPa; PSI-159 ACME CFI-G 49.5 to 331 kPa; 5 of 6 include 70.3 kPa; 18 of 24 have no pressure on record."
+    },
+    {
+      "id": "clm:brief:rover:gravity-limit",
+      "investigationId": "PSI-60",
+      "kind": "takeaway",
+      "habitat": "rover",
+      "text": "None of the 24 PSI combustion experiments ran in partial gravity such as the Moon's: 19 flew in microgravity, 5 were ground studies.",
+      "sourceIds": [
+        "psi:PSI-60",
+        "psi:PSI-62",
+        "psi:PSI-115",
+        "psi:PSI-117",
+        "psi:PSI-142",
+        "psi:PSI-10"
+      ],
+      "excerpt": "Computed from PSI run tables: evidence flag per experiment: flight PSI-10, PSI-20, PSI-21, PSI-22, PSI-23, PSI-25, PSI-26, PSI-39, PSI-47, PSI-68, PSI-69, PSI-98, PSI-99, PSI-100, PSI-101, PSI-102, PSI-106, PSI-107, PSI-159; ground PSI-60, PSI-62, PSI-115, PSI-117, PSI-142."
+    },
+    {
+      "id": "clm:brief:rover:saffire-gravity",
+      "investigationId": "PSI-99",
+      "kind": "takeaway",
+      "habitat": "rover",
+      "text": "SAFFIRE-II silicone burned about 0 cm in microgravity in all 4 samples; in normal gravity 3 of 4 burned (sample 2-2: 7.6 cm).",
+      "sourceIds": [
+        "psi:PSI-99"
+      ],
+      "excerpt": "Computed from PSI run tables: PSI-99 Silicone rows, sample 2-1 0.27 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete; sample 2-2 0.61 mm: ?-g Burn Length ~ 0, 1-g Burn Length 7.6 cm; sample 2-3 1.03 mm: ?-g Burn Length ~ 0, 1-g Burn Length ~ 0; sample 2-4 037 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete. ('?-g' is the table's microgravity column; its mu sign was lost.)"
     }
   ]
 }

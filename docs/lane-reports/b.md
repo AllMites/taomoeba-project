@@ -1,49 +1,84 @@
-# Lane B (Corpus) report, round 2
+# Lane B (Corpus) report, round 3
 
-## Sources (30)
-- 26 `psi:` (CC0, every PSI search hit incl. PSI-108/181) + 4 `ntrs:` public-domain (19960008413, 20010074094, 20170007283, 20040053582).
-- Dropped 7 NTRS records with "short quotes only" licences (20070031686, 20150023456, 20120015928, 20130014061, 20210011385, 20160000593, 20170008805): text file, index chunks, source entry and citing claims removed. The message said 8; the data held 7. No exception needed: 7 detection and 5 suppression sources remain (title/topic keywords, PSI included).
-- **History**: those 7 text files exist only in `8f29d55`. Their excerpts/chunks also sit in old versions of `index.json`, `claims.json`, `sources.json` in `8f29d55` and `97148b7`. The integrator must keep both commits out of any push (squash or rebuild); the new commit only removes them from the tip.
-
-## Claims (54 per-investigation + 6 brief takeaways, live mode, `claude-haiku-5-5`)
-- 24 summary, 7 finding, 23 rationale. 53 cite PSI, 1 cites NTRS. 0 over 25 words, 0 live fallbacks.
-- Findings exist for 5 investigations (PSI-20, 25, 69, 101, 142); 19 get none because their PSI text gives goals and plans, not results.
-- No rationale: iss 11, moon 19, rover 19 of 24. Moon and rover rationales exist for PSI-20, 39, 68, 98, 142 only (the excerpt gives an oxygen level, a pressure or a gravity point); iss rationales for 13.
-- Shared source sentence: PSI-98/99/100 (SAFFIRE-I/II/III records repeat the same hypothesis and "deberthed from the ISS" sentences). Their texts differ by investigation name.
-- Method: one call per investigation. Model sees numbered sentences and habitat facts, returns sentence numbers + text; the excerpt is copied from our own list, so it is verbatim. Checks before accepting: one sentence, at most 25 words, no banned phrases, no "source lacks data" filler, every number in the text is in the excerpt or the habitat facts. One retry with the failure reasons.
-- Extractive no-key fallback: summary only, plus findings where a result sentence exists; no rationales. List lead-ins ("are to:") merge with their items and are never cut.
-
-## Spend
-147 calls over 8 prompt iterations (cache on disk): 383,498 in / 225,600 out tokens = about $0.15 at $0.10/$0.50 per M. Fewer, larger calls than the 150-200 estimate.
-
-## Self-audit: 20 claims re-read against excerpts
-Overreach or weak, worst first:
-1. `clm:PSI-39:rationale:iss|moon|rover` compare 0.25 to 0.5 atm (the gas-delivery line) with habitat pressure; the same record's objective says up to 5 atm. Selective.
-2. `clm:PSI-20:rationale:moon` says Moon Base's 30% oxygen is untested; the excerpt only says "elevated-oxygen".
-3. `clm:PSI-98:summary` says "large fabric fire test"; the excerpt does not (it says the experiment ran on Cygnus).
-4. `clm:PSI-101:finding:1` (66 test points) is a procedure count, not a science result.
-5. `clm:PSI-142:rationale:*` only contrasts 20 atm with habitat pressure; says nothing about what that means.
-Other 15 read fine. PSI-47 rationale and PSI-21 rationale are generic but supported.
+## State
+- Sources: 30 = 26 `psi:` (CC0) + 4 public-domain `ntrs:`. 7 non-open NTRS records stay dropped. **Never push this branch:** `8f29d55` and `97148b7` hold the dropped text (and old excerpts in `index.json`, `claims.json`, `sources.json`).
+- Claims: 51 = 24 summary, 5 finding, 6 rationale, 16 takeaway (3 SI-written, 13 computed). Live text by `claude-haiku-5-5`; $0.15 in total, no new calls this round.
+- Round 3 retired 4 rationales: `clm:PSI-68:rationale:iss|moon|rover` (the facility envelope 0.1 to 0.4 O2 was called "tested"/"covering"; Lane A tested 17 to 30%) and `clm:PSI-25:rationale:iss` (excerpt says "below 21%", Lane A has up to 22.2%). The computed takeaways now carry those points from Lane A's table.
+- Guard: no key + live claims on disk exits 1 ("pass --extractive ..."). `--extractive` overwrites on purpose; `--brief` rebuilds computed takeaways and reapplies the review without a model call.
+- Retrieval: `retrieve.expand_query` adds synonyms to the query only (carbon dioxide/CO2, oxygen/O2, nitrogen/N2, helium/He, "put out" -> extinguish extinguishment extinction). Lane E: mirror `SYNONYMS` in `server/bm25.ts`. The CO2 droplet question now ranks FLEX (PSI-69) first.
 
 ## Rerun
 ```
-python scripts/rag/fetch.py        # sources.json + corpus/text (cached)
-python scripts/rag/precompute.py   # extractive claims, index, build-info
-ANTHROPIC_API_KEY=... uv run --with anthropic python scripts/rag/precompute.py   # live; key never copied here
+python scripts/rag/precompute.py --brief      # computed takeaways + review, no key, no model
+ANTHROPIC_API_KEY=... uv run --with anthropic python scripts/rag/precompute.py   # live, cached
+python scripts/rag/precompute.py --extractive # fallback text, drops rationales and SI takeaways
 ```
-Unchanged from round 1: PSI `url` is the accession search call; no DOIs; `Claim.sourceIds` holds one id.
 
-## Habitat brief: 6 takeaways (merged `main` first; Lane A data used)
-Method: one call per habitat. Input: the vetted excerpts already used by claims, plus a FACTS block computed from `habitats.json` / `investigations.json` (habitat O2 and kPa, tested ranges, counts). Checks: one sentence, at most 25 words, every number in the excerpt, the named investigation's ranges, or a computed count (`brief.ungrounded`, re-run in tests). I read all 9 first-pass takeaways by hand and rejected 3 for overreach (listed in `brief.REJECTED`; two exact texts, the third was dropped by the prompt change):
-- "PSI-102 smoke detectors were designed from 1-g data": the sentence is from an NTRS paper about other detectors, not PSI-102.
-- FLEX "extinction droplets too small at every oxygen level" (iss and rover versions): the excerpt says at some ambient conditions.
-- ACME BRE "no habitat link" versions: restated an excerpt with no habitat condition.
-Shipped (id | investigation | sources | text):
-- `clm:brief:iss:1` | PSI-20 | psi:PSI-20 | Without airflow, flames at 21% oxygen went out quickly, unlike elevated-oxygen flames; ACME BRE tested 21 to 40% oxygen.
-- `clm:brief:moon:1` | PSI-20 | psi:PSI-20 | PSI-20 ACME BRE saw flames keep burning without airflow in elevated oxygen; moon's 30% lies inside its tested 21 to 40% range.
-- `clm:brief:moon:2` | PSI-69 | psi:PSI-69 | PSI-69 FLEX's 70.2 to 309.3 kPa range includes moon's 70.3 kPa; some tested conditions had extinction (flame-out) droplets too small to measure.
-- `clm:brief:moon:3` | PSI-25 | psi:PSI-25 | None of the 24 PSI combustion investigations tested partial gravity; PSI-25 BASS-II reports fuels burn as oval balls in space, not Earth's cone flames.
-- `clm:brief:rover:1` | PSI-20 | psi:PSI-20 | PSI-20 ACME BRE flames kept burning without airflow at elevated oxygen; rover's 30% sits in its tested 21 to 40% range.
-- `clm:brief:rover:2` | PSI-25 | psi:PSI-25 | None of the 24 PSI combustion investigations tested partial gravity; PSI-25 contrasted outer-space oval flames with Earth's cone flames.
-Review round 2 (reviewer commit): 15 claims retired and 8 narrowed (`precompute.REJECTED` / `EDITED`, ids and reasons in code); 3 takeaways rejected and 3 narrowed (`brief.REJECTED` / `EDITED`). `precompute.review()` applies them on every rerun, before the brief. Now 42 claims: 24 summary, 5 finding, 10 rationale, 3 takeaway. History correction: the 7 dropped text files are also in `97148b7`, not only `8f29d55`.
-Caveats (pre-review): iss has 1 takeaway, rover 2 (fewer is fine). "None of the 24 ... tested partial gravity" rests on the count of PSI texts that never mention partial, lunar or Mars gravity (24 of 24); no source states it outright. The Moon/rover 30% claims say only that 30% lies inside the tested range; no excerpt reports a result at 30%. SAFFIRE-II silicone not used: its source (NTRS 20170008805) was dropped as non-open.
+## Habitat brief, verbatim (id | investigation | sources)
+### iss
+- `clm:brief:iss:bre-airflow` | PSI-20 | psi:PSI-20
+  - text: Without airflow, PSI-20 ACME BRE gas-burner flames at 21% oxygen went out quickly, unlike elevated-oxygen flames; it tested 21 to 40% oxygen.
+  - excerpt: The ongoing combustion without air flow was notably seen in elevated-oxygen atmospheres which are being considered for use in future spacecraft, whereas such flames in a normal atmosphere of 21% oxygen self-extinguished in a short time.
+- `clm:brief:iss:o2-coverage` | PSI-10 | psi:PSI-10, psi:PSI-20, psi:PSI-23, psi:PSI-25, psi:PSI-39, psi:PSI-68
+  - text: 8 of 24 experiments covered 21% oxygen in their tested range, for example ACME/Flame Design, ACME BRE, ACME s-Flame, BASS-II.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design 19.8 to 85% O2; PSI-20 ACME BRE 21 to 40% O2; PSI-23 ACME s-Flame 21 to 30% O2; PSI-25 BASS-II 13.6 to 22.2% O2; PSI-39 CFI 17 to 21% O2; PSI-68 FLEX-2 17 to 30% O2; PSI-69 FLEX 12 to 34% O2; PSI-159 ACME CFI-G 12 to 85% O2; 8 of 24 combustion experiments include 21% O2.
+- `clm:brief:iss:pressure-coverage` | PSI-10 | psi:PSI-10, psi:PSI-23, psi:PSI-39, psi:PSI-68, psi:PSI-69, psi:PSI-159
+  - text: Only 6 of 24 experiments record a tested pressure; all 6 include 101.3 kPa, and 18 list none.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design 43 to 305.8 kPa; PSI-23 ACME s-Flame 101.3 to 101.3 kPa; PSI-39 CFI 50.7 to 506.6 kPa; PSI-68 FLEX-2 50.7 to 304 kPa; PSI-69 FLEX 70.2 to 309.3 kPa; PSI-159 ACME CFI-G 49.5 to 331 kPa; 6 of 6 include 101.3 kPa; 18 of 24 have no pressure on record.
+- `clm:brief:iss:saffire-gravity` | PSI-99 | psi:PSI-99
+  - text: SAFFIRE-II silicone burned about 0 cm in microgravity in all 4 samples; in normal gravity 3 of 4 burned (sample 2-2: 7.6 cm).
+  - excerpt: Computed from PSI run tables: PSI-99 Silicone rows, sample 2-1 0.27 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete; sample 2-2 0.61 mm: ?-g Burn Length ~ 0, 1-g Burn Length 7.6 cm; sample 2-3 1.03 mm: ?-g Burn Length ~ 0, 1-g Burn Length ~ 0; sample 2-4 037 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete. ('?-g' is the table's microgravity column; its mu sign was lost.)
+### moon
+- `clm:brief:moon:bre-airflow` | PSI-20 | psi:PSI-20
+  - text: PSI-20 ACME BRE gas-burner flames kept burning without airflow in elevated oxygen in microgravity; Moon's 30% lies inside its tested 21 to 40% range.
+  - excerpt: The ongoing combustion without air flow was notably seen in elevated-oxygen atmospheres which are being considered for use in future spacecraft, whereas such flames in a normal atmosphere of 21% oxygen self-extinguished in a short time.
+- `clm:brief:moon:o2-coverage` | PSI-10 | psi:PSI-10, psi:PSI-20, psi:PSI-23, psi:PSI-68, psi:PSI-69, psi:PSI-159
+  - text: 6 of 24 experiments covered 30% oxygen in their tested range (ACME/Flame Design, ACME BRE, ACME s-Flame, FLEX-2); all burned liquid-droplet or gas fuels.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design 19.8 to 85% O2; PSI-20 ACME BRE 21 to 40% O2; PSI-23 ACME s-Flame 21 to 30% O2; PSI-68 FLEX-2 17 to 30% O2; PSI-69 FLEX 12 to 34% O2; PSI-159 ACME CFI-G 12 to 85% O2; 6 of 24 combustion experiments include 30% O2.
+- `clm:brief:moon:fuel-gap` | PSI-10 | psi:PSI-10, psi:PSI-20, psi:PSI-23, psi:PSI-68, psi:PSI-69, psi:PSI-159
+  - text: None of the 6 experiments that cover 30% oxygen burned solid materials; they are liquid-droplet and gas flames.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design fuel gas; PSI-20 ACME BRE fuel gas; PSI-23 ACME s-Flame fuel gas; PSI-68 FLEX-2 fuel droplet; PSI-69 FLEX fuel droplet; PSI-159 ACME CFI-G fuel gas; solid-fuel experiments with an oxygen range: PSI-25 BASS-II 13.6 to 22.2% O2; PSI-98 SAFFIRE-I 21.5 to 21.7% O2; PSI-99 SAFFIRE-II 21.5 to 22.1% O2; none of them include 30% O2.
+- `clm:brief:moon:pressure-coverage` | PSI-10 | psi:PSI-10, psi:PSI-39, psi:PSI-68, psi:PSI-69, psi:PSI-159
+  - text: Only 6 of 24 experiments record a tested pressure; 5 of those include 70.3 kPa, and 18 list none.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design 43 to 305.8 kPa; PSI-23 ACME s-Flame 101.3 to 101.3 kPa; PSI-39 CFI 50.7 to 506.6 kPa; PSI-68 FLEX-2 50.7 to 304 kPa; PSI-69 FLEX 70.2 to 309.3 kPa; PSI-159 ACME CFI-G 49.5 to 331 kPa; 5 of 6 include 70.3 kPa; 18 of 24 have no pressure on record.
+- `clm:brief:moon:gravity-limit` | PSI-60 | psi:PSI-60, psi:PSI-62, psi:PSI-115, psi:PSI-117, psi:PSI-142, psi:PSI-10
+  - text: None of the 24 PSI combustion experiments ran in partial gravity such as the Moon's: 19 flew in microgravity, 5 were ground studies.
+  - excerpt: Computed from PSI run tables: evidence flag per experiment: flight PSI-10, PSI-20, PSI-21, PSI-22, PSI-23, PSI-25, PSI-26, PSI-39, PSI-47, PSI-68, PSI-69, PSI-98, PSI-99, PSI-100, PSI-101, PSI-102, PSI-106, PSI-107, PSI-159; ground PSI-60, PSI-62, PSI-115, PSI-117, PSI-142.
+- `clm:brief:moon:saffire-gravity` | PSI-99 | psi:PSI-99
+  - text: SAFFIRE-II silicone burned about 0 cm in microgravity in all 4 samples; in normal gravity 3 of 4 burned (sample 2-2: 7.6 cm).
+  - excerpt: Computed from PSI run tables: PSI-99 Silicone rows, sample 2-1 0.27 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete; sample 2-2 0.61 mm: ?-g Burn Length ~ 0, 1-g Burn Length 7.6 cm; sample 2-3 1.03 mm: ?-g Burn Length ~ 0, 1-g Burn Length ~ 0; sample 2-4 037 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete. ('?-g' is the table's microgravity column; its mu sign was lost.)
+### rover
+- `clm:brief:rover:bre-airflow` | PSI-20 | psi:PSI-20
+  - text: PSI-20 ACME BRE gas-burner flames kept burning without airflow at elevated oxygen in microgravity; rover's 30% sits in its tested 21 to 40% range.
+  - excerpt: The ongoing combustion without air flow was notably seen in elevated-oxygen atmospheres which are being considered for use in future spacecraft, whereas such flames in a normal atmosphere of 21% oxygen self-extinguished in a short time.
+- `clm:brief:rover:o2-coverage` | PSI-10 | psi:PSI-10, psi:PSI-20, psi:PSI-23, psi:PSI-68, psi:PSI-69, psi:PSI-159
+  - text: 6 of 24 experiments covered 30% oxygen in their tested range (ACME/Flame Design, ACME BRE, ACME s-Flame, FLEX-2); all burned liquid-droplet or gas fuels.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design 19.8 to 85% O2; PSI-20 ACME BRE 21 to 40% O2; PSI-23 ACME s-Flame 21 to 30% O2; PSI-68 FLEX-2 17 to 30% O2; PSI-69 FLEX 12 to 34% O2; PSI-159 ACME CFI-G 12 to 85% O2; 6 of 24 combustion experiments include 30% O2.
+- `clm:brief:rover:fuel-gap` | PSI-10 | psi:PSI-10, psi:PSI-20, psi:PSI-23, psi:PSI-68, psi:PSI-69, psi:PSI-159
+  - text: None of the 6 experiments that cover 30% oxygen burned solid materials; they are liquid-droplet and gas flames.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design fuel gas; PSI-20 ACME BRE fuel gas; PSI-23 ACME s-Flame fuel gas; PSI-68 FLEX-2 fuel droplet; PSI-69 FLEX fuel droplet; PSI-159 ACME CFI-G fuel gas; solid-fuel experiments with an oxygen range: PSI-25 BASS-II 13.6 to 22.2% O2; PSI-98 SAFFIRE-I 21.5 to 21.7% O2; PSI-99 SAFFIRE-II 21.5 to 22.1% O2; none of them include 30% O2.
+- `clm:brief:rover:pressure-coverage` | PSI-10 | psi:PSI-10, psi:PSI-39, psi:PSI-68, psi:PSI-69, psi:PSI-159
+  - text: Only 6 of 24 experiments record a tested pressure; 5 of those include 70.3 kPa, and 18 list none.
+  - excerpt: Computed from PSI run tables: PSI-10 ACME/Flame Design 43 to 305.8 kPa; PSI-23 ACME s-Flame 101.3 to 101.3 kPa; PSI-39 CFI 50.7 to 506.6 kPa; PSI-68 FLEX-2 50.7 to 304 kPa; PSI-69 FLEX 70.2 to 309.3 kPa; PSI-159 ACME CFI-G 49.5 to 331 kPa; 5 of 6 include 70.3 kPa; 18 of 24 have no pressure on record.
+- `clm:brief:rover:gravity-limit` | PSI-60 | psi:PSI-60, psi:PSI-62, psi:PSI-115, psi:PSI-117, psi:PSI-142, psi:PSI-10
+  - text: None of the 24 PSI combustion experiments ran in partial gravity such as the Moon's: 19 flew in microgravity, 5 were ground studies.
+  - excerpt: Computed from PSI run tables: evidence flag per experiment: flight PSI-10, PSI-20, PSI-21, PSI-22, PSI-23, PSI-25, PSI-26, PSI-39, PSI-47, PSI-68, PSI-69, PSI-98, PSI-99, PSI-100, PSI-101, PSI-102, PSI-106, PSI-107, PSI-159; ground PSI-60, PSI-62, PSI-115, PSI-117, PSI-142.
+- `clm:brief:rover:saffire-gravity` | PSI-99 | psi:PSI-99
+  - text: SAFFIRE-II silicone burned about 0 cm in microgravity in all 4 samples; in normal gravity 3 of 4 burned (sample 2-2: 7.6 cm).
+  - excerpt: Computed from PSI run tables: PSI-99 Silicone rows, sample 2-1 0.27 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete; sample 2-2 0.61 mm: ?-g Burn Length ~ 0, 1-g Burn Length 7.6 cm; sample 2-3 1.03 mm: ?-g Burn Length ~ 0, 1-g Burn Length ~ 0; sample 2-4 037 mm: ?-g Burn Length ~ 0, 1-g Burn Length Complete. ('?-g' is the table's microgravity column; its mu sign was lost.)
+
+## saffire-gravity: what PSI-99 holds
+`runs/PSI-99.json` columns: sample_number, material, samle_thickness, sample_length, sample_width_cm, airflow_cm_s, o2_percent, ignition_*, burn_time_s, flow_direction, `g_burn_length` (header "?-g Burn Length"), g_spread_length, `1_g_burn_length` ("1-g Burn Length"), 1_g_spread_rate, camera_1/2.
+The "?-g" header lost its mu sign; I read it as the microgravity run (Saffire flew in microgravity, and sample 2-2 matches the pre-event 7.6 cm / ~0 pair). Raw Silicone rows (all four have flow Concurrent except 2-4 Opposed; airflow 20 cm/s):
+| sample | thickness | O2 % | ?-g Burn Length | 1-g Burn Length |
+|---|---|---|---|---|
+| 2-1 | 0.27 mm | 21.5 | ~ 0 | Complete |
+| 2-2 | 0.61 mm | 22.1 | ~ 0 | 7.6 cm |
+| 2-3 | 1.03 mm | 22.1 | ~ 0 | ~ 0 |
+| 2-4 | 037 mm | 22.1 | ~ 0 | Complete |
+Other rows are SIBAL, PMMA/Nomex and PMMA samples (burned 5 to 29 cm in the ?-g column); no silicone-like contrast is claimed for them. The "037 mm" thickness is the file's own typo.
+
+## Notes
+- `ground` evidence = the 5 modelling studies (PSI-60, 62, 115, 117, 142); the text says "ground studies", never "normal gravity". PSI-22 appears only in the evidence list in the excerpt.
+- `fuel-gap` exists only where zero solid-fuel experiments cover the habitat's oxygen, so it is absent for iss (BASS-II covers 21%). "Cover" means the Lane A tested range includes the value, not that a run sat exactly there.
+- Weakest SI takeaways: the three `bre-airflow` ones rest on one outreach-style BRE sentence plus the 21 to 40% range; they say 30% lies inside it, not that flames were seen at 30%.

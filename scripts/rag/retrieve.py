@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import sys
 from collections import Counter
 from pathlib import Path
@@ -23,6 +24,24 @@ from rag.common import DATA, STOPWORDS, load_corpus, sentences, tokenize  # noqa
 K1, B = 1.5, 0.75
 CHUNK_WORDS = 300
 INDEX_PATH = DATA / "index.json"
+
+
+# Query-side synonyms. The corpus writes "CO2", "O2" and "extinguish..." where people ask "carbon dioxide",
+# "oxygen" and "put out". Applied to the QUERY only (the index is unchanged): when a left-hand phrase is in the
+# query, its right-hand terms are appended. Lane E: mirror this list in server/bm25.ts before tokenizing the question.
+SYNONYMS = [
+    (r"\bcarbon dioxide\b", "co2"), (r"\bco2\b", "carbon dioxide"),
+    (r"\boxygen\b", "o2"), (r"\bo2\b", "oxygen"),
+    (r"\bnitrogen\b", "n2"), (r"\bn2\b", "nitrogen"),
+    (r"\bhelium\b", "he"), (r"\bhe\b", "helium"),
+    (r"\b(put|puts|putting) out\b", "extinguish extinguishment extinction"),
+]
+
+
+def expand_query(query: str) -> str:
+    low = query.lower()
+    extra = [add for pat, add in SYNONYMS if re.search(pat, low)]
+    return " ".join([query] + extra)
 
 
 def chunk_text(body: str, target: int = CHUNK_WORDS) -> list[str]:
@@ -78,7 +97,7 @@ def load_index(path: Path = INDEX_PATH) -> dict:
 def retrieve(query: str, k: int = 5, index: dict | None = None, investigation_id: str | None = None) -> list[dict]:
     """Top-k chunks by BM25: [{chunk, score}], best first; zero-score chunks are dropped."""
     idx = index or load_index()
-    q = tokenize(query)
+    q = tokenize(expand_query(query))
     idf, avg, k1, b = idx["idf"], idx["avgLen"], idx["k1"], idx["b"]
     scored = []
     for c in idx["chunks"]:

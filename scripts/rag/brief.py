@@ -142,6 +142,8 @@ REJECTED = {
     "None of the 24 PSI combustion investigations tested partial gravity; PSI-25 contrasted outer-space oval flames with Earth's cone flames.":
         "glued: the excerpt is outreach copy and does not support the partial-gravity count",
 }
+# Topic slug for SI-written takeaways, by the investigation they rest on: ids are clm:brief:<habitat>:<topic>.
+TOPIC_BY_INV = {"PSI-20": "bre-airflow"}
 # Takeaways a human reviewer narrowed to their evidence: model text -> (shipped text, reason).
 EDITED = {
     "Without airflow, flames at 21% oxygen went out quickly, unlike elevated-oxygen flames; ACME BRE tested 21 to 40% oxygen.":

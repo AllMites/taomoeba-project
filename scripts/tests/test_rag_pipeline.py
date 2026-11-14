@@ -10,7 +10,7 @@ from rag import fetch, precompute  # noqa: E402
 from rag.common import DATA, ROOT  # noqa: E402
 
 CONTROL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f]")
-CLAIM_ID = re.compile(r"^clm:(PSI-\d+):(summary|finding:\d+|rationale:(iss|moon|rover))$|^clm:(brief):(iss|moon|rover):\d+$")
+CLAIM_ID = re.compile(r"^clm:(PSI-\d+):(summary|finding:\d+|rationale:(iss|moon|rover))$|^clm:(brief):(iss|moon|rover):[a-z0-9-]+$")
 
 
 def test_fix_splits_fused_sentences_without_losing_text():
@@ -46,9 +46,11 @@ def test_claim_ids_and_extractive_text():
     info = json.loads((ROOT / "corpus" / "build-info.json").read_text(encoding="utf-8"))
     for c in claims:
         m = CLAIM_ID.match(c["id"])
-        if c["kind"] == "takeaway":  # clm:brief:<habitat>:<n>; the habitat check lives in test_rag_corpus
+        if c["kind"] == "takeaway":  # clm:brief:<habitat>:<topic>; the habitat check lives in test_rag_corpus
+            from rag import brief_facts
             assert m and m.group(4) == "brief" and m.group(5) == c["habitat"], c["id"]
-            assert info["mode"] == "live", "extractive mode emits no takeaways"
+            # SI-written takeaways need live mode; computed ones (pure data) exist in both modes
+            assert info["mode"] == "live" or c["id"].rsplit(":", 1)[1] in brief_facts.TOPICS, c["id"]
             continue
         assert m and m.group(1) == c["investigationId"], c["id"]
         assert c["id"].split(":")[2] == c["kind"], c["id"]
@@ -112,7 +114,7 @@ def test_review_retires_rejected_ids_and_texts_and_applies_edits():
         {**tk, "id": "clm:brief:moon:2", "text": t_old},
     ]
     out = precompute.review(claims)
-    assert [c["id"] for c in out] == [eid, "clm:brief:moon:1"]
+    assert [c["id"] for c in out] == [eid, "clm:brief:moon:bre-airflow"]  # id by topic, not position
     assert out[0]["text"] == new and out[1]["text"] == brief.EDITED[t_old][0]
 
 

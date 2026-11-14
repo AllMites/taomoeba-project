@@ -71,7 +71,8 @@ def test_claims_schema_and_refs(claims, sources, corpus):
     for c in claims:
         v.validate(c)
         assert c["sourceIds"] and set(c["sourceIds"]) <= ids, c["id"]
-        assert any(norm(c["excerpt"]) in norm(corpus[sid]["body"]) for sid in c["sourceIds"]), c["id"]
+        if not c["excerpt"].startswith("Computed from PSI run tables: "):  # computed takeaways: see test_rag_brief_facts
+            assert any(norm(c["excerpt"]) in norm(corpus[sid]["body"]) for sid in c["sourceIds"]), c["id"]
         assert c["text"].strip()
 
 
@@ -137,16 +138,16 @@ def test_word_limit(claims):
 
 def test_takeaways_are_grounded(claims, sources, corpus):
     """Every takeaway: habitat, real sources, verbatim excerpt, <=25 words, and no invented number."""
-    from rag import brief
+    from rag import brief, brief_facts
 
     habs, invs = brief.load_data()
     ids = {s["id"] for s in sources}
     info = json.loads((ROOT / "corpus" / "build-info.json").read_text(encoding="utf-8"))
-    tk = [c for c in claims if c["kind"] == "takeaway"]
+    tk = [c for c in claims if c["kind"] == "takeaway" and c["id"].rsplit(":", 1)[1] not in brief_facts.TOPICS]
     if info["mode"] == "live":
         assert tk, "live mode must ship a habitat brief"
     for c in tk:
-        assert c["habitat"] in ("iss", "moon", "rover") and re.match(rf"^clm:brief:{c['habitat']}:\d+$", c["id"]), c["id"]
+        assert c["habitat"] in ("iss", "moon", "rover") and re.match(rf"^clm:brief:{c['habitat']}:[a-z0-9-]+$", c["id"]), c["id"]
         assert 1 <= len(c["sourceIds"]) <= 3 and set(c["sourceIds"]) <= ids, c["id"]
         assert norm(c["excerpt"]) in norm(corpus[c["sourceIds"][0]]["body"]), c["id"]
         assert c["investigationId"] in invs and words(c["text"]) <= 25, c["id"]
