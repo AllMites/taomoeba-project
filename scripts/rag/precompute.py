@@ -370,7 +370,16 @@ def apply_brief(claims: list[dict]) -> list[dict]:
     return keep + brief_facts.build()
 
 
+def on_screen(text: str) -> str:
+    """Text as the page shows it: the page says "experiment", so the "PSI investigation" lead-in is dropped
+    ("PSI investigation ACME runs ..." reads "ACME runs ..."). Applied at write time only, so prompts, the
+    cache and the review table keep the model's own wording."""
+    out = text.replace("PSI investigation ", "")
+    return out[:1].upper() + out[1:]
+
+
 def write_claims(claims: list[dict]) -> dict:
+    claims = [{**c, "text": on_screen(c["text"])} for c in claims]
     (DATA / "claims.json").write_text(json.dumps({"items": claims}, indent=2, ensure_ascii=False) + "\n",
                                       encoding="utf-8", newline="\n")
     return {"claims": len(claims), "over25": sum(1 for c in claims if words(c["text"]) > MAX_WORDS),

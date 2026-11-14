@@ -4,7 +4,7 @@
       "id": "clm:PSI-10:summary",
       "investigationId": "PSI-10",
       "kind": "summary",
-      "text": "PSI investigation ACME runs spherical diffusion flame tests in drop towers (free-fall tubes) and aboard the International Space Station.",
+      "text": "ACME runs spherical diffusion flame tests in drop towers (free-fall tubes) and aboard the International Space Station.",
       "sourceIds": [
         "psi:PSI-10"
       ],
@@ -14,7 +14,7 @@
       "id": "clm:PSI-20:summary",
       "investigationId": "PSI-20",
       "kind": "summary",
-      "text": "PSI investigation ACME BRE initially observes flames in microgravity without varying the fuel flow rate.",
+      "text": "ACME BRE initially observes flames in microgravity without varying the fuel flow rate.",
       "sourceIds": [
         "psi:PSI-20"
       ],
@@ -24,7 +24,7 @@
       "id": "clm:PSI-20:finding:1",
       "investigationId": "PSI-20",
       "kind": "finding",
-      "text": "PSI investigation ACME BRE observed quasi-steady burning corresponding to PMMA and Nylon in microgravity despite no airflow.",
+      "text": "ACME BRE observed quasi-steady burning corresponding to PMMA and Nylon in microgravity despite no airflow.",
       "sourceIds": [
         "psi:PSI-20"
       ],
@@ -34,7 +34,7 @@
       "id": "clm:PSI-20:finding:2",
       "investigationId": "PSI-20",
       "kind": "finding",
-      "text": "PSI investigation ACME BRE reports that without airflow, 21% oxygen flames self-extinguished in a short time, while elevated-oxygen flames kept burning.",
+      "text": "ACME BRE reports that without airflow, 21% oxygen flames self-extinguished in a short time, while elevated-oxygen flames kept burning.",
       "sourceIds": [
         "psi:PSI-20"
       ],
@@ -45,7 +45,7 @@
       "investigationId": "PSI-20",
       "kind": "rationale",
       "habitat": "iss",
-      "text": "At ISS's 21% oxygen, PSI investigation ACME BRE reports microgravity flames without airflow self-extinguished in a short time.",
+      "text": "At ISS's 21% oxygen, ACME BRE reports microgravity flames without airflow self-extinguished in a short time.",
       "sourceIds": [
         "psi:PSI-20"
       ],
@@ -55,7 +55,7 @@
       "id": "clm:PSI-21:summary",
       "investigationId": "PSI-21",
       "kind": "summary",
-      "text": "PSI investigation ACME CLD Flame plans to study methane and ethylene diffusion flames across a wide range of test conditions.",
+      "text": "ACME CLD Flame plans to study methane and ethylene diffusion flames across a wide range of test conditions.",
       "sourceIds": [
         "psi:PSI-21"
       ],
@@ -65,7 +65,7 @@
       "id": "clm:PSI-22:summary",
       "investigationId": "PSI-22",
       "kind": "summary",
-      "text": "PSI investigation ACME E-FIELD Flames applies up to 10 kV between a burner and a mesh above it to test gas flames in microgravity (near-weightless).",
+      "text": "ACME E-FIELD Flames applies up to 10 kV between a burner and a mesh above it to test gas flames in microgravity (near-weightless).",
       "sourceIds": [
         "psi:PSI-22"
       ],
@@ -75,7 +75,7 @@
       "id": "clm:PSI-23:summary",
       "investigationId": "PSI-23",
       "kind": "summary",
-      "text": "PSI investigation ACME s-Flame issues fuel and diluent mixtures through a spherical porous burner and ignites them to form a nominally spherical flame.",
+      "text": "ACME s-Flame issues fuel and diluent mixtures through a spherical porous burner and ignites them to form a nominally spherical flame.",
       "sourceIds": [
         "psi:PSI-23"
       ],
@@ -85,7 +85,7 @@
       "id": "clm:PSI-25:summary",
       "investigationId": "PSI-25",
       "kind": "summary",
-      "text": "PSI investigation BASS-II mounted fuel samples in a small wind tunnel with airflow up to 40 cm/s aboard the International Space Station.",
+      "text": "BASS-II mounted fuel samples in a small wind tunnel with airflow up to 40 cm/s aboard the International Space Station.",
       "sourceIds": [
         "psi:PSI-25"
       ],
@@ -95,7 +95,7 @@
       "id": "clm:PSI-26:summary",
       "investigationId": "PSI-26",
       "kind": "summary",
-      "text": "PSI investigation BASS (Burning and Suppression of Solids) ran its tests aboard ISS inside the Microgravity Glove Box.",
+      "text": "BASS (Burning and Suppression of Solids) ran its tests aboard ISS inside the Microgravity Glove Box.",
       "sourceIds": [
         "psi:PSI-26"
       ],
@@ -116,7 +116,7 @@
       "id": "clm:PSI-39:summary",
       "investigationId": "PSI-39",
       "kind": "summary",
-      "text": "PSI investigation CFI examines combustion of n-dodecane fuel and fuel mixtures at pressures from 0.25 atm to 5 atm.",
+      "text": "CFI examines combustion of n-dodecane fuel and fuel mixtures at pressures from 0.25 atm to 5 atm.",
       "sourceIds": [
         "psi:PSI-39"
       ],
@@ -126,7 +126,7 @@
       "id": "clm:PSI-47:summary",
       "investigationId": "PSI-47",
       "kind": "summary",
-      "text": "PSI investigation DAFT-2 modified a TSI P-Trak particle counter for microgravity (near-weightless) and compared it with a DustTrak on orbit.",
+      "text": "DAFT-2 modified a TSI P-Trak particle counter for microgravity (near-weightless) and compared it with a DustTrak on orbit.",
       "sourceIds": [
         "psi:PSI-47"
       ],
@@ -156,7 +156,7 @@
       "id": "clm:PSI-68:summary",
       "investigationId": "PSI-68",
       "kind": "summary",
-      "text": "PSI investigation FLEX-2 varied chamber pressure from 0.5 to 3.0 atm and oxygen from 0.1 to 0.4 mole fraction.",
+      "text": "FLEX-2 varied chamber pressure from 0.5 to 3.0 atm and oxygen from 0.1 to 0.4 mole fraction.",
       "sourceIds": [
         "psi:PSI-68"
       ],
@@ -166,7 +166,7 @@
       "id": "clm:PSI-69:summary",
       "investigationId": "PSI-69",
       "kind": "summary",
-      "text": "PSI investigation FLEX (Flame Extinguishment Experiment) ignites and observes burning of relatively large liquid fuel droplets.",
+      "text": "FLEX (Flame Extinguishment Experiment) ignites and observes burning of relatively large liquid fuel droplets.",
       "sourceIds": [
         "psi:PSI-69"
       ],
@@ -176,7 +176,7 @@
       "id": "clm:PSI-69:finding:1",
       "investigationId": "PSI-69",
       "kind": "finding",
-      "text": "PSI investigation FLEX reports that at some ambient conditions, extinction droplets were too small to observe or measure with available diagnostics (measuring tools).",
+      "text": "FLEX reports that at some ambient conditions, extinction droplets were too small to observe or measure with available diagnostics (measuring tools).",
       "sourceIds": [
         "psi:PSI-69"
       ],
@@ -186,7 +186,7 @@
       "id": "clm:PSI-98:summary",
       "investigationId": "PSI-98",
       "kind": "summary",
-      "text": "PSI investigation SAFFIRE-I performed a fire test on the Cygnus resupply vehicle after it left the ISS.",
+      "text": "SAFFIRE-I performed a fire test on the Cygnus resupply vehicle after it left the ISS.",
       "sourceIds": [
         "psi:PSI-98"
       ],
@@ -196,7 +196,7 @@
       "id": "clm:PSI-99:summary",
       "investigationId": "PSI-99",
       "kind": "summary",
-      "text": "PSI investigation SAFFIRE-II performed its fire test on the Cygnus resupply vehicle after it deberthed from the ISS.",
+      "text": "SAFFIRE-II performed its fire test on the Cygnus resupply vehicle after it deberthed from the ISS.",
       "sourceIds": [
         "psi:PSI-99"
       ],
@@ -217,7 +217,7 @@
       "id": "clm:PSI-100:summary",
       "investigationId": "PSI-100",
       "kind": "summary",
-      "text": "PSI investigation SAFFIRE-III burned samples inside the Cygnus resupply vehicle after it undocked (separated) from the ISS.",
+      "text": "SAFFIRE-III burned samples inside the Cygnus resupply vehicle after it undocked (separated) from the ISS.",
       "sourceIds": [
         "psi:PSI-100"
       ],
@@ -228,7 +228,7 @@
       "investigationId": "PSI-100",
       "kind": "rationale",
       "habitat": "iss",
-      "text": "For the ISS (microgravity, near-weightless), PSI investigation SAFFIRE-III hypothesizes that Earth fire standards carry uncertainty for spacecraft fire safety design.",
+      "text": "For the ISS (microgravity, near-weightless), SAFFIRE-III hypothesizes that Earth fire standards carry uncertainty for spacecraft fire safety design.",
       "sourceIds": [
         "psi:PSI-100"
       ],
@@ -238,7 +238,7 @@
       "id": "clm:PSI-101:summary",
       "investigationId": "PSI-101",
       "kind": "summary",
-      "text": "PSI investigation SAME-R sought to quantify the sizes liquid smoke particles reach in low gravity (near-weightless) and relate them to smoke generation conditions.",
+      "text": "SAME-R sought to quantify the sizes liquid smoke particles reach in low gravity (near-weightless) and relate them to smoke generation conditions.",
       "sourceIds": [
         "psi:PSI-101"
       ],
@@ -259,7 +259,7 @@
       "id": "clm:PSI-102:summary",
       "investigationId": "PSI-102",
       "kind": "summary",
-      "text": "PSI investigation SAME turned on an igniter for 15 to 60 seconds and started thermophoretic samplers to collect smoke.",
+      "text": "SAME turned on an igniter for 15 to 60 seconds and started thermophoretic samplers to collect smoke.",
       "sourceIds": [
         "psi:PSI-102"
       ],
@@ -280,7 +280,7 @@
       "id": "clm:PSI-106:summary",
       "investigationId": "PSI-106",
       "kind": "summary",
-      "text": "PSI investigation SLICE captured more than 4,000 high-resolution images across 13 testing experiments.",
+      "text": "SLICE captured more than 4,000 high-resolution images across 13 testing experiments.",
       "sourceIds": [
         "psi:PSI-106"
       ],
@@ -290,7 +290,7 @@
       "id": "clm:PSI-107:summary",
       "investigationId": "PSI-107",
       "kind": "summary",
-      "text": "PSI investigation SPICE ignited flames in controlled co-flow air using burner diameters of 0.41, 0.76, and 1.6 mm.",
+      "text": "SPICE ignited flames in controlled co-flow air using burner diameters of 0.41, 0.76, and 1.6 mm.",
       "sourceIds": [
         "psi:PSI-107"
       ],
@@ -300,7 +300,7 @@
       "id": "clm:PSI-115:summary",
       "investigationId": "PSI-115",
       "kind": "summary",
-      "text": "PSI investigation simulates how dibutyl-phthalate (DBP, a liquid) particles form and grow in Earth gravity and microgravity.",
+      "text": "Simulates how dibutyl-phthalate (DBP, a liquid) particles form and grow in Earth gravity and microgravity.",
       "sourceIds": [
         "psi:PSI-115"
       ],
@@ -350,7 +350,7 @@
       "id": "clm:PSI-159:summary",
       "investigationId": "PSI-159",
       "kind": "summary",
-      "text": "PSI investigation ACME CFI-G performs spherical diffusion flame (flames fed by gas mixing at the edge) tests aboard the International Space Station.",
+      "text": "ACME CFI-G performs spherical diffusion flame (flames fed by gas mixing at the edge) tests aboard the International Space Station.",
       "sourceIds": [
         "psi:PSI-159"
       ],

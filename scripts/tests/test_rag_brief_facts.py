@@ -139,3 +139,11 @@ def test_no_key_never_downgrades_live_claims_by_accident(tmp_path, monkeypatch):
     precompute.guard(True, [])  # key present: allowed
     info.write_text(json.dumps({"mode": "extractive"}), encoding="utf-8")
     precompute.guard(False, [])  # nothing live to lose
+
+
+def test_page_text_never_says_psi_investigation():
+    from rag.precompute import on_screen
+    assert on_screen("PSI investigation ACME runs flame tests.") == "ACME runs flame tests."
+    assert on_screen("At ISS's 21% oxygen, PSI investigation ACME BRE reports flames went out.") == "At ISS's 21% oxygen, ACME BRE reports flames went out."
+    items = json.loads((DATA / "claims.json").read_text(encoding="utf-8"))["items"]
+    assert not [c["id"] for c in items if "PSI investigation" in c["text"]]
