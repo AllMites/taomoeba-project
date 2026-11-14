@@ -12,6 +12,6 @@ not_found_handling = "none"
 run_worker_first = ["/ask", "/rank", "/verify", "/health"]
 
 [vars]
-SPEND_MODE = "mock"
+SPEND_MODE = "live"
 
 # Secrets (never in this file): wrangler secret put ANTHROPIC_API_KEY / TYPESAFE_API_KEY
