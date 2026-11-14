@@ -51,7 +51,7 @@
 .rk-num { flex: none; font-size: var(--text-3xl); line-height: 0.82; color: var(--color-text-muted); letter-spacing: 0; min-width: 2ch; }
 .rk-headtext { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
 .rk-title { font-size: var(--text-lg); line-height: 1.1; overflow-wrap: break-word; }
-.rk-lit { align-self: flex-start; color: var(--color-flame); border: 1px solid var(--color-flame); border-radius: var(--radius-full); padding: 2px var(--space-2); font-size: 0.6875rem; }
+.rk-lit { align-self: flex-start; color: var(--color-flame); border: 1px solid var(--color-flame); border-radius: var(--radius-full); padding: 2px var(--space-2); font-size: 0.75rem; }
 .rk-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
 .rk-id { color: var(--color-text-muted); font-size: 0.75rem; }
 .rk-tag {
@@ -65,7 +65,7 @@
 .rk-tag-shape { fill: currentColor; }
 .rk-tag-stroke { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
 .rk-sum { display: block; }
-.rk-label { display: block; color: var(--color-text-muted); font-size: 0.6875rem; margin-bottom: var(--space-1); }
+.rk-label { display: block; color: var(--color-text-muted); font-size: 0.75rem; margin-bottom: var(--space-1); }
 
 /* ---- Oxygen bar ---- */
 .rk-o2 { display: block; padding-top: var(--space-4); }
@@ -78,9 +78,9 @@
   background: var(--color-marker); box-shadow: 0 0 0 2px var(--color-surface); border-radius: 2px;
   transition: left var(--motion-mid) var(--ease);
 }
-.rk-o2-val { position: absolute; bottom: calc(100% + 2px); left: 50%; translate: -50% 0; color: var(--color-accent); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; }
+.rk-o2-val { position: absolute; bottom: calc(100% + 2px); left: 50%; translate: -50% 0; color: var(--color-accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; }
 .rk-o2-cap { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); font-size: 0.8125rem; color: var(--color-text-muted); }
-.rk-o2-cap .t-readout { font-size: 0.6875rem; }
+.rk-o2-cap .t-readout { font-size: 0.75rem; }
 .rk-o2-cap span:nth-child(2) { text-align: center; }
 .rk-o2-hit { color: var(--color-text); font-weight: 600; }
 .rk-o2-none { display: block; font-size: 0.875rem; color: var(--color-text-muted); font-style: italic; }
@@ -88,7 +88,7 @@
 /* ---- Factor marks ---- */
 .rk-dots { display: flex; gap: var(--space-4); flex-wrap: wrap; }
 .rk-dot-item { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; cursor: help; }
-.rk-dot-label { font-size: 0.6875rem; color: var(--color-text-muted); }
+.rk-dot-label { font-size: 0.75rem; color: var(--color-text-muted); }
 .rk-dot { color: var(--color-text); }
 .rk-dot-fill { fill: currentColor; }
 .rk-dot-ring { fill: none; stroke: currentColor; stroke-width: 1.8; }
