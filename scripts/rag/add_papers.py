@@ -282,7 +282,7 @@ def main(x5: Path, more: Path | None = None) -> None:
     for it, text, lic in more_items(more) if more else []:
         sid, title, url = it["id"], it["title"], it["url"]
         body = "\n\n".join(p for p in clean(text).split("\n\n") if not _bad(p))
-        if words(body) < 80:
+        if words(body) < 50:  # short NASA pages (e.g. a one-paragraph Spinoff entry) are still clean prose
             print("too little text, skipped:", sid)
             continue
         if lic is None:

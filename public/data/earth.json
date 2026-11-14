@@ -1,0 +1,85 @@
+{
+ "about": "Benefits on Earth of NASA fire research, each tied to its source. Written by the team from the linked NASA pages, in our own words; status says how far each one has come.",
+ "items": [
+  {
+   "id": "water-mist",
+   "title": "Water-mist fire extinguishers",
+   "status": "in-use",
+   "summary": "Since 2016 the ISS has carried portable fine-water-mist extinguishers in place of its carbon dioxide ones, and NASA is building the next one for Orion. The zero-leak valve made for them now stops leaks in several industries on Earth. A water-mist flame experiment flown on the Space Shuttle was meant to judge water mist as a fire suppressant on Earth as well as in spacecraft.",
+   "experiments": [],
+   "note": "Not one of the PSI tables in this dashboard: the Mist experiment flew on Space Shuttle mission STS-107.",
+   "sources": [
+    { "id": "nasa:spinoff-water-mist", "title": "NASA Spinoff: water-mist extinguishers and the zero-leak valve", "url": "https://spinoff.nasa.gov/node/11065" },
+    { "id": "ntrs:20040053582", "title": "The Water-Mist Fire Suppression Experiment (Mist): preliminary results from STS-107", "url": "https://ntrs.nasa.gov/citations/20040053582" }
+   ],
+   "ask": "How does water mist put out fires?"
+  },
+  {
+   "id": "smoke-detection",
+   "title": "Smoke detectors that sense the right smoke",
+   "status": "research",
+   "summary": "SAME measured the smoke from overheated spacecraft materials and found that a detector design often missed the smaller particles from Teflon and Kapton, plastics used widely in electronics. NASA notes that detectors built on these results could also protect extreme places on Earth, such as submarines and underwater laboratories.",
+   "experiments": ["PSI-102", "PSI-101", "PSI-115"],
+   "sources": [
+    { "id": "nasa:same-factsheet", "title": "NASA: Smoke Aerosol Measurement Experiment (SAME) fact sheet", "url": "https://www.nasa.gov/wp-content/uploads/2025/07/smoke-aerosol-measurement-experiment-same.pdf" },
+    { "id": "doi:10.1016/j.firesaf.2018.04.004", "title": "Meyer et al., Evaluation of spacecraft smoke detector performance in the low-gravity environment, Fire Safety Journal 98 (2018)", "url": "https://doi.org/10.1016/j.firesaf.2018.04.004" }
+   ],
+   "ask": "What did SAME find about smoke particles?"
+  },
+  {
+   "id": "cool-flames",
+   "title": "Cleaner engines from cool flames",
+   "status": "research",
+   "summary": "FLEX, a study of fire suppressants, found that droplets kept burning in an invisible cool flame after the visible flame went out. Cool flames make carbon monoxide and formaldehyde instead of carbon dioxide and water, and NASA says understanding them could lead to more efficient, less polluting vehicles. On Earth they flicker out quickly; in microgravity they last long enough to study.",
+   "experiments": ["PSI-69", "PSI-68", "PSI-39", "PSI-159", "PSI-142"],
+   "sources": [
+    { "id": "nasa:studying-combustion", "title": "NASA: Studying Combustion and Fire Safety on the Space Station", "url": "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/" }
+   ],
+   "ask": "What is a cool flame?"
+  },
+  {
+   "id": "cleaner-burning",
+   "title": "Burners that waste less and pollute less",
+   "status": "research",
+   "summary": "The six ACME studies look at fuel efficiency and pollutant production for combustion on Earth; NASA says the Flame Design soot results may point to more efficient, less polluting ways to burn fuel. FLEX-2 results could also raise the fuel efficiency of liquid-fuel engines on Earth.",
+   "experiments": ["PSI-10", "PSI-21", "PSI-22", "PSI-23", "PSI-159", "PSI-68"],
+   "sources": [
+    { "id": "nasa:studying-combustion", "title": "NASA: Studying Combustion and Fire Safety on the Space Station", "url": "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/" }
+   ],
+   "ask": "How could ACME research reduce pollution on Earth?"
+  },
+  {
+   "id": "fire-codes",
+   "title": "Fire-safety codes for buildings",
+   "status": "research",
+   "summary": "NASA says results from the Confined Combustion study on the ISS guide the design of structures, fire-safety codes and fire response, in space and on Earth.",
+   "experiments": [],
+   "note": "An ISS National Lab study, not one of the PSI tables in this dashboard.",
+   "sources": [
+    { "id": "nasa:studying-combustion", "title": "NASA: Studying Combustion and Fire Safety on the Space Station", "url": "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/" }
+   ]
+  },
+  {
+   "id": "breathing-gear",
+   "title": "Firefighter breathing gear",
+   "status": "heritage",
+   "summary": "A National Bureau of Standards and NASA project produced a lighter breathing system: face mask, frame, harness and air bottle. NASA Spinoff reports that every major maker of breathing apparatus uses NASA technology in some form, and that inhalation injuries have gone down.",
+   "experiments": [],
+   "sources": [
+    { "id": "nasa:spinoff-breathing", "title": "NASA Spinoff: Space Technology for the Fire Department", "url": "https://spinoff.nasa.gov/node/9518" }
+   ],
+   "ask": "How did NASA help firefighters' breathing equipment?"
+  },
+  {
+   "id": "turnout-gear",
+   "title": "Heat-resistant turnout gear",
+   "status": "heritage",
+   "summary": "PBI fibre, used in Apollo, Skylab and Space Shuttle flight suits and gear, entered the U.S. fire service in 1978. NASA Spinoff reports that PBI Gold turnout gear meets every NFPA and EN 469 requirement for firefighter clothing.",
+   "experiments": [],
+   "sources": [
+    { "id": "nasa:spinoff-pbi", "title": "NASA Spinoff: PBI fibre in firefighter protective clothing", "url": "https://spinoff.nasa.gov/node/10564" }
+   ],
+   "ask": "What is PBI fabric and how do firefighters use it?"
+  }
+ ]
+}

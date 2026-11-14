@@ -1,0 +1,25 @@
+/* "On Earth too": benefits on the ground, each with its source. Colours come from tokens only. */
+.earth {
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+}
+.earth-intro { margin: 0 0 var(--space-4); max-width: 62ch; color: var(--color-text-muted); }
+.earth-legend { list-style: none; margin: 0 0 var(--space-5); padding: 0; display: grid; gap: var(--space-2); font-size: var(--text-sm); }
+.earth-badge { display: inline-block; font-size: var(--text-sm); font-weight: 600; padding: 1px var(--space-2); border-radius: var(--radius-1); border: 1px solid var(--color-border-strong); }
+.earth-in-use { background: var(--color-highlight-bg); border-color: var(--color-accent); }
+.earth-research { background: var(--color-bg); }
+.earth-heritage { background: var(--color-bg); border-style: dashed; }
+.earth-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
+.earth-card { display: grid; gap: var(--space-2); padding: var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-bg); min-width: 0; justify-items: start; }
+.earth-h3 { margin: 0; font-size: var(--text-base, 1rem); }
+.earth-text { margin: 0; }
+.earth-small { margin: 0; font-size: var(--text-sm); }
+.earth-exps { display: grid; gap: var(--space-1); }
+.earth-exps ul, .earth-sources { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); }
+.earth-exp { font: inherit; font-size: var(--text-sm); padding: 1px var(--space-2); border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-surface); color: var(--color-text); cursor: pointer; }
+.earth-exp:hover { border-color: var(--color-accent); }
+.earth-exp:focus-visible, .earth-ask:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.earth-sources { flex-direction: column; font-size: var(--text-sm); }
+.earth-ask { text-align: left; }

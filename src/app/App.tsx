@@ -4,6 +4,7 @@ import Brief from "../brief/index.tsx";
 import type { HabitatPreset, Investigation } from "../contracts/index.ts";
 import { pickerHabitats } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
+import Earth from "../earth/index.tsx";
 import Evidence from "../evidence/index.tsx";
 import Ranking from "../ranking/index.tsx";
 import Trust from "../trust/index.tsx";
@@ -217,6 +218,7 @@ export default function App() {
         <Stage />
         <Ranking />
         <WhatIf />
+        <Earth />
         <Trust />
         <aside className="limits" aria-labelledby="limits-h">
           <h2 id="limits-h" className="sec-h">What this data cannot tell you</h2>

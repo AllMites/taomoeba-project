@@ -1016,6 +1016,303 @@
      }
     }
    }
+  },
+  {
+   "question": "How does water mist put out fires?",
+   "result": {
+    "answer": "The Mist experiment studied how water droplet diameter and water concentration affect the speed, strength and shape of flames. [nasa:researchers-guide-combustion] In the shuttle tests, effective flame suppression was observed at higher water loadings and smaller water droplet sizes. [ntrs:20040053582]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The Mist experiment studied how water droplet diameter and water concentration affect the speed, strength and shape of flames.",
+      "sourceIds": [
+       "nasa:researchers-guide-combustion"
+      ],
+      "excerpt": "The purpose of the Mist experiment was to study how water droplet diameter and water concentration affect the speed, strength and shape of flames created in various fuel and oxygen mixtures."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "In the shuttle tests, effective flame suppression was observed at higher water loadings and smaller water droplet sizes.",
+      "sourceIds": [
+       "ntrs:20040053582"
+      ],
+      "excerpt": "Effective flame suppression is observed at progressively higher water loadings and smaller water droplet sizes."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 89,
+     "matched": 6,
+     "facts": 0,
+     "reranked": 20,
+     "kept": 2,
+     "dropped": 1,
+     "checked": 2
+    },
+    "summary": "Water mist suppresses fires through the characteristics of its droplets: the evidence shows that flame suppression improves at higher water loadings and with smaller droplet sizes. The Mist experiment studied how droplet diameter and water concentration affect the speed, strength and shape of flames. The evidence does not describe the chemical or physical mechanism in detail, so it does not fully explain how the droplets stop the flame.",
+    "sources": {
+     "nasa:researchers-guide-combustion": {
+      "title": "A Researcher's Guide to: Combustion Science (NASA ISS, NP-2015-10-034-JSC)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     },
+     "ntrs:20040053582": {
+      "title": "The Water-Mist Fire Suppression Experiment (Mist): Preliminary Results From The STS-107 Mission",
+      "url": "https://ntrs.nasa.gov/citations/20040053582",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+     }
+    }
+   }
+  },
+  {
+   "question": "What did SAME find about smoke particles?",
+   "result": {
+    "answer": "Smoke particles from low-gravity flames tend to be larger than those produced in normal gravity. [ntrs:20130000422] The earlier CSD experiment suggested liquid smoke particles could exceed 1 micrometer, while solid particles stayed below that size. [ntrs:20130000422] The SAME-R investigation aimed to measure how large liquid smoke particles become in low gravity. [psi:PSI-101]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "PSI-101",
+      "kind": "finding",
+      "text": "Smoke particles from low-gravity flames tend to be larger than those produced in normal gravity.",
+      "sourceIds": [
+       "ntrs:20130000422"
+      ],
+      "excerpt": "Previous work on smoke particles from low-gravity sources by Urban et al. 5 found that …"
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "PSI-101",
+      "kind": "finding",
+      "text": "The earlier CSD experiment suggested liquid smoke particles could exceed 1 micrometer, while solid particles stayed below that size.",
+      "sourceIds": [
+       "ntrs:20130000422"
+      ],
+      "excerpt": "Results from the CSD (Comparative Soot Diagnostics) Experiment 5 which studied smoke properties in low-gravity …"
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "PSI-101",
+      "kind": "finding",
+      "text": "The SAME-R investigation aimed to measure how large liquid smoke particles become in low gravity.",
+      "sourceIds": [
+       "psi:PSI-101"
+      ],
+      "excerpt": "Similar to the original SAME investigation, the primary objective of the SAME-R investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+     }
+    ],
+    "investigationIds": [
+     "PSI-101"
+    ],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 89,
+     "matched": 6,
+     "facts": 0,
+     "reranked": 20,
+     "kept": 3,
+     "dropped": 0,
+     "checked": 3
+    },
+    "summary": "The evidence does not report what SAME actually found. It describes SAME-R's goal, which was to measure how large liquid smoke particles become in low gravity, and it notes that an earlier study suggested liquid smoke particles could exceed 1 micrometer while solid particles stayed smaller. For the results themselves, check the full SAME or SAME-R reports.",
+    "sources": {
+     "ntrs:20130000422": {
+      "title": "Particle Morphology and Size Results from the Smoke Aerosol Measurement Experiment-2",
+      "url": "https://ntrs.nasa.gov/citations/20130000422",
+      "license": "NTRS: public use permitted (short quotes only)"
+     },
+     "psi:PSI-101": {
+      "title": "Smoke Aerosol Measurement Experiment-Reflight (SAME-R)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-101&source=psi&type=investigation",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+     }
+    }
+   }
+  },
+  {
+   "question": "How could ACME research reduce pollution on Earth?",
+   "result": {
+    "answer": "The primary goal of ACME is to improve efficiency and reduce pollutant emission in practical terrestrial combustion. [nasa:glenn-acme] ACME results could help create more efficient and less polluting designs for burning fuel. [nasa:studying-combustion] ACME work includes developing and verifying improved computational models of combustion to reduce pollutant emission on Earth. [nasa:glenn-acme]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The primary goal of ACME is to improve efficiency and reduce pollutant emission in practical terrestrial combustion.",
+      "sourceIds": [
+       "nasa:glenn-acme"
+      ],
+      "excerpt": "The primary goal is to improve eﬃciency and reduce pollutant emission in practical terrestrial combustion."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "ACME results could help create more efficient and less polluting designs for burning fuel.",
+      "sourceIds": [
+       "nasa:studying-combustion"
+      ],
+      "excerpt": "Results could enable the design of flames with more or less soot, depending on the specific need, and may help create more efficient and less polluting designs for burning fuel."
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "ACME work includes developing and verifying improved computational models of combustion to reduce pollutant emission on Earth.",
+      "sourceIds": [
+       "nasa:glenn-acme"
+      ],
+      "excerpt": "The primary goal is to improve eﬃciency and reduce pollutant emission in practical terrestrial combustion, for example through the development and verification of improved computational models."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 89,
+     "matched": 6,
+     "facts": 0,
+     "reranked": 20,
+     "kept": 3,
+     "dropped": 0,
+     "checked": 3
+    },
+    "summary": "ACME research aims to make burning fuel on Earth more efficient and less polluting. Its results could help design flames with more or less soot, depending on the need, and it includes building and checking improved computer models of combustion. The evidence describes these goals and possible designs, but does not report measured pollution reductions.",
+    "sources": {
+     "nasa:glenn-acme": {
+      "title": "NASA Glenn experiment summary: Advanced Combustion via Microgravity Experiments (ACME)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     },
+     "nasa:studying-combustion": {
+      "title": "Studying Combustion and Fire Safety on the Space Station (NASA)",
+      "url": "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "How did NASA help firefighters' breathing equipment?",
+   "result": {
+    "answer": "A NASA-related project led to a lightweight breathing system with a face mask, frame, harness and air bottle. [nasa:spinoff-breathing] The breathing system used an aluminum composite material, and its frame and harness were easier to put on and take off. [nasa:spinoff-breathing] The excerpt states that every major manufacturer of breathing apparatus now incorporates NASA technology in some form. [nasa:spinoff-breathing]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "A NASA-related project led to a lightweight breathing system with a face mask, frame, harness and air bottle.",
+      "sourceIds": [
+       "nasa:spinoff-breathing"
+      ],
+      "excerpt": "A National Bureau of Standards/NASA project directed by Johnson resulted in a lightweight breathing system including face mask, frame, harness and air bottle marketed by Scott Aviation."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The breathing system used an aluminum composite material, and its frame and harness were easier to put on and take off.",
+      "sourceIds": [
+       "nasa:spinoff-breathing"
+      ],
+      "excerpt": "Aluminum composite material was used; frame and harness were easier to put on and take off."
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The excerpt states that every major manufacturer of breathing apparatus now incorporates NASA technology in some form.",
+      "sourceIds": [
+       "nasa:spinoff-breathing"
+      ],
+      "excerpt": "Today every major manufacturer of breathing apparatus incorporates NASA technology in some form, and inhalation injuries have been reduced."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 89,
+     "matched": 6,
+     "facts": 0,
+     "reranked": 20,
+     "kept": 3,
+     "dropped": 0,
+     "checked": 3
+    },
+    "summary": "NASA-related work led to a lightweight breathing system with a face mask, frame, harness and air bottle, marketed by Scott Aviation. It used an aluminum composite material, and its frame and harness were easier to put on and take off. The evidence says every major manufacturer of breathing apparatus now incorporates NASA technology in some form, and that inhalation injuries have been reduced.",
+    "sources": {
+     "nasa:spinoff-breathing": {
+      "title": "Space Technology for the Fire Department: firefighter breathing system (NASA Spinoff)",
+      "url": "https://spinoff.nasa.gov/node/9518",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "What is PBI fabric and how do firefighters use it?",
+   "result": {
+    "answer": "PBI fabric withstands the dangers associated with firefighting, arc flash, and flash fire. [nasa:spinoff-pbi] PBI Gold blends 40 percent thermal-resistant PBI fibers with 60 percent high-strength aramid fibers. [nasa:spinoff-pbi] PBI Gold provides firefighters and industrial workers with superior protection and meets or exceeds NFPA and EN 469 requirements. [nasa:spinoff-pbi]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "PBI fabric withstands the dangers associated with firefighting, arc flash, and flash fire.",
+      "sourceIds": [
+       "nasa:spinoff-pbi"
+      ],
+      "excerpt": "PBI fabric withstands the dangers associated with firefighting, arc flash, and flash fire."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "PBI Gold blends 40 percent thermal-resistant PBI fibers with 60 percent high-strength aramid fibers.",
+      "sourceIds": [
+       "nasa:spinoff-pbi"
+      ],
+      "excerpt": "PBI Gold blends 40 percent thermal-resistant PBI fibers with 60 percent high-strength aramid, resulting in a fabric which does not shrink, become brittle, or break open under extreme heat and flame exposure."
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "PBI Gold provides firefighters and industrial workers with superior protection and meets or exceeds NFPA and EN 469 requirements.",
+      "sourceIds": [
+       "nasa:spinoff-pbi"
+      ],
+      "excerpt": "PBI Gold provides firefighters and industrial workers with superior protection and meets or exceeds every National Fire Protection Association (NFPA) and EN 469 (rating standard for protective clothing for firefighters) requirement."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 89,
+     "matched": 6,
+     "facts": 0,
+     "reranked": 20,
+     "kept": 3,
+     "dropped": 0,
+     "checked": 3
+    },
+    "summary": "PBI is a fabric that withstands the dangers of firefighting, arc flash, and flash fire. One version, PBI Gold, blends 40 percent heat-resistant PBI fibers with 60 percent high-strength aramid fibers, and it is designed to keep its shape and not break open under extreme heat and flame. The evidence describes its use in protective clothing for firefighters and industrial workers but does not explain the specific gear or procedures they use it in.",
+    "sources": {
+     "nasa:spinoff-pbi": {
+      "title": "PBI fibre from spaceflight suits in firefighter turnout gear (NASA Spinoff)",
+      "url": "https://spinoff.nasa.gov/node/10564",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
   }
  ]
 }
