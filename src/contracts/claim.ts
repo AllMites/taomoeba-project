@@ -3,11 +3,12 @@ import { HabitatId } from "./habitat.ts";
 
 // One SI-written sentence shown to the user, always tied to a source excerpt.
 // summary: what the investigation did. finding: what it found, in plain words.
-// rationale: why it matters for one habitat (habitat is set only for this kind).
+// rationale: why it matters for one habitat. takeaway: one line of the habitat brief, the
+// cross-experiment conclusion for that habitat. habitat is set for rationale and takeaway.
 export const Claim = z.object({
   id: z.string(),
   investigationId: z.string(),
-  kind: z.enum(["summary", "finding", "rationale"]),
+  kind: z.enum(["summary", "finding", "rationale", "takeaway"]),
   habitat: HabitatId.optional(),
   text: z.string(),
   sourceIds: z.array(z.string()),

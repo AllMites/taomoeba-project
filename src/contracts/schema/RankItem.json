@@ -72,6 +72,55 @@
         "extrapolated",
         "illustrative"
       ]
+    },
+    "factors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "enum": [
+              "o2",
+              "pressure",
+              "directness",
+              "evidence",
+              "goalFit"
+            ]
+          },
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "sourceId": {
+            "type": "string"
+          },
+          "excerpt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "value",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [

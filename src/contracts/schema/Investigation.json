@@ -143,6 +143,103 @@
       "items": {
         "type": "string"
       }
+    },
+    "conditionBasis": {
+      "type": "object",
+      "properties": {
+        "o2": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "table",
+                "record"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pressure": {
+          "anyOf": [
+            {
+              "type": "string",
+              "enum": [
+                "table",
+                "record"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "excerpt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "o2",
+        "pressure"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "type": "string",
+      "enum": [
+        "flight",
+        "ground"
+      ]
+    },
+    "runs": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "rows": {
+              "type": "number"
+            },
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "path",
+            "rows",
+            "columns"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "related": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
     }
   },
   "required": [

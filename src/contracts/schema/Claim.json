@@ -13,7 +13,8 @@
       "enum": [
         "summary",
         "finding",
-        "rationale"
+        "rationale",
+        "takeaway"
       ]
     },
     "habitat": {
