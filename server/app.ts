@@ -19,6 +19,8 @@ export type Env = AskEnv & {
 };
 
 export const MAX_QUESTION = 300;
+export const MAX_ANSWER = 1200;
+export const MAX_HISTORY = 4;
 const BUCKET_CAPACITY = 10; // requests of burst per IP
 const REFILL_PER_SEC = 1 / 6; // one request every 6 s sustained
 const CACHE_MAX = 200;
@@ -68,7 +70,8 @@ async function sha256(s: string) {
   return [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-const AskBody = z.object({ question: z.string(), habitat: HabitatId.optional() });
+const Turn = z.object({ question: z.string().max(MAX_QUESTION), answer: z.string().max(MAX_ANSWER) });
+const AskBody = z.object({ question: z.string(), habitat: HabitatId.optional(), history: z.array(Turn).max(MAX_HISTORY).optional() });
 const VerifyBody = z.object({ text: z.string().max(2000), excerpt: z.string().max(4000), sourceText: z.string().max(200_000).optional() });
 
 /** Licenses by source id from sources.json, so copyrighted sources are paraphrased only. */
@@ -171,20 +174,21 @@ export function createApp(
   app.onError((_e, c) => c.json({ error: "server_error", message: "Something went wrong." }, 500));
   app.get("/health", (c) => c.json({ ok: true }));
 
-  app.post("/ask", tooBig(4 * 1024), async (c) => {
+  app.post("/ask", tooBig(8 * 1024), async (c) => {
     if (limited("ask", c)) return c.json({ error: "rate_limited", message: "Too many questions. Try again in a few seconds." }, 429);
     const body = AskBody.safeParse(await c.req.json().catch(() => null));
-    if (!body.success) return c.json({ error: "bad_request", message: "Send { question: string, habitat?: HabitatId }." }, 400);
+    if (!body.success) return c.json({ error: "bad_request", message: "Send { question: string, habitat?: HabitatId, history?: up to 4 of { question, answer } }." }, 400);
     const question = body.data.question.trim();
     if (!question) return c.json({ error: "bad_request", message: "Question is empty." }, 400);
     if (question.length > MAX_QUESTION) return c.json({ error: "too_long", message: `Question must be ${MAX_QUESTION} characters or fewer.` }, 400);
 
-    const key = await sha256(`${question.toLowerCase().replace(/\s+/g, " ")}|${body.data.habitat ?? ""}`);
+    const history = body.data.history ?? [];
+    const key = await sha256(`${question.toLowerCase().replace(/\s+/g, " ")}|${body.data.habitat ?? ""}|${JSON.stringify(history)}`);
     if (cache.has(key)) return c.json(cache.get(key));
     const origin = new URL(c.req.url).origin;
     const [index, extras] = await Promise.all([getIndex(c.env ?? {}, origin), getExtras(c.env ?? {}, origin)]);
-    const { degraded, ...result } = await ask(index, question, body.data.habitat, c.env ?? {}, extras);
-    if (!degraded) {
+    const result = await ask(index, question, body.data.habitat, c.env ?? {}, extras, history);
+    if (!result.degraded) { // a fallback is not cached: the next try may reach the writer
       if (cache.size >= CACHE_MAX) cache.delete(cache.keys().next().value!);
       cache.set(key, result);
     }

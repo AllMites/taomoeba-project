@@ -111,7 +111,7 @@ describe("guards", () => {
     expect(codes[11]).toBe(429);
   });
   it("rejects an oversized body with 413 before parsing", async () => {
-    const r = await post(createApp({ index }), "/ask", { question: "q", pad: "x".repeat(5000) });
+    const r = await post(createApp({ index }), "/ask", { question: "q", pad: "x".repeat(9000) });
     expect(r.status).toBe(413);
   });
   it("keys IPv6 clients by /64 and never reads X-Forwarded-For", async () => {
