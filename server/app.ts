@@ -45,6 +45,20 @@ export function fixtureIndex(): Bm25Index {
   return buildIndex(chunks);
 }
 
+type ClaimRow = { id: string; investigationId?: string; kind?: string; habitat?: string; text: string; sourceIds: string[] };
+
+/**
+ * Adds our own checked sentences (habitat takeaways, findings, summaries) to the searchable text, so a question
+ * like "which experiments reached 30% oxygen" can be answered from the counted brief, not only from abstracts.
+ */
+export function withClaims(base: Bm25Index, claims: unknown): Bm25Index {
+  const rows = (Array.isArray(claims) ? claims : ((claims as { items?: unknown[] })?.items ?? [])) as ClaimRow[];
+  const extra: Chunk[] = rows
+    .filter((c) => c?.text && c.sourceIds?.[0])
+    .map((c) => ({ id: c.id, sourceId: c.sourceIds[0], investigationId: c.investigationId || null, text: c.text, habitat: c.habitat }));
+  return buildIndex([...base.chunks, ...extra]);
+}
+
 async function sha256(s: string) {
   const d = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
   return [...new Uint8Array(d)].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -65,7 +79,11 @@ export function createApp(opts: { index?: Bm25Index } = {}) {
     loaded ??= (async () => {
       try {
         const r = await env.ASSETS?.fetch(new URL("/data/index.json", origin).toString());
-        if (r?.ok) return (await r.json()) as Bm25Index;
+        if (r?.ok) {
+          const base = (await r.json()) as Bm25Index;
+          const cr = await env.ASSETS?.fetch(new URL("/data/claims.json", origin).toString());
+          return withClaims(base, cr?.ok ? await cr.json() : []);
+        }
       } catch {
         /* fall through to fixtures */
       }

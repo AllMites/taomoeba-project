@@ -1,5 +1,5 @@
 // BM25 over an injected index. No network, no files: tests and the Worker pass the data in.
-export type Chunk = { id: string; sourceId: string; investigationId: string | null; text: string };
+export type Chunk = { id: string; sourceId: string; investigationId: string | null; text: string; habitat?: string };
 export type Bm25Index = { chunks: Chunk[]; idf: Record<string, number>; avgLen: number };
 
 const STOP = new Set(["the", "a", "an", "of", "in", "on", "at", "to", "is", "are", "was", "were", "and", "or", "for", "with", "what", "how", "does", "do", "that", "this", "it", "be"]);

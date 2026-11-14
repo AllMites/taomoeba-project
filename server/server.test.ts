@@ -165,3 +165,37 @@ describe.skipIf(!process.env.ANTHROPIC_API_KEY)("live smoke", () => {
     expect((await r.json()).mode).toMatch(/live|extractive/);
   });
 });
+
+import { withClaims } from "./app.ts";
+import { extractive as extractiveAsk } from "./ask.ts";
+import { buildIndex as buildIdx } from "./bm25.ts";
+
+describe("ask searches our own checked sentences too", () => {
+  const base = buildIdx([{ id: "a", sourceId: "psi:PSI-1", investigationId: "PSI-1", text: "Droplets burn in a chamber." }]);
+  const claims = [
+    { id: "t-moon", investigationId: "PSI-99", kind: "takeaway", habitat: "moon", text: "Silicone burned about 0 cm in microgravity.", sourceIds: ["psi:PSI-99"] },
+    { id: "t-iss", investigationId: "PSI-98", kind: "takeaway", habitat: "iss", text: "Silicone cabin note for station only.", sourceIds: ["psi:PSI-98"] },
+  ];
+  it("finds a takeaway, and only the picked habitat's", () => {
+    const idx = withClaims(base, claims);
+    const r = extractiveAsk(idx, "silicone microgravity", "moon");
+    expect(r.investigationIds).toEqual(["PSI-99"]);
+    expect(extractiveAsk(base, "silicone microgravity", "moon").claims).toHaveLength(0);
+  });
+});
+
+describe("live answers that shorten a source id", () => {
+  const ctx = [
+    { id: "a", sourceId: "psi:PSI-99", investigationId: "PSI-99", text: "Silicone burned about 0 cm." },
+    { id: "b", sourceId: "ntrs:PSI-99", investigationId: null, text: "Other." },
+    { id: "c", sourceId: "psi:PSI-10", investigationId: "PSI-10", text: "Six covered 30% oxygen." },
+  ];
+  it("accepts a unique short id and writes the full one", () => {
+    const r = parseLive("Six experiments covered 30% oxygen [PSI-10].", ctx);
+    expect(r?.claims[0].sourceIds).toEqual(["psi:PSI-10"]);
+    expect(r?.answer).toContain("[psi:PSI-10]");
+  });
+  it("rejects a short id that two sources share", () => {
+    expect(parseLive("Silicone burned about 0 cm [PSI-99].", ctx)).toBeNull();
+  });
+});

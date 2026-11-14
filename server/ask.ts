@@ -36,8 +36,12 @@ export function mockAnswer(index: Bm25Index): AskResult {
 
 const sentences = (t: string) => t.split(/(?<=[.!?])\s+/).filter(Boolean);
 
-export function extractive(index: Bm25Index, question: string): AskResult {
-  const hits = score(index, question, 3);
+/** Sentences written for another habitat are left out; text with no habitat applies everywhere. */
+const forHabitat = (index: Bm25Index, habitat?: string): Bm25Index =>
+  habitat ? { ...index, chunks: index.chunks.filter((c) => !c.habitat || c.habitat === habitat) } : index;
+
+export function extractive(index: Bm25Index, question: string, habitat?: string): AskResult {
+  const hits = score(forHabitat(index, habitat), question, 3);
   if (!hits.length) return finish(NO_COVER, [], "extractive");
   // Best sentence per chunk, then top 2 across chunks.
   const picks = hits
@@ -82,6 +86,12 @@ const UNSAFE = /https?:|www\.|<|>|```|\]\(/i;
  */
 export function parseLive(text: string, ctx: Bm25Index["chunks"]): AskResult | null {
   const bySource = new Map(ctx.map((c) => [c.sourceId, c]));
+  // The model often shortens "psi:PSI-99" to "PSI-99". Accept the short form only when exactly one retrieved id ends with it.
+  const resolve = (id: string) => {
+    if (bySource.has(id)) return id;
+    const m = [...bySource.keys()].filter((k) => k.toLowerCase().endsWith(`:${id.toLowerCase()}`));
+    return m.length === 1 ? m[0] : null;
+  };
   const t = text.trim();
   if (t.startsWith(NO_COVER)) return finish(NO_COVER, [], "live");
   // "Sentence. [SRC-01] Next." -> "Sentence [SRC-01]. Next." so an id stays with the sentence before it.
@@ -90,7 +100,7 @@ export function parseLive(text: string, ctx: Bm25Index["chunks"]): AskResult | n
   const kept: string[] = [];
   for (const s of sentences(moved)) {
     if (kept.length >= MAX_SENTENCES) break;
-    const ids = [...new Set([...s.matchAll(ID_RE)].map((m) => m[1]).filter((id) => bySource.has(id)))];
+    const ids = [...new Set([...s.matchAll(ID_RE)].map((m) => resolve(m[1])).filter((id): id is string => !!id))];
     const plain = s.replace(ID_RE, "").replace(/\s+/g, " ").replace(/\s+([.!?])/g, "$1").trim();
     if (!ids.length || !plain || UNSAFE.test(plain) || plain.length > MAX_SENTENCE_CHARS) continue;
     const src = bySource.get(ids[0])!;
@@ -101,7 +111,13 @@ export function parseLive(text: string, ctx: Bm25Index["chunks"]): AskResult | n
 }
 
 export async function live(index: Bm25Index, question: string, habitat: HabitatId | undefined, env: AskEnv): Promise<AskResult> {
-  const ctx = score(index, question, 4).map((h) => h.chunk);
+  // Several hits can share one source (an abstract plus our counted takeaway about it): one excerpt per source id.
+  const bySource = new Map<string, Bm25Index["chunks"][number]>();
+  for (const { chunk } of score(forHabitat(index, habitat), question, 6)) {
+    const seen = bySource.get(chunk.sourceId);
+    bySource.set(chunk.sourceId, seen ? { ...seen, text: `${seen.text} ${chunk.text}`, investigationId: seen.investigationId ?? chunk.investigationId } : chunk);
+  }
+  const ctx = [...bySource.values()];
   if (!ctx.length) return finish(NO_COVER, [], "live");
   const { system, user } = buildPrompt(question, habitat, ctx);
   const res = await (env.fetchImpl ?? fetch)("https://api.anthropic.com/v1/messages", {
@@ -125,10 +141,11 @@ export async function live(index: Bm25Index, question: string, habitat: HabitatI
 export async function ask(index: Bm25Index, question: string, habitat: HabitatId | undefined, env: AskEnv): Promise<AskResult & { degraded?: boolean }> {
   const mode = pickMode(env);
   if (mode === "mock") return mockAnswer(index);
-  if (mode === "extractive") return extractive(index, question);
+  if (mode === "extractive") return extractive(index, question, habitat);
   try {
     return await live(index, question, habitat, env);
-  } catch {
-    return { ...extractive(index, question), degraded: true }; // live failed: stay honest, quote the records
+  } catch (e) {
+    console.warn("ask: live failed, quoting instead:", e instanceof Error ? e.message : "unknown");
+    return { ...extractive(index, question, habitat), degraded: true }; // live failed: stay honest, quote the records
   }
 }
