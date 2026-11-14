@@ -43,6 +43,8 @@ export default function Ranking() {
   const filtering = isFiltering(pds, search);
   const matchCount = filtering ? matchRows(rows, pds, search).length : rows.length;
   const lit = new Set(highlightIds);
+  // Cited cards light in list order, one after another (CSS staggers by --lit-i).
+  const litOrder = new Map(shown.filter((r) => lit.has(r.inv.id)).map((r, i) => [r.inv.id, i]));
   const litKey = highlightIds.join("|");
 
   // A new answer scrolls its first lit card into view. The list has already opened if the card was hidden.
@@ -58,18 +60,23 @@ export default function Ranking() {
 
   return (
     <section id="ranking" className="rk" aria-labelledby="ranking-h" ref={sectionRef}>
+      <div className="sec-label">
+        <p className="sec-word t-readout">Rank</p>
+        <h2 id="ranking-h" className="sec-h">
+          Experiments that fit your habitat
+        </h2>
+      </div>
       <div className="rk-top">
-        <h2 id="ranking-h" className="rk-h">Rank</h2>
         <details className="rk-how">
           <summary>How ranking works</summary>
           <p>{HOW_RANKING_WORKS}</p>
         </details>
-      </div>
-      <p className="rk-intro">
+        <p className="rk-intro">
         {habitat
           ? `Best fit first for ${habitat.label}: ${habitat.o2Percent}% oxygen at ${habitat.pressureKPa} kPa.`
           : "Best fit first for the habitat you picked."}
-      </p>
+        </p>
+      </div>
 
       {loadError ? (
         <p role="alert" className="rk-alert">
@@ -102,7 +109,7 @@ export default function Ranking() {
               <p>No experiments match.</p>
               <button
                 type="button"
-                className="rk-btn"
+                className="quiet"
                 onClick={() => {
                   setPds("all");
                   setSearch("");
@@ -114,7 +121,13 @@ export default function Ranking() {
           ) : (
             <ol className="rk-list">
               {shown.map((r) => (
-                <ExperimentCard key={r.inv.id} row={r} habitatO2={habitat?.o2Percent ?? 21} lit={lit.has(r.inv.id)} />
+                <ExperimentCard
+                  key={r.inv.id}
+                  row={r}
+                  habitatO2={habitat?.o2Percent ?? 21}
+                  lit={lit.has(r.inv.id)}
+                  litIndex={litOrder.get(r.inv.id) ?? 0}
+                />
               ))}
             </ol>
           )}
@@ -122,7 +135,7 @@ export default function Ranking() {
           {!filtering && !showAll && shown.length < rows.length && !litHidden(rows, highlightIds) && (
             <button
               type="button"
-              className="rk-btn rk-more"
+              className="pill rk-more"
               onClick={() => {
                 // The button goes away, so move focus to the first card it revealed instead of dropping it on the page.
                 const id = firstRevealedId(rows);

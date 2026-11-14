@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useStore } from "../app/store.ts";
 import type { Claim, HabitatPreset, Investigation, RankItem, Source } from "../contracts/index.ts";
-import { claimsFor, loadRuns, runUrls, type RunTable } from "../data/select.ts";
+import { claimsFor, loadRuns, rankedFor, runUrls, type RunTable } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
+import { displayClass } from "../app/type.ts";
+import type { HabitatId } from "../contracts/index.ts";
+import { rankNumeral } from "../ranking/logic.ts";
+import PdsTag from "../ranking/PdsTag.tsx";
 import "./evidence.css";
 import { columnHeader, conditionRows, isSwitch, NOT_ON_RECORD, rationaleFor, safeHref, scoreText, strengthWord, visibleBlocks } from "./logic.ts";
 
@@ -153,15 +157,27 @@ function Detail(props: {
     related: related.length,
   });
   const where = habitat?.label ?? "this habitat";
+  // Same position the card shows: place in the habitat's ranked list, counting only items with an experiment.
+  const known = new Set(all.map((x) => x.id));
+  const position = rankedFor(rank, habitatId as HabitatId).filter((r) => known.has(r.investigationId)).findIndex((r) => r.investigationId === inv.id) + 1;
   const urls = inv.runs ? runUrls(inv.runs.path) : null;
 
   return (
     <div className="ev-body">
       <header className="ev-head">
-        <h2 id="ev-title" tabIndex={-1}>{inv.title}</h2>
-        <p className="ev-id">{inv.id}</p>
+        <div className="ev-headline">
+          {position > 0 && (
+            <span className="ev-num t-display" aria-label={`Rank ${position}`}>
+              {rankNumeral(position)}
+            </span>
+          )}
+          <h2 id="ev-title" className={`ev-title ${displayClass(inv.title)}`} tabIndex={-1}>
+            {inv.title}
+          </h2>
+        </div>
+        <p className="ev-id t-readout">{inv.id}</p>
         <p className="ev-tags">
-          <span className="ev-tag">{inv.pds}</span>
+          <PdsTag pds={inv.pds} />
           <span className="ev-tag ev-tag-alt">
             {inv.evidence === "flight" ? "Flown in microgravity" : inv.evidence === "ground" ? "Ground study" : "Test type not on record"}
           </span>
@@ -279,8 +295,8 @@ function Detail(props: {
               {inv.runs.rows} runs, {inv.runs.columns.length} columns.
             </p>
             <p className="ev-links">
-              <a href={urls.csv} download>Download CSV</a>
-              <a href={urls.json} download>Download JSON</a>
+              <a className="pill" href={urls.csv} download>Download CSV</a>
+              <a className="quiet" href={urls.json} download>Download JSON</a>
             </p>
             <RunPreview key={inv.id} path={inv.runs.path} />
           </>
@@ -339,7 +355,7 @@ export default function Evidence() {
       {id !== null && (
         <div className="ev-panel">
           <div className="ev-bar">
-            <button type="button" className="ev-close" onClick={() => ref.current?.close()}>
+            <button type="button" className="quiet ev-close" onClick={() => ref.current?.close()}>
               Close
             </button>
           </div>

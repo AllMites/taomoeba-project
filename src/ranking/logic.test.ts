@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 import type { Investigation, RankItem } from "../contracts/index.ts";
-import { buildRows, dotLevel, dotName, firstRevealedId, matchRows, rangeText, scalePct, TOP_COUNT, visibleRows } from "./logic.ts";
+import { buildRows, covers, dotLevel, dotName, firstRevealedId, matchRows, rangeText, rankNumeral, scalePct, TOP_COUNT, visibleRows } from "./logic.ts";
 
 const inv = (id: string, pds: Investigation["pds"], extra: Partial<Investigation> = {}) =>
   ({ id, title: `Exp ${id}`, hardware: "Rack", hardwareGroup: "g", pds, fuel: "ethylene", ...extra }) as Investigation;
@@ -77,4 +77,16 @@ it("names a dot once as not on record", () => {
   );
   expect(dotName({ label: "Goal fit", value: null, reason: "The goal is missing." })).toBe("Goal fit: not on record. The goal is missing.");
   expect(dotName({ label: "Flight or ground", value: 1, reason: "Flown in microgravity." })).toBe("Flight or ground: Flown in microgravity.");
+});
+
+it("says a range covers the habitat only when the value is inside it, ends included", () => {
+  expect(covers([12, 34], 30)).toBe(true);
+  expect(covers([21, 21], 21)).toBe(true);
+  expect(covers([17, 30], 30)).toBe(true);
+  expect(covers([12, 20.9], 21)).toBe(false);
+});
+
+it("writes rank numerals with two digits", () => {
+  expect(rankNumeral(1)).toBe("01");
+  expect(rankNumeral(26)).toBe("26");
 });

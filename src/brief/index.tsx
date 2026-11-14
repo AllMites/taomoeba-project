@@ -35,7 +35,7 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
       {count && <Marks {...count} />}
       <div className="brief-actions">
         {one && (
-          <button type="button" className="brief-btn" onClick={() => open(one)}>
+          <button type="button" className="quiet" onClick={() => open(one)}>
             See experiment
           </button>
         )}
@@ -51,6 +51,7 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
                     {href ? (
                       <a href={href} target="_blank" rel="noopener noreferrer">
                         {s.title}
+                        <span className="sr-only"> (opens in a new tab)</span>
                       </a>
                     ) : (
                       s.title
@@ -77,7 +78,7 @@ function List({ claims, sources }: { claims: Claim[]; sources: Source[] }) {
         ))}
       </ul>
       {claims.length > SHOWN && (
-        <button type="button" className="brief-btn brief-more" aria-expanded={all} onClick={() => setAll(!all)}>
+        <button type="button" className="quiet brief-more" aria-expanded={all} onClick={() => setAll(!all)}>
           {all ? "Show fewer" : `Show all ${claims.length}`}
         </button>
       )}
@@ -109,8 +110,12 @@ export default function Brief() {
 
   return (
     <section className="brief" aria-labelledby="brief-h">
-      <h2 id="brief-h">Interpret</h2>
-      <p className="brief-sub">What the evidence says for {label}</p>
+      <div className="sec-label">
+        <p className="sec-word t-readout">Interpret</p>
+        <h2 id="brief-h" className="sec-h">
+          What the evidence says for {label}
+        </h2>
+      </div>
       {body}
     </section>
   );

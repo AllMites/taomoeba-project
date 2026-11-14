@@ -1,75 +1,82 @@
+/* Lane H: detail drawer. Right panel in the blurred material, porthole radius on its left corners. */
 .ev-dialog {
   margin: 0 0 0 auto;
   padding: 0;
-  width: min(480px, 100vw);
+  width: min(36rem, 100vw);
   max-width: 100vw;
   height: 100dvh;
   max-height: 100dvh;
   border: 0;
-  border-left: 1px solid var(--color-border);
-  background: var(--color-surface);
+  border-radius: var(--radius-3) 0 0 var(--radius-3);
+  background: var(--color-surface-2);
   color: var(--color-text);
+  box-shadow: var(--shadow-2), inset 1px 0 0 var(--porthole-edge);
   overflow: hidden;
 }
-.ev-dialog::backdrop { background: color-mix(in srgb, var(--color-bg) 80%, transparent); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .ev-dialog {
+    background: var(--material-bg);
+    -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.2);
+    backdrop-filter: blur(var(--material-blur)) saturate(1.2);
+  }
+}
+.ev-dialog::backdrop { background: color-mix(in srgb, var(--color-bg) 55%, transparent); }
 body:has(.ev-dialog[open]) { overflow: hidden; }
 @media (max-width: 600px) {
-  .ev-dialog { width: 100vw; border-left: 0; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .ev-dialog[open] { animation: ev-in 0.18s ease-out; }
-  @keyframes ev-in { from { transform: translateX(2rem); opacity: 0; } }
+  .ev-dialog { width: 100vw; border-radius: 0; }
 }
 
 .ev-panel { display: flex; flex-direction: column; height: 100%; }
-.ev-bar {
-  display: flex;
-  justify-content: flex-end;
-  padding: var(--space-2) var(--space-4);
-  border-bottom: 1px solid var(--color-border);
-  background: var(--color-surface);
-}
-.ev-close, .ev-related button {
+.ev-bar { display: flex; justify-content: flex-end; padding: var(--space-3) var(--space-5) 0; }
+.ev-close { min-height: 2.75rem; }
+.ev-related button {
   font: inherit;
   color: var(--color-text);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-1);
-  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-2);
+  padding: var(--space-3) var(--space-4);
   cursor: pointer;
   min-height: 2.75rem;
 }
-.ev-close { font-weight: 600; }
+.ev-related button:hover { border-color: var(--color-accent); }
 .ev-scroller { flex: 1; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
-.ev-pad { padding: var(--space-4); }
-.ev-body { padding: var(--space-4) var(--space-4) var(--space-6); overflow-wrap: anywhere; }
-.ev-body h2 { margin: 0; font-size: 1.5rem; line-height: 1.25; }
-.ev-body h3 { margin: 0 0 var(--space-3); font-size: 1.125rem; }
-.ev-body h4 { margin: var(--space-4) 0 var(--space-2); font-size: 0.9375rem; color: var(--color-text-muted); }
+.ev-pad { padding: var(--space-5); }
+.ev-body { padding: var(--space-2) var(--space-6) var(--space-7); overflow-wrap: anywhere; }
+.ev-body h3 { margin: 0 0 var(--space-3); font-family: var(--font-sans); font-size: var(--text-lg); font-weight: 600; }
+.ev-body h4 { margin: var(--space-4) 0 var(--space-2); font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 600; color: var(--color-text-muted); }
 .ev-body p { margin: var(--space-2) 0; }
 .ev-body ul { list-style: none; margin: 0; padding: 0; }
-.ev-block { margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+.ev-block { margin-top: var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-border); }
 .ev-muted { color: var(--color-text-muted); }
-.ev-id { font-family: var(--font-mono); font-size: 0.8125rem; color: var(--color-text-muted); margin: var(--space-1) 0; }
+.ev-id { color: var(--color-text-muted); margin: var(--space-1) 0; }
 
-.ev-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+/* Header: rank numeral and name in display type (they travel here from the card). */
+.ev-headline { display: flex; align-items: flex-start; gap: var(--space-4); }
+.ev-num { flex: none; font-size: var(--text-3xl); line-height: 0.82; color: var(--color-text-muted); letter-spacing: 0; }
+.ev-title { font-size: var(--text-xl); line-height: 1.05; padding-top: 2px; }
+.ev-head > p:not(.ev-id):not(.ev-tags) { color: var(--color-text-muted); }
+
+.ev-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 .ev-tag {
-  background: var(--color-accent);
-  color: var(--color-accent-contrast);
-  border-radius: var(--radius-1);
-  padding: var(--space-1) var(--space-3);
-  font-size: 0.875rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-full);
+  padding: 0 var(--space-3);
+  font-size: 0.8125rem;
   font-weight: 600;
+  line-height: 1.6;
 }
-.ev-tag-alt { background: var(--color-badge-bg); color: var(--color-badge-text); }
 
-.ev-claims > li { margin-bottom: var(--space-3); }
+.ev-claims > li { margin-bottom: var(--space-4); }
+/* Source disclosure: quiet text button; the quote sits under a flame-coloured rule. */
 .ev-source { font-size: 0.875rem; }
-.ev-source summary, .ev-preview summary { cursor: pointer; color: var(--color-accent); min-height: 1.75rem; }
+.ev-source summary, .ev-preview summary { cursor: pointer; color: var(--color-text-muted); min-height: 1.75rem; width: fit-content; }
+.ev-source summary:hover, .ev-preview summary:hover { color: var(--color-text); }
 .ev-source blockquote {
   margin: var(--space-2) 0;
-  padding: var(--space-2) var(--space-3);
-  border-left: 3px solid var(--color-border);
+  padding: var(--space-1) var(--space-3);
+  border-left: 3px solid var(--color-flame);
   color: var(--color-text-muted);
 }
 .ev-source ul { padding-left: var(--space-3); }
@@ -78,15 +85,14 @@ body:has(.ev-dialog[open]) { overflow: hidden; }
 .ev-factor-top { display: flex; justify-content: space-between; gap: var(--space-3); font-weight: 600; }
 .ev-word { color: var(--color-text); }
 .ev-meter {
-  height: 0.625rem;
-  margin: var(--space-1) 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-1);
-  background: var(--color-bg);
+  height: 0.5rem;
+  margin: var(--space-2) 0;
+  border-radius: var(--radius-full);
+  background: var(--color-meter-track);
   overflow: hidden;
 }
-.ev-meter > span { display: block; height: 100%; background: var(--color-accent); }
-.ev-meter-unknown { border-style: dashed; }
+.ev-meter > span { display: block; height: 100%; background: var(--color-meter-fill); border-radius: var(--radius-full); }
+.ev-meter-unknown { background: transparent; border: 1px dashed var(--color-unknown); }
 .ev-score { font-size: 0.8125rem; color: var(--color-text-muted); }
 
 .ev-cond { margin: 0; }
@@ -95,27 +101,17 @@ body:has(.ev-dialog[open]) { overflow: hidden; }
 .ev-cond dd { margin: 0; flex: 1 1 10rem; min-width: 0; }
 
 .ev-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.ev-chips li { border: 1px solid var(--color-border); border-radius: 999px; padding: var(--space-1) var(--space-3); font-size: 0.875rem; }
+.ev-chips li { background: var(--color-surface); border-radius: var(--radius-full); padding: var(--space-1) var(--space-3); font-size: 0.875rem; }
 
 .ev-related > li { margin-bottom: var(--space-3); }
 .ev-related button { text-align: left; width: 100%; }
 
-.ev-links { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.ev-links a {
-  color: var(--color-accent-contrast);
-  background: var(--color-accent);
-  text-decoration: none;
-  font-weight: 600;
-  border-radius: var(--radius-1);
-  padding: var(--space-2) var(--space-4);
-  min-height: 2.75rem;
-  display: inline-flex;
-  align-items: center;
-}
-.ev-scroll { overflow-x: auto; max-width: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-1); margin-top: var(--space-2); }
+.ev-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.ev-links .quiet { display: inline-flex; align-items: center; text-decoration: none; }
+.ev-scroll { overflow-x: auto; max-width: 100%; border: 1px solid var(--color-border); border-radius: var(--radius-1); margin-top: var(--space-2); background: var(--color-surface); }
 .ev-scroll table { border-collapse: collapse; font-size: 0.8125rem; white-space: nowrap; }
 .ev-scroll th, .ev-scroll td { padding: var(--space-1) var(--space-3); border-bottom: 1px solid var(--color-border); text-align: left; }
-.ev-scroll th { background: var(--color-bg); }
+.ev-scroll th { background: var(--color-surface-2); font-weight: 600; }
 .ev-body ul.ev-notes { list-style: disc; padding-left: var(--space-5); font-size: 0.875rem; }
 
 .ev-sr {
@@ -126,3 +122,4 @@ body:has(.ev-dialog[open]) { overflow: hidden; }
   clip-path: inset(50%);
   white-space: nowrap;
 }
+.ev-tags .rk-tag { background: var(--color-surface); color: var(--color-text); }

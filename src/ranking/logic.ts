@@ -95,3 +95,12 @@ export const scalePct = (o2: number) => Math.min(100, Math.max(0, (o2 / O2_SCALE
 /** "19.8 to 85%" with at most one decimal. */
 export const fmt = (n: number) => `${Math.round(n * 10) / 10}`;
 export const rangeText = (r: [number, number]) => (r[0] === r[1] ? `${fmt(r[0])}%` : `${fmt(r[0])} to ${fmt(r[1])}%`);
+
+/** A tested range narrower than this many points of oxygen is drawn as a tick, not a span. */
+export const TICK_BELOW = 1;
+
+/** True when the habitat's oxygen lies inside the tested range (ends included). */
+export const covers = (r: [number, number], o2: number) => o2 >= r[0] && o2 <= r[1];
+
+/** Rank numeral as the board writes it: two digits, "01". */
+export const rankNumeral = (n: number) => String(n).padStart(2, "0");
