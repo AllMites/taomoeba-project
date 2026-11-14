@@ -1,7 +1,18 @@
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
 import { useStore } from "../app/store.ts";
 import { useDataset } from "../data/useDataset.ts";
-import { askForHabitat, MAX_QUESTION, MODE_LABEL, readable, type AskOutcome, type AskResult } from "./respond.ts";
+import {
+  askForHabitat,
+  factKind,
+  isDataOnly,
+  MAX_QUESTION,
+  MODE_LABEL,
+  readable,
+  RELATION_LABEL,
+  sourceKind,
+  type AskOutcome,
+  type AskResult,
+} from "./respond.ts";
 import "./ask.css";
 
 // Chosen against public/data/index.json: the records answer each of these directly.
@@ -152,10 +163,34 @@ export function Controls(p: {
 
 function Answer({ result, titleOf, onOpen }: { result: AskResult; titleOf: (id: string) => string; onOpen: (id: string) => void }) {
   const n = result.investigationIds.length;
+  const facts = result.facts ?? [];
+  const dataOnly = isDataOnly(result.answer);
   return (
     <div className="ask-answer">
-      <p className="ask-mode">{MODE_LABEL[result.mode]}</p>
-      <p className="ask-text t-statement">{readable(result.answer)}</p>
+      {facts.length > 0 && (
+        <div className="ask-facts">
+          <p className="ask-mode">What the data shows (computed from the tables, not written by SI)</p>
+          <ul>
+            {facts.map((f) => (
+              <li key={f.id} className="ask-fact">
+                <p className="ask-fact-text">{f.statement}</p>
+                <p className="muted ask-fact-src">
+                  {factKind(f)}: {f.dataset}
+                  {f.caveat ? ` · ${f.caveat}` : ""}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {/* A ranking answer has no paper part: the server sends an empty answer. */}
+      {result.answer.trim() !== "" && (
+        <>
+          {facts.length > 0 && <p className="ask-mode">{dataOnly ? "What the papers say" : `What the papers say · ${MODE_LABEL[result.mode]}`}</p>}
+          {facts.length === 0 && <p className="ask-mode">{MODE_LABEL[result.mode]}</p>}
+          <p className={dataOnly ? "ask-note" : "ask-text t-statement"}>{readable(result.answer)}</p>
+        </>
+      )}
       {n > 0 && (
         <p className="ask-lit">
           <a href="#ranking-h">
@@ -167,8 +202,13 @@ function Answer({ result, titleOf, onOpen }: { result: AskResult; titleOf: (id: 
         <ul className="ask-sources">
           {result.claims.map((c) => (
             <li key={c.id} className="ask-source">
+              {result.relations?.[c.id] && <p className={`ask-rel ask-rel-${result.relations[c.id]}`}>{RELATION_LABEL[result.relations[c.id]]}</p>}
               <details>
-                <summary>Source: {titleOf(c.sourceIds[0] ?? "")}</summary>
+                <summary>
+                  {sourceKind(c.sourceIds[0] ?? "")}: {titleOf(c.sourceIds[0] ?? "")}
+                  {c.flagged ? " (not double-checked)" : ""}
+                </summary>
+                <p className="ask-claim">{c.text}</p>
                 <p className="ask-excerpt">{c.excerpt}</p>
               </details>
               {c.investigationId && (
