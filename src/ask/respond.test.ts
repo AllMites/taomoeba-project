@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { askForHabitat, askRecords, readable } from "./respond.ts";
+import { askForHabitat, askRecords, isDataOnly, readable, sourceKind } from "./respond.ts";
 
 const claim = { id: "ask-1", investigationId: "PSI-20", kind: "finding", text: "t", sourceIds: ["psi:PSI-20"], excerpt: "e" };
 const json = (body: unknown, status = 200) =>
@@ -82,4 +82,24 @@ it("handles exactly 300 characters and a reply without claims", async () => {
   };
   expect(await askRecords("x".repeat(300), "moon", f as typeof fetch)).toMatchObject({ kind: "error", reason: "unavailable" });
   expect(sent).toHaveLength(300);
+});
+
+it("keeps data facts and relation labels; a data-only answer is still an answer", async () => {
+  const fact = { id: "flex-end-o2", statement: "S 0.5", dataset: "PSI-69 FLEX", caveat: "", source: "psi:PSI-69" };
+  const out = await ask(() =>
+    json({ answer: "No paper in the library explains this finding.", claims: [claim], investigationIds: ["PSI-69"], mode: "live", facts: [fact], relations: { "ask-1": "explains" } }),
+  );
+  expect(out).toMatchObject({ kind: "answer", result: { facts: [fact], relations: { "ask-1": "explains" } } });
+  expect(out.kind === "answer" && isDataOnly(out.result.answer)).toBe(true);
+});
+
+it("an unknown relation label becomes 'related' instead of failing the answer", async () => {
+  const out = await ask(() => json({ answer: "A [psi:PSI-20].", claims: [claim], investigationIds: [], mode: "live", relations: { "ask-1": "proves" } }));
+  expect(out).toMatchObject({ kind: "answer", result: { relations: { "ask-1": "related" } } });
+});
+
+it("names the kind of source", () => {
+  expect(sourceKind("psi:PSI-69")).toBe("PSI record");
+  expect(sourceKind("ntrs:20240001234")).toBe("NASA report");
+  expect(sourceKind("team:model-report")).toBe("Team analysis");
 });
