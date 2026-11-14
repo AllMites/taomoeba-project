@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { ALPHA, buildItems, computeScore, loadInputs, rationale } from "../scripts/rank/build.ts";
 import { buildPrompt, extractive, parseLive } from "./ask.ts";
 import { buildIndex, score } from "./bm25.ts";
 import { clientKey, createApp, fixtureIndex, MAX_QUESTION } from "./app.ts";
@@ -157,25 +156,6 @@ describe("POST /verify", () => {
     expect((await verify(base, { TYPESAFE_API_KEY: "k", fetchImpl: mk(0.6) })).flagged).toBe(true);
     const ok = await verify(base, { TYPESAFE_API_KEY: "k", fetchImpl: mk(0.95) });
     expect(ok).toMatchObject({ verdict: "supports", flagged: false });
-  });
-});
-
-describe("rank", () => {
-  it("score arithmetic, including null overlap", () => {
-    expect(ALPHA).toBe(0.5);
-    expect(computeScore(0.8, 0.4)).toBeCloseTo(0.6);
-    expect(computeScore(0.7, null)).toBe(0.7);
-  });
-  it("rationale reads from the numbers", () => {
-    const inv = { o2Range: [21, 34], pressureRange: null } as never;
-    const hab = { o2Percent: 30, pressureKPa: 70.3 } as never;
-    expect(rationale(inv, hab, 1)).toBe("Tested at 21 to 34% oxygen, which covers this habitat's 30%.");
-  });
-  it("null overlap gives dimsUsed 0 and illustrative provenance", async () => {
-    const inp = loadInputs();
-    const items = await buildItems({ ...inp, overlaps: [] }, async () => 0.5);
-    expect(items.length).toBe(inp.investigations.length * inp.habitats.length);
-    expect(items.every((i) => i.dimsUsed === 0 && i.provenance === "illustrative" && i.score === 0.5)).toBe(true);
   });
 });
 

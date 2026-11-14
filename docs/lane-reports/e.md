@@ -20,11 +20,27 @@ Worker entry is `server/index.ts` (default export only; workerd rejects other ex
 - **Live mode never ran against Anthropic** (no key). Tested only with a stubbed fetch (parsing, unknown-id drop, failure falls back to extractive). The request body follows the claude-api skill (no temperature, `output_config.effort`); first real call may need tuning.
 - `/rank` stays a 501 stub; ranks are precomputed.
 
-## Rank script (`node scripts/rank/build.ts`)
-- `ALPHA = 0.5` in `scripts/rank/build.ts`. Fixture run: 32 items (8 investigations x 4 habitats), 32 TypeSafe Score calls, 16,452 in / 608 out tokens, 7.4 s. Cached in `scripts/rank/.cache/` (rerun = 0 calls).
-- With fixture inputs the output goes to `scripts/rank/.cache/rank.fixtures.json` (gitignored), not `public/data/rank.json`, so it cannot be committed by accident. `rank.json` is NOT committed. With Lane A's real files it writes `public/data/rank.json`.
-- Fixture overlap is empty, so every item is `overlap:null`, `dimsUsed:0`, `illustrative`. The measured path is only unit-tested.
-- Reads `public/data/habitats.json` if present, else the habitat fixture (4 habitats; no `mars`). claimIds come from `public/data/claims/*.json` if present, else the claims fixture.
+## Rank script (`node scripts/rank/build.ts`, idempotent, round 3)
+- score = (2 o2 + 2 pressure + directness + evidence + goalFit) / 7; null factor counts 0.5 x weight (value stays null in data). `compareRank` in `scripts/rank/compare.ts`: score, then more non-null factors, then id.
+- Goal fit asked once per (oxygen, pressure) pair, worded by conditions; moon and rover share the answer. 75 calls (3 cache hits), 34,274 in / 1,425 out tokens, model `jev-1.14.0` (stored in each cache entry, not in rank.json). Rerun: 0 calls, no diff. Tokens only, no dollar figure.
+- Null factors: o2 64, pressure 80, directness 0, evidence 104 (waits for Lane A round 2), goalFit 0. provenance `measured` only for table conditions.
+- Integrator: local `.dev.vars` with `SPEND_MODE=mock` so `wrangler dev` ignores keys in `.env`.
+- SAFFIRE-I at ISS: rank 9 of 26 (0.691; oxygen 0.9, pressure not on record, direct) behind six fully measured studies, ahead of all indirect/unmeasured ones. Where a researcher would expect.
+- FLEX at suit-ref: rank 8 of 26 (0.541; oxygen 0, pressure 0.83), down from 3rd; it sits below studies with unknown conditions that rate better on directness and goal fit. Defensible; a measured oxygen miss still ranks above 18 others.
+
+Columns: o2/pressure/directness/evidence/goalFit, - = not on record.
+
+**iss** top 8, bottom 3
+1. FLEX 0.856 (1/1/1/-/0.49); 2. FLEX-2 0.826 (1/1/1/-/0.285); 3. ACME CFI-G 0.785 (1/1/0.5/-/0.498); 4. ACME/Flame Design 0.783 (1/1/0.5/-/0.478); 5. CFI 0.77 (1/1/0.5/-/0.39); 6. ACME s-Flame 0.768 (1/1/0.5/-/0.373); 7. BASS-II 0.741 (1/-/1/-/0.688); 8. ACME BRE 0.7 (1/-/1/-/0.403)
+...; 24. SLICE 0.472 (-/-/0.5/-/0.305); 25. STDCE-1 0.368 (-/-/0/-/0.075); 26. Structure and Proper 0.366 (-/-/0/-/0.065)
+
+**moon** top 8, bottom 3
+1. FLEX 0.889 (1/1/1/-/0.725); 2. FLEX-2 0.841 (1/1/1/-/0.385); 3. ACME CFI-G 0.819 (1/1/0.5/-/0.735); 4. ACME/Flame Design 0.789 (1/1/0.5/-/0.52); 5. ACME BRE 0.709 (1/-/1/-/0.46); 6. SAFFIRE-III 0.595 (-/-/1/-/0.668); 7. BASS 0.589 (-/-/1/-/0.625); 8. DAFT / DAFT-2 0.582 (-/-/1/-/0.575)
+...; 24. SAFFIRE-I 0.453 (0/-/1/-/0.668); 25. STDCE-1 0.37 (-/-/0/-/0.093); 26. Structure and Proper 0.366 (-/-/0/-/0.065)
+
+**suit-ref** top 8, bottom 3
+1. ACME CFI-G 0.734 (0.795/0.929/0.5/-/0.693); 2. ACME/Flame Design 0.71 (0.77/0.949/0.5/-/0.535); 3. SAFFIRE-III 0.606 (-/-/1/-/0.74); 4. DAFT / DAFT-2 0.59 (-/-/1/-/0.628); 5. BASS 0.589 (-/-/1/-/0.625); 6. SAME 0.557 (-/-/1/-/0.4); 7. SAME-R 0.556 (-/-/1/-/0.395); 8. FLEX 0.541 (0/0.83/1/-/0.63)
+...; 24. STDCE-1 0.368 (-/-/0/-/0.073); 25. Structure and Proper 0.365 (-/-/0/-/0.053); 26. ACME s-Flame 0.198 (0/0/0.5/-/0.385)
 
 ## Lane O must add
 - `wrangler.toml`: `main = "server/index.ts"` (already), an `[assets]` binding named `ASSETS` (so `/data/index.json` loads; else bundled fixture index is used).
