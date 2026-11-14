@@ -94,7 +94,7 @@ def test_saffire_gravity_rederived_from_the_csv(world):
     rows = list(csv.DictReader((DATA / "runs" / "PSI-99.csv").open(encoding="utf-8")))
     sil = [r for r in rows if r["material"] == "Silicone"]
     assert len(sil) == 4
-    micro, one = "g_burn_length", "1_g_burn_length"  # the CSV header names for "?-g Burn Length" and "1-g Burn Length"
+    micro, one = "microgravity_burn_length", "normal_gravity_burn_length"  # the CSV header names for "?-g Burn Length" and "1-g Burn Length"
     assert [r[micro] for r in sil] == ["~ 0"] * 4
     burned = [r for r in sil if r[one] != "~ 0"]
     numeric = [r for r in burned if r[one] != "Complete"]

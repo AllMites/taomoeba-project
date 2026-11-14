@@ -14,7 +14,13 @@ SKIP = {"PSI-142": "its table lists figure references, not test runs"}  # Other-
 UNITS = r"mg/s|g/s|sccm|slpm|atm|bar|mmhg|kpa|psi|k|c|mm|cm|cm/s|m/s|s|sec|min|minutes|w|ppm|%|mole fraction|um|micron"
 
 
+MIN_CELLS = 3  # a row is a test run only with a value in at least this many columns (fewer if the table is narrower)
+
+
 def snake(text):
+    # "µ-g ..." (micro sign U+00B5 / U+03BC; PSI's own files often hold a literal "?" there) means microgravity
+    text = re.sub(r"^\s*[µμ?]-g\b", "microgravity", text)
+    text = re.sub(r"^\s*1-g\b", "normal gravity", text)
     return re.sub(r"[^a-z0-9]+", "_", text.lower()).strip("_")
 
 
@@ -84,8 +90,12 @@ def _plain(cell):
 
 
 def build_table(tabs):
-    """tabs: [(head, rows)] -> (columns, rows). Columns: [{name, unit, original}]."""
-    columns, out = [], []
+    """tabs: [(head, rows)] -> (columns, rows, notes). Columns: [{name, unit, original}].
+
+    Rows with fewer than MIN_CELLS non-empty cells (captions, footnotes, "same conditions as 1-4"
+    stubs) are not runs: their text goes to notes, in order.
+    """
+    columns, out, notes = [], [], []
     names = {}  # (original, name) registry; columns shared between tables keep one entry
 
     def col(name, unit, original):
@@ -120,13 +130,17 @@ def build_table(tabs):
                 nm = snake(base) + (f"_{snake(unit)}" if unit else "") or "column"
             naming[h] = (col(nm, unit, h), cond.get(h))
         for r in rows:
+            filled = [v.strip() for v in r.values() if v and v.strip()]
+            if len(filled) < min(MIN_CELLS, len(head)):
+                notes.append(" ".join(filled))
+                continue
             row = {}
             for h in head:
                 name, kind = naming[h]
                 row[name] = _cell(kind, h, r.get(h, ""), scale.get(h, 1.0)) if kind else _plain(r.get(h, ""))
             out.append(row)
     names_all = [c["name"] for c in columns]
-    return columns, [{n: r.get(n) for n in names_all} for r in out]
+    return columns, [{n: r.get(n) for n in names_all} for r in out], notes
 
 
 def to_csv(columns, rows):

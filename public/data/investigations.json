@@ -273,7 +273,7 @@
       "evidence": "flight",
       "runs": {
         "path": "runs/PSI-22.json",
-        "rows": 32,
+        "rows": 21,
         "columns": [
           "test_type",
           "test_day",
@@ -951,7 +951,7 @@
       "evidence": "flight",
       "runs": {
         "path": "runs/PSI-98.json",
-        "rows": 4,
+        "rows": 2,
         "columns": [
           "sample_number",
           "material",
@@ -1037,7 +1037,7 @@
       "evidence": "flight",
       "runs": {
         "path": "runs/PSI-99.json",
-        "rows": 15,
+        "rows": 9,
         "columns": [
           "sample_number",
           "material",
@@ -1050,10 +1050,10 @@
           "ignition_time_s",
           "burn_time_s",
           "flow_direction",
-          "g_burn_length",
-          "g_spread_length",
-          "1_g_burn_length",
-          "1_g_spread_rate",
+          "microgravity_burn_length",
+          "microgravity_spread_length",
+          "normal_gravity_burn_length",
+          "normal_gravity_spread_rate",
           "camera_1",
           "camera_2"
         ]
@@ -1247,7 +1247,7 @@
       "evidence": "flight",
       "runs": {
         "path": "runs/PSI-102.json",
-        "rows": 8,
+        "rows": 4,
         "columns": [
           "sample",
           "sample_material",

@@ -27,6 +27,12 @@
    "original": "Aging Duration (minutes)"
   }
  ],
+ "notes": [
+  "5 Kapton: same conditions as 1-4",
+  "6 Silicone Rubber: same conditions as 1-4",
+  "7 Lampwick: same conditions as 1-4",
+  "8 Dibutyl Phthalate: same conditions as 1-4"
+ ],
  "rows": [
   {
    "sample": 1,
@@ -55,34 +61,6 @@
    "airflow_cm_s": 10,
    "weight_loss_rate_mg_min": 2,
    "aging_duration_minutes": 1
-  },
-  {
-   "sample": 5,
-   "sample_material": "Kapton: same conditions as 1-4",
-   "airflow_cm_s": null,
-   "weight_loss_rate_mg_min": null,
-   "aging_duration_minutes": null
-  },
-  {
-   "sample": 6,
-   "sample_material": "Silicone Rubber: same conditions as 1-4",
-   "airflow_cm_s": null,
-   "weight_loss_rate_mg_min": null,
-   "aging_duration_minutes": null
-  },
-  {
-   "sample": 7,
-   "sample_material": "Lampwick: same conditions as 1-4",
-   "airflow_cm_s": null,
-   "weight_loss_rate_mg_min": null,
-   "aging_duration_minutes": null
-  },
-  {
-   "sample": 8,
-   "sample_material": "Dibutyl Phthalate: same conditions as 1-4",
-   "airflow_cm_s": null,
-   "weight_loss_rate_mg_min": null,
-   "aging_duration_minutes": null
   }
  ]
 }

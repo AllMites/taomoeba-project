@@ -32,6 +32,13 @@ Rerun (from `scripts/`, cache in `data/raw/`, network only on a cold cache):
 - `runs/`: 19 investigations x (.json + .csv), 1,066,289 bytes total. None for PSI-60, 62, 115, 117 (no table), PSI-142 (figure list, not runs), PSI-108, 181 (Other). FLEX 274 rows. Only the 3 condition columns are converted; other numbers keep PSI's full precision; a multi-value cell stays text ("21; 26.5; 40"); O2 values over 100 are blank. Column names snake_case with unit; `original` keeps PSI's header.
 - `related`: up to 4 per row, grounds are its record naming another investigation, the PSI "Related Investigations" field, same hardware group (not ground/lab), or same fuel name. ACME rows fill with same-hardware. Unicode dashes in record text are read as hyphens (PSI-25 "BASS–II" is itself, not BASS). Test Matrix files are refused by name in `psi.tables_of`.
 
+## Round 3
+- Run rows: a row is a run only with >= 3 non-empty cells (tables with fewer columns need every column); other lines go to top-level `notes` in the JSON (text, in order) and out of `rows`/CSV. Chosen against real files: every real run has >= 6 cells except PSI-26 BASS (3 cells, kept).
+- Moved to notes: PSI-22 11 (one-cell concentration fragments and a footnote), PSI-98 2, PSI-99 6 (9 runs remain), PSI-102 4 ("Kapton: same conditions as 1-4" stubs). All other files 0. FLEX stays 274. `runs.rows` equals real runs.
+- Names: "?-g"/"µ-g" headers slug to `microgravity_...`, "1-g" to `normal_gravity_...`. PSI's file holds a literal "?" (not a micro sign) in PSI-99, so `original` is "?-g Burn Length", exactly as published. Files are UTF-8.
+- Known source typos kept: "Samle Thickness" and "Visulation" (PSI-99), "037 mm" (SAFFIRE-II thickness), "Comparitive" (PSI-102 hardware).
+- Breaks outside this lane: `scripts/tests/test_rag_brief_facts.py:97` uses the old names `g_burn_length` / `1_g_burn_length`; it needs `microgravity_burn_length` / `normal_gravity_burn_length`.
+
 ## Contract issues (not edited)
 - `fuelKind` has no "liquid" or "unknown". PSI-108 uses "droplet" and PSI-60/142 "gas" as nearest fit; hidden or ground rows only.
 - `fuel`, `sampleShape`, `hardware` are required strings: the value "Not stated" means unknown.
