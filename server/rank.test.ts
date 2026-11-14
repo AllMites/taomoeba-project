@@ -1,10 +1,14 @@
+import { mkdtempSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { HabitatPreset } from "../src/contracts/habitat.ts";
 import type { Investigation } from "../src/contracts/investigation.ts";
+import { compareRank } from "../scripts/rank/compare.ts";
 import { RankItem } from "../src/contracts/rank.ts";
 import {
-  buildItems, computeScore, dimScore, FACTOR_ORDER, FLOOR, goalBand, goalExcerpt, HOW_RANKING_WORKS, loadInputs, rationale, typesafeGoal, type Inputs,
+  buildItems, computeScore, FACTOR_WEIGHTS, dimScore, FACTOR_ORDER, FLOOR, goalBand, goalExcerpt, HOW_RANKING_WORKS, loadInputs, rationale, typesafeGoal, type Inputs,
 } from "../scripts/rank/build.ts";
 
 const moon: HabitatPreset = { id: "moon", label: "Moon Base", o2Percent: 30, pressureKPa: 70.3, note: "" };
@@ -16,20 +20,34 @@ const inputs = (investigations: Investigation[], overlaps: Inputs["overlaps"] = 
 const goal = (v: number | null) => async () => v;
 const words = (s: string) => s.trim().split(/\s+/).length;
 
-describe("score is the plain mean, null as 0", () => {
-  it("matches three hand-computed rows", async () => {
-    const [a, b, c] = await buildItems(
+describe("score is the weighted mean (o2 2, pressure 2, others 1), null counts as half", () => {
+  it("matches four hand-computed rows", async () => {
+    const rows = await buildItems(
       inputs([
-        inv({ id: "A", o2Range: [21, 34], pressureRange: [60, 80], pdsBasis: "Direct.", evidence: "flight" }), // 1,1,1,1,0.8 -> 4.8/5
-        inv({ id: "B", o2Range: [21, 21], pdsBasis: "indirect: shows a thing", evidence: "ground" }), // 0,null,0.5,0.5,0.6 -> 1.6/5
-        inv({ id: "C", pds: "Other" }), // null,null,0,null,null -> 0
+        inv({ id: "A", o2Range: [21, 34], pressureRange: [60, 80], pdsBasis: "Direct.", evidence: "flight" }), // (2+2+1+1+0.8)/7
+        inv({ id: "B", o2Range: [21, 21], pdsBasis: "indirect: shows a thing", evidence: "ground" }), // (0+1+0.5+0.5+0.6)/7: measured miss 0, unknown pressure 0.5x2
+        inv({ id: "C", pds: "Other" }), // (1+1+0+0.5+0.5)/7: Other keeps directness 0
+        inv({ id: "D", o2Range: [25, 40], pressureRange: [101.3, 101.3], pdsBasis: "Direct." }), // (2+0+1+0.5+0.2)/7
       ]),
-      async (i) => (i.id === "A" ? 0.8 : i.id === "B" ? 0.6 : null),
-    ).then((x) => [x[0], x[1], x[2]]);
-    expect(a.score).toBeCloseTo(0.96, 3);
-    expect(b.score).toBeCloseTo(0.32, 3);
-    expect(c.score).toBe(0);
-    expect(computeScore(b.factors!)).toBe(b.score);
+      async (i) => ({ A: 0.8, B: 0.6, C: null, D: 0.2 })[i.id as "A"] ?? null,
+    );
+    expect(rows.map((r) => r.score)).toEqual([0.971, 0.371, 0.429, 0.529]);
+    expect(rows[2].factors!.map((f) => f.value)).toEqual([null, null, 0, null, null]); // values stay null in the data
+    expect(computeScore(rows[1].factors!)).toBe(rows[1].score);
+  });
+  it("an unknown condition scores above a measured mismatch and below a match", async () => {
+    const [miss, gap, hit] = await buildItems(inputs([inv({ id: "X", o2Range: [21, 21] }), inv({ id: "Y" }), inv({ id: "Z", o2Range: [21, 34] })]), goal(0.5));
+    expect(miss.score).toBeLessThan(gap.score);
+    expect(gap.score).toBeLessThan(hit.score);
+  });
+});
+
+describe("compareRank", () => {
+  const r = (investigationId: string, score: number, vals: (number | null)[]) => ({ investigationId, score, factors: vals.map((value) => ({ value })) });
+  it("score, then coverage, then id", () => {
+    const list = [r("PSI-9", 0.5, [1, null, null, null, 1]), r("PSI-2", 0.5, [1, 1, 1, null, null]), r("PSI-1", 0.5, [1, 1, 1, null, null]), r("PSI-5", 0.7, [null, null, null, null, 1])];
+    expect(list.sort(compareRank).map((x) => x.investigationId)).toEqual(["PSI-5", "PSI-1", "PSI-2", "PSI-9"]);
+    expect(compareRank(r("A", 0.5004, [1]), r("B", 0.5, [1, 1]))).toBeGreaterThan(0); // within 0.0005 = tie, more factors first
   });
 });
 
@@ -106,6 +124,33 @@ describe("factors", () => {
   });
 });
 
+describe("goal fit asks once per atmosphere", () => {
+  const rover: HabitatPreset = { ...moon, id: "rover", label: "Pressurized rover" };
+  it("moon and rover share one call, and the question names conditions, not the habitat", async () => {
+    let calls = 0;
+    const bodies: string[] = [];
+    const fetchImpl = (async (_u: unknown, init: RequestInit) => {
+      calls++;
+      bodies.push(String(init.body));
+      return new Response(JSON.stringify({ model: "jev-test", answers: { goalFit: { score: 3 } }, usage: { input_tokens: 1, output_tokens: 1 } }));
+    }) as unknown as typeof fetch;
+    const g = typesafeGoal("test-key", fetchImpl, mkdtempSync(join(tmpdir(), "rank-")));
+    const one = inv({ objectives: "Unique probe sentence 51ab for atmosphere reuse." });
+    expect(await g(one, moon)).toBe(0.75);
+    expect(await g(one, rover)).toBe(0.75);
+    expect(calls).toBe(1);
+    expect(bodies[0]).toContain("a crewed habitat at 30% oxygen and 70.3 kPa");
+    expect(bodies[0]).not.toMatch(/Moon Base|rover/i);
+  });
+  it("committed rank.json has identical goalFit for moon and rover on every investigation", () => {
+    const f = new URL("../public/data/rank.json", import.meta.url);
+    if (!existsSync(f)) return;
+    const items = (JSON.parse(readFileSync(f, "utf8")) as { items: { investigationId: string; habitat: string; factors: { key: string; value: number | null }[] }[] }).items;
+    const g = (id: string, h: string) => items.find((i) => i.investigationId === id && i.habitat === h)?.factors.find((x) => x.key === "goalFit")?.value;
+    for (const id of new Set(items.map((i) => i.investigationId))) expect(g(id, "moon")).toBe(g(id, "rover"));
+  });
+});
+
 describe("wording", () => {
   it("never says 'no conditions' unless both are null, and never 'rests on relevance'", async () => {
     const items = await buildItems(inputs([inv({ id: "P", o2Range: [21, 34] }), inv({ id: "Q" })]), goal(0.9));
@@ -125,8 +170,18 @@ describe("wording", () => {
   it("rationale handles all-equal and empty cases", () => {
     expect(rationale([{ key: "o2", label: "", value: null, reason: "" }])).toBe("Nothing is known for any of the five checks.");
   });
-  it("HOW_RANKING_WORKS is four sentences", () => {
-    expect(HOW_RANKING_WORKS.split(/(?<=\.)\s+/)).toHaveLength(4);
+  it("HOW_RANKING_WORKS is at most five plain sentences and states weights, the half rule and the tie-break", () => {
+    expect(HOW_RANKING_WORKS.split(/(?<=\.)\s+/).length).toBeLessThanOrEqual(5);
+    expect(HOW_RANKING_WORKS).toMatch(/count double/);
+    expect(HOW_RANKING_WORKS).toContain("counts as half, because unknown is neither a match nor a miss");
+    expect(HOW_RANKING_WORKS).toMatch(/Equal scores are ordered by how many checks/);
+    expect(Object.values(FACTOR_WEIGHTS).reduce((x, y) => x + y, 0)).toBe(7);
+  });
+  it("a null factor is never called weak", async () => {
+    const [p, q, o] = await buildItems(inputs([inv({ id: "P", o2Range: [21, 34] }), inv({ id: "Q" }), inv({ id: "R", pds: "Other" })]), goal(null));
+    expect(p.rationale).toBe("Strong oxygen match; pressure is not on record.");
+    expect(q.rationale).toBe("Strong link to fire safety; oxygen and pressure are not on record.");
+    expect(o.rationale).not.toMatch(/weak (oxygen|pressure|goal|evidence)/);
   });
   it("HOW_RANKING_WORKS states the decay rule and its floors, so a judge can redo the condition checks", () => {
     expect(HOW_RANKING_WORKS).toMatch(/straight line to 0/);
@@ -145,7 +200,7 @@ describe("wording", () => {
     for (const s of [7, -1, undefined, "x"]) expect(await typesafeGoal("test-key", bad(s))(one, moon)).toBeNull();
     expect(await typesafeGoal(undefined)(one, moon)).toBeNull();
   });
-  it("committed rank.json is schema-valid, complete, and every score is the mean of its factors", () => {
+  it("committed rank.json is schema-valid, complete, and every score is the weighted mean of its factors", () => {
     const f = new URL("../public/data/rank.json", import.meta.url);
     if (!existsSync(f)) return;
     const real = loadInputs();
@@ -153,8 +208,7 @@ describe("wording", () => {
     expect(items).toHaveLength(real.investigations.length * real.habitats.length);
     for (const it of items) {
       expect(it.factors!.map((x) => x.key)).toEqual(FACTOR_ORDER);
-      const mean = Math.round((it.factors!.reduce((s, x) => s + (x.value ?? 0), 0) / 5) * 1000) / 1000;
-      expect(it.score).toBe(mean);
+      expect(it.score).toBe(computeScore(it.factors!));
       expect(it.rationale).toBe(rationale(it.factors!));
     }
   });

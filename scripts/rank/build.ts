@@ -4,36 +4,37 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import type { HabitatId, HabitatPreset } from "../../src/contracts/habitat.ts";
+import type { HabitatPreset } from "../../src/contracts/habitat.ts";
 import type { Investigation } from "../../src/contracts/investigation.ts";
 import type { RankFactor, RankItem } from "../../src/contracts/rank.ts";
 
 type FactorKey = RankFactor["key"];
 
 /**
- * The scoring rule, in one place. Every factor counts the same (weight 1), and a factor that cannot be
- * known (value null) counts as 0, so missing data never helps a rank. score = sum(weight * value) / sum(weight).
+ * The scoring rule, in one place. Oxygen and pressure are the checks that say whether the experiment was run at
+ * the reader's conditions, so they count double; the three soft checks count once. score = sum(weight * value) / sum(weight).
+ * A factor whose value is null ("not on record") contributes UNKNOWN_VALUE x its weight, not 0: a measured mismatch (0)
+ * tells the reader the experiment was NOT run at their conditions, while "not on record" tells them nothing either way,
+ * so it must sit between a miss and a match. The factor's `value` stays null in the data; only this arithmetic uses 0.5.
  */
-export const FACTOR_WEIGHTS: Record<FactorKey, number> = { o2: 1, pressure: 1, directness: 1, evidence: 1, goalFit: 1 };
+export const FACTOR_WEIGHTS: Record<FactorKey, number> = { o2: 2, pressure: 2, directness: 1, evidence: 1, goalFit: 1 };
+export const UNKNOWN_VALUE = 0.5;
 export const FACTOR_ORDER: FactorKey[] = ["o2", "pressure", "directness", "evidence", "goalFit"];
 
 /** Shown verbatim in the UI. Keep it at four plain sentences. */
 export const HOW_RANKING_WORKS =
-  "Each investigation gets five checks for the habitat you pick: oxygen match, pressure match, how directly it studies fire safety, whether it flew in space, and how well its stated goal fits. " +
+  "Each investigation gets five checks for the habitat you pick: oxygen match and pressure match count double, while how directly it studies fire safety, whether it flew in space, and how well its stated goal fits count once. " +
   "Each check is worth 0 to 1; oxygen or pressure inside the tested range scores 1, and outside it falls in a straight line to 0 at a gap equal to the tested span (at least 5 points of oxygen or 10 kPa). " +
-  "The score is the plain average of the five, and a check the record cannot answer counts as 0, so missing data never lifts a rank. " +
+  "The score is the weighted average of the five (the weights add up to 7), and a check the record cannot answer counts as half, because unknown is neither a match nor a miss. " +
+  "Equal scores are ordered by how many checks the record could answer, then by investigation id. " +
   "The goal-fit check is the only one an SI rates; the other four come straight from the record.";
 
 /** Distance floor (same units as the dimension) when a tested range is a single value. Matches Lane A. */
 export const FLOOR = { o2: 5, pressure: 10 };
 
-/** One fixed question per habitat, asked of the investigation's stated goal. */
-export const GOAL_QUESTIONS: Partial<Record<HabitatId, string>> = {
-  iss: "Does this experiment's stated goal help prevent, detect or put out fires in the ISS: 21% oxygen, 101.3 kPa?",
-  moon: "Does this experiment's stated goal help prevent, detect or put out fires in a Moon Base: 30% oxygen, 70.3 kPa?",
-  rover: "Does this experiment's stated goal help prevent, detect or put out fires in a pressurized rover: 30% oxygen, 70.3 kPa?",
-  "suit-ref": "Does this experiment's stated goal help prevent, detect or put out fires in a spacesuit: 100% oxygen, 29.6 kPa?",
-};
+/** The fixed goal-fit question. Worded by the atmosphere, not the habitat name, so habitats with the same air get the same rating. */
+export const goalQuestion = (o2Percent: number, pressureKPa: number) =>
+  `Does this experiment's stated goal help prevent, detect or put out fires in a crewed habitat at ${num(o2Percent)}% oxygen and ${num(pressureKPa)} kPa?`;
 /** Goal fit below LOW is "low", at or above HIGH is "high", otherwise "medium". */
 export const GOAL_BANDS = { low: 0.4, high: 0.7 };
 const GOAL_LEVELS = [
@@ -140,10 +141,10 @@ function goalFactor(inv: Investigation, si: number | null): RankFactor {
   return { key: "goalFit", label, value: si, reason: `SI read the stated goal and rated the fit ${goalBand(si)}.`, sourceId: `psi:${inv.id}`, excerpt: goalExcerpt(inv) };
 }
 
-/** The plain mean of the five values, null counted as 0 (see FACTOR_WEIGHTS). */
+/** The weighted mean of the five values; null counts as UNKNOWN_VALUE (see FACTOR_WEIGHTS). */
 export function computeScore(factors: Pick<RankFactor, "key" | "value">[]): number {
   let sum = 0, w = 0;
-  for (const f of factors) { sum += FACTOR_WEIGHTS[f.key] * (f.value ?? 0); w += FACTOR_WEIGHTS[f.key]; }
+  for (const f of factors) { sum += FACTOR_WEIGHTS[f.key] * (f.value ?? UNKNOWN_VALUE); w += FACTOR_WEIGHTS[f.key]; }
   return r3(sum / w);
 }
 
@@ -160,12 +161,13 @@ const phrase = (f: RankFactor, all: RankFactor[]) => {
 
 /**
  * One plain sentence naming the strongest and the weakest factor. Weakest is by what the factor adds to the
- * score (null counts as 0); on a tie a known value wins, so a measured mismatch is named before a gap.
+ * score (null counts as UNKNOWN_VALUE); on a tie a known value wins, so a measured mismatch is named before a gap.
+ * A null factor is only ever called "not on record", never weak.
  */
 export function rationale(factors: RankFactor[]): string {
   const known = factors.filter((f) => f.value !== null);
   if (!known.length) return "Nothing is known for any of the five checks.";
-  const v = (f: RankFactor) => f.value ?? 0;
+  const v = (f: RankFactor) => f.value ?? UNKNOWN_VALUE;
   const best = known.reduce((a, b) => (b.value! > a.value! ? b : a));
   let worst = factors.reduce((a, b) => (v(b) < v(a) || (v(b) === v(a) && a.value === null && b.value !== null) ? b : a));
   if (v(best) === v(worst)) {
@@ -214,20 +216,27 @@ export async function buildItems(inp: Inputs, goal: GoalFn): Promise<RankItem[]>
 }
 
 // ---------- TypeSafe goal fit, cached on disk by input hash ----------
-export const usage = { calls: 0, cached: 0, failed: 0, input_tokens: 0, output_tokens: 0 };
+export const usage = { calls: 0, cached: 0, failed: 0, input_tokens: 0, output_tokens: 0, models: new Set<string>() };
 
-export function typesafeGoal(key: string | undefined, fetchImpl: typeof fetch = fetch): GoalFn {
-  return async (inv, hab) => {
+export function typesafeGoal(key: string | undefined, fetchImpl: typeof fetch = fetch, dir: string = cacheDir): GoalFn {
+  // One question per investigation x distinct atmosphere; habitats with the same air reuse the answer.
+  const memo = new Map<string, Promise<number | null>>();
+  return (inv, hab) => {
+    const k = `${inv.id}|${hab.o2Percent}|${hab.pressureKPa}`;
+    if (!memo.has(k)) memo.set(k, ask(inv, hab));
+    return memo.get(k)!;
+  };
+
+  async function ask(inv: Investigation, hab: HabitatPreset): Promise<number | null> {
     const excerpt = goalExcerpt(inv);
-    const question = GOAL_QUESTIONS[hab.id];
-    if (!excerpt || !question) return null;
+    if (!excerpt) return null;
     const body = {
       model: MODEL,
-      state: { habitat: hab.label, stated_goal: excerpt },
-      questions: { goalFit: { type: "score", instructions: question, criteria: GOAL_LEVELS } },
+      state: { stated_goal: excerpt },
+      questions: { goalFit: { type: "score", instructions: goalQuestion(hab.o2Percent, hab.pressureKPa), criteria: GOAL_LEVELS } },
     };
     const hash = createHash("sha256").update(JSON.stringify(body)).digest("hex");
-    const file = join(cacheDir, `${hash}.json`);
+    const file = join(dir, `${hash}.json`);
     if (existsSync(file)) {
       usage.cached++;
       return (JSON.parse(readFileSync(file, "utf8")) as { value: number }).value;
@@ -236,21 +245,22 @@ export function typesafeGoal(key: string | undefined, fetchImpl: typeof fetch = 
     try {
       const res = await fetchImpl(TYPESAFE_URL, { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, body: JSON.stringify(body), signal: AbortSignal.timeout(30_000) });
       if (!res.ok) throw new Error(String(res.status));
-      const j = (await res.json()) as { answers: { goalFit: { score: number } }; usage: { input_tokens: number; output_tokens: number } };
+      const j = (await res.json()) as { model?: string; answers: { goalFit: { score: number } }; usage: { input_tokens: number; output_tokens: number } };
       usage.calls++; usage.input_tokens += j.usage.input_tokens; usage.output_tokens += j.usage.output_tokens;
+      if (j.model) usage.models.add(j.model);
       // TypeSafe Score is on the level line 0..(levels-1); anything else is a failure, never a guessed number.
       const raw = j.answers?.goalFit?.score;
       if (typeof raw !== "number" || !Number.isFinite(raw) || raw < 0 || raw > GOAL_LEVELS.length - 1) throw new Error("bad score");
       const value = r3(raw / (GOAL_LEVELS.length - 1));
-      mkdirSync(cacheDir, { recursive: true });
-      writeFileSync(file, JSON.stringify({ value }));
+      mkdirSync(dir, { recursive: true });
+      writeFileSync(file, JSON.stringify({ value, model: j.model ?? null }));
       return value;
     } catch (e) {
       usage.failed++;
       console.error(`typesafe failed for ${inv.id}/${hab.id}: ${(e as Error).message}`); // status only, never the key
       return null;
     }
-  };
+  }
 }
 
 // ---------- main ----------
@@ -280,6 +290,6 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(out, JSON.stringify({ items }, null, 2) + "\n");
   console.log(`${items.length} items -> ${out}${inp.fixtures ? " (FIXTURE INPUTS: do not commit)" : ""}`);
-  console.log(`typesafe: ${usage.calls} calls, ${usage.cached} cached, ${usage.failed} failed, ${usage.input_tokens} in / ${usage.output_tokens} out tokens`);
+  console.log(`typesafe: ${usage.calls} calls, ${usage.cached} cached, ${usage.failed} failed, ${usage.input_tokens} in / ${usage.output_tokens} out tokens; model ${[...usage.models].join(",") || "(all cached)"}`);
   for (const k of FACTOR_ORDER) console.log(`null ${k}: ${items.filter((i) => i.factors!.find((f) => f.key === k)!.value === null).length}`);
 }
