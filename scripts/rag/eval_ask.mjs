@@ -64,7 +64,8 @@ for (const [i, item] of QUESTIONS.entries()) {
     row.ok = row.hit_any;
   } else if (item.kind === "offtopic") row.ok = refused;
   else if (item.kind === "data") row.ok = factIds.some((f) => item.facts.includes(f));
-  else if (item.kind === "model") row.ok = factIds.some((f) => f.startsWith("model-"));
+  // team-model facts, plus the two table facts that answer "what unit" and "how many runs trained the models"
+  else if (item.kind === "model") row.ok = factIds.some((f) => /^(model-|physics-)/.test(f) || f === "flex-br-unit" || f === "flex-model-data");
   else if (item.kind === "nodata") row.ok = factIds.length === 0 && !refused && claims.length > 0;
   else row.ok = null; // relabelled: reported, not scored
   rows.push(row);
