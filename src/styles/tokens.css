@@ -1,75 +1,102 @@
 /*
- * DESIGN TOKENS. The mood board swap happens in this one file; components use these names only.
- * Dark and calm is the default (near-black, one warm accent). Light scheme follows the OS setting.
+ * DESIGN TOKENS. Values come from docs/DESIGN_SYSTEM.md (the team's mood board); components use these names only.
+ * Fire on space: near-black and deep blue for depth, coral and amber for anything alive.
+ * Dark is the default. The light scheme follows the OS setting.
  * Rules: body text >= 4.5:1 on --color-bg / --color-surface / --color-surface-2; UI marks >= 3:1.
+ * Blue never carries meaning. Green (--color-match) means "covers your habitat" and nothing else.
  *
  * COLOUR - surfaces and text
  *   --color-bg              page background
- *   --color-surface         cards, bars, dialogs
- *   --color-surface-2       a level above surface (nested panels, hover, inputs)
- *   --color-border          dividers and card outlines (decorative; use --color-edge for control outlines)
- *   --color-edge            outline of controls that must be seen (radios, inputs), >= 3:1
+ *   --color-surface         cards
+ *   --color-surface-2       raised: drawer, sticky bar, porthole frame, inputs
+ *   --color-border          decorative hairline (about 1.6:1); never the only edge of a control
+ *   --color-border-strong   edges of inputs, radios and unselected controls, >= 3:1
+ *   --color-edge            old name for --color-border-strong
  *   --color-text            body text
- *   --color-text-muted      secondary text
- *   --color-unknown         "Not on record" text; muted, still >= 4.5:1
+ *   --color-text-muted      secondary text and the words "Not on record"
+ *   --color-unknown         "Not on record" MARKS (dashed rings, dashed outlines), >= 3:1; never text
  * COLOUR - accent and state
- *   --color-accent          the one warm accent: links, selected marks, key numbers
+ *   --color-accent          the one warm accent: primary action, selected state, habitat marker, links
  *   --color-accent-contrast text drawn ON an accent fill
+ *   --color-flame           flame glow edge, lit cards, source quote rule (marks only)
+ *   --color-depth           flame core glow, meter track, porthole sky
+ *   --color-match           a tested range that covers the habitat. Nothing else.
  *   --color-focus           focus ring
- *   --color-highlight       outline of a card lit by an answer or by the picked habitat
- *   --color-highlight-bg    fill of a lit card
- *   --color-glow            soft glow colour for the one focal visual per screen (decorative only)
- *   --color-badge-bg / -text  "sample data" badge
+ *   --color-highlight       outline of a selected or lit card (= accent)
+ *   --color-highlight-bg    fill of a selected or lit card
+ *   --color-glow            soft glow colour of the one focal visual per screen (= flame, decorative)
+ *   --color-badge-bg / -text  "sample data" badge, alerts
+ *   --color-pill / --color-pill-text  primary pill button: off-white fill, dark mono capitals
  * COLOUR - meters (oxygen and pressure bars)
- *   --color-meter-track     empty bar
- *   --color-meter-fill      range an experiment tested
- *   --color-marker          the habitat's own value drawn on a bar
- * COLOUR - Prevention / Detection / Suppression tags (fill + text on that fill)
+ *   --color-meter-track     empty bar (= depth)
+ *   --color-meter-fill      a plain amount on a bar (= accent)
+ *   --color-marker          the habitat's own value drawn on a bar (= accent)
+ * COLOUR - Prevention / Detection / Suppression tags (fill + text on that fill).
+ *   Told apart by shape and word; fills are neutral so no hue competes with match green or the accent.
  *   --color-tag-prevention / --color-tag-prevention-text
  *   --color-tag-detection  / --color-tag-detection-text
  *   --color-tag-suppression/ --color-tag-suppression-text
  *
- * SHADOW     --shadow-1 resting card, --shadow-2 raised (sticky bar, dialog)
- * SPACE      --space-1 .. --space-8 (0.25rem to 5rem)
- * RADIUS     --radius-1 chips, --radius-2 cards, --radius-3 large panels and picker cards
- * TYPE       --font-sans body, --font-display headings, --font-mono ids and numbers
- *            --text-xs .. --text-3xl, fluid at the top end
- * MOTION     --motion-fast (hover, focus), --motion-slow (the hero pulse); both become 0s under reduced motion
+ * MATERIAL   --material-bg translucent raised surface, --material-blur; solid fallback is --color-surface-2
+ * SHADOW     --shadow-1 resting (none: elevation is by light), --shadow-2 the drawer only,
+ *            --shadow-porthole inset depth + inner light edge of the porthole frame
+ * SPACE      --space-1 .. --space-9: 4, 8, 12, 16, 24, 32, 48, 72, 112 px
+ *            --section-gap 112 desktop, 72 phone
+ * RADIUS     --radius-1 8 chips, --radius-2 16 cards, --radius-3 32 porthole and drawer, --radius-full pills
+ * TYPE       --font-sans body and statements, --font-display names and numerals (Archivo, set wide),
+ *            --font-mono readouts (units, ids, challenge words)
+ *            --font-stretch-display 125% (the width axis)
+ *            --text-xs .. --text-4xl: 12, 14, 16, 20, 28, 40, 64, 104 px; the top three are fluid.
+ *            --text-4xl is for the hero title and rank numerals only.
+ * MOTION     --motion-fast 180ms small state changes, --motion-mid 320ms cards and the bar,
+ *            --motion-slow 480ms the drawer morph, --ease the one easing (fast start, gentle settle, no bounce).
+ *            All become 0s under reduced motion.
  */
 :root {
   color-scheme: dark light;
 
   /* dark (default) */
-  --color-bg: #0b0c10;
-  --color-surface: #14161c;
-  --color-surface-2: #1d2029;
-  --color-border: #2c303b;
-  --color-edge: #7d8496;
-  --color-text: #eeece8;
-  --color-text-muted: #adb1bd;
-  --color-unknown: #a2a7b4;
-  --color-accent: #ffb454;
-  --color-accent-contrast: #1a1000;
-  --color-focus: #ffd08a;
-  --color-highlight: #ffb454;
-  --color-highlight-bg: #2a2114;
-  --color-glow: #ff9a3c;
-  --color-badge-bg: #4a3a00;
-  --color-badge-text: #ffe9a8;
+  --color-bg: #0b0d12;
+  --color-surface: #15171c;
+  --color-surface-2: #1f2f38;
+  --color-border: #2b3a52;
+  --color-border-strong: #6b7785;
+  --color-edge: var(--color-border-strong);
+  --color-text: #f0efec;
+  --color-text-muted: #aab4bf;
+  --color-unknown: #6b7785;
+  --color-accent: #ffbb5c;
+  --color-accent-contrast: #15171c;
+  --color-flame: #ff8a73;
+  --color-depth: #003a70;
+  --color-match: #7cc563;
+  --color-focus: #ffbb5c;
+  --color-highlight: var(--color-accent);
+  --color-highlight-bg: #2b261f;
+  --color-glow: var(--color-flame);
+  --color-badge-bg: #33281a;
+  --color-badge-text: #ffd9a0;
+  --color-pill: #f0efec;
+  --color-pill-text: #15171c;
 
-  --color-meter-track: #2c303b;
-  --color-meter-fill: #ffb454;
-  --color-marker: #8fd0ff;
+  --color-meter-track: var(--color-depth);
+  --color-meter-fill: var(--color-accent);
+  --color-marker: var(--color-accent);
 
-  --color-tag-prevention: #1c3a2c;
-  --color-tag-prevention-text: #9be3bd;
-  --color-tag-detection: #1c2f4a;
-  --color-tag-detection-text: #a6cfff;
-  --color-tag-suppression: #4a2330;
-  --color-tag-suppression-text: #ffb3c4;
+  --color-tag-prevention: var(--color-surface-2);
+  --color-tag-prevention-text: var(--color-text);
+  --color-tag-detection: var(--color-surface-2);
+  --color-tag-detection-text: var(--color-text);
+  --color-tag-suppression: var(--color-surface-2);
+  --color-tag-suppression-text: var(--color-text);
 
-  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.03);
-  --shadow-2: 0 8px 24px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.05);
+  --material-bg: rgb(31 47 56 / 0.72);
+  --material-blur: 18px;
+  --porthole-edge: rgb(255 255 255 / 0.14);
+
+  --shadow-1: none;
+  --shadow-2: -24px 0 64px rgb(0 0 0 / 0.55);
+  --shadow-porthole: inset 0 0 0 1px var(--porthole-edge), inset 0 24px 64px rgb(0 0 0 / 0.75), inset 0 -8px 32px rgb(0 0 0 / 0.5);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -78,66 +105,78 @@
   --space-5: 1.5rem;
   --space-6: 2rem;
   --space-7: 3rem;
-  --space-8: 5rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+  --section-gap: var(--space-9);
 
-  --radius-1: 4px;
-  --radius-2: 8px;
-  --radius-3: 16px;
+  --radius-1: 8px;
+  --radius-2: 16px;
+  --radius-3: 32px;
+  --radius-full: 999px;
 
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: "Archivo Variable", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Archivo Variable", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-stretch-display: 125%;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
   --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.375rem;
-  --text-2xl: 1.75rem;
-  --text-3xl: clamp(2.25rem, 1.5rem + 3.5vw, 3.75rem);
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: clamp(1.75rem, 1.2rem + 1.8vw, 2.5rem);
+  --text-3xl: clamp(2.5rem, 1.6rem + 3.6vw, 4rem);
+  --text-4xl: clamp(3.25rem, 1.4rem + 6.6vw, 6.5rem);
 
-  --motion-fast: 120ms;
-  --motion-slow: 4s;
+  --motion-fast: 180ms;
+  --motion-mid: 320ms;
+  --motion-slow: 480ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
-    --color-bg: #faf7f2;
+    --color-bg: #f0efec;
     --color-surface: #ffffff;
-    --color-surface-2: #f1ece3;
-    --color-border: #d9d2c6;
-    --color-edge: #7a7468;
-    --color-text: #1d1b18;
-    --color-text-muted: #55514a;
-    --color-unknown: #5c5850;
-    --color-accent: #9a4a00;
+    --color-surface-2: #ebe6da;
+    --color-border: #c9c1b2;
+    --color-border-strong: #6b7280;
+    --color-text: #15171c;
+    --color-text-muted: #4a5563;
+    --color-unknown: #6b7280;
+    --color-accent: #9a4a12;
     --color-accent-contrast: #ffffff;
-    --color-focus: #9a4a00;
-    --color-highlight: #b45f06;
-    --color-highlight-bg: #fff1dc;
-    --color-glow: #ff9a3c;
-    --color-badge-bg: #fff1c2;
-    --color-badge-text: #4a3500;
+    --color-flame: #a5533a;
+    --color-depth: #cfd8df;
+    --color-match: #00703f;
+    --color-focus: #003a70;
+    --color-highlight-bg: #f6ede6;
+    --color-badge-bg: #f7e6cf;
+    --color-badge-text: #5a2c08;
+    --color-pill: #15171c;
+    --color-pill-text: #f0efec;
 
-    --color-meter-track: #e4ddd0;
-    --color-meter-fill: #b45f06;
-    --color-marker: #0b5c9e;
+    --material-bg: rgb(235 230 218 / 0.8);
+    --porthole-edge: rgb(255 255 255 / 0.85);
 
-    --color-tag-prevention: #d6f0e1;
-    --color-tag-prevention-text: #0f4a2e;
-    --color-tag-detection: #d9e8fb;
-    --color-tag-detection-text: #123e72;
-    --color-tag-suppression: #fbdde5;
-    --color-tag-suppression-text: #7a1236;
-
-    --shadow-1: 0 1px 2px rgb(40 30 10 / 0.12), 0 0 0 1px rgb(40 30 10 / 0.04);
-    --shadow-2: 0 8px 24px rgb(40 30 10 / 0.18), 0 0 0 1px rgb(40 30 10 / 0.06);
+    --shadow-2: -24px 0 64px rgb(40 30 10 / 0.2);
+    --shadow-porthole: inset 0 0 0 1px var(--porthole-edge), inset 0 24px 56px rgb(21 23 28 / 0.28), inset 0 -8px 28px rgb(21 23 28 / 0.12);
   }
+}
+
+@media (max-width: 40rem) {
+  :root { --section-gap: var(--space-8); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
     --motion-fast: 0s;
+    --motion-mid: 0s;
     --motion-slow: 0s;
   }
+}
+
+/* Raised contrast: material turns solid. */
+@media (prefers-contrast: more) {
+  :root { --material-bg: var(--color-surface-2); --material-blur: 0px; }
 }

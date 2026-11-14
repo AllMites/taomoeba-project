@@ -27,7 +27,7 @@
   background: radial-gradient(circle, var(--color-glow) 0%, transparent 62%);
   opacity: 0.4;
   filter: blur(8px);
-  animation: pulse var(--motion-slow) ease-in-out infinite alternate;
+  animation: pulse calc(var(--motion-slow) * 9) ease-in-out infinite alternate;
 }
 @keyframes pulse { from { opacity: 0.3; scale: 0.94; } to { opacity: 0.45; scale: 1.04; } }
 

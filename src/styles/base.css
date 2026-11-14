@@ -74,7 +74,7 @@ main:focus { outline: none; }
 .card[aria-pressed="true"] { border-color: var(--color-accent); box-shadow: 0 0 0 2px var(--color-accent); }
 
 .muted { color: var(--color-text-muted); font-size: var(--text-sm); }
-.unknown { color: var(--color-unknown); font-style: italic; }
+.unknown { color: var(--color-text-muted); font-style: italic; }
 .block { display: block; }
 
 .evidence { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2); padding: var(--space-4); }
