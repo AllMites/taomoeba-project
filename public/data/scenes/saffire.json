@@ -1,0 +1,42 @@
+{
+  "about": "Numbers behind the SAFFIRE replay. Every value is copied from a run table on record; field gives the file, row and column. A null value means not on record; the scene then uses default and the HUD says Not on record.",
+  "experiment": { "id": "PSI-99", "name": "SAFFIRE-II", "source": "psi:PSI-99" },
+  "run": {
+    "sample": "2-5",
+    "material": "Cotton-Fiberglass (SIBAL)",
+    "flowDirection": "Concurrent",
+    "source": "psi:PSI-99",
+    "field": "runs/PSI-99.json, sample_number 2-5"
+  },
+  "values": {
+    "o2Percent": { "value": 22.1, "unit": "%", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, o2_percent (table note 1: derived from measured CO2 production)" },
+    "airflowCmS": { "value": 20, "unit": "cm/s", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, airflow_cm_s" },
+    "pressureKPa": { "value": null, "unit": "kPa", "source": null, "field": "No pressure column in runs/PSI-99.json; investigations.json pressureRange is null", "default": 101.3, "defaultNote": "Flame drawn at sea-level cabin pressure" },
+    "sampleLengthCm": { "value": 29, "unit": "cm", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, sample_length" },
+    "sampleWidthCm": { "value": 5, "unit": "cm", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, sample_width_cm" },
+    "spreadRateMmS": { "value": 2.1, "unit": "mm/s", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, microgravity_spread_length (column named spread length, value given in mm/s)" },
+    "burnLengthCm": { "value": 29, "unit": "cm", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, microgravity_burn_length" },
+    "burnTimeS": { "value": 145, "unit": "s", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, burn_time_s" },
+    "ignitionPowerW": { "value": 80, "unit": "W", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, ignition_power_w" },
+    "ignitionTimeS": { "value": 9.2, "unit": "s", "source": "psi:PSI-99", "field": "runs/PSI-99.json, sample 2-5, ignition_time_s" }
+  },
+  "card": {
+    "about": "The nine SAFFIRE-II samples, in sample-number order. Their layout on the card is not on record; the scene lays them side by side.",
+    "source": "psi:PSI-99",
+    "samples": [
+      { "sample": "2-1", "material": "Silicone", "microgravityBurnLength": "~ 0" },
+      { "sample": "2-2", "material": "Silicone", "microgravityBurnLength": "~ 0" },
+      { "sample": "2-3", "material": "Silicone", "microgravityBurnLength": "~ 0" },
+      { "sample": "2-4", "material": "Silicone", "microgravityBurnLength": "~ 0" },
+      { "sample": "2-5", "material": "Cotton-Fiberglass (SIBAL)", "microgravityBurnLength": "29 cm" },
+      { "sample": "2-6", "material": null, "microgravityBurnLength": "29 cm" },
+      { "sample": "2-7", "material": "PMMA & Nomex", "microgravityBurnLength": "5 cm & 0 (note 2)" },
+      { "sample": "2-8", "material": "PMMA", "microgravityBurnLength": "~ 10 cm (note 3)" },
+      { "sample": "2-9", "material": null, "microgravityBurnLength": "~ 10 cm (note 4)" }
+    ]
+  },
+  "callouts": [
+    { "claimId": "clm:PSI-99:summary", "anchor": "box" },
+    { "claimIdByHabitat": { "iss": "clm:brief:iss:saffire-gravity", "moon": "clm:brief:moon:saffire-gravity", "rover": "clm:brief:rover:saffire-gravity" }, "anchor": "silicone" }
+  ]
+}
