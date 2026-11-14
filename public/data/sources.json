@@ -209,6 +209,209 @@
       "url": "https://ntrs.nasa.gov/citations/20040053582",
       "excerpt": "An investigation of the effect of water mists on premixed flame propagation has been conducted onboard the Space Shuttle to take advantage of the prolonged microgravity environment to study the effect of uniformly distributed clouds of polydisperse water mists on the speed and shape of propagating propane-air premixed flames.",
       "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20170001636",
+      "title": "The Spacecraft Fire Experiment (Saffire) - Objectives, Development and Status",
+      "url": "https://ntrs.nasa.gov/citations/20170001636",
+      "excerpt": "The overall objective of this project is to reduce the uncertainty and risk associated with the design of spacecraft fire safety systems for NASA's exploration missions.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20170000230",
+      "title": "Operation and Development Status of the Spacecraft Fire Experiments (Saffire)",
+      "url": "https://ntrs.nasa.gov/citations/20170000230",
+      "excerpt": "Operation and Development Status of the Spacecraft Fire Experiments (Saffire) Gary A.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20220002714",
+      "title": "Model Development of Large-Scale Spacecraft Fires During the Saffire-IV Experiments",
+      "url": "https://ntrs.nasa.gov/citations/20220002714",
+      "excerpt": "51st International Conference on Environmental Systems ICES-2022-278 10-14 July 2022, St.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20040053557",
+      "title": "Extinction Criteria for Opposed-Flow Flame Spread in a Microgravity Environment",
+      "url": "https://ntrs.nasa.gov/citations/20040053557",
+      "excerpt": "The energy balance equation, that includes surface re-radiation, is solved to yield a closed form spread rate expression in terms of its thermal limit, and a radiation number that can be evaluated from the known parameters of the problem.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20040053578",
+      "title": "\"Smoke\": Characterization Of Smoke Particulate For Spacecraft Fire Detection",
+      "url": "https://ntrs.nasa.gov/citations/20040053578",
+      "excerpt": "\"SMOKE:\" CHARACTERIZATION OF SMOKE PARTICULATE FOR SPACECRAFT FIRE DETECTION David L.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20040142387",
+      "title": "Research Plan for Fire Signatures and Detection",
+      "url": "https://ntrs.nasa.gov/citations/20040142387",
+      "excerpt": "Advanced fire detection system for gaseous and particulate pre-fire and fire signatures a.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20040053586",
+      "title": "CO2 Suppression of PMMA Flames In Low-Gravity",
+      "url": "https://ntrs.nasa.gov/citations/20040053586",
+      "excerpt": "CO2 Suppression of PMMA Flames in Low-Gravity G.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20110012300",
+      "title": "Development of the International Space Station (ISS) Fine Water Mist (FWM) Portable Fire Extinguisher",
+      "url": "https://ntrs.nasa.gov/citations/20110012300",
+      "excerpt": "Development of the International Space Station (ISS) Fine Water Mist (FWM) Portable Fire Extinguisher Anna L.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20220015583",
+      "title": "ACME: Advanced Combustion via Microgravity Experiments",
+      "url": "https://ntrs.nasa.gov/citations/20220015583",
+      "excerpt": "ACME: Advanced Combustion via Microgravity Experiments WHAT? _ Six independent investigations of laminar, non-premixed flames of gaseous fuels led by...",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "nasa:researchers-guide-combustion",
+      "title": "A Researcher's Guide to: Combustion Science (NASA ISS, NP-2015-10-034-JSC)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+      "excerpt": "National Aeronautics and Space Administration A Researcher's Guide to: Combustion Science This International Space Station (ISS) Researcher's Guide is published by the NASA ISS Program Science Office.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-acme",
+      "title": "NASA Glenn experiment summary: Advanced Combustion via Microgravity Experiments (ACME)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "Advanced Combustion via Microgravity Experiments (ACME) ACME is focused on advanced combustion technology via fundamental microgravity research.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-bass",
+      "title": "NASA Glenn experiment summary: Burning and Suppression of Solids (BASS)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "Burning and Suppression of Solids (BASS) The Burning and Suppression of Solids (BASS) investigation examines the burning and extinction characteristics of a wide variety of fuel samples in microgravity.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-daft",
+      "title": "NASA Glenn experiment summary: Dust and Aerosol Measurement Feasibility Test (DAFT)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "If the P-Trak performs as expected, the device will be used in SAME to provide data that will help scientists design better fire detectors for future, long duration, manned missions.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-flex",
+      "title": "NASA Glenn experiment summary: Flame Extinguishment Experiment (FLEX)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "Flame Extinguishment Experiment (FLEX) The Flame Extinguishment Experiment (FLEX) experiment was designed to assess and quantify the effectiveness of inert-gas suppressants in microgravity and obtain the most conservative estimate of the limiting oxygen index for steady combustion.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-saffire",
+      "title": "NASA Glenn experiment summary: Spacecraft Fire Safety Demonstration (Saffire)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "Spacecraft Fire Safety Demonstration (Saffire) Creating a safe environment for astronauts is the number one priority for all crew missions.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-same",
+      "title": "NASA Glenn experiment summary: Smoke Aerosol Measurement Experiment (SAME)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "Smoke Aerosol Measurement Experiment (SAME) Spacecraft smoke detectors must detect different types of smoke.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-slice",
+      "title": "NASA Glenn experiment summary: Structure and Liftoff in Combustion Experiment (SLICE)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "Structure & Liftoff in Combustion Experiment (SLICE) laminar diffusion flames are especially valuable for studies of combustion because of the availability of accurate numerical modeling with that flame configuration.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-spice",
+      "title": "NASA Glenn experiment summary: Smoke Point in Co-flow Experiment (SPICE)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "excerpt": "SPICE will stabilize an enclosed laminar flame in a co-flowing oxidizer, measure the overall flame shape to validate the theoretical and numerical predictions, measure the flame stabilization heights, and measure the temperature field to verify flame structure predictions.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-fm2",
+      "title": "NASA Glenn: Flammability of Materials on the Moon (FM2)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-of-materials-on-the-moon-fm2/",
+      "excerpt": "Flammability of Materials on the Moon (FM2) FM2 is the first-ever combustion experiment to be performed on another planetary body.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-sofie",
+      "title": "NASA Glenn: Solid Fuel Ignition and Extinction (SoFIE)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/solid-fuel-ignition-and-extinction-sofie/",
+      "excerpt": "Solid Fuel Ignition and Extinction (SoFIE) Fire can be a catastrophic hazard for manned spacecraft.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:glenn-flare",
+      "title": "NASA Glenn: Flammability Limits at Reduced-g Experiment (FLARE)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/",
+      "excerpt": "Flammability Limits At Reduced-g Experiment (FLARE) To develop a methodology to correlate material flammability limits in normal gravity and microgravity, which allows quantitative estimation of material flammability limit in microgravity based on the flammability data obtained on the ground.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:apollo204-findings",
+      "title": "Report of Apollo 204 (Apollo 1) Review Board: findings, determinations and recommendations",
+      "url": "https://www.nasa.gov/wp-content/uploads/static/history/Apollo204/find.html",
+      "excerpt": "In this Review, the Board adhered to the principle that reliability of the Command Module and the entire system involved in its operation is a requirement common to both safety and mission success.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:apollo204-report",
+      "title": "Report of the Apollo 204 (Apollo 1) Review Board",
+      "url": "https://www.nasa.gov/history/Apollo204/desc.html",
+      "excerpt": "Spacecraft 012, assigned to Mission AS-204, was built at North American Aviation, Inc., Space and Information Systems Division, Downey, California.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:apollo204-fire-origin",
+      "title": "Apollo 204 (Apollo 1) Review Board, Appendix D-5: Origin and Propagation of Fire",
+      "url": "https://www.nasa.gov/wp-content/uploads/static/history/Apollo204/appendices/AppendixD-5.pdf",
+      "excerpt": "REPORT OF PANEL 5 ORIGIN AND PROPAGATION OF FIRE APPENDIX D-5 TO FINAL REPORT OF APOLLO 204 REVIEW BOARD D - 5- 1 This page left blank intentionally.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:apollo13-review-board",
+      "title": "Report of Apollo 13 Review Board (1970)",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_13_review_board.txt",
+      "excerpt": "REPORT OF APOLLO 13 REVIEW BOARD NATIONAL AERONAUTICS AND SPACE ADMINISTRATION APOLLO 13 REVIEW BOARD The Honorable Thomas 0.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:apollo13-review-50-years",
+      "title": "50 Years Ago: Apollo 13 Review Board Report (NASA History)",
+      "url": "https://www.nasa.gov/history/50-years-ago-apollo-13-review-board-report",
+      "excerpt": "During a press conference on June 15, 1970, at NASA Headquarters in Washington, DC, Apollo 13 Review Board Chair Edgar M.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "ntrs:20110015690",
+      "title": "A Case Study of the Failure on Apollo 13: Based on TMX-65270, Report of Apollo 13 Review Board",
+      "url": "https://ntrs.nasa.gov/citations/20110015690",
+      "excerpt": "A Case Study of the Failure on Apollo 13 Based on TMX-65270, Report of Apollo 13 Review Board Prepared by Brenda Lindley Anderson, QD34 The dramatic journey of the crippled Apollo 13 vehicle has been heavily documented and popularized.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20030068062",
+      "title": "Fire in Space: What Do You Do? (lessons from the Mir fire for the ISS)",
+      "url": "https://ntrs.nasa.gov/citations/20030068062",
+      "excerpt": "Abstract This paper addresses the process of performing detailed and thorough fire protection hazard analysis for the microgravity environment aboard the International Space Station (1%).",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "nasa:mir-fire-25-years",
+      "title": "25 Years Ago: Fire Aboard Space Station Mir (NASA History)",
+      "url": "https://www.nasa.gov/feature/25-years-ago-fire-aboard-space-station-mir",
+      "excerpt": "24, 1997, the six crew members aboard the Russian space station Mir faced significant danger when a fire ignited in an oxygen generating system.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
     }
   ]
 }

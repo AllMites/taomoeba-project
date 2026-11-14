@@ -67,3 +67,16 @@
 .ask-source summary:hover { color: var(--color-text); }
 .ask-excerpt { margin: var(--space-2) 0 0; padding-left: var(--space-3); border-left: 1px solid var(--color-flame); font-size: 0.9375rem; color: var(--color-text-muted); overflow-wrap: anywhere; }
 .ask-clear { margin-top: var(--space-4); }
+
+/* Data finding first: computed by code from the tables. */
+.ask-facts { margin-bottom: var(--space-5); }
+.ask-facts ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }
+.ask-fact { padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-2); background: var(--color-bg); }
+.ask-fact-text { margin: 0; font-size: var(--text-lg); line-height: 1.4; max-width: 60ch; overflow-wrap: anywhere; }
+.ask-fact-src { margin: var(--space-1) 0 0; font-size: var(--text-sm); }
+.ask-note { margin: 0; color: var(--color-text-muted); font-weight: 600; }
+.ask-rel { flex-basis: 100%; margin: 0; font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted); }
+.ask-rel-contradicts { color: var(--color-text); border-left: 2px solid var(--color-flame); padding-left: var(--space-2); }
+.ask-claim { margin: var(--space-2) 0 0; overflow-wrap: anywhere; }
+.ask-quote-note { margin: var(--space-1) 0 0; padding-left: var(--space-3); }
+.ask-link { margin: var(--space-2) 0 0; }

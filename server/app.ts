@@ -4,7 +4,8 @@ import { z } from "zod";
 import claimsFixture from "../public/data/fixtures/claims.fixture.json";
 import sourcesFixture from "../public/data/fixtures/sources.fixture.json";
 import { HabitatId } from "../src/contracts/habitat.ts";
-import { ask, type AskEnv } from "./ask.ts";
+import { ask, type AskEnv, type AskExtras, type SourceInfo } from "./ask.ts";
+import type { DataFact } from "./facts.ts";
 import { buildIndex, type Bm25Index, type Chunk } from "./bm25.ts";
 import { verify } from "./verify.ts";
 
@@ -12,6 +13,9 @@ export type Env = AskEnv & {
   TYPESAFE_API_KEY?: string;
   // Static-assets binding (Lane O): used to load /data/index.json built by Lane B.
   ASSETS?: { fetch: (r: Request | string) => Promise<Response> };
+  // Private KV store (wrangler.toml [[kv_namespaces]] binding LIBRARY): key "restricted-index" holds the text of
+  // papers NASA marks "short quotes only" (built by scripts/rag/add_papers.py). Not set = the site runs without them.
+  LIBRARY?: { get: (key: string, type: "json") => Promise<unknown> };
 };
 
 export const MAX_QUESTION = 300;
@@ -40,7 +44,7 @@ export function fixtureIndex(): Bm25Index {
   for (const c of claimsFixture.items) for (const s of c.sourceIds) invBySource.set(s, c.investigationId);
   const chunks: Chunk[] = [
     ...sourcesFixture.items.map((s) => ({ id: s.id, sourceId: s.id, investigationId: invBySource.get(s.id) ?? null, text: s.excerpt })),
-    ...claimsFixture.items.map((c) => ({ id: c.id, sourceId: c.sourceIds[0], investigationId: c.investigationId, text: c.text })),
+    ...claimsFixture.items.map((c) => ({ id: c.id, sourceId: c.sourceIds[0], investigationId: c.investigationId, text: c.text, derived: true })),
   ];
   return buildIndex(chunks);
 }
@@ -55,7 +59,7 @@ export function withClaims(base: Bm25Index, claims: unknown): Bm25Index {
   const rows = (Array.isArray(claims) ? claims : ((claims as { items?: unknown[] })?.items ?? [])) as ClaimRow[];
   const extra: Chunk[] = rows
     .filter((c) => c?.text && c.sourceIds?.[0])
-    .map((c) => ({ id: c.id, sourceId: c.sourceIds[0], investigationId: c.investigationId || null, text: c.text, habitat: c.habitat }));
+    .map((c) => ({ id: c.id, sourceId: c.sourceIds[0], investigationId: c.investigationId || null, text: c.text, habitat: c.habitat, derived: true }));
   return buildIndex([...base.chunks, ...extra]);
 }
 
@@ -67,12 +71,61 @@ async function sha256(s: string) {
 const AskBody = z.object({ question: z.string(), habitat: HabitatId.optional() });
 const VerifyBody = z.object({ text: z.string().max(2000), excerpt: z.string().max(4000), sourceText: z.string().max(200_000).optional() });
 
-export function createApp(opts: { index?: Bm25Index } = {}) {
+/** Licenses by source id from sources.json, so copyrighted sources are paraphrased only. */
+export function licensesFrom(sources: unknown): Record<string, string> {
+  const rows = (Array.isArray(sources) ? sources : ((sources as { items?: unknown[] })?.items ?? [])) as { id?: string; license?: string }[];
+  return Object.fromEntries(rows.filter((r) => r?.id).map((r) => [r.id!, r.license ?? ""]));
+}
+
+/** Title, link and licence by source id, from sources.json and library.json (metadata only, no paper text). */
+export function sourceInfoFrom(...lists: unknown[]): Record<string, SourceInfo> {
+  const out: Record<string, SourceInfo> = {};
+  for (const list of lists) {
+    const rows = (Array.isArray(list) ? list : ((list as { items?: unknown[] })?.items ?? [])) as Partial<SourceInfo & { id: string }>[];
+    for (const r of rows) if (r?.id && r.title) out[r.id] = { title: r.title, url: r.url ?? "", license: r.license ?? "" };
+  }
+  return out;
+}
+
+/** Private library chunks from KV, marked restricted. Anything unexpected = no private papers, never an error. */
+export function restrictedChunks(raw: unknown): Chunk[] {
+  const rows = ((raw as { chunks?: unknown[] })?.chunks ?? []) as Partial<Chunk>[];
+  return rows
+    .filter((c) => typeof c?.id === "string" && typeof c.sourceId === "string" && typeof c.text === "string")
+    .map((c) => ({ id: c.id!, sourceId: c.sourceId!, investigationId: c.investigationId ?? null, text: c.text!, restricted: true }));
+}
+
+export function createApp(
+  opts: { index?: Bm25Index; facts?: DataFact[]; licenses?: Record<string, string>; sources?: Record<string, SourceInfo> } = {},
+) {
   // ponytail: rate limit and cache are per-isolate memory only. Ceiling: each Worker isolate has its own
   // bucket, so abuse across isolates is not capped. Move to a Durable Object or KV if abused.
   const buckets = new Map<string, { tokens: number; at: number }>();
   const cache = new Map<string, unknown>();
   let loaded: Promise<Bm25Index> | undefined;
+  let extrasLoaded: Promise<AskExtras> | undefined;
+
+  /** Data facts (public/data/facts.json) and source licenses (sources.json); missing files mean none, never an error. */
+  const getExtras = (env: Env, origin: string): Promise<AskExtras> => {
+    if (opts.index) return Promise.resolve({ facts: opts.facts ?? [], licenses: opts.licenses ?? {}, sources: opts.sources ?? {} });
+    extrasLoaded ??= (async () => {
+      const get = async (path: string) => {
+        try {
+          const r = await env.ASSETS?.fetch(new URL(path, origin).toString());
+          return r?.ok ? await r.json() : null;
+        } catch {
+          return null;
+        }
+      };
+      const [facts, sources, library] = await Promise.all([get("/data/facts.json"), get("/data/sources.json"), get("/data/library.json")]);
+      return {
+        facts: Array.isArray(facts) ? (facts as DataFact[]) : [],
+        licenses: { ...licensesFrom(sources), ...licensesFrom(library) },
+        sources: sourceInfoFrom(sources, library),
+      };
+    })();
+    return extrasLoaded;
+  };
 
   const getIndex = (env: Env, origin: string): Promise<Bm25Index> => {
     if (opts.index) return Promise.resolve(opts.index);
@@ -82,7 +135,13 @@ export function createApp(opts: { index?: Bm25Index } = {}) {
         if (r?.ok) {
           const base = (await r.json()) as Bm25Index;
           const cr = await env.ASSETS?.fetch(new URL("/data/claims.json", origin).toString());
-          return withClaims(base, cr?.ok ? await cr.json() : []);
+          let priv: Chunk[] = [];
+          try {
+            priv = restrictedChunks(await env.LIBRARY?.get("restricted-index", "json"));
+          } catch {
+            /* no private library: the public one still works */
+          }
+          return withClaims({ ...base, chunks: [...base.chunks, ...priv] }, cr?.ok ? await cr.json() : []);
         }
       } catch {
         /* fall through to fixtures */
@@ -122,8 +181,9 @@ export function createApp(opts: { index?: Bm25Index } = {}) {
 
     const key = await sha256(`${question.toLowerCase().replace(/\s+/g, " ")}|${body.data.habitat ?? ""}`);
     if (cache.has(key)) return c.json(cache.get(key));
-    const index = await getIndex(c.env ?? {}, new URL(c.req.url).origin);
-    const { degraded, ...result } = await ask(index, question, body.data.habitat, c.env ?? {});
+    const origin = new URL(c.req.url).origin;
+    const [index, extras] = await Promise.all([getIndex(c.env ?? {}, origin), getExtras(c.env ?? {}, origin)]);
+    const { degraded, ...result } = await ask(index, question, body.data.habitat, c.env ?? {}, extras);
     if (!degraded) {
       if (cache.size >= CACHE_MAX) cache.delete(cache.keys().next().value!);
       cache.set(key, result);

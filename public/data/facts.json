@@ -1,0 +1,2123 @@
+[
+ {
+  "id": "flex-runs",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "The cleaned FLEX table has 261 usable droplet runs (153 methanol, 108 heptane) on 80 test dates from 2009-03-05 to 2011-12-08.",
+  "numbers": [
+   "03",
+   "05",
+   "08",
+   "108",
+   "12",
+   "153",
+   "2009",
+   "2011",
+   "261",
+   "80"
+  ],
+  "keywords": "FLEX runs droplets methanol heptane how many tests dates data size",
+  "method": "row counts of out/flex_clean.csv (ok_features)",
+  "caveat": ""
+ },
+ {
+  "id": "flex-br-o2-methanol",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "In the FLEX table, the mean burning rate of methanol droplets is 0.39 at oxygen below 18% (n=52), 0.49 at oxygen 18% to 25% (n=81), 0.62 at oxygen 25% or more (n=17); rank correlation between oxygen fraction and burning rate is 0.69.",
+  "numbers": [
+   "0.39",
+   "0.49",
+   "0.62",
+   "0.69",
+   "17",
+   "18",
+   "25",
+   "52",
+   "81"
+  ],
+  "keywords": "burning rate oxygen O2 Methanol droplet FLEX increase rise faster",
+  "method": "binned means and Spearman correlation over runs with a burning rate",
+  "caveat": "Burning-rate unit is not verified (the table header says mm); other conditions (pressure, diluent, droplet size) also vary."
+ },
+ {
+  "id": "flex-br-o2-heptane",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "In the FLEX table, the mean burning rate of heptane droplets is 0.51 at oxygen below 18% (n=21), 0.53 at oxygen 18% to 25% (n=74), 0.71 at oxygen 25% or more (n=12); rank correlation between oxygen fraction and burning rate is 0.43.",
+  "numbers": [
+   "0.43",
+   "0.51",
+   "0.53",
+   "0.71",
+   "12",
+   "18",
+   "21",
+   "25",
+   "74"
+  ],
+  "keywords": "burning rate oxygen O2 Heptane droplet FLEX increase rise faster",
+  "method": "binned means and Spearman correlation over runs with a burning rate",
+  "caveat": "Burning-rate unit is not verified (the table header says mm); other conditions (pressure, diluent, droplet size) also vary."
+ },
+ {
+  "id": "flex-dext-d0-methanol",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "For methanol in the FLEX table, flame extinction diameter rises with initial droplet diameter: rank correlation 0.59 over 116 runs with a recorded extinction diameter.",
+  "numbers": [
+   "0.59",
+   "116"
+  ],
+  "keywords": "extinction diameter droplet size initial diameter d0 Methanol FLEX flame goes out",
+  "method": "Spearman correlation over runs with an extinction diameter",
+  "caveat": ""
+ },
+ {
+  "id": "flex-dext-d0-heptane",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "For heptane in the FLEX table, flame extinction diameter rises with initial droplet diameter: rank correlation 0.78 over 80 runs with a recorded extinction diameter.",
+  "numbers": [
+   "0.78",
+   "80"
+  ],
+  "keywords": "extinction diameter droplet size initial diameter d0 Heptane FLEX flame goes out",
+  "method": "Spearman correlation over runs with an extinction diameter",
+  "caveat": ""
+ },
+ {
+  "id": "flex-end-o2",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "How FLEX droplet runs ended, by oxygen level: oxygen below 21%: 125 extinction, 7 disruption, 12 completion (n=144); oxygen 21% to 28%: 52 extinction, 31 disruption, 11 completion (n=94); oxygen 28% or more: 2 extinction, 17 disruption, 4 completion (n=23).",
+  "numbers": [
+   "11",
+   "12",
+   "125",
+   "144",
+   "17",
+   "2",
+   "21",
+   "23",
+   "28",
+   "31",
+   "4",
+   "52",
+   "7",
+   "94"
+  ],
+  "keywords": "test end extinction disruption completion how runs ended oxygen O2 FLEX outcome",
+  "method": "counts of the Test end column by oxygen band",
+  "caveat": "Disruption means the droplet broke apart; at high oxygen most runs ended that way, so few extinction measurements exist there."
+ },
+ {
+  "id": "flex-diluent-he",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "47 FLEX runs used helium in the surrounding gas (26 methanol, 21 heptane), with helium fractions from 0.05 to 0.45.",
+  "numbers": [
+   "0.05",
+   "0.45",
+   "21",
+   "26",
+   "47"
+  ],
+  "keywords": "helium he diluent suppressant inert gas FLEX droplet",
+  "method": "count of runs with he > 0",
+  "caveat": ""
+ },
+ {
+  "id": "flex-diluent-co2",
+  "dataset": "PSI-69 FLEX experiment table (cleaned)",
+  "source": "psi:PSI-69",
+  "statement": "120 FLEX runs used carbon dioxide in the surrounding gas (74 methanol, 46 heptane), with carbon dioxide fractions from 0.05 to 0.70.",
+  "numbers": [
+   "0.05",
+   "0.70",
+   "120",
+   "46",
+   "74"
+  ],
+  "keywords": "carbon dioxide co2 diluent suppressant inert gas FLEX droplet",
+  "method": "count of runs with co2 > 0",
+  "caveat": ""
+ },
+ {
+  "id": "cfig-runs",
+  "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+  "source": "psi:PSI-159",
+  "statement": "The cleaned CFI-G table has 333 gas-flame tests: 179 normal flames and 154 inverse flames, burning ethane, propane or butane.",
+  "numbers": [
+   "154",
+   "179",
+   "333"
+  ],
+  "keywords": "CFI-G cool flames gases tests how many normal inverse ethane propane butane data size",
+  "method": "row counts of out/cfig_clean.csv",
+  "caveat": ""
+ },
+ {
+  "id": "cfig-se-normal",
+  "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+  "source": "psi:PSI-159",
+  "statement": "In the CFI-G table, 102 of 133 normal flames with a recorded ending self-extinguished and 31 were ended by stopping the flow.",
+  "numbers": [
+   "102",
+   "133",
+   "31"
+  ],
+  "keywords": "self-extinguish self extinguished flow terminated normal flame CFI-G goes out by itself",
+  "method": "counts of the SE/FT column",
+  "caveat": ""
+ },
+ {
+  "id": "cfig-se-inverse",
+  "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+  "source": "psi:PSI-159",
+  "statement": "In the CFI-G table, 81 of 139 inverse flames with a recorded ending self-extinguished and 58 were ended by stopping the flow.",
+  "numbers": [
+   "139",
+   "58",
+   "81"
+  ],
+  "keywords": "self-extinguish self extinguished flow terminated inverse flame CFI-G goes out by itself",
+  "method": "counts of the SE/FT column",
+  "caveat": ""
+ },
+ {
+  "id": "cfig-se-o2-normal",
+  "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+  "source": "psi:PSI-159",
+  "statement": "For normal CFI-G flames by oxygen level: 41 of 41 self-extinguished at ambient oxygen below 25%; 1 of 3 self-extinguished at ambient oxygen 25% to 35%; 60 of 89 self-extinguished at ambient oxygen 35% or more.",
+  "numbers": [
+   "1",
+   "25",
+   "3",
+   "35",
+   "41",
+   "60",
+   "89"
+  ],
+  "keywords": "self-extinguish oxygen O2 normal flame CFI-G gas flames goes out low oxygen",
+  "method": "SE/FT counts by ambient oxygen band, normal flames",
+  "caveat": ""
+ },
+ {
+  "id": "cfig-hot-ignition",
+  "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+  "source": "psi:PSI-159",
+  "statement": "In the CFI-G table, 263 tests recorded a hot ignition, 62 did not, and 8 were marked 'flash'.",
+  "numbers": [
+   "263",
+   "62",
+   "8"
+  ],
+  "keywords": "hot ignition ignite CFI-G yes no flash",
+  "method": "counts of the Hot ignition column",
+  "caveat": ""
+ },
+ {
+  "id": "model-recommended",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "The team recommends three models: Ridge for droplet burning rate, CatBoost for flame extinction diameter (inside the tested range only) and CatBoost for whether a gas flame self-extinguishes; the other models are kept for comparison only.",
+  "numbers": [],
+  "keywords": "which model recommended use ship burning rate extinction diameter self-extinguish team models",
+  "method": "verdict table, REPORT.md section 1",
+  "caveat": ""
+ },
+ {
+  "id": "model-br-accuracy",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "For FLEX burning rate, the linear Ridge model has error (RMSE) 0.074 against 0.082 for CatBoost and 0.138 for always guessing the mean.",
+  "numbers": [
+   "0.074",
+   "0.082",
+   "0.138"
+  ],
+  "keywords": "burning rate model accuracy error RMSE Ridge CatBoost how good",
+  "method": "grouped cross-validation, REPORT.md section 1",
+  "caveat": ""
+ },
+ {
+  "id": "model-dext-accuracy",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "For flame extinction diameter, CatBoost has error (RMSE) 0.497 mm against 0.566 mm for Ridge and 1.037 mm for always guessing the mean.",
+  "numbers": [
+   "0.497",
+   "0.566",
+   "1.037"
+  ],
+  "keywords": "extinction diameter model accuracy error RMSE CatBoost how good",
+  "method": "grouped cross-validation, REPORT.md section 1",
+  "caveat": ""
+ },
+ {
+  "id": "model-se-accuracy",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "For predicting whether a CFI-G gas flame self-extinguishes, CatBoost reaches balanced accuracy 0.795 against 0.638 for logistic regression and 0.500 for guessing.",
+  "numbers": [
+   "0.500",
+   "0.638",
+   "0.795"
+  ],
+  "keywords": "self-extinguish model accuracy balanced accuracy CatBoost gas flame CFI-G how good",
+  "method": "grouped cross-validation, REPORT.md section 1",
+  "caveat": ""
+ },
+ {
+  "id": "model-ignition-weak",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "The hot-ignition model is not recommended: balanced accuracy 0.627 under honest testing, against 0.809 when nearby tests leak into training.",
+  "numbers": [
+   "0.627",
+   "0.809"
+  ],
+  "keywords": "hot ignition model weak not recommended leakage accuracy",
+  "method": "grouped vs random cross-validation, REPORT.md section 1",
+  "caveat": ""
+ },
+ {
+  "id": "model-validation",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "The models were tested by holding out whole test days (80 FLEX test dates, 23 CFI-G test days) in 50 folds, so runs from the same day never appear in both training and testing.",
+  "numbers": [
+   "23",
+   "50",
+   "80"
+  ],
+  "keywords": "validation validated cross-validation overfitting leakage grouped test days folds how tested",
+  "method": "REPORT.md section 4",
+  "caveat": ""
+ },
+ {
+  "id": "model-importance-flex_burning_rate",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "For burning rate, the inputs that matter most to the team's CatBoost model are oxygen fraction (error rises by 0.048 when shuffled), initial droplet diameter (error rises by 0.017 when shuffled), carbon dioxide fraction (error rises by 0.015 when shuffled); pressure matters little (error change 0.001).",
+  "numbers": [
+   "0.001",
+   "0.015",
+   "0.017",
+   "0.048"
+  ],
+  "keywords": "what matters most inputs features importance burning rate oxygen pressure droplet size model",
+  "method": "permutation importance on held-out test days",
+  "caveat": ""
+ },
+ {
+  "id": "model-importance-flex_ext_diameter",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "For extinction diameter, the inputs that matter most to the team's CatBoost model are initial droplet diameter (error rises by 0.667 when shuffled), oxygen fraction (error rises by 0.313 when shuffled), fuel type (error rises by 0.160 when shuffled); pressure matters little (error change 0.006).",
+  "numbers": [
+   "0.006",
+   "0.160",
+   "0.313",
+   "0.667"
+  ],
+  "keywords": "what matters most inputs features importance extinction diameter oxygen pressure droplet size model",
+  "method": "permutation importance on held-out test days",
+  "caveat": ""
+ },
+ {
+  "id": "model-pd-br-o2-methanol",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "The team's Ridge model predicts methanol burning rate rising from 0.33 at 12% oxygen to 0.75 at 34% oxygen (sea-level pressure, droplet 3.04 mm); CatBoost gives 0.34 to 0.65.",
+  "numbers": [
+   "0.33",
+   "0.34",
+   "0.65",
+   "0.75",
+   "12",
+   "3.04",
+   "34"
+  ],
+  "keywords": "model predict prediction burning rate oxygen O2 Methanol trend rise partial dependence",
+  "method": "partial dependence, all other inputs fixed",
+  "caveat": "Above about 28% oxygen the two models diverge; burning-rate unit not verified."
+ },
+ {
+  "id": "model-pd-br-o2-heptane",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "The team's Ridge model predicts heptane burning rate rising from 0.37 at 12% oxygen to 0.79 at 34% oxygen (sea-level pressure, droplet 2.92 mm); CatBoost gives 0.34 to 0.72.",
+  "numbers": [
+   "0.34",
+   "0.37",
+   "0.72",
+   "0.79",
+   "12",
+   "2.92",
+   "34"
+  ],
+  "keywords": "model predict prediction burning rate oxygen O2 Heptane trend rise partial dependence",
+  "method": "partial dependence, all other inputs fixed",
+  "caveat": "Above about 28% oxygen the two models diverge; burning-rate unit not verified."
+ },
+ {
+  "id": "model-moon-validity",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "Moon-Base conditions (30% oxygen or more at 10.2 psi = 527.5 mmHg) sit at the low-pressure edge of the FLEX data: only 9 methanol and 7 heptane runs have oxygen of 30% or more at 620 mmHg or less, so the extinction-diameter and test-end models are not valid there.",
+  "numbers": [
+   "10.2",
+   "30",
+   "527.5",
+   "620",
+   "7",
+   "9"
+  ],
+  "keywords": "Moon base lunar habitat valid validity predictions 30% oxygen low pressure 10.2 psi extrapolation coverage",
+  "method": "coverage counts from results.json",
+  "caveat": "No measured partial-gravity data exists in PSI; these are microgravity tables."
+ },
+ {
+  "id": "dash-rank-PSI-69-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-69",
+  "statement": "On the dashboard, FLEX (PSI-69) ranks 1 of 26 for ISS with score 0.93. Oxygen match: Tested at 12 to 34% oxygen, which covers this habitat's 21%; Pressure match: Tested at 70.2 to 309.3 kPa, which covers this habitat's 101.3 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.93",
+   "1",
+   "101.3",
+   "12",
+   "21",
+   "26",
+   "309.3",
+   "34",
+   "69",
+   "70.2"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss FLEX PSI-69 applies relevant why highest best top first number one most relevant",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-68-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-68",
+  "statement": "On the dashboard, FLEX-2 (PSI-68) ranks 2 of 26 for ISS with score 0.90. Oxygen match: Tested at 17 to 30% oxygen, which covers this habitat's 21%; Pressure match: Tested at 50.7 to 304 kPa, which covers this habitat's 101.3 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.90",
+   "101.3",
+   "17",
+   "2",
+   "21",
+   "26",
+   "30",
+   "304",
+   "50.7",
+   "68"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss FLEX-2 PSI-68 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-159-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-159",
+  "statement": "On the dashboard, ACME CFI-G (PSI-159) ranks 3 of 26 for ISS with score 0.86. Oxygen match: Tested at 12 to 85% oxygen, which covers this habitat's 21%; Pressure match: Tested at 49.5 to 331 kPa, which covers this habitat's 101.3 kPa; Direct or indirect: Cool flames burn at low temperature and can survive where ordinary flames go out; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.86",
+   "101.3",
+   "12",
+   "159",
+   "21",
+   "26",
+   "3",
+   "331",
+   "49.5",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss ACME CFI-G PSI-159 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-10-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-10",
+  "statement": "On the dashboard, ACME/Flame Design (PSI-10) ranks 4 of 26 for ISS with score 0.85. Oxygen match: Tested at 19.8 to 85% oxygen, which covers this habitat's 21%; Pressure match: Tested at 43 to 305.8 kPa, which covers this habitat's 101.3 kPa; Direct or indirect: Shows how fuel mix and oxygen level change how hot and sooty a flame gets; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.85",
+   "10",
+   "101.3",
+   "19.8",
+   "21",
+   "26",
+   "305.8",
+   "4",
+   "43",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss ACME/Flame Design PSI-10 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-39-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-39",
+  "statement": "On the dashboard, CFI (PSI-39) ranks 5 of 26 for ISS with score 0.84. Oxygen match: Tested at 17 to 21% oxygen, which covers this habitat's 21%; Pressure match: Tested at 50.7 to 506.6 kPa, which covers this habitat's 101.3 kPa; Direct or indirect: Cool flames can burn where normal flames would not, so screening limits must allow for them; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.84",
+   "101.3",
+   "17",
+   "21",
+   "26",
+   "39",
+   "5",
+   "50.7",
+   "506.6"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss CFI PSI-39 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-23-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-23",
+  "statement": "On the dashboard, ACME s-Flame (PSI-23) ranks 6 of 26 for ISS with score 0.84. Oxygen match: Tested at 21 to 30% oxygen, which covers this habitat's 21%; Pressure match: Tested at 101.3 kPa, which covers this habitat's 101.3 kPa; Direct or indirect: Finds how close a flame is to going out as oxygen and fuel dilution change; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.84",
+   "101.3",
+   "21",
+   "23",
+   "26",
+   "30",
+   "6"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss ACME s-Flame PSI-23 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-25-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-25",
+  "statement": "On the dashboard, BASS-II (PSI-25) ranks 7 of 26 for ISS with score 0.81. Oxygen match: Tested at 13.6 to 22.2% oxygen, which covers this habitat's 21%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.81",
+   "13.6",
+   "21",
+   "22.2",
+   "25",
+   "26",
+   "7"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss BASS-II PSI-25 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-20-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-20",
+  "statement": "On the dashboard, ACME BRE (PSI-20) ranks 8 of 26 for ISS with score 0.77. Oxygen match: Tested at 21 to 40% oxygen, which covers this habitat's 21%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.77",
+   "20",
+   "21",
+   "26",
+   "40",
+   "8"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss ACME BRE PSI-20 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-98-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-98",
+  "statement": "On the dashboard, SAFFIRE-I (PSI-98) ranks 9 of 26 for ISS with score 0.76. Oxygen match: Tested at 21.5 to 21.7% oxygen; this habitat is at 21%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.76",
+   "21",
+   "21.5",
+   "21.7",
+   "26",
+   "9",
+   "98"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss SAFFIRE-I PSI-98 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-99-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-99",
+  "statement": "On the dashboard, SAFFIRE-II (PSI-99) ranks 10 of 26 for ISS with score 0.76. Oxygen match: Tested at 21.5 to 22.1% oxygen; this habitat is at 21%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.76",
+   "10",
+   "21",
+   "21.5",
+   "22.1",
+   "26",
+   "99"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss SAFFIRE-II PSI-99 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-47-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-47",
+  "statement": "On the dashboard, DAFT / DAFT-2 (PSI-47) ranks 11 of 26 for ISS with score 0.66. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.66",
+   "11",
+   "2",
+   "26",
+   "47"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss DAFT / DAFT-2 PSI-47 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-100-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-100",
+  "statement": "On the dashboard, SAFFIRE-III (PSI-100) ranks 12 of 26 for ISS with score 0.65. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.65",
+   "100",
+   "12",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss SAFFIRE-III PSI-100 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-26-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-26",
+  "statement": "On the dashboard, BASS (PSI-26) ranks 13 of 26 for ISS with score 0.64. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.64",
+   "13",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss BASS PSI-26 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-101-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-101",
+  "statement": "On the dashboard, SAME-R (PSI-101) ranks 14 of 26 for ISS with score 0.63. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.63",
+   "101",
+   "14",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss SAME-R PSI-101 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-102-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-102",
+  "statement": "On the dashboard, SAME (PSI-102) ranks 15 of 26 for ISS with score 0.62. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.62",
+   "102",
+   "15",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss SAME PSI-102 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-107-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-107",
+  "statement": "On the dashboard, SPICE (PSI-107) ranks 16 of 26 for ISS with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: The smoke point shows how much soot a flame makes, which is what smoke detectors sense; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "107",
+   "16",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss SPICE PSI-107 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-22-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-22",
+  "statement": "On the dashboard, ACME E-FIELD Flames (PSI-22) ranks 17 of 26 for ISS with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Electric fields can steady or blow out a flame, a possible way to control one; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "17",
+   "22",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss ACME E-FIELD Flames PSI-22 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-21-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-21",
+  "statement": "On the dashboard, ACME CLD Flame (PSI-21) ranks 18 of 26 for ISS with score 0.55. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.55",
+   "18",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss ACME CLD Flame PSI-21 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-106-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-106",
+  "statement": "On the dashboard, SLICE (PSI-106) ranks 19 of 26 for ISS with score 0.54. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows when a flame lifts off its burner and blows out as the flow rises; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.54",
+   "106",
+   "19",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss SLICE PSI-106 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-117-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-117",
+  "statement": "On the dashboard, Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis (PSI-117) ranks 20 of 26 for ISS with score 0.52. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of what pushes a cool flame out or keeps it alive; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.52",
+   "117",
+   "20",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis PSI-117 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-142-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-142",
+  "statement": "On the dashboard, Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames (PSI-142) ranks 21 of 26 for ISS with score 0.51. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer and lab study of where cool flames go out; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.51",
+   "142",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames PSI-142 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-115-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-115",
+  "statement": "On the dashboard, Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity (PSI-115) ranks 22 of 26 for ISS with score 0.50. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of how smoke particles grow in weightlessness; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.50",
+   "115",
+   "22",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity PSI-115 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-62-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-62",
+  "statement": "On the dashboard, Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography (PSI-62) ranks 23 of 26 for ISS with score 0.48. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer model of how fast a flame spreads along a material; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.48",
+   "23",
+   "26",
+   "62"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography PSI-62 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-60-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-60",
+  "statement": "On the dashboard, Computational and Experimental Analysis of SPICE Data Sets (PSI-60) ranks 24 of 26 for ISS with score 0.48. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of the soot data from SPICE, soot being what smoke detectors sense; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.48",
+   "24",
+   "26",
+   "60"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss Computational and Experimental Analysis of SPICE Data Sets PSI-60 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-108-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-108",
+  "statement": "On the dashboard, STDCE-1 (PSI-108) ranks 25 of 26 for ISS with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "1",
+   "108",
+   "25",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss STDCE-1 PSI-108 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-181-iss",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-181",
+  "statement": "On the dashboard, Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures (PSI-181) ranks 26 of 26 for ISS with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "181",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat ISS iss Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures PSI-181 applies relevant why lowest last least relevant bottom",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-69-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-69",
+  "statement": "On the dashboard, FLEX (PSI-69) ranks 1 of 26 for Moon Base with score 0.96. Oxygen match: Tested at 12 to 34% oxygen, which covers this habitat's 30%; Pressure match: Tested at 70.2 to 309.3 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.96",
+   "1",
+   "12",
+   "26",
+   "30",
+   "309.3",
+   "34",
+   "69",
+   "70.2",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon FLEX PSI-69 applies relevant why highest best top first number one most relevant",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-68-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-68",
+  "statement": "On the dashboard, FLEX-2 (PSI-68) ranks 2 of 26 for Moon Base with score 0.91. Oxygen match: Tested at 17 to 30% oxygen, which covers this habitat's 30%; Pressure match: Tested at 50.7 to 304 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.91",
+   "17",
+   "2",
+   "26",
+   "30",
+   "304",
+   "50.7",
+   "68",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon FLEX-2 PSI-68 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-159-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-159",
+  "statement": "On the dashboard, ACME CFI-G (PSI-159) ranks 3 of 26 for Moon Base with score 0.89. Oxygen match: Tested at 12 to 85% oxygen, which covers this habitat's 30%; Pressure match: Tested at 49.5 to 331 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Cool flames burn at low temperature and can survive where ordinary flames go out; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.89",
+   "12",
+   "159",
+   "26",
+   "3",
+   "30",
+   "331",
+   "49.5",
+   "70.3",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon ACME CFI-G PSI-159 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-10-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-10",
+  "statement": "On the dashboard, ACME/Flame Design (PSI-10) ranks 4 of 26 for Moon Base with score 0.86. Oxygen match: Tested at 19.8 to 85% oxygen, which covers this habitat's 30%; Pressure match: Tested at 43 to 305.8 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Shows how fuel mix and oxygen level change how hot and sooty a flame gets; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.86",
+   "10",
+   "19.8",
+   "26",
+   "30",
+   "305.8",
+   "4",
+   "43",
+   "70.3",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon ACME/Flame Design PSI-10 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-20-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-20",
+  "statement": "On the dashboard, ACME BRE (PSI-20) ranks 5 of 26 for Moon Base with score 0.78. Oxygen match: Tested at 21 to 40% oxygen, which covers this habitat's 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.78",
+   "20",
+   "21",
+   "26",
+   "30",
+   "40",
+   "5"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon ACME BRE PSI-20 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-100-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-100",
+  "statement": "On the dashboard, SAFFIRE-III (PSI-100) ranks 6 of 26 for Moon Base with score 0.67. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.67",
+   "100",
+   "26",
+   "6"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon SAFFIRE-III PSI-100 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-26-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-26",
+  "statement": "On the dashboard, BASS (PSI-26) ranks 7 of 26 for Moon Base with score 0.66. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.66",
+   "26",
+   "7"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon BASS PSI-26 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-47-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-47",
+  "statement": "On the dashboard, DAFT / DAFT-2 (PSI-47) ranks 8 of 26 for Moon Base with score 0.65. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.65",
+   "2",
+   "26",
+   "47",
+   "8"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon DAFT / DAFT-2 PSI-47 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-101-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-101",
+  "statement": "On the dashboard, SAME-R (PSI-101) ranks 9 of 26 for Moon Base with score 0.64. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.64",
+   "101",
+   "26",
+   "9"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon SAME-R PSI-101 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-102-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-102",
+  "statement": "On the dashboard, SAME (PSI-102) ranks 10 of 26 for Moon Base with score 0.64. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.64",
+   "10",
+   "102",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon SAME PSI-102 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-39-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-39",
+  "statement": "On the dashboard, CFI (PSI-39) ranks 11 of 26 for Moon Base with score 0.57. Oxygen match: Tested at 17 to 21% oxygen; this habitat is at 30%; Pressure match: Tested at 50.7 to 506.6 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Cool flames can burn where normal flames would not, so screening limits must allow for them; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "11",
+   "17",
+   "21",
+   "26",
+   "30",
+   "39",
+   "50.7",
+   "506.6",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon CFI PSI-39 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-107-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-107",
+  "statement": "On the dashboard, SPICE (PSI-107) ranks 12 of 26 for Moon Base with score 0.57. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: The smoke point shows how much soot a flame makes, which is what smoke detectors sense; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "107",
+   "12",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon SPICE PSI-107 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-22-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-22",
+  "statement": "On the dashboard, ACME E-FIELD Flames (PSI-22) ranks 13 of 26 for Moon Base with score 0.57. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Electric fields can steady or blow out a flame, a possible way to control one; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "13",
+   "22",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon ACME E-FIELD Flames PSI-22 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-25-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-25",
+  "statement": "On the dashboard, BASS-II (PSI-25) ranks 14 of 26 for Moon Base with score 0.56. Oxygen match: Tested at 13.6 to 22.2% oxygen; this habitat is at 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.56",
+   "13.6",
+   "14",
+   "22.2",
+   "25",
+   "26",
+   "30"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon BASS-II PSI-25 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-106-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-106",
+  "statement": "On the dashboard, SLICE (PSI-106) ranks 15 of 26 for Moon Base with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows when a flame lifts off its burner and blows out as the flow rises; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "106",
+   "15",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon SLICE PSI-106 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-21-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-21",
+  "statement": "On the dashboard, ACME CLD Flame (PSI-21) ranks 16 of 26 for Moon Base with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "16",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon ACME CLD Flame PSI-21 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-23-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-23",
+  "statement": "On the dashboard, ACME s-Flame (PSI-23) ranks 17 of 26 for Moon Base with score 0.55. Oxygen match: Tested at 21 to 30% oxygen, which covers this habitat's 30%; Pressure match: Tested at 101.3 kPa; this habitat is at 70.3 kPa; Direct or indirect: Finds how close a flame is to going out as oxygen and fuel dilution change; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.55",
+   "101.3",
+   "17",
+   "21",
+   "23",
+   "26",
+   "30",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon ACME s-Flame PSI-23 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-117-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-117",
+  "statement": "On the dashboard, Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis (PSI-117) ranks 18 of 26 for Moon Base with score 0.53. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of what pushes a cool flame out or keeps it alive; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.53",
+   "117",
+   "18",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis PSI-117 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-99-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-99",
+  "statement": "On the dashboard, SAFFIRE-II (PSI-99) ranks 19 of 26 for Moon Base with score 0.53. Oxygen match: Tested at 21.5 to 22.1% oxygen; this habitat is at 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.53",
+   "19",
+   "21.5",
+   "22.1",
+   "26",
+   "30",
+   "99"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon SAFFIRE-II PSI-99 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-98-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-98",
+  "statement": "On the dashboard, SAFFIRE-I (PSI-98) ranks 20 of 26 for Moon Base with score 0.52. Oxygen match: Tested at 21.5 to 21.7% oxygen; this habitat is at 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.52",
+   "20",
+   "21.5",
+   "21.7",
+   "26",
+   "30",
+   "98"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon SAFFIRE-I PSI-98 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-142-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-142",
+  "statement": "On the dashboard, Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames (PSI-142) ranks 21 of 26 for Moon Base with score 0.52. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer and lab study of where cool flames go out; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.52",
+   "142",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames PSI-142 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-62-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-62",
+  "statement": "On the dashboard, Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography (PSI-62) ranks 22 of 26 for Moon Base with score 0.51. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer model of how fast a flame spreads along a material; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.51",
+   "22",
+   "26",
+   "62"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography PSI-62 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-115-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-115",
+  "statement": "On the dashboard, Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity (PSI-115) ranks 23 of 26 for Moon Base with score 0.51. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of how smoke particles grow in weightlessness; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.51",
+   "115",
+   "23",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity PSI-115 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-60-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-60",
+  "statement": "On the dashboard, Computational and Experimental Analysis of SPICE Data Sets (PSI-60) ranks 24 of 26 for Moon Base with score 0.49. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of the soot data from SPICE, soot being what smoke detectors sense; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.49",
+   "24",
+   "26",
+   "60"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon Computational and Experimental Analysis of SPICE Data Sets PSI-60 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-108-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-108",
+  "statement": "On the dashboard, STDCE-1 (PSI-108) ranks 25 of 26 for Moon Base with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "1",
+   "108",
+   "25",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon STDCE-1 PSI-108 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-181-moon",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-181",
+  "statement": "On the dashboard, Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures (PSI-181) ranks 26 of 26 for Moon Base with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "181",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Moon Base moon Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures PSI-181 applies relevant why lowest last least relevant bottom",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-69-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-69",
+  "statement": "On the dashboard, FLEX (PSI-69) ranks 1 of 26 for Pressurized rover with score 0.96. Oxygen match: Tested at 12 to 34% oxygen, which covers this habitat's 30%; Pressure match: Tested at 70.2 to 309.3 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.96",
+   "1",
+   "12",
+   "26",
+   "30",
+   "309.3",
+   "34",
+   "69",
+   "70.2",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover FLEX PSI-69 applies relevant why highest best top first number one most relevant",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-68-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-68",
+  "statement": "On the dashboard, FLEX-2 (PSI-68) ranks 2 of 26 for Pressurized rover with score 0.91. Oxygen match: Tested at 17 to 30% oxygen, which covers this habitat's 30%; Pressure match: Tested at 50.7 to 304 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.91",
+   "17",
+   "2",
+   "26",
+   "30",
+   "304",
+   "50.7",
+   "68",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover FLEX-2 PSI-68 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-159-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-159",
+  "statement": "On the dashboard, ACME CFI-G (PSI-159) ranks 3 of 26 for Pressurized rover with score 0.89. Oxygen match: Tested at 12 to 85% oxygen, which covers this habitat's 30%; Pressure match: Tested at 49.5 to 331 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Cool flames burn at low temperature and can survive where ordinary flames go out; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.89",
+   "12",
+   "159",
+   "26",
+   "3",
+   "30",
+   "331",
+   "49.5",
+   "70.3",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover ACME CFI-G PSI-159 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-10-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-10",
+  "statement": "On the dashboard, ACME/Flame Design (PSI-10) ranks 4 of 26 for Pressurized rover with score 0.86. Oxygen match: Tested at 19.8 to 85% oxygen, which covers this habitat's 30%; Pressure match: Tested at 43 to 305.8 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Shows how fuel mix and oxygen level change how hot and sooty a flame gets; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.86",
+   "10",
+   "19.8",
+   "26",
+   "30",
+   "305.8",
+   "4",
+   "43",
+   "70.3",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover ACME/Flame Design PSI-10 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-20-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-20",
+  "statement": "On the dashboard, ACME BRE (PSI-20) ranks 5 of 26 for Pressurized rover with score 0.78. Oxygen match: Tested at 21 to 40% oxygen, which covers this habitat's 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.78",
+   "20",
+   "21",
+   "26",
+   "30",
+   "40",
+   "5"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover ACME BRE PSI-20 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-100-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-100",
+  "statement": "On the dashboard, SAFFIRE-III (PSI-100) ranks 6 of 26 for Pressurized rover with score 0.67. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.67",
+   "100",
+   "26",
+   "6"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover SAFFIRE-III PSI-100 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-26-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-26",
+  "statement": "On the dashboard, BASS (PSI-26) ranks 7 of 26 for Pressurized rover with score 0.66. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.66",
+   "26",
+   "7"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover BASS PSI-26 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-47-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-47",
+  "statement": "On the dashboard, DAFT / DAFT-2 (PSI-47) ranks 8 of 26 for Pressurized rover with score 0.65. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.65",
+   "2",
+   "26",
+   "47",
+   "8"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover DAFT / DAFT-2 PSI-47 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-101-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-101",
+  "statement": "On the dashboard, SAME-R (PSI-101) ranks 9 of 26 for Pressurized rover with score 0.64. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.64",
+   "101",
+   "26",
+   "9"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover SAME-R PSI-101 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-102-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-102",
+  "statement": "On the dashboard, SAME (PSI-102) ranks 10 of 26 for Pressurized rover with score 0.64. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.64",
+   "10",
+   "102",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover SAME PSI-102 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-39-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-39",
+  "statement": "On the dashboard, CFI (PSI-39) ranks 11 of 26 for Pressurized rover with score 0.57. Oxygen match: Tested at 17 to 21% oxygen; this habitat is at 30%; Pressure match: Tested at 50.7 to 506.6 kPa, which covers this habitat's 70.3 kPa; Direct or indirect: Cool flames can burn where normal flames would not, so screening limits must allow for them; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "11",
+   "17",
+   "21",
+   "26",
+   "30",
+   "39",
+   "50.7",
+   "506.6",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover CFI PSI-39 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-107-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-107",
+  "statement": "On the dashboard, SPICE (PSI-107) ranks 12 of 26 for Pressurized rover with score 0.57. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: The smoke point shows how much soot a flame makes, which is what smoke detectors sense; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "107",
+   "12",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover SPICE PSI-107 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-22-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-22",
+  "statement": "On the dashboard, ACME E-FIELD Flames (PSI-22) ranks 13 of 26 for Pressurized rover with score 0.57. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Electric fields can steady or blow out a flame, a possible way to control one; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "13",
+   "22",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover ACME E-FIELD Flames PSI-22 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-25-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-25",
+  "statement": "On the dashboard, BASS-II (PSI-25) ranks 14 of 26 for Pressurized rover with score 0.56. Oxygen match: Tested at 13.6 to 22.2% oxygen; this habitat is at 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.56",
+   "13.6",
+   "14",
+   "22.2",
+   "25",
+   "26",
+   "30"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover BASS-II PSI-25 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-106-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-106",
+  "statement": "On the dashboard, SLICE (PSI-106) ranks 15 of 26 for Pressurized rover with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows when a flame lifts off its burner and blows out as the flow rises; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "106",
+   "15",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover SLICE PSI-106 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-21-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-21",
+  "statement": "On the dashboard, ACME CLD Flame (PSI-21) ranks 16 of 26 for Pressurized rover with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "16",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover ACME CLD Flame PSI-21 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-23-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-23",
+  "statement": "On the dashboard, ACME s-Flame (PSI-23) ranks 17 of 26 for Pressurized rover with score 0.55. Oxygen match: Tested at 21 to 30% oxygen, which covers this habitat's 30%; Pressure match: Tested at 101.3 kPa; this habitat is at 70.3 kPa; Direct or indirect: Finds how close a flame is to going out as oxygen and fuel dilution change; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.55",
+   "101.3",
+   "17",
+   "21",
+   "23",
+   "26",
+   "30",
+   "70.3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover ACME s-Flame PSI-23 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-117-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-117",
+  "statement": "On the dashboard, Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis (PSI-117) ranks 18 of 26 for Pressurized rover with score 0.53. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of what pushes a cool flame out or keeps it alive; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.53",
+   "117",
+   "18",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis PSI-117 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-99-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-99",
+  "statement": "On the dashboard, SAFFIRE-II (PSI-99) ranks 19 of 26 for Pressurized rover with score 0.53. Oxygen match: Tested at 21.5 to 22.1% oxygen; this habitat is at 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.53",
+   "19",
+   "21.5",
+   "22.1",
+   "26",
+   "30",
+   "99"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover SAFFIRE-II PSI-99 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-98-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-98",
+  "statement": "On the dashboard, SAFFIRE-I (PSI-98) ranks 20 of 26 for Pressurized rover with score 0.52. Oxygen match: Tested at 21.5 to 21.7% oxygen; this habitat is at 30%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.52",
+   "20",
+   "21.5",
+   "21.7",
+   "26",
+   "30",
+   "98"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover SAFFIRE-I PSI-98 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-142-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-142",
+  "statement": "On the dashboard, Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames (PSI-142) ranks 21 of 26 for Pressurized rover with score 0.52. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer and lab study of where cool flames go out; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.52",
+   "142",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames PSI-142 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-62-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-62",
+  "statement": "On the dashboard, Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography (PSI-62) ranks 22 of 26 for Pressurized rover with score 0.51. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer model of how fast a flame spreads along a material; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.51",
+   "22",
+   "26",
+   "62"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography PSI-62 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-115-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-115",
+  "statement": "On the dashboard, Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity (PSI-115) ranks 23 of 26 for Pressurized rover with score 0.51. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of how smoke particles grow in weightlessness; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.51",
+   "115",
+   "23",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity PSI-115 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-60-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-60",
+  "statement": "On the dashboard, Computational and Experimental Analysis of SPICE Data Sets (PSI-60) ranks 24 of 26 for Pressurized rover with score 0.49. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of the soot data from SPICE, soot being what smoke detectors sense; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.49",
+   "24",
+   "26",
+   "60"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover Computational and Experimental Analysis of SPICE Data Sets PSI-60 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-108-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-108",
+  "statement": "On the dashboard, STDCE-1 (PSI-108) ranks 25 of 26 for Pressurized rover with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "1",
+   "108",
+   "25",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover STDCE-1 PSI-108 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-181-rover",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-181",
+  "statement": "On the dashboard, Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures (PSI-181) ranks 26 of 26 for Pressurized rover with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "181",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Pressurized rover rover Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures PSI-181 applies relevant why lowest last least relevant bottom",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-159-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-159",
+  "statement": "On the dashboard, ACME CFI-G (PSI-159) ranks 1 of 26 for Suit reference with score 0.81. Oxygen match: Tested at 12 to 85% oxygen; this habitat is at 100%; Pressure match: Tested at 49.5 to 331 kPa; this habitat is at 29.6 kPa; Direct or indirect: Cool flames burn at low temperature and can survive where ordinary flames go out; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.81",
+   "1",
+   "100",
+   "12",
+   "159",
+   "26",
+   "29.6",
+   "331",
+   "49.5",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref ACME CFI-G PSI-159 applies relevant why highest best top first number one most relevant",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-10-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-10",
+  "statement": "On the dashboard, ACME/Flame Design (PSI-10) ranks 2 of 26 for Suit reference with score 0.78. Oxygen match: Tested at 19.8 to 85% oxygen; this habitat is at 100%; Pressure match: Tested at 43 to 305.8 kPa; this habitat is at 29.6 kPa; Direct or indirect: Shows how fuel mix and oxygen level change how hot and sooty a flame gets; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.78",
+   "10",
+   "100",
+   "19.8",
+   "2",
+   "26",
+   "29.6",
+   "305.8",
+   "43",
+   "85"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref ACME/Flame Design PSI-10 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-100-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-100",
+  "statement": "On the dashboard, SAFFIRE-III (PSI-100) ranks 3 of 26 for Suit reference with score 0.68. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.68",
+   "100",
+   "26",
+   "3"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref SAFFIRE-III PSI-100 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-26-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-26",
+  "statement": "On the dashboard, BASS (PSI-26) ranks 4 of 26 for Suit reference with score 0.66. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.66",
+   "26",
+   "4"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref BASS PSI-26 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-47-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-47",
+  "statement": "On the dashboard, DAFT / DAFT-2 (PSI-47) ranks 5 of 26 for Suit reference with score 0.66. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.66",
+   "2",
+   "26",
+   "47",
+   "5"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref DAFT / DAFT-2 PSI-47 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-102-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-102",
+  "statement": "On the dashboard, SAME (PSI-102) ranks 6 of 26 for Suit reference with score 0.63. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.63",
+   "102",
+   "26",
+   "6"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref SAME PSI-102 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-101-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-101",
+  "statement": "On the dashboard, SAME-R (PSI-101) ranks 7 of 26 for Suit reference with score 0.63. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Directly about detection; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.63",
+   "101",
+   "26",
+   "7"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref SAME-R PSI-101 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-69-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-69",
+  "statement": "On the dashboard, FLEX (PSI-69) ranks 8 of 26 for Suit reference with score 0.61. Oxygen match: Tested at 12 to 34% oxygen; this habitat is at 100%; Pressure match: Tested at 70.2 to 309.3 kPa; this habitat is at 29.6 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.61",
+   "100",
+   "12",
+   "26",
+   "29.6",
+   "309.3",
+   "34",
+   "69",
+   "70.2",
+   "8"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref FLEX PSI-69 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-68-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-68",
+  "statement": "On the dashboard, FLEX-2 (PSI-68) ranks 9 of 26 for Suit reference with score 0.60. Oxygen match: Tested at 17 to 30% oxygen; this habitat is at 100%; Pressure match: Tested at 50.7 to 304 kPa; this habitat is at 29.6 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.60",
+   "100",
+   "17",
+   "2",
+   "26",
+   "29.6",
+   "30",
+   "304",
+   "50.7",
+   "68",
+   "9"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref FLEX-2 PSI-68 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-22-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-22",
+  "statement": "On the dashboard, ACME E-FIELD Flames (PSI-22) ranks 10 of 26 for Suit reference with score 0.57. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Electric fields can steady or blow out a flame, a possible way to control one; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "10",
+   "22",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref ACME E-FIELD Flames PSI-22 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-107-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-107",
+  "statement": "On the dashboard, SPICE (PSI-107) ranks 11 of 26 for Suit reference with score 0.57. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: The smoke point shows how much soot a flame makes, which is what smoke detectors sense; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.57",
+   "107",
+   "11",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref SPICE PSI-107 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-106-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-106",
+  "statement": "On the dashboard, SLICE (PSI-106) ranks 12 of 26 for Suit reference with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows when a flame lifts off its burner and blows out as the flow rises; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "106",
+   "12",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref SLICE PSI-106 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-39-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-39",
+  "statement": "On the dashboard, CFI (PSI-39) ranks 13 of 26 for Suit reference with score 0.56. Oxygen match: Tested at 17 to 21% oxygen; this habitat is at 100%; Pressure match: Tested at 50.7 to 506.6 kPa; this habitat is at 29.6 kPa; Direct or indirect: Cool flames can burn where normal flames would not, so screening limits must allow for them; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.56",
+   "100",
+   "13",
+   "17",
+   "21",
+   "26",
+   "29.6",
+   "39",
+   "50.7",
+   "506.6"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref CFI PSI-39 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-21-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-21",
+  "statement": "On the dashboard, ACME CLD Flame (PSI-21) ranks 14 of 26 for Suit reference with score 0.56. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.56",
+   "14",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref ACME CLD Flame PSI-21 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-25-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-25",
+  "statement": "On the dashboard, BASS-II (PSI-25) ranks 15 of 26 for Suit reference with score 0.54. Oxygen match: Tested at 13.6 to 22.2% oxygen; this habitat is at 100%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.54",
+   "100",
+   "13.6",
+   "15",
+   "22.2",
+   "25",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref BASS-II PSI-25 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-117-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-117",
+  "statement": "On the dashboard, Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis (PSI-117) ranks 16 of 26 for Suit reference with score 0.54. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of what pushes a cool flame out or keeps it alive; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.54",
+   "117",
+   "16",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis PSI-117 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-99-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-99",
+  "statement": "On the dashboard, SAFFIRE-II (PSI-99) ranks 17 of 26 for Suit reference with score 0.54. Oxygen match: Tested at 21.5 to 22.1% oxygen; this habitat is at 100%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.54",
+   "100",
+   "17",
+   "21.5",
+   "22.1",
+   "26",
+   "99"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref SAFFIRE-II PSI-99 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-98-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-98",
+  "statement": "On the dashboard, SAFFIRE-I (PSI-98) ranks 18 of 26 for Suit reference with score 0.53. Oxygen match: Tested at 21.5 to 21.7% oxygen; this habitat is at 100%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit high.",
+  "numbers": [
+   "0.53",
+   "100",
+   "18",
+   "21.5",
+   "21.7",
+   "26",
+   "98"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref SAFFIRE-I PSI-98 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-62-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-62",
+  "statement": "On the dashboard, Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography (PSI-62) ranks 19 of 26 for Suit reference with score 0.52. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer model of how fast a flame spreads along a material; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.52",
+   "19",
+   "26",
+   "62"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography PSI-62 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-142-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-142",
+  "statement": "On the dashboard, Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames (PSI-142) ranks 20 of 26 for Suit reference with score 0.52. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer and lab study of where cool flames go out; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.52",
+   "142",
+   "20",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames PSI-142 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-115-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-115",
+  "statement": "On the dashboard, Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity (PSI-115) ranks 21 of 26 for Suit reference with score 0.50. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of how smoke particles grow in weightlessness; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.50",
+   "115",
+   "21",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity PSI-115 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-20-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-20",
+  "statement": "On the dashboard, ACME BRE (PSI-20) ranks 22 of 26 for Suit reference with score 0.50. Oxygen match: Tested at 21 to 40% oxygen; this habitat is at 100%; Pressure match: Pressure is not on record; Direct or indirect: Directly about prevention; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+  "numbers": [
+   "0.50",
+   "100",
+   "20",
+   "21",
+   "22",
+   "26",
+   "40"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref ACME BRE PSI-20 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-60-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-60",
+  "statement": "On the dashboard, Computational and Experimental Analysis of SPICE Data Sets (PSI-60) ranks 23 of 26 for Suit reference with score 0.48. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Computer study of the soot data from SPICE, soot being what smoke detectors sense; Flight or ground: Ground test or computer model; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.48",
+   "23",
+   "26",
+   "60"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref Computational and Experimental Analysis of SPICE Data Sets PSI-60 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-108-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-108",
+  "statement": "On the dashboard, STDCE-1 (PSI-108) ranks 24 of 26 for Suit reference with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "1",
+   "108",
+   "24",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref STDCE-1 PSI-108 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-181-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-181",
+  "statement": "On the dashboard, Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures (PSI-181) ranks 25 of 26 for Suit reference with score 0.44. Oxygen match: Oxygen level is not on record; Pressure match: Pressure is not on record; Direct or indirect: Not a combustion experiment; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.44",
+   "181",
+   "25",
+   "26"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures PSI-181 applies relevant why",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ },
+ {
+  "id": "dash-rank-PSI-23-suit-ref",
+  "dataset": "Team dashboard ranking",
+  "source": "psi:PSI-23",
+  "statement": "On the dashboard, ACME s-Flame (PSI-23) ranks 26 of 26 for Suit reference with score 0.27. Oxygen match: Tested at 21 to 30% oxygen; this habitat is at 100%; Pressure match: Tested at 101.3 kPa; this habitat is at 29.6 kPa; Direct or indirect: Finds how close a flame is to going out as oxygen and fuel dilution change; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit low.",
+  "numbers": [
+   "0.27",
+   "100",
+   "101.3",
+   "21",
+   "23",
+   "26",
+   "29.6",
+   "30"
+  ],
+  "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref ACME s-Flame PSI-23 applies relevant why lowest last least relevant bottom",
+  "method": "rank.json score and factors, sorted per habitat",
+  "caveat": ""
+ }
+]

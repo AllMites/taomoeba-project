@@ -3,11 +3,25 @@ import { Claim } from "../contracts/index.ts";
 
 export const MAX_QUESTION = 300;
 
+/** A finding computed by code from the team's data (server/facts.ts), shown before any paper. */
+const DataFact = z.object({ id: z.string(), statement: z.string(), dataset: z.string(), caveat: z.string().default(""), source: z.string() });
+export type DataFact = z.infer<typeof DataFact>;
+const Relation = z.enum(["explains", "supports", "contradicts", "related"]);
+export type Relation = z.infer<typeof Relation>;
+
 const AskResult = z.object({
   answer: z.string(),
   claims: z.array(Claim),
   investigationIds: z.array(z.string()),
   mode: z.enum(["live", "extractive", "mock"]),
+  // Optional, so older servers still parse; a bad relation label is dropped rather than failing the answer.
+  facts: z.array(DataFact).optional().catch(undefined),
+  relations: z.record(z.string(), Relation.catch("related")).optional().catch(undefined),
+  // Title, link and licence of cited sources (some papers have no public file the page could look them up in).
+  sources: z
+    .record(z.string(), z.object({ title: z.string(), url: z.string().catch(""), license: z.string().catch("") }))
+    .optional()
+    .catch(undefined),
 });
 export type AskResult = z.infer<typeof AskResult>;
 
@@ -20,6 +34,28 @@ const err = (reason: Extract<AskOutcome, { kind: "error" }>["reason"], message: 
 
 /** What the server says when the records hold nothing on the question (server/ask.ts NO_COVER). */
 export const isNoCover = (answer: string) => answer.startsWith("The PSI records I have do not cover");
+
+/** What the server says when the data has a finding but no paper explains it (server/ask.ts DATA_ONLY). */
+export const isDataOnly = (answer: string) => answer.startsWith("No paper in the library explains");
+
+/** How a paper relates to the data finding, in plain words. */
+export const RELATION_LABEL: Record<Relation, string> = {
+  explains: "Explains the finding",
+  supports: "Agrees with the finding",
+  contradicts: "Disagrees with the finding",
+  related: "Related background",
+};
+
+/** What kind of source an id points to: a PSI record, a NASA report, or the team's own analysis. */
+export const sourceKind = (id: string) =>
+  id.startsWith("psi:") ? "PSI record" : id.startsWith("ntrs:") ? "NASA report" : id.startsWith("team:") ? "Team analysis" : "Source";
+
+/** Papers NASA marks "short quotes only": the page shows a short quote and says so. */
+export const isShortQuotesOnly = (license: string | undefined) => !!license && !/^(CC0|Public domain)/i.test(license);
+
+/** What kind of data a computed finding comes from. */
+export const factKind = (f: { dataset: string; source: string }) =>
+  /dashboard/i.test(f.dataset) ? "Team dashboard" : f.source.startsWith("team:") ? "Team analysis" : f.source.startsWith("psi:") ? "PSI data" : "Data";
 
 /** Honest label for how the answer was made. */
 export const MODE_LABEL: Record<AskResult["mode"], string> = {

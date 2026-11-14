@@ -15,3 +15,7 @@ run_worker_first = ["/ask", "/rank", "/verify", "/health"]
 SPEND_MODE = "live"
 
 # Secrets (never in this file): wrangler secret put ANTHROPIC_API_KEY / TYPESAFE_API_KEY
+
+[[kv_namespaces]]
+binding = "LIBRARY"
+id = "9980c25bca79488c8f9a5ee7753c50a7"
