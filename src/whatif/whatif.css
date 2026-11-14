@@ -7,7 +7,7 @@
 }
 .whatif-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
 .whatif-grid { display: grid; gap: var(--space-6); grid-template-columns: minmax(15rem, 1fr) minmax(0, 2fr); align-items: start; }
-@media (max-width: 52rem) { .whatif-grid { grid-template-columns: 1fr; } }
+@media (max-width: 52rem) { .whatif-grid { grid-template-columns: minmax(0, 1fr); } }
 
 .whatif-controls { display: grid; gap: var(--space-4); }
 .whatif-seg { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
@@ -86,3 +86,39 @@
 .whatif-try:hover { color: var(--color-accent); text-decoration-color: currentColor; }
 .whatif-note { display: block; font-weight: 400; font-size: var(--text-xs); color: var(--color-text-muted); }
 .whatif-small { font-size: var(--text-sm); margin: var(--space-2) 0 0; }
+
+/* Watch the predicted burn. Flame colours are illustrative (methanol burns faint blue, heptane yellow and sooty). */
+.whatif-burn { --burn-flame-m: var(--sphere-core); --burn-flame-inner-m: var(--sphere-core); --burn-flame-h: var(--sphere-hot); --burn-flame-inner-h: var(--color-flame); }
+.burn-grid { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+@media (max-width: 52rem) { .burn-grid { grid-template-columns: minmax(0, 1fr); } }
+.burn-stage { margin: 0; display: grid; gap: var(--space-2); min-width: 0; }
+.burn-stage > svg:first-child { width: 100%; max-width: 22rem; height: auto; justify-self: center; }
+.burn-glass { fill: #061a30; }
+.burn-drop { fill: var(--glass-text); }
+.burn-read { fill: var(--glass-muted); font-family: var(--font-mono); font-size: 10px; }
+.burn-controls { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.burn-controls button[aria-disabled="true"] { opacity: 0.6; cursor: default; }
+.burn-scrub { flex: 1 1 10rem; display: flex; gap: var(--space-2); align-items: center; }
+.burn-scrub input { flex: 1; accent-color: var(--color-accent); min-height: 2.75rem; }
+.burn-d2 { width: 100%; height: auto; }
+.burn-axis { stroke: var(--color-border-strong); stroke-width: 1; }
+.burn-line { stroke: var(--color-accent); stroke-width: 2; }
+.burn-rest { stroke: var(--color-border-strong); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.burn-dot { fill: var(--color-flame); }
+.burn-tick { fill: var(--color-text-muted); font-family: var(--font-mono); font-size: 9px; }
+.burn-none { margin: 0; }
+.burn-side { display: grid; gap: var(--space-2); padding: var(--space-3); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-1); min-width: 0; }
+.burn-side-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+.burn-side figure { margin: 0; display: grid; gap: var(--space-2); }
+.burn-side svg { width: 100%; max-width: 9rem; height: auto; justify-self: center; background: #061a30; border-radius: var(--radius-1); }
+.burn-side figcaption { font-size: var(--text-sm); }
+.burn-earth-flame { fill: var(--sphere-hot); opacity: 0.85; transform-origin: 55px 88px; animation: burn-flicker 1.6s ease-in-out infinite; }
+.burn-ug-flame { fill: none; stroke: var(--sphere-core); stroke-width: 5; opacity: 0.85; }
+.burn-arrow { stroke: var(--glass-muted); stroke-width: 1.5; fill: none; }
+.burn-diffuse { stroke-dasharray: 2 3; }
+@keyframes burn-flicker { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.06); } }
+@media (prefers-reduced-motion: reduce) { .burn-earth-flame { animation: none; } }
+.whatif-controls, .whatif-results, .whatif-effects, .whatif-compare, .whatif-burn { min-width: 0; }
+.burn-guide { fill: none; stroke: var(--glass-muted); stroke-width: 1; opacity: 0.55; }
+.burn-guide-end { stroke: var(--sphere-hot); stroke-dasharray: 2 2; opacity: 0.9; }
+.burn-key { font-size: 8.5px; }

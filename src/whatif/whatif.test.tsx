@@ -3,6 +3,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { WhatIfView, startSel } from "./index.tsx";
 import {
+  burnPlan,
+  diameterAt,
   effects,
   habitatPoint,
   indexOf,
@@ -11,6 +13,7 @@ import {
   nearest,
   o2Curve,
   parseDoc,
+  playbackSpeed,
   predict,
   signed,
   support,
@@ -159,5 +162,43 @@ describe("what-if view", () => {
     expect(moon).toContain("Use Moon Base air");
     const suit = renderToStaticMarkup(<WhatIfView doc={doc} sel={startSel(doc)} onChange={noop} habitat={{ label: "Suit reference", apply: null }} />);
     expect(suit).toContain("outside what FLEX tested");
+  });
+});
+
+describe("the predicted burn (d²-law)", () => {
+  it("ends at the predicted extinction diameter, at the time the d²-law gives", () => {
+    const b = burnPlan(2.0, 0.565, 0.81)!;
+    expect(b.ends).toBe("flame-out");
+    expect(b.tEnd).toBeCloseTo((4 - 0.81 ** 2) / 0.565, 6);
+    expect(diameterAt(b, 0)).toBe(2.0);
+    expect(diameterAt(b, b.tEnd)).toBeCloseTo(0.81, 6);
+    expect(diameterAt(b, b.tEnd + 5)).toBeCloseTo(0.81, 6); // never shrinks past flame-out
+    // the square of the diameter falls in a straight line
+    const half = diameterAt(b, b.tEnd / 2) ** 2;
+    expect(half).toBeCloseTo((4 + 0.81 ** 2) / 2, 6);
+  });
+  it("a near-zero extinction diameter burns away completely; no burning rate means nothing to show", () => {
+    expect(burnPlan(2.0, 0.6, 0.0)!.ends).toBe("burns-away");
+    expect(burnPlan(2.0, 0.6, 0.0)!.tEnd).toBeCloseTo(4 / 0.6, 6);
+    expect(burnPlan(2.0, 0, 0.8)).toBeNull();
+  });
+  it("long burns play faster, never longer than 12 s on screen", () => {
+    expect(playbackSpeed(burnPlan(2.0, 0.565, 0.81)!)).toBe(1);
+    expect(playbackSpeed(burnPlan(4.0, 0.4, 0.5)!)).toBe(4); // 39.4 s -> 4x
+  });
+  it("the grid carries the d²-law check from the model package", () => {
+    expect(doc.models.d2law).toEqual({ runs: 157, corr: 0.995, median_rel_err: 0.056 });
+  });
+  it("renders the burn with its honesty notes; not shown for Moon-Base air", () => {
+    const noop = () => {};
+    const html = renderToStaticMarkup(<WhatIfView doc={doc} sel={startSel(doc)} onChange={noop} />);
+    expect(html).toContain("Watch the predicted burn");
+    expect(html).toContain("flame goes out after 5.9 s");
+    expect(html).toContain("correlation 0.995");
+    expect(html).toContain("drawn for illustration only");
+    expect(html).toContain("Illustration of textbook physics, not data");
+    const moon = renderToStaticMarkup(<WhatIfView doc={doc} sel={at("methanol", "n2", 0, 0.3, 527.5, 2)} onChange={noop} />);
+    expect(moon).toContain("Not shown for Moon-Base-like air");
+    expect(moon).toContain("Illustration of textbook physics, not data"); // the Earth vs microgravity panel still shows
   });
 });

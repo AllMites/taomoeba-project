@@ -23,6 +23,7 @@ import {
   type Sel,
   type WhatIfDoc,
 } from "./logic.ts";
+import { WatchBurn } from "./Burn.tsx";
 import "./whatif.css";
 
 /** Air at sea level with a 2 mm methanol droplet: the plainest starting point. */
@@ -249,6 +250,16 @@ export function WhatIfView(p: {
                   <span className="muted">How fast the square of the droplet's diameter shrinks. Typical model error {m.burning_rate.rmse} mm²/s.</span>
                 </li>
               </ul>
+              <WatchBurn
+                doc={doc}
+                fuel={a.fuel[sel.fuel]}
+                d0={a.d0[sel.d0]}
+                burningRate={pr.burningRate}
+                extMm={pr.extDiameterMm}
+                pDisruption={pr.pDisruption}
+                moon={moon}
+                level={sup.level}
+              />
               <Effects doc={doc} sel={sel} onGo={onChange} />
             </>
           )}
