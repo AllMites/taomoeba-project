@@ -49,3 +49,9 @@ All text pairs >= 4.5, all marks >= 3.
 
 ## For the integrator
 Other lanes should use `--color-surface-2`, `--color-highlight(-bg)`, `--color-meter-*`, `--color-marker`, `--color-unknown`, tag tokens, `.unknown` class. `.glow` pulse stops under reduced motion.
+
+## Review fixes (separate commit)
+- Picked mark now always rendered, hidden by CSS on unpicked cards: at ~840px picking "Pressurized rover" wrapped its name and grew every card 240 to 253px (layout shift).
+- `html { scroll-padding-top: 5rem }`: a control focused while partly visible under the fixed bar stayed under it (measured top 15px, bar bottom 53px); now scrolled clear.
+- Limits wording says "on record" instead of "do not say" (absence is in this dataset, not proof the source omits it); "flew" became "ran" in microgravity.
+- Removed the unused `hollow` dot variant. Note: the picked card's border is the same 2px as unpicked; "not by colour alone" is carried by the "Picked" text and fill.

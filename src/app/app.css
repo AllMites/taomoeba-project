@@ -67,7 +67,8 @@
 .choice:has(input:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 3px; }
 .choice-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-2); min-height: 1.75rem; }
 .choice-name { font-size: var(--text-xl); font-weight: 700; font-family: var(--font-display); }
-.choice-check { font-size: var(--text-sm); font-weight: 700; color: var(--color-accent); white-space: nowrap; }
+.choice-check { font-size: var(--text-sm); font-weight: 700; color: var(--color-accent); white-space: nowrap; visibility: hidden; }
+.choice:has(input:checked) .choice-check { visibility: visible; }
 .choice-stat { display: flex; flex-direction: column; gap: var(--space-1); font-size: var(--text-sm); }
 .choice-stat b { font-size: var(--text-base); }
 .bar { display: block; height: 6px; border-radius: 3px; background: var(--color-meter-track); overflow: hidden; }
@@ -137,7 +138,6 @@ main > * { min-width: 0; }
 .dots { display: flex; flex-wrap: wrap; gap: 4px; margin: var(--space-1) 0; }
 .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--color-edge); }
 .dot.on { background: var(--color-accent); border-color: var(--color-accent); }
-.dot.hollow { border-style: dashed; }
 .limit-note { margin-top: var(--space-4); max-width: 42rem; color: var(--color-text-muted); }
 
 .foot {

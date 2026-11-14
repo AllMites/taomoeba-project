@@ -1,7 +1,8 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html, body { margin: 0; }
-html { scroll-behavior: smooth; }
+/* scroll-padding keeps a focused control from landing under the fixed habitat bar (53px). */
+html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0; }
 p { margin: 0; }
 h2, h3, [id] { scroll-margin-top: 5rem; }

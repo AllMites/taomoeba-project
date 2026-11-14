@@ -23,11 +23,11 @@ export function limitsFrom(items: Investigation[]) {
 
 const pct = (v: number, max: number) => `${Math.min(100, Math.max(4, (v / max) * 100))}%`;
 
-function Dots({ filled, total, hollow }: { filled: number; total: number; hollow?: boolean }) {
+function Dots({ filled, total }: { filled: number; total: number }) {
   return (
     <span className="dots" aria-hidden="true">
       {Array.from({ length: total }, (_, i) => (
-        <span key={i} className={i < filled ? "dot on" : hollow ? "dot hollow" : "dot"} />
+        <span key={i} className={i < filled ? "dot on" : "dot"} />
       ))}
     </span>
   );
@@ -45,8 +45,9 @@ function Picker({ habitats }: { habitats: HabitatPreset[] }) {
           <input type="radio" name="habitat" value={h.id} checked={habitat === h.id} onChange={() => setHabitat(h.id)} />
           <span className="choice-top">
             <span className="choice-name">{h.label}</span>
+            {/* Always rendered so its width is reserved; CSS shows it on the checked card only. */}
             <span className="choice-check" aria-hidden="true">
-              {habitat === h.id ? "✓ Picked" : ""}
+              ✓ Picked
             </span>
           </span>
           <span className="choice-stat">
@@ -133,20 +134,20 @@ export default function App() {
                 <span className="limit-t">experiments ran in Moon or Mars gravity.</span>
                 <Dots filled={limits.flight} total={limits.total} />
                 <span className="muted">
-                  {limits.flight} flew in microgravity (solid dots), {limits.ground} are ground tests or computer models.
+                  {limits.flight} ran in microgravity (solid dots), {limits.ground} are ground tests or computer models.
                 </span>
               </li>
               <li className="limit">
                 <span className="limit-n">{limits.noO2} of {limits.total}</span>
-                <span className="limit-t">do not say what oxygen level they tested.</span>
+                <span className="limit-t">have no tested oxygen level on record.</span>
                 <Dots filled={limits.total - limits.noO2} total={limits.total} />
-                <span className="muted">Solid dots state it.</span>
+                <span className="muted">Solid dots: on record.</span>
               </li>
               <li className="limit">
                 <span className="limit-n">{limits.noPressure} of {limits.total}</span>
-                <span className="limit-t">do not say what air pressure they tested.</span>
+                <span className="limit-t">have no tested air pressure on record.</span>
                 <Dots filled={limits.total - limits.noPressure} total={limits.total} />
-                <span className="muted">Solid dots state it.</span>
+                <span className="muted">Solid dots: on record.</span>
               </li>
             </ul>
           )}
