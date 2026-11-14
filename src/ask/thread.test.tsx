@@ -148,8 +148,8 @@ it("no step line says AI, according to NASA, or goes past 25 words", () => {
 });
 
 it("the writer line under the title follows the last reply", () => {
-  expect(writerLine(null)).toContain("answers only from NASA records");
-  expect(writerLine(result())).toBe("Claude Haiku, by Anthropic · answers only from NASA records");
+  expect(writerLine(null)).toContain("answers only from the sources shown");
+  expect(writerLine(result())).toBe("Claude Haiku, by Anthropic · answers only from the sources shown");
   expect(writerLine(result({ mode: "extractive", model: null }))).toContain("Quoting mode, the SI writer is off");
   expect(writerLine(result({ mode: "extractive", model: null, degraded: true }))).toContain("The SI writer did not answer");
   expect(writerLine(result({ mode: "mock", model: null }))).toContain("Sample answers");

@@ -112,7 +112,7 @@ export function summaryLine(result: AskResult, noCover = false): string {
 
 /** The honest line under the panel title, from the last reply: who writes, and from what. */
 export function writerLine(last: AskResult | null): string {
-  const from = "answers only from NASA records";
+  const from = "answers only from the sources shown";
   if (!last) return `Every answer shows its sources · ${from}`;
   if (last.mode === "mock") return `Sample answers, the live service is off · ${from}`;
   // A fallback whose sentences the checks refused: the writer did answer, so the line must not say it did not.
