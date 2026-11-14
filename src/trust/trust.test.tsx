@@ -35,6 +35,12 @@ describe("how we know", () => {
     expect(html).toContain("Theory estimate");
     expect(html).toContain("Not covered");
   });
+  it("adds the held-out score and the reviewer's verdict when the file has them", () => {
+    const e = parseEval({ ...sample, papers_by_group: { tuning: { n: 34, hit: 20 }, held_out: { n: 23, hit: 15 } }, judged: { n: 57, yes: 45, partly: 6, no: 6, model: "m" } })!;
+    const texts = evalLines(e).map((l) => `${l.big} ${l.text}`);
+    expect(texts[1]).toMatch(/^65% on the 23 of those questions that were never used to tune/);
+    expect(texts[2]).toMatch(/^79% of 57 research answers directly answer the question/);
+  });
   it("says plainly when the Ask box has not been measured, and never shows made-up scores", () => {
     const html = renderToStaticMarkup(<TrustView ev="none" doc={doc} />);
     expect(html).toContain("Not measured on this copy of the site yet.");

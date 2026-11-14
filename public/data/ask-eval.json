@@ -1,12 +1,22 @@
 {
- "date": "2026-11-14T17:13:55.994Z",
+ "date": "2026-11-14T20:33:07.156Z",
  "questions": 100,
  "papers": {
   "n": 57,
-  "cites_a_labelled_paper": 31,
-  "first_claim_cites_a_labelled_paper": 27,
-  "answered": 55,
+  "cites_a_labelled_paper": 37,
+  "first_claim_cites_a_labelled_paper": 26,
+  "answered": 56,
   "wrongly_refused": 0
+ },
+ "papers_by_group": {
+  "tuning": {
+   "n": 34,
+   "hit": 22
+  },
+  "held_out": {
+   "n": 23,
+   "hit": 15
+  }
  },
  "offtopic": {
   "n": 19,
@@ -26,15 +36,23 @@
  },
  "errors": 0,
  "modes": {
-  "live": 95,
-  "extractive": 5
+  "live": 99,
+  "extractive": 1
  },
  "claims": {
-  "total": 128,
+  "total": 133,
   "not_double_checked": 0
  },
  "latency_ms": {
-  "median": 7119,
-  "p90": 9371
+  "median": 7421,
+  "p90": 9878
+ },
+ "judged": {
+  "n": 57,
+  "yes": 21,
+  "partly": 26,
+  "no": 10,
+  "unreadable": 0,
+  "model": "claude-sonnet-5-5"
  }
 }

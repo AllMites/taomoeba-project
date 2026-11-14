@@ -1,6 +1,6 @@
 import type { Claim } from "../src/contracts/claim.ts";
 import type { HabitatId } from "../src/contracts/habitat.ts";
-import { score, scoreCapped, type Bm25Index } from "./bm25.ts";
+import { preferReports, score, scoreCapped, type Bm25Index } from "./bm25.ts";
 import { addsFacts, coverage, expandQuery, inScope, MIN_COVERAGE, nums, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
 import { findFacts, onlyDashboard, type DataFact } from "./facts.ts";
 import { callHaiku, jsonBlock, MODEL, type ChatMessage } from "./llm.ts";
@@ -48,6 +48,8 @@ export type AskResult = {
   summary?: string;
   /** True when the live writer failed and the server quoted the records instead. */
   degraded?: boolean;
+  /** Why the live answer failed when degraded (for the team's test runs; the page does not show it). */
+  failReason?: string;
   facts?: FactView[];
   relations?: Record<string, Relation>;
   /** Title, link and licence of each cited source, so the page can name papers that have no public file. */
@@ -442,7 +444,7 @@ export async function live(
   // Only the sources' own text can be quoted, so our derived sentences (claims, brief takeaways) stay out of the pool.
   const sourceText = { ...index, chunks: forHabitat(index, habitat).chunks.filter((c) => !c.derived) };
   const st: Partial<AskSteps> = { searched: sourcesIn(sourceText.chunks) };
-  const pool = scoreCapped(sourceText, expandQuery(q) + (facts[0] ? ` ${facts[0].keywords}` : ""), POOL, 2).map((h) => h.chunk);
+  const pool = scoreCapped(sourceText, expandQuery(q) + (facts[0] ? ` ${facts[0].keywords}` : ""), POOL, 2, preferReports).map((h) => h.chunk);
   if (!pool.length || (!facts.length && offTopic(index, q, pool.slice(0, 5).map((c) => c.text))))
     return facts.length ? finish(DATA_ONLY, [], "live", facts, undefined, st) : finish(NO_COVER, [], "live", [], undefined, st);
   // 2. Haiku re-ranks by how directly each passage answers (it sees the data finding too); it may say none does.
@@ -529,15 +531,31 @@ export async function ask(
   const mode = pickMode(env);
   if (mode === "mock") return mockAnswer(index);
   if (mode === "extractive") return withSources(extractive(index, question, habitat, extras, history), extras);
-  try {
-    return withSources(await live(index, question, habitat, env, extras, history), extras);
-  } catch (e) {
+  // One retry: a time-out, a busy API or a reply whose sentences all failed the checks often succeeds the second time.
+  // Each try runs every check again, so a retried answer is held to exactly the same rules.
+  let first: unknown;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      return withSources(await live(index, question, habitat, env, extras, history), extras);
+    } catch (e) {
+      first ??= e;
+      if (!retryable(e)) break;
+    }
+  }
+  {
+    const e = first;
     console.warn("ask: live failed, quoting instead:", e instanceof Error ? e.message : "unknown");
     // live failed: stay honest, quote the records. Sentences the writer did produce and the checks refused are still counted.
     const quoted = withSources(extractive(index, question, habitat, extras, history), extras);
     const dropped = e instanceof LiveFailed ? e.dropped : 0;
-    return { ...quoted, steps: { ...quoted.steps, dropped }, degraded: true };
+    return { ...quoted, steps: { ...quoted.steps, dropped }, degraded: true, failReason: e instanceof Error ? e.message : "unknown" };
   }
+}
+
+/** Worth a second try: time-outs, API errors 429/5xx, cut-off or unreadable replies, and replies whose claims all failed. */
+export function retryable(e: unknown): boolean {
+  const m = e instanceof Error ? `${e.name} ${e.message}` : "";
+  return /Timeout|Abort|anthropic_(429|5\d\d)|stop_max_tokens|unparseable|all_claims_(dropped|unsupported)/.test(m);
 }
 
 function withSources<T extends AskResult>(r: T, extras: AskExtras): T {

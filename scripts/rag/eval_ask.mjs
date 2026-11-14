@@ -44,6 +44,7 @@ for (const [i, item] of QUESTIONS.entries()) {
   const claims = r.claims ?? [];
   const cited = claims.map((c) => c.sourceIds?.[0]).filter(Boolean);
   const factIds = (r.facts ?? []).map((f) => f.id);
+  const factSources = (r.facts ?? []).map((f) => f.source).filter(Boolean);
   const refused = typeof r.answer === "string" && r.answer.startsWith(NO_COVER);
   const row = {
     set: item.set,
@@ -57,9 +58,13 @@ for (const [i, item] of QUESTIONS.entries()) {
     flagged: claims.filter((c) => c.flagged).length,
     claims: claims.length,
     refused,
+    fail_reason: r.failReason,
+    quotes: claims.map((c) => ({ text: c.text, excerpt: c.excerpt, source: c.sourceIds?.[0] })),
+    summary_text: r.summary,
   };
   if (item.kind === "papers" || item.kind === "papers-unavailable") {
-    row.hit_any = cited.some((s) => item.gold.includes(s));
+    // a data fact names the PSI table it was computed from, so it counts as citing that source
+    row.hit_any = cited.some((s) => item.gold.includes(s)) || factSources.some((s) => item.gold.includes(s));
     row.hit_first = cited.length > 0 && item.gold.includes(cited[0]);
     row.ok = row.hit_any;
   } else if (item.kind === "offtopic") row.ok = refused;
@@ -92,6 +97,11 @@ const summary = {
     answered: answered.length,
     wrongly_refused: count(papers, (r) => r.refused),
   },
+  // "research" set questions were used to tune the search (14 Nov); the other sets were not
+  papers_by_group: {
+    tuning: { n: count(papers, (r) => r.set === "research"), hit: count(papers, (r) => r.set === "research" && r.hit_any) },
+    held_out: { n: count(papers, (r) => r.set !== "research"), hit: count(papers, (r) => r.set !== "research" && r.hit_any) },
+  },
   offtopic: { n: of("offtopic").length, refused: count(of("offtopic"), (r) => r.ok) },
   data: { n: of("data").length, right_fact: count(of("data"), (r) => r.ok) },
   model: { n: of("model").length, model_fact: count(of("model"), (r) => r.ok) },
@@ -104,6 +114,9 @@ const summary = {
 console.log("\n=== Ask box scores ===");
 console.log(`Paper questions (${summary.papers.n}): cites a labelled paper ${pct(summary.papers.cites_a_labelled_paper, summary.papers.n)}, ` +
   `first claim cites one ${pct(summary.papers.first_claim_cites_a_labelled_paper, summary.papers.n)}, wrongly refused ${summary.papers.wrongly_refused}`);
+console.log(`  tuning set ${pct(summary.papers_by_group.tuning.hit, summary.papers_by_group.tuning.n)}, held-out sets ${pct(summary.papers_by_group.held_out.hit, summary.papers_by_group.held_out.n)}`);
+const fails = rows.filter((r) => r.fail_reason).map((r) => r.fail_reason);
+if (fails.length) console.log(`Live step failures: ${JSON.stringify(Object.fromEntries([...new Set(fails)].map((f) => [f, fails.filter((x) => x === f).length])))}`);
 console.log(`Off-topic questions (${summary.offtopic.n}): refused ${pct(summary.offtopic.refused, summary.offtopic.n)}`);
 console.log(`Data questions (${summary.data.n}): right data fact ${pct(summary.data.right_fact, summary.data.n)}`);
 console.log(`Model questions (${summary.model.n}): a team-model fact ${pct(summary.model.model_fact, summary.model.n)}`);

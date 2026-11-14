@@ -76,8 +76,9 @@ export function score(index: Bm25Index, query: string, k = 3): { chunk: Chunk; s
  * Like score(), over a wider pool, but at most `cap` chunks per source, so one long document cannot fill the list.
  * (Measured in the x5 experiment: with long reports in the corpus, the cap restored top-5 accuracy.)
  */
-export function scoreCapped(index: Bm25Index, query: string, k = 20, cap = 2): { chunk: Chunk; score: number }[] {
-  const all = score(index, query, Number.MAX_SAFE_INTEGER);
+export function scoreCapped(index: Bm25Index, query: string, k = 20, cap = 2, weight?: (c: Chunk) => number): { chunk: Chunk; score: number }[] {
+  let all = score(index, query, Number.MAX_SAFE_INTEGER);
+  if (weight) all = all.map((h) => ({ ...h, score: h.score * weight(h.chunk) })).sort((a, b) => b.score - a.score);
   const seen = new Map<string, number>();
   const out: { chunk: Chunk; score: number }[] = [];
   for (const h of all) {
@@ -89,3 +90,13 @@ export function scoreCapped(index: Bm25Index, query: string, k = 20, cap = 2): {
   }
   return out;
 }
+
+/**
+ * NASA overview pages (Glenn experiment pages, the Researcher's Guide, the station combustion page) summarize many
+ * studies, so they match almost any question. Their keyword score is lowered a little so the research report itself
+ * reaches the shortlist when both say the same thing. Chosen on the tuning questions only (x5 "research" set): right
+ * paper in the top 5 went 25 -> 28 of 34 at 0.75; held-out sets checked afterwards, 18 -> 20 of 23.
+ */
+export const OVERVIEW = /^nasa:(glenn-|researchers-guide|studying-combustion)/;
+export const OVERVIEW_WEIGHT = 0.75;
+export const preferReports = (c: Chunk) => (OVERVIEW.test(c.sourceId) ? OVERVIEW_WEIGHT : 1);

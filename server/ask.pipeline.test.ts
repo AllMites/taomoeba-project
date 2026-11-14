@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import factsJson from "../public/data/facts.json";
 import { createApp, fixtureIndex, restrictedChunks, savedFrom, sourceInfoFrom } from "./app.ts";
-import { DATA_ONLY, extractive, NO_COVER } from "./ask.ts";
-import { buildIndex } from "./bm25.ts";
+import { DATA_ONLY, extractive, NO_COVER, retryable } from "./ask.ts";
+import { buildIndex, preferReports } from "./bm25.ts";
+import { buildRerank } from "./rerank.ts";
 import { addsFacts, coverage, expandQuery, inScope, quotesTooMuch } from "./checks.ts";
 import type { DataFact } from "./facts.ts";
 
@@ -225,5 +226,27 @@ describe("saved answers for demo questions", () => {
       { ANTHROPIC_API_KEY: "k", fetchImpl: api.fetchImpl },
     );
     expect((await r.json()).mode).toBe("live");
+  });
+});
+
+describe("preferring research reports, and retrying the live step", () => {
+  it("overview pages get a lower keyword weight; reports, incident reports and PSI records do not", () => {
+    const c = (sourceId: string) => ({ id: "x", sourceId, investigationId: null, text: "" });
+    expect(preferReports(c("nasa:glenn-bass"))).toBeLessThan(1);
+    expect(preferReports(c("nasa:researchers-guide-combustion"))).toBeLessThan(1);
+    for (const id of ["ntrs:20160000593", "psi:PSI-25", "nasa:apollo204-report", "nasa:spinoff-water-mist"]) expect(preferReports(c(id))).toBe(1);
+  });
+  it("the re-ranker sees which passages are overviews", () => {
+    const x = buildRerank("q", [{ sourceId: "nasa:glenn-bass", text: "a" }, { sourceId: "ntrs:1", text: "b" }]);
+    expect(x).toContain('source="nasa:glenn-bass" kind="overview"');
+    expect(x).toContain('source="ntrs:1" kind="report"');
+  });
+  it("retries only failures a second try can fix", () => {
+    for (const m of ["anthropic_529", "anthropic_429", "stop_max_tokens", "unparseable", "all_claims_dropped", "all_claims_unsupported"]) expect(retryable(new Error(m))).toBe(true);
+    const t = new Error("timed out");
+    t.name = "TimeoutError";
+    expect(retryable(t)).toBe(true);
+    expect(retryable(new Error("anthropic_401"))).toBe(false);
+    expect(retryable(new Error("stop_refusal"))).toBe(false);
   });
 });
