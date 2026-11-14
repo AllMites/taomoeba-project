@@ -8,6 +8,24 @@
     "investigationId": {
       "type": "string"
     },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "summary",
+        "finding",
+        "rationale"
+      ]
+    },
+    "habitat": {
+      "type": "string",
+      "enum": [
+        "iss",
+        "moon",
+        "rover",
+        "mars",
+        "suit-ref"
+      ]
+    },
     "text": {
       "type": "string"
     },
@@ -40,6 +58,7 @@
   "required": [
     "id",
     "investigationId",
+    "kind",
     "text",
     "sourceIds",
     "excerpt"
