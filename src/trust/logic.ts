@@ -11,6 +11,9 @@ export const AskEval = z.object({
   modes: z.record(z.string(), z.number()),
   claims: z.object({ total: z.number(), not_double_checked: z.number() }),
   latency_ms: z.object({ median: z.number(), p90: z.number() }),
+  // added 14 Nov: tuning vs held-out split, and a separate reviewer's verdict (scripts/rag/judge_answers.mjs)
+  papers_by_group: z.object({ tuning: z.object({ n: z.number(), hit: z.number() }), held_out: z.object({ n: z.number(), hit: z.number() }) }).optional(),
+  judged: z.object({ n: z.number(), yes: z.number(), partly: z.number(), no: z.number(), model: z.string() }).optional(),
 });
 export type AskEval = z.infer<typeof AskEval>;
 
@@ -29,6 +32,22 @@ export function evalLines(e: AskEval): { big: string; text: string }[] {
       big: share(e.papers.cites_a_labelled_paper, e.papers.n),
       text: `of ${e.papers.n} research questions got an answer citing a paper the team had marked as the right one before testing (a lower bound: other papers can also be right).`,
     },
+    ...(e.papers_by_group
+      ? [
+          {
+            big: share(e.papers_by_group.held_out.hit, e.papers_by_group.held_out.n),
+            text: `on the ${e.papers_by_group.held_out.n} of those questions that were never used to tune the search (held out).`,
+          },
+        ]
+      : []),
+    ...(e.judged
+      ? [
+          {
+            big: share(e.judged.yes, e.judged.n),
+            text: `of ${e.judged.n} research answers directly answer the question, as judged by a separate, larger AI reviewer (${e.judged.partly} more answer it in part).`,
+          },
+        ]
+      : []),
     { big: share(e.offtopic.refused, e.offtopic.n), text: `of ${e.offtopic.n} off-topic questions (Mars travel, lunar crops…) were refused instead of answered.` },
     { big: share(e.data.right_fact, e.data.n), text: `of ${e.data.n} questions about the team's data brought up the right computed fact.` },
   ];

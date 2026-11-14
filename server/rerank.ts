@@ -2,6 +2,7 @@
 // Measured live on 83 labelled questions: right source first 49 -> 58; off-topic judged "none" 20 of 20; real
 // questions judged "none" 0 of 83. Code validates the reply: invented or repeated numbers are ignored, and an
 // unusable reply keeps the keyword order.
+import { OVERVIEW } from "./bm25.ts";
 import { callHaiku, jsonBlock, type LlmEnv } from "./llm.ts";
 
 export const POOL = 20;
@@ -13,14 +14,17 @@ export const RERANK_SYSTEM = [
   "1. Judge only from the passage text. Do not use outside knowledge.",
   "2. A passage is relevant only if it states something that answers the question, not if it merely uses the same words.",
   "3. Prefer passages that report results or facts over passages that only describe plans or methods, unless the question asks about plans or methods.",
-  '4. Output JSON only: {"ranking": [<numbers of the relevant passages, most direct answer first>], "none_relevant": false}',
-  '5. If no passage answers the question, output {"ranking": [], "none_relevant": true}.',
+  "4. Each passage is marked kind=\"report\" (a research paper or test report) or kind=\"overview\" (a NASA summary page). When a report and an overview answer equally well, rank the report first.",
+  '5. Output JSON only: {"ranking": [<numbers of the relevant passages, most direct answer first>], "none_relevant": false}',
+  '6. If no passage answers the question, output {"ranking": [], "none_relevant": true}.',
 ].join("\n");
 
 const asData = (s: string) => s.replace(/[<>]/g, " ");
 
 export function buildRerank(question: string, passages: { sourceId: string; text: string }[]): string {
-  const ps = passages.map((p, i) => `<passage n="${i + 1}" source="${p.sourceId}">\n${asData(p.text)}\n</passage>`).join("\n");
+  const ps = passages
+    .map((p, i) => `<passage n="${i + 1}" source="${p.sourceId}" kind="${OVERVIEW.test(p.sourceId) ? "overview" : "report"}">\n${asData(p.text)}\n</passage>`)
+    .join("\n");
   return `${ps}\n<question>${asData(question)}</question>`;
 }
 

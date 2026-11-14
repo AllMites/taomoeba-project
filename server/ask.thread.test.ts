@@ -177,7 +177,8 @@ describe("steps, model, degraded", () => {
     const j = await (await post(app, { question: "How big are smoke particles?" }, env)).json();
     expect(j).toMatchObject({ mode: "extractive", degraded: true, model: null });
     await post(app, { question: "How big are smoke particles?" }, env);
-    expect(api.seen.filter((s) => s.kind === "claims")).toHaveLength(2);
+    // not cached: the second question calls the writer again (each question tries the writer twice: one retry)
+    expect(api.seen.filter((s) => s.kind === "claims")).toHaveLength(4);
   });
 
   it("all sentences refused by the checks: quoted, and the refused count is kept", async () => {
