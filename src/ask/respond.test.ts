@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { askForHabitat, askRecords, isDataOnly, readable, sourceKind } from "./respond.ts";
+import { askForHabitat, askRecords, isDataOnly, modeLabel, readable, sourceKind } from "./respond.ts";
 
 const claim = { id: "ask-1", investigationId: "PSI-20", kind: "finding", text: "t", sourceIds: ["psi:PSI-20"], excerpt: "e" };
 const json = (body: unknown, status = 200) =>
@@ -102,4 +102,9 @@ it("names the kind of source", () => {
   expect(sourceKind("psi:PSI-69")).toBe("PSI record");
   expect(sourceKind("ntrs:20240001234")).toBe("NASA report");
   expect(sourceKind("team:model-report")).toBe("Team analysis");
+});
+
+it("a saved answer says so, with its date", async () => {
+  const out = await ask(() => json({ answer: "A [psi:PSI-20].", claims: [claim], investigationIds: [], mode: "saved", savedAt: "2026-11-14" }));
+  expect(out.kind === "answer" && modeLabel(out.result)).toBe("Saved SI answer from 14 Nov 2026, made with the same checks");
 });

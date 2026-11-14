@@ -1,0 +1,599 @@
+{
+ "made": "2026-11-14",
+ "items": [
+  {
+   "question": "Do bigger droplets go out at a bigger diameter?",
+   "result": {
+    "answer": "Droplets extinguish at a finite size when the flame goes out from a shrinking flame near the droplet surface, a mechanism called diffusive extinction. [ntrs:20130014061]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "PSI-69",
+      "kind": "finding",
+      "text": "Droplets extinguish at a finite size when the flame goes out from a shrinking flame near the droplet surface, a mechanism called diffusive extinction.",
+      "sourceIds": [
+       "ntrs:20130014061"
+      ],
+      "excerpt": "First, the flame can extinguish as it moves closer to the droplet surface due to …",
+      "verdict": "supports"
+     }
+    ],
+    "investigationIds": [
+     "PSI-69"
+    ],
+    "mode": "live",
+    "facts": [
+     {
+      "id": "flex-dext-d0-methanol",
+      "statement": "For methanol in the FLEX table, flame extinction diameter rises with initial droplet diameter: rank correlation 0.59 over 116 runs with a recorded extinction diameter.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     },
+     {
+      "id": "flex-dext-d0-heptane",
+      "statement": "For heptane in the FLEX table, flame extinction diameter rises with initial droplet diameter: rank correlation 0.78 over 80 runs with a recorded extinction diameter.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     }
+    ],
+    "relations": {
+     "ask-1": "explains"
+    },
+    "sources": {
+     "ntrs:20130014061": {
+      "title": "Methanol Droplet Combustion in Oxygen-Inert Environments in Microgravity",
+      "url": "https://ntrs.nasa.gov/citations/20130014061",
+      "license": "NTRS: public use permitted (short quotes only)"
+     }
+    }
+   }
+  },
+  {
+   "question": "Which experiment ranks highest for ISS?",
+   "result": {
+    "answer": "",
+    "claims": [],
+    "investigationIds": [
+     "PSI-69"
+    ],
+    "mode": "live",
+    "facts": [
+     {
+      "id": "dash-rank-PSI-69-iss",
+      "statement": "On the dashboard, FLEX (PSI-69) ranks 1 of 26 for ISS with score 0.93. Oxygen match: Tested at 12 to 34% oxygen, which covers this habitat's 21%; Pressure match: Tested at 70.2 to 309.3 kPa, which covers this habitat's 101.3 kPa; Direct or indirect: Directly about suppression; Flight or ground: Flown in microgravity; Goal fit (SI-judged): SI read the stated goal and rated the fit medium.",
+      "dataset": "Team dashboard ranking",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     }
+    ]
+   }
+  },
+  {
+   "question": "What is a cool flame?",
+   "result": {
+    "answer": "A cool flame is a lower-temperature flame that forms after the visible hot flame has extinguished. [nasa:researchers-guide-combustion]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "A cool flame is a lower-temperature flame that forms after the visible hot flame has extinguished.",
+      "sourceIds": [
+       "nasa:researchers-guide-combustion"
+      ],
+      "excerpt": "This vaporization, we now know, is supported by a lower-temperature cool flame that forms after visible flame extinction.",
+      "verdict": "supports"
+     }
+    ],
+    "investigationIds": [
+     "PSI-159"
+    ],
+    "mode": "live",
+    "facts": [
+     {
+      "id": "cfig-runs",
+      "statement": "The cleaned CFI-G table has 333 gas-flame tests: 179 normal flames and 154 inverse flames, burning ethane, propane or butane.",
+      "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-159"
+     },
+     {
+      "id": "cfig-se-o2-normal",
+      "statement": "For normal CFI-G flames by oxygen level: 41 of 41 self-extinguished at ambient oxygen below 25%; 1 of 3 self-extinguished at ambient oxygen 25% to 35%; 60 of 89 self-extinguished at ambient oxygen 35% or more.",
+      "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-159"
+     }
+    ],
+    "relations": {
+     "ask-1": "explains"
+    },
+    "sources": {
+     "nasa:researchers-guide-combustion": {
+      "title": "A Researcher's Guide to: Combustion Science (NASA ISS, NP-2015-10-034-JSC)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "Why did so many high-oxygen FLEX runs end in disruption?",
+   "result": {
+    "answer": "Disruptive extinction of methanol is probably due to the presence of the contaminant. [ntrs:20150023456] Subsequent tests with clean needles and fuel also exhibited disruptive extinction at small droplet sizes. [ntrs:20150023456] At high oxygen concentrations, the chemical times are small enough that droplets burn to completion rather than exhibiting flame extinction. [nasa:glenn-flex]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "PSI-69",
+      "kind": "finding",
+      "text": "Disruptive extinction of methanol is probably due to the presence of the contaminant.",
+      "sourceIds": [
+       "ntrs:20150023456"
+      ],
+      "excerpt": "(4) Disruptive extinction of methanol is probably due to the presence of the contaminant.",
+      "verdict": "supports"
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "PSI-69",
+      "kind": "finding",
+      "text": "Subsequent tests with clean needles and fuel also exhibited disruptive extinction at small droplet sizes.",
+      "sourceIds": [
+       "ntrs:20150023456"
+      ],
+      "excerpt": "Subsequent tests with clean needles and fuel, however, also exhibited disruptive extinction at small droplet …"
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "At high oxygen concentrations, the chemical times are small enough that droplets burn to completion rather than exhibiting flame extinction.",
+      "sourceIds": [
+       "nasa:glenn-flex"
+      ],
+      "excerpt": "At high oxygen concentrations, however, the chemical times are small enough (relative to the characteristic flow times) such that the droplets will burn to completion rather than exhibiting flame extinction."
+     }
+    ],
+    "investigationIds": [
+     "PSI-69"
+    ],
+    "mode": "live",
+    "facts": [
+     {
+      "id": "flex-end-o2",
+      "statement": "How FLEX droplet runs ended, by oxygen level: oxygen below 21%: 125 extinction, 7 disruption, 12 completion (n=144); oxygen 21% to 28%: 52 extinction, 31 disruption, 11 completion (n=94); oxygen 28% or more: 2 extinction, 17 disruption, 4 completion (n=23).",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "Disruption means the droplet broke apart; at high oxygen most runs ended that way, so few extinction measurements exist there.",
+      "source": "psi:PSI-69"
+     },
+     {
+      "id": "model-moon-validity",
+      "statement": "Moon-Base conditions (30% oxygen or more at 10.2 psi = 527.5 mmHg) sit at the low-pressure edge of the FLEX data: only 9 methanol and 7 heptane runs have oxygen of 30% or more at 620 mmHg or less, so the extinction-diameter and test-end models are not valid there.",
+      "dataset": "Team model results",
+      "caveat": "No measured partial-gravity data exists in PSI; these are microgravity tables.",
+      "source": "team:model-report"
+     }
+    ],
+    "relations": {
+     "ask-1": "explains",
+     "ask-2": "related",
+     "ask-3": "related"
+    },
+    "sources": {
+     "ntrs:20150023456": {
+      "title": "Detailed Results from the Flame Extinguishment Experiment (FLEX) March 2009 to December 2011",
+      "url": "https://ntrs.nasa.gov/citations/20150023456",
+      "license": "NTRS: public use permitted (short quotes only)"
+     },
+     "nasa:glenn-flex": {
+      "title": "NASA Glenn experiment summary: Flame Extinguishment Experiment (FLEX)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "Do inverse flames self-extinguish less often than normal flames?",
+   "result": {
+    "answer": "No paper in the library explains this finding.",
+    "claims": [],
+    "investigationIds": [
+     "PSI-159"
+    ],
+    "mode": "live",
+    "facts": [
+     {
+      "id": "cfig-se-inverse",
+      "statement": "In the CFI-G table, 81 of 139 inverse flames with a recorded ending self-extinguished and 58 were ended by stopping the flow.",
+      "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-159"
+     },
+     {
+      "id": "cfig-se-normal",
+      "statement": "In the CFI-G table, 102 of 133 normal flames with a recorded ending self-extinguished and 31 were ended by stopping the flow.",
+      "dataset": "PSI-159 ACME CFI-G gas-flame table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-159"
+     }
+    ]
+   }
+  },
+  {
+   "question": "Does helium change droplet extinction?",
+   "result": {
+    "answer": "Helium substituted for nitrogen increases the heat feedback to the droplet, which increases the burning rate even though flame temperature is reduced. [ntrs:20140006750] Helium dilution was tested in n-octane droplets, where helium was added at the expense of nitrogen at a fixed oxygen fraction of 0.21. [ntrs:20140006750]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "PSI-39",
+      "kind": "finding",
+      "text": "Helium substituted for nitrogen increases the heat feedback to the droplet, which increases the burning rate even though flame temperature is reduced.",
+      "sourceIds": [
+       "ntrs:20140006750"
+      ],
+      "excerpt": "On the other hand, helium thermal conductivity is almost 10 times that of nitrogen and …",
+      "verdict": "supports"
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "PSI-39",
+      "kind": "finding",
+      "text": "Helium dilution was tested in n-octane droplets, where helium was added at the expense of nitrogen at a fixed oxygen fraction of 0.21.",
+      "sourceIds": [
+       "ntrs:20140006750"
+      ],
+      "excerpt": "In these tests the helium dilution is gradually increased at expense of nitrogen while the …"
+     }
+    ],
+    "investigationIds": [
+     "PSI-39",
+     "PSI-69"
+    ],
+    "mode": "live",
+    "facts": [
+     {
+      "id": "flex-diluent-he",
+      "statement": "47 FLEX runs used helium in the surrounding gas (26 methanol, 21 heptane), with helium fractions from 0.05 to 0.45.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     },
+     {
+      "id": "model-importance-flex_ext_diameter",
+      "statement": "For extinction diameter, the inputs that matter most to the team's CatBoost model are initial droplet diameter (error rises by 0.667 when shuffled), oxygen fraction (error rises by 0.313 when shuffled), fuel type (error rises by 0.160 when shuffled); pressure matters little (error change 0.006).",
+      "dataset": "Team model results",
+      "caveat": "",
+      "source": "team:model-report"
+     }
+    ],
+    "relations": {
+     "ask-1": "explains",
+     "ask-2": "related"
+    },
+    "sources": {
+     "ntrs:20140006750": {
+      "title": "Cool-flame Extinction During N-Alkane Droplet Combustion in Microgravity",
+      "url": "https://ntrs.nasa.gov/citations/20140006750",
+      "license": "NTRS: public use permitted (short quotes only)"
+     }
+    }
+   }
+  },
+  {
+   "question": "Why did the Apollo 13 oxygen tank explode?",
+   "result": {
+    "answer": "The thermostatic switches were rated for 28 volts DC but did not operate correctly at the 65 volts DC used during testing. [ntrs:20110015690] Launch personnel did not know the thermostatic switches were not rated to open with 65 volts DC ground power applied. [nasa:apollo13-review-board]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The thermostatic switches were rated for 28 volts DC but did not operate correctly at the 65 volts DC used during testing.",
+      "sourceIds": [
+       "ntrs:20110015690"
+      ],
+      "excerpt": "The switches were rated at 28 V dc, which is the standard operating power for the Apollo craft, and did not operate correctly at 65 V dc."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Launch personnel did not know the thermostatic switches were not rated to open with 65 volts DC ground power applied.",
+      "sourceIds": [
+       "nasa:apollo13-review-board"
+      ],
+      "excerpt": "(6) MSC, KSC, and NR personnel did not know that the thermostatic switches were not rated to open with 65 V dc GSE power applied."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "sources": {
+     "ntrs:20110015690": {
+      "title": "A Case Study of the Failure on Apollo 13: Based on TMX-65270, Report of Apollo 13 Review Board",
+      "url": "https://ntrs.nasa.gov/citations/20110015690",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+     },
+     "nasa:apollo13-review-board": {
+      "title": "Report of Apollo 13 Review Board (1970)",
+      "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_13_review_board.txt",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "What happened during the Mir fire?",
+   "result": {
+    "answer": "On February 24, 1997, a fire ignited in an oxygen generating system aboard the Russian space station Mir. [nasa:mir-fire-25-years] The fire cut off access to one of the two Soyuz escape vehicles and filled the station's modules with smoke. [nasa:mir-fire-25-years] The six crew members extinguished the flames, and the station's structure was not damaged. [nasa:mir-fire-25-years]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "On February 24, 1997, a fire ignited in an oxygen generating system aboard the Russian space station Mir.",
+      "sourceIds": [
+       "nasa:mir-fire-25-years"
+      ],
+      "excerpt": "On Feb. 24, 1997, the six crew members aboard the Russian space station Mir faced significant danger when a fire ignited in an oxygen generating system."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The fire cut off access to one of the two Soyuz escape vehicles and filled the station's modules with smoke.",
+      "sourceIds": [
+       "nasa:mir-fire-25-years"
+      ],
+      "excerpt": "The searing flame, lasting several minutes, not only cut off access to one of the two Soyuz escape vehicles but also filled the station's modules with smoke."
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The six crew members extinguished the flames, and the station's structure was not damaged.",
+      "sourceIds": [
+       "nasa:mir-fire-25-years"
+      ],
+      "excerpt": "Although the narrow confines where the fire occurred made fighting it difficult, through teamwork and composure the crew prevailed and extinguished the flames, with no damage to the station's structure."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "sources": {
+     "nasa:mir-fire-25-years": {
+      "title": "25 Years Ago: Fire Aboard Space Station Mir (NASA History)",
+      "url": "https://www.nasa.gov/feature/25-years-ago-fire-aboard-space-station-mir",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "What lessons did NASA learn from the Mir fire?",
+   "result": {
+    "answer": "Russian space officials changed how crew members trained for similar emergencies after the Mir fire. [nasa:mir-fire-25-years] Lessons learned from the Mir fire were passed on in the design and operations of the International Space Station. [nasa:mir-fire-25-years] The Mir fire showed that failure of oxygen generation systems can have significant consequences. [ntrs:20120012884]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Russian space officials changed how crew members trained for similar emergencies after the Mir fire.",
+      "sourceIds": [
+       "nasa:mir-fire-25-years"
+      ],
+      "excerpt": "Following the fire, based on lessons learned during the incident, Russian space officials instituted changes in how crew members trained for similar emergencies, and how ground controllers responded to aid the onboard crew."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Lessons learned from the Mir fire were passed on in the design and operations of the International Space Station.",
+      "sourceIds": [
+       "nasa:mir-fire-25-years"
+      ],
+      "excerpt": "The lessons learned from the incident were passed on in the design and operations of the International Space Station."
+     },
+     {
+      "id": "ask-3",
+      "investigationId": "PSI-102",
+      "kind": "finding",
+      "text": "The Mir fire showed that failure of oxygen generation systems can have significant consequences.",
+      "sourceIds": [
+       "ntrs:20120012884"
+      ],
+      "excerpt": "The experience on Mir in 1997 has shown that failure of oxygen generation systems can …"
+     }
+    ],
+    "investigationIds": [
+     "PSI-102"
+    ],
+    "mode": "live",
+    "sources": {
+     "nasa:mir-fire-25-years": {
+      "title": "25 Years Ago: Fire Aboard Space Station Mir (NASA History)",
+      "url": "https://www.nasa.gov/feature/25-years-ago-fire-aboard-space-station-mir",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     },
+     "ntrs:20120012884": {
+      "title": "Properties of Smoke from Overheated Materials in Low-Gravity",
+      "url": "https://ntrs.nasa.gov/citations/20120012884",
+      "license": "NTRS: public use permitted (short quotes only)"
+     }
+    }
+   }
+  },
+  {
+   "question": "How is smoke different in microgravity?",
+   "result": {
+    "answer": "In low gravity, buoyant flow is negligible, so smoke particles concentrate near the source and take longer to reach detectors. [ntrs:20170007283] Microgravity fires have significantly different structure than fires in normal gravity, which can change how smoke particles form. [ntrs:20170007283]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "In low gravity, buoyant flow is negligible, so smoke particles concentrate near the source and take longer to reach detectors.",
+      "sourceIds": [
+       "ntrs:20170007283"
+      ],
+      "excerpt": "In low gravity, buoyant flow is negligible which causes particles to concentrate at the smoke source, increasing their residence time, and increasing the transport time to smoke detectors."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Microgravity fires have significantly different structure than fires in normal gravity, which can change how smoke particles form.",
+      "sourceIds": [
+       "ntrs:20170007283"
+      ],
+      "excerpt": "Microgravity fires have significantly different structure than those in 1-g which can change the formation history of the smoke particles."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "sources": {
+     "ntrs:20170007283": {
+      "title": "Spacecraft Fire Safety Research at NASA Glenn Research Center",
+      "url": "https://ntrs.nasa.gov/citations/20170007283",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+     }
+    }
+   }
+  },
+  {
+   "question": "What happened to silicone in microgravity?",
+   "result": {
+    "answer": "For silicone, the cited work describes an upward-burn test in which the flame self-extinguished on the thinnest samples. [ntrs:20150022421]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "PSI-98",
+      "kind": "finding",
+      "text": "For silicone, the cited work describes an upward-burn test in which the flame self-extinguished on the thinnest samples.",
+      "sourceIds": [
+       "ntrs:20150022421"
+      ],
+      "excerpt": "The one phenomenon that was unexpected was the self -extinguishment of the silicone in the …"
+     }
+    ],
+    "investigationIds": [
+     "PSI-98"
+    ],
+    "mode": "live",
+    "sources": {
+     "ntrs:20150022421": {
+      "title": "Buoyant Effects on the Flammability of Silicone Samples Planned for the Spacecraft Fire Experiment (Saffire)",
+      "url": "https://ntrs.nasa.gov/citations/20150022421",
+      "license": "NTRS: public use permitted (short quotes only)"
+     }
+    }
+   }
+  },
+  {
+   "question": "Which experiments tested 30% oxygen?",
+   "result": {
+    "answer": "Many materials used on the Shuttle or ISS are only tested and rated to 30% oxygen at 10.2 psia. [ntrs:20080034883]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "PSI-26",
+      "kind": "finding",
+      "text": "Many materials used on the Shuttle or ISS are only tested and rated to 30% oxygen at 10.2 psia.",
+      "sourceIds": [
+       "ntrs:20080034883"
+      ],
+      "excerpt": "Many of the materials now used in the Shuttle or on ISS are therefore only …"
+     }
+    ],
+    "investigationIds": [
+     "PSI-26",
+     "PSI-69"
+    ],
+    "mode": "live",
+    "facts": [
+     {
+      "id": "model-moon-validity",
+      "statement": "Moon-Base conditions (30% oxygen or more at 10.2 psi = 527.5 mmHg) sit at the low-pressure edge of the FLEX data: only 9 methanol and 7 heptane runs have oxygen of 30% or more at 620 mmHg or less, so the extinction-diameter and test-end models are not valid there.",
+      "dataset": "Team model results",
+      "caveat": "No measured partial-gravity data exists in PSI; these are microgravity tables.",
+      "source": "team:model-report"
+     },
+     {
+      "id": "flex-runs",
+      "statement": "The cleaned FLEX table has 261 usable droplet runs (153 methanol, 108 heptane) on 80 test dates from 2009-03-05 to 2011-12-08.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     }
+    ],
+    "relations": {
+     "ask-1": "related"
+    },
+    "sources": {
+     "ntrs:20080034883": {
+      "title": "Microgravity Flame Spread in Exploration Atmospheres: Pressure, Oxygen, and Velocity Effects on Opposed and Concurrent Flame Spread",
+      "url": "https://ntrs.nasa.gov/citations/20080034883",
+      "license": "NTRS: public use permitted (short quotes only)"
+     }
+    }
+   }
+  },
+  {
+   "question": "How does fire spread over solid materials in microgravity?",
+   "result": {
+    "answer": "At low gas velocities, radiative heat loss begins to dominate and can extinguish a flame over a solid. [nasa:researchers-guide-combustion]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "At low gas velocities, radiative heat loss begins to dominate and can extinguish a flame over a solid.",
+      "sourceIds": [
+       "nasa:researchers-guide-combustion"
+      ],
+      "excerpt": "At low-characteristic velocities (low-flame stretch), radiative loss begins to dominate, eventually leading to flame extinction at sufficiently low velocities or stretch rates (e.g., Olson et al., 1988)."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "sources": {
+     "nasa:researchers-guide-combustion": {
+      "title": "A Researcher's Guide to: Combustion Science (NASA ISS, NP-2015-10-034-JSC)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "What caused the Apollo 1 fire?",
+   "result": {
+    "answer": "The Apollo 204 Review Board could not conclusively identify the specific initiator of the fire. [nasa:apollo204-report]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The Apollo 204 Review Board could not conclusively identify the specific initiator of the fire.",
+      "sourceIds": [
+       "nasa:apollo204-report"
+      ],
+      "excerpt": "Although the Board was not able to determine conclusively the specific initiator of the Apollo 204 fire, it has identified the conditions which led to the disaster."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "sources": {
+     "nasa:apollo204-report": {
+      "title": "Report of the Apollo 204 (Apollo 1) Review Board",
+      "url": "https://www.nasa.gov/history/Apollo204/desc.html",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  }
+ ]
+}

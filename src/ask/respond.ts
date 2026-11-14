@@ -13,7 +13,8 @@ const AskResult = z.object({
   answer: z.string(),
   claims: z.array(Claim),
   investigationIds: z.array(z.string()),
-  mode: z.enum(["live", "extractive", "mock"]),
+  mode: z.enum(["live", "extractive", "mock", "saved"]),
+  savedAt: z.string().optional().catch(undefined),
   // Optional, so older servers still parse; a bad relation label is dropped rather than failing the answer.
   facts: z.array(DataFact).optional().catch(undefined),
   relations: z.record(z.string(), Relation.catch("related")).optional().catch(undefined),
@@ -62,6 +63,15 @@ export const MODE_LABEL: Record<AskResult["mode"], string> = {
   extractive: "Quoted from the records (no SI summary)",
   mock: "Sample answer, the live service is off",
   live: "SI answer, built only from the quoted sources",
+  saved: "Saved SI answer, made earlier with the same checks",
+};
+
+/** "Saved SI answer from 14 Nov 2026, …" when the date is known. */
+export const modeLabel = (r: { mode: AskResult["mode"]; savedAt?: string }) => {
+  if (r.mode !== "saved" || !r.savedAt) return MODE_LABEL[r.mode];
+  const d = new Date(`${r.savedAt}T12:00:00Z`);
+  const day = Number.isNaN(d.getTime()) ? r.savedAt : d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  return `Saved SI answer from ${day}, made with the same checks`;
 };
 
 /** The answer as plain reading text: source ids in [brackets] move to the source cards, the "quoting" lead-in is dropped. */
