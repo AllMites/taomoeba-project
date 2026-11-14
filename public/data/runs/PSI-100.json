@@ -1,0 +1,74 @@
+{
+ "source": "psi:PSI-100",
+ "columns": [
+  {
+   "name": "sample_number",
+   "unit": null,
+   "original": "Sample Number"
+  },
+  {
+   "name": "material",
+   "unit": null,
+   "original": "Material"
+  },
+  {
+   "name": "sample_thickness",
+   "unit": null,
+   "original": "Sample Thickness"
+  },
+  {
+   "name": "sample_length",
+   "unit": null,
+   "original": "Sample Length"
+  },
+  {
+   "name": "sample_width",
+   "unit": null,
+   "original": "Sample Width"
+  },
+  {
+   "name": "airflow_cm_s",
+   "unit": "cm/s",
+   "original": "Air Flow"
+  },
+  {
+   "name": "direction",
+   "unit": null,
+   "original": "Direction"
+  },
+  {
+   "name": "camera_1",
+   "unit": null,
+   "original": "Camera 1"
+  },
+  {
+   "name": "camera_2",
+   "unit": null,
+   "original": "Camera 2"
+  }
+ ],
+ "rows": [
+  {
+   "sample_number": "S1",
+   "material": "SIBAL Fabric",
+   "sample_thickness": ".33 cm",
+   "sample_length": "94 cm",
+   "sample_width": "40.6 cm",
+   "airflow_cm_s": 30,
+   "direction": "Concurrent",
+   "camera_1": "S1C1",
+   "camera_2": "S1C2"
+  },
+  {
+   "sample_number": "S2",
+   "material": "SIBAL Fabric",
+   "sample_thickness": ".33 cm",
+   "sample_length": "94 cm",
+   "sample_width": "40.6 cm",
+   "airflow_cm_s": 30,
+   "direction": "Opposed",
+   "camera_1": "S2C1",
+   "camera_2": "S2C2"
+  }
+ ]
+}

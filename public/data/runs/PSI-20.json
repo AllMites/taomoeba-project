@@ -1,0 +1,227 @@
+{
+ "source": "psi:PSI-20",
+ "columns": [
+  {
+   "name": "year",
+   "unit": null,
+   "original": "Year"
+  },
+  {
+   "name": "month",
+   "unit": null,
+   "original": "Month"
+  },
+  {
+   "name": "date",
+   "unit": null,
+   "original": "Date"
+  },
+  {
+   "name": "burner_size_mm",
+   "unit": "mm",
+   "original": "Burner Size (mm)"
+  },
+  {
+   "name": "fuel_bottle",
+   "unit": null,
+   "original": "Fuel Bottle"
+  },
+  {
+   "name": "o2_percent",
+   "unit": "%",
+   "original": "Oxygen Conc (percent)"
+  },
+  {
+   "name": "flames_ignited",
+   "unit": null,
+   "original": "Flames Ignited"
+  },
+  {
+   "name": "notes",
+   "unit": null,
+   "original": "Notes"
+  }
+ ],
+ "rows": [
+  {
+   "year": 2019,
+   "month": "Feb",
+   "date": 8,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "21; 26.5; 40",
+   "flames_ignited": 10,
+   "notes": "Oxygen Conc. (as diluted with nitrogen on a volume basis) was varied between tests where approximate concentrations for tests that ignited are listed. The chamber pressures were also varied but are not identified in this summary table."
+  },
+  {
+   "year": 2019,
+   "month": "Feb",
+   "date": 20,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "26.5; 34",
+   "flames_ignited": 8,
+   "notes": "Flames Ignited is the number ignited on that day (neglecting the day change on ISS)."
+  },
+  {
+   "year": 2019,
+   "month": "Feb",
+   "date": 25,
+   "burner_size_mm": 25,
+   "fuel_bottle": "50% C2H4",
+   "o2_percent": "21; 26.5; 34; 40",
+   "flames_ignited": 8,
+   "notes": null
+  },
+  {
+   "year": 2019,
+   "month": "March",
+   "date": 4,
+   "burner_size_mm": 25,
+   "fuel_bottle": "50% C2H4",
+   "o2_percent": "26.5; 40",
+   "flames_ignited": 6,
+   "notes": null
+  },
+  {
+   "year": 2019,
+   "month": "March",
+   "date": 7,
+   "burner_size_mm": 25,
+   "fuel_bottle": "50% C2H4",
+   "o2_percent": null,
+   "flames_ignited": 6,
+   "notes": null
+  },
+  {
+   "year": 2019,
+   "month": "March",
+   "date": 11,
+   "burner_size_mm": 25,
+   "fuel_bottle": "50% C2H4",
+   "o2_percent": "26.5; 34",
+   "flames_ignited": 7,
+   "notes": null
+  },
+  {
+   "year": 2019,
+   "month": "March",
+   "date": 28,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100%C2H4",
+   "o2_percent": "26.5; 34",
+   "flames_ignited": 8,
+   "notes": null
+  },
+  {
+   "year": 2019,
+   "month": "April",
+   "date": 1,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100%C2H4",
+   "o2_percent": null,
+   "flames_ignited": 0,
+   "notes": null
+  },
+  {
+   "year": 2019,
+   "month": "April",
+   "date": 4,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100%C2H4",
+   "o2_percent": "21; 26.5; 34",
+   "flames_ignited": 9,
+   "notes": null
+  },
+  {
+   "year": 2020,
+   "month": "Sept",
+   "date": 3,
+   "burner_size_mm": 50,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "25; 34; 40",
+   "flames_ignited": 13,
+   "notes": null
+  },
+  {
+   "year": 2020,
+   "month": "Oct",
+   "date": 17,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "26.5; 34",
+   "flames_ignited": 13,
+   "notes": null
+  },
+  {
+   "year": 2020,
+   "month": "Dec",
+   "date": 5,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% CH4",
+   "o2_percent": "25; 34; 40",
+   "flames_ignited": 21,
+   "notes": null
+  },
+  {
+   "year": 2020,
+   "month": "Dec",
+   "date": 4,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% CH4",
+   "o2_percent": "25; 40",
+   "flames_ignited": 18,
+   "notes": null
+  },
+  {
+   "year": 2020,
+   "month": "Dec",
+   "date": 11,
+   "burner_size_mm": 25,
+   "fuel_bottle": "50% C2H4",
+   "o2_percent": "25; 40",
+   "flames_ignited": 12,
+   "notes": null
+  },
+  {
+   "year": 2020,
+   "month": "Dec",
+   "date": 17,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "34; 40",
+   "flames_ignited": 10,
+   "notes": null
+  },
+  {
+   "year": 2020,
+   "month": "Dec",
+   "date": 23,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "25; 34; 40",
+   "flames_ignited": 17,
+   "notes": null
+  },
+  {
+   "year": 2021,
+   "month": "Jan",
+   "date": 20,
+   "burner_size_mm": 25,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "21; 26.5; 34",
+   "flames_ignited": 15,
+   "notes": null
+  },
+  {
+   "year": 2021,
+   "month": "Jan",
+   "date": 28,
+   "burner_size_mm": 50,
+   "fuel_bottle": "100% C2H4",
+   "o2_percent": "25; 34; 40",
+   "flames_ignited": 13,
+   "notes": null
+  }
+ ]
+}

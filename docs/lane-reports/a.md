@@ -25,6 +25,13 @@ Rerun (from `scripts/`, cache in `data/raw/`, network only on a cold cache):
 - Overlap formula is in the docstring of `ingest/overlap.py` (hand example in the test file).
 - Not downloaded: raw imagery, anything over 20 MB, any Test Matrix xlsx.
 
+## Round 2
+- Conditions by basis (of 26): O2 table 10, record 2, none 14. Pressure table 6, record 1, none 19. Record text gave little: PSI-20 pressure 56.5-101.4 kPa (its record lists 14.7/10.2/8.2 psia atmospheres to be examined), PSI-106 and PSI-107 O2 21 % (record says "co-flow air" environment/conditions; the only "air = 21 %" conversion used, plus "ambient pressure" = 101.3 kPa, unused so far). Ground/modeling records are never used (their atmospheres are simulated). Table ranges are never overwritten.
+- Still without O2 and pressure, and why: PSI-21, 22 (fuel concentration only; PSI-22 coflow air does not state the ambient), 26 (table has no conditions; record only says "same pressure, oxygen"), 47, 100-102 (SAFFIRE-III, SAME: record gives no atmosphere), 108, 181 (not combustion), 60, 62, 115, 117, 142 (ground).
+- `evidence`: from the record's Flight Platform. Ground: PSI-60, 62, 115, 117, 142. PSI-108 (Shuttle) and PSI-181 (ISS) are flight.
+- `runs/`: 19 investigations x (.json + .csv), 1,035,655 bytes total. None for PSI-60, 62, 115, 117 (no table), PSI-142 (figure list, not runs), PSI-108, 181 (Other). FLEX 274 rows. Only the 3 condition columns are converted; a multi-value cell stays text ("21; 26.5; 40"); O2 values over 100 are blank. Column names snake_case with unit; `original` keeps PSI's header.
+- `related`: up to 4 per row, grounds are its record naming another investigation, the PSI "Related Investigations" field, same hardware group (not ground/lab), or same fuel name. ACME rows fill with same-hardware.
+
 ## Contract issues (not edited)
 - `fuelKind` has no "liquid" or "unknown". PSI-108 uses "droplet" and PSI-60/142 "gas" as nearest fit; hidden or ground rows only.
 - `fuel`, `sampleShape`, `hardware` are required strings: the value "Not stated" means unknown.
