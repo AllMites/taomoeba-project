@@ -1,5 +1,5 @@
 import type { RankFactor } from "../contracts/index.ts";
-import { dotLevel, SHORT_LABEL, type DotLevel } from "./logic.ts";
+import { dotLevel, dotName, SHORT_LABEL, type DotLevel } from "./logic.ts";
 
 function Dot({ level }: { level: DotLevel }) {
   return (
@@ -23,11 +23,11 @@ function Dot({ level }: { level: DotLevel }) {
 }
 
 /** Five checks as dots, in the order given. Reasons are in each name; the drawer shows them in full. */
-export default function FactorDots({ factors }: { factors: RankFactor[] }) {
+export default function FactorDots({ factors, id }: { factors: RankFactor[]; id?: string }) {
   return (
-    <span className="rk-dots">
+    <span className="rk-dots" id={id}>
       {factors.map((f) => {
-        const name = `${f.label}: ${f.value === null ? "not on record. " : ""}${f.reason}`;
+        const name = dotName(f);
         return (
           <span key={f.key} className="rk-dot-item" role="img" aria-label={name} title={name}>
             <Dot level={dotLevel(f.value)} />

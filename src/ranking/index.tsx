@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { useStore, type PdsFilter } from "../app/store.ts";
 import { HOW_RANKING_WORKS } from "../data/rankRule.ts";
 import { rankedFor } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import ExperimentCard from "./ExperimentCard.tsx";
-import { buildRows, isFiltering, litHidden, matchRows, visibleRows } from "./logic.ts";
+import { buildRows, firstRevealedId, isFiltering, litHidden, matchRows, visibleRows } from "./logic.ts";
 import "./ranking.css";
 
 const FILTERS: { value: PdsFilter; label: string; hint: string }[] = [
@@ -72,7 +73,7 @@ export default function Ranking() {
 
       {loadError ? (
         <p role="alert" className="rk-alert">
-          Could not load the experiments. {loadError.status === "error" ? loadError.error : ""} Reload the page to try again.
+          Could not load the experiments. Reload the page to try again.
         </p>
       ) : !ready ? (
         <p role="status" className="rk-muted">Loading experiments…</p>
@@ -119,7 +120,16 @@ export default function Ranking() {
           )}
 
           {!filtering && !showAll && shown.length < rows.length && !litHidden(rows, highlightIds) && (
-            <button type="button" className="rk-btn rk-more" onClick={() => setShowAll(true)}>
+            <button
+              type="button"
+              className="rk-btn rk-more"
+              onClick={() => {
+                // The button goes away, so move focus to the first card it revealed instead of dropping it on the page.
+                const id = firstRevealedId(rows);
+                flushSync(() => setShowAll(true));
+                if (id) sectionRef.current?.querySelector<HTMLElement>(`[data-id="${CSS.escape(id)}"]`)?.focus();
+              }}
+            >
               Show all {rows.length} experiments
             </button>
           )}

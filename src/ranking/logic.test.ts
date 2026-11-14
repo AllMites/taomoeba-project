@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 import type { Investigation, RankItem } from "../contracts/index.ts";
-import { buildRows, dotLevel, matchRows, rangeText, scalePct, TOP_COUNT, visibleRows } from "./logic.ts";
+import { buildRows, dotLevel, dotName, firstRevealedId, matchRows, rangeText, scalePct, TOP_COUNT, visibleRows } from "./logic.ts";
 
 const inv = (id: string, pds: Investigation["pds"], extra: Partial<Investigation> = {}) =>
   ({ id, title: `Exp ${id}`, hardware: "Rack", hardwareGroup: "g", pds, fuel: "ethylene", ...extra }) as Investigation;
@@ -61,4 +61,20 @@ it("places oxygen on a fixed 0 to 100 scale and words ranges", () => {
   expect(scalePct(150)).toBe(100);
   expect(rangeText([19.8, 85])).toBe("19.8 to 85%");
   expect(rangeText([21, 21])).toBe("21%");
+});
+
+it("moves Show all focus to the first card it reveals, skipping an early Other", () => {
+  expect(firstRevealedId(rows)).toBe("P8");
+  const withOtherEarly = buildRows([item("X1"), ...ranked.filter((r) => r.investigationId !== "X1")], invs, []);
+  // X1 is first in order but never in the top, so it is the first card Show all reveals.
+  expect(firstRevealedId(withOtherEarly)).toBe("X1");
+  expect(firstRevealedId(buildRows(ranked.slice(0, 5), invs, []))).toBeNull();
+});
+
+it("names a dot once as not on record", () => {
+  expect(dotName({ label: "Oxygen match", value: null, reason: "Oxygen level is not on record." })).toBe(
+    "Oxygen match: Oxygen level is not on record.",
+  );
+  expect(dotName({ label: "Goal fit", value: null, reason: "The goal is missing." })).toBe("Goal fit: not on record. The goal is missing.");
+  expect(dotName({ label: "Flight or ground", value: 1, reason: "Flown in microgravity." })).toBe("Flight or ground: Flown in microgravity.");
 });

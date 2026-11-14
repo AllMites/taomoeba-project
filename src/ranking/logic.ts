@@ -49,6 +49,12 @@ export function litHidden(rows: Row[], highlightIds: string[]): boolean {
 /** First TOP_COUNT rows in order, never an experiment tagged Other. */
 export const topRows = (rows: Row[]) => rows.filter((r) => r.inv.pds !== "Other").slice(0, TOP_COUNT);
 
+/** The first card "Show all" reveals. Keyboard focus moves there, since the button itself goes away. */
+export function firstRevealedId(rows: Row[]): string | null {
+  const top = new Set(topRows(rows).map((r) => r.inv.id));
+  return rows.find((r) => !top.has(r.inv.id))?.inv.id ?? null;
+}
+
 /**
  * Rows to draw. A filter or search shows every match. Otherwise the top 8, or all when
  * the visitor asked for it or a lit card would be hidden.
@@ -66,6 +72,12 @@ export function dotLevel(value: number | null): DotLevel {
   if (value >= 2 / 3) return "high";
   if (value >= 1 / 3) return "mid";
   return "low";
+}
+
+/** Name of one dot, "<label>: <reason>". Says "not on record" once, even when the reason already does. */
+export function dotName(f: Pick<RankFactor, "label" | "value" | "reason">): string {
+  const say = f.value === null && !/not on record/i.test(f.reason);
+  return `${f.label}: ${say ? "not on record. " : ""}${f.reason}`;
 }
 
 /** Short word under each dot, by factor key. */
