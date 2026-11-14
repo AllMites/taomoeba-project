@@ -24,10 +24,10 @@ unused: the set is built in code (see "Set").
   strip from SAFFIRE-II burns inside a Cygnus cargo ship; its spread and timing come from the run table, its look is
   illustrative." Fills its parent, owns its `<Canvas>`.
   - Moving: opens on the module and the flow unit, pushes in low over the window while the igniter runs (about
-    3 s), then holds a 3/4 view where the flame and halo fill about a fifth of the frame height. Loops: igniter
+    3 s), then holds a raised 3/4 view: the flame low in frame, the cargo-lined module running away above the flow unit. Loops: igniter
     9.2 s, burn 145 s, hold 25 s (record seconds), played at 10x. Replay and Pause/Play buttons.
   - `calm`: no camera move, one still frame at mid-burn (72.5 s), no loop, flicker off; a "Play once" button.
-  - Poster `public/img/scenes/saffire.webp` (1280x720, 24.7 KB, my own render of the calm frame) replaces the canvas
+  - Poster `public/img/scenes/saffire.webp` (1280x720, 30.1 KB, our own render of the calm frame) replaces the canvas
     when WebGL is unavailable or the context is lost. Both paths tested (see Verified).
   - Pauses rendering when off screen (IntersectionObserver); `frameloop="demand"` when paused or calm.
 - **HUD** (DOM over the canvas): experiment name and sample, Oxygen %, Air flow cm/s, Pressure (Not on record),
@@ -161,3 +161,18 @@ Screenshots (`docs/lane-reports/d/`), looked at one by one:
    microgravity look. The caption says the look is illustrative. Keep blue, or warm the front flame?
 5. Opening push-in (moving only) vs. a fixed close view from the first frame.
 6. Callout 2 is the silicone takeaway (about 0 cm burned in microgravity). Alternative: no second callout.
+
+## Review fixes (reviewer, after the lane)
+
+- Status line under the HUD now describes the frame on screen (`statusLine` in `timeline.ts`, tested): after
+  "Play once" ends it reads "Still frame, burn over", not "mid-burn"; a paused replay reads "Paused".
+- Still frames (calm or paused) redraw the leader line when another note is picked on a phone; before, the new
+  note had no leader until the next frame. Browser-checked; not unit-testable without a GPU.
+- `FlameFront` keeps its point light, and the scene keeps its igniter mesh, mounted and only hides them. Before,
+  each ignition and burnout changed the light count and relinked the lit set shader (one extra link per loop,
+  measured); now zero. Not unit-testable without a GPU.
+- Set reads as a spacecraft on desktop: the held view sits higher and looks down the module (cargo stacks, deck,
+  far end) above the flow unit; ceiling lights 5 -> 12 cd, fog starts at 3.5 m instead of 2 m. Phone pose unchanged.
+  Screenshots and poster retaken. Overlay contrast re-measured over one loop: muted text at least 5.2:1 (375 wide).
+- Measured with the harness built as a second entry: main and base chunks hold no three.js or fx code;
+  `saffire-*.js` 24.7 kB (9.1 kB gzip) when zod is shared; three + R3F chunk 918 kB (242.5 kB gzip).
