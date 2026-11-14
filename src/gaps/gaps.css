@@ -1,0 +1,22 @@
+/* "What to test next": where the record runs out for one habitat. Colours come from tokens only. */
+.gaps {
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+}
+.gaps-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
+.gaps-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; }
+.gaps-card { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-bg); min-width: 0; }
+.gaps-h3 { margin: 0; font-size: var(--text-base, 1rem); }
+.gaps-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+.gaps-list > li { padding-left: var(--space-3); border-left: 2px solid var(--color-border-strong); }
+.gaps-exps { list-style: none; margin: var(--space-1) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-1); }
+.gaps-exp { font: inherit; font-size: var(--text-sm); padding: 1px var(--space-2); border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-surface); color: var(--color-text); cursor: pointer; }
+.gaps-exp:hover { border-color: var(--color-accent); }
+.gaps-exp:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.gaps-next { margin: 0; padding-left: 1.2rem; display: grid; gap: var(--space-3); }
+.gaps-next li { display: grid; gap: 2px; }
+.gaps-why { color: var(--color-text-muted); font-size: var(--text-sm); }
+.gaps-planned { font-size: var(--text-sm); }
+.gaps-small { margin: 0; font-size: var(--text-sm); }

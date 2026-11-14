@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Ask from "../ask/index.tsx";
 import Brief from "../brief/index.tsx";
+import Compare from "../compare/index.tsx";
 import type { HabitatPreset, Investigation } from "../contracts/index.ts";
 import { pickerHabitats } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import Earth from "../earth/index.tsx";
 import Evidence from "../evidence/index.tsx";
+import Gaps from "../gaps/index.tsx";
 import Ranking from "../ranking/index.tsx";
 import Trust from "../trust/index.tsx";
 import WhatIf from "../whatif/index.tsx";
@@ -217,7 +219,9 @@ export default function App() {
         <Brief />
         <Stage />
         <Ranking />
+        <Compare />
         <WhatIf />
+        <Gaps />
         <Earth />
         <Trust />
         <aside className="limits" aria-labelledby="limits-h">
