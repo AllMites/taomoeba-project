@@ -4,7 +4,7 @@ import type { Claim, HabitatPreset, Investigation, RankItem, Source } from "../c
 import { claimsFor, loadRuns, runUrls, type RunTable } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import "./evidence.css";
-import { conditionRows, NOT_ON_RECORD, scoreText, strengthWord, visibleBlocks } from "./logic.ts";
+import { columnHeader, conditionRows, isSwitch, NOT_ON_RECORD, rationaleFor, safeHref, scoreText, strengthWord, visibleBlocks } from "./logic.ts";
 
 type SourceMap = Map<string, Source>;
 
@@ -17,12 +17,13 @@ function SourceNote({ excerpt, sourceIds, sources }: { excerpt: string; sourceId
       <ul>
         {sourceIds.map((id) => {
           const s = sources.get(id);
+          const href = safeHref(s?.url);
           return (
             <li key={id}>
-              {s ? (
-                <a href={s.url} target="_blank" rel="noopener noreferrer">{s.title}</a>
+              {s && href ? (
+                <a href={href} target="_blank" rel="noopener noreferrer">{s.title}</a>
               ) : (
-                <span>{id}</span>
+                <span>{s?.title ?? id}</span>
               )}
             </li>
           );
@@ -83,8 +84,7 @@ function RunPreview({ path }: { path: string }) {
                 <tr>
                   {state.table.columns.map((c) => (
                     <th key={c.name} scope="col">
-                      {c.original}
-                      {c.unit && <span className="ev-muted"> ({c.unit})</span>}
+                      {columnHeader(c)}
                     </th>
                   ))}
                 </tr>
@@ -96,7 +96,8 @@ function RunPreview({ path }: { path: string }) {
                       const v = r[c.name];
                       return v === null || v === undefined || v === "" ? (
                         <td key={c.name} className="ev-muted" title={NOT_ON_RECORD}>
-                          <span aria-label={NOT_ON_RECORD}>–</span>
+                          <span aria-hidden="true">–</span>
+                          <span className="ev-sr">{NOT_ON_RECORD}</span>
                         </td>
                       ) : (
                         <td key={c.name}>{String(v)}</td>
@@ -136,7 +137,7 @@ function Detail(props: {
   const { inv, all, claims, rank, sources, habitat, habitatId, open } = props;
   const summary = claimsFor(claims, "summary", inv.id);
   const findings = claimsFor(claims, "finding", inv.id);
-  const rationale = claimsFor(claims, "rationale", inv.id, habitat?.id);
+  const rationale = rationaleFor(claims, inv.id, habitatId);
   const item = rank.find((r) => r.investigationId === inv.id && r.habitat === habitatId);
   const factors = item?.factors ?? [];
   const changing = inv.variables.filter((v) => v.varies);
@@ -157,7 +158,7 @@ function Detail(props: {
   return (
     <div className="ev-body">
       <header className="ev-head">
-        <h2 id="ev-title">{inv.title}</h2>
+        <h2 id="ev-title" tabIndex={-1}>{inv.title}</h2>
         <p className="ev-id">{inv.id}</p>
         <p className="ev-tags">
           <span className="ev-tag">{inv.pds}</span>
@@ -310,9 +311,13 @@ export default function Evidence() {
     if (id !== null && !d.open) d.showModal();
     if (id === null && d.open) d.close();
   }, [id]);
-  // Switching to a related experiment: scroll back to the top.
+  // Switching to a related experiment: scroll back to the top, and move focus to the new title
+  // (the Related button that had focus is gone, which would drop focus to the page body).
+  const prevId = useRef<string | null>(null);
   useEffect(() => {
     bodyRef.current?.scrollTo({ top: 0 });
+    if (isSwitch(prevId.current, id)) document.getElementById("ev-title")?.focus();
+    prevId.current = id;
   }, [id]);
 
   const ready = invD.status === "ready" && rankD.status === "ready" && claimsD.status === "ready" && srcD.status === "ready" && habD.status === "ready";

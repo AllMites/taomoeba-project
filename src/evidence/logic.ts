@@ -68,12 +68,37 @@ export function visibleBlocks(i: BlockInput) {
   };
 }
 
-/** Plain word for a 0 to 1 factor value. null = not on record. */
+/** Plain word for a 0 to 1 factor value. null = not on record. Same bands as the card rationale (scripts/rank/build.ts). */
 export function strengthWord(v: number | null): string {
   if (v === null) return NOT_ON_RECORD;
-  if (v >= 0.75) return "Strong";
+  if (v >= 0.8) return "Strong";
   if (v >= 0.4) return "Partial";
   return "Weak";
 }
 
 export const scoreText = (score: number) => `Score ${score.toFixed(2)} of 1`;
+
+/** Unit words a source header may carry at its end, as "Width (cm)" or "Burn time; s". */
+const HEADER_UNIT = /\s*(?:\(\s*(?:atm|mmhg|bar|kpa|psi|c|k|s|sec|seconds?|min|minutes?|cm\/s|mm|cm|m|w|mg\/s|sccm|ppm|percent|%)\s*\)|;\s*(?:atm|mmhg|bar|kpa|psi|c|k|s|sec|seconds?|min|minutes?|cm\/s|mm|cm|m|w|mg\/s|sccm|ppm|percent|%|mole fraction))\s*$/i;
+
+/**
+ * Run-table column heading. Values are stored in `unit`, which can differ from the unit in the source
+ * header (pressure in atm or mmHg is stored as kPa), so the source unit is dropped and `unit` shown once.
+ */
+export function columnHeader(c: { original: string; unit: string | null }): string {
+  if (!c.unit) return c.original;
+  return `${c.original.replace(HEADER_UNIT, "")} (${c.unit})`;
+}
+
+/** Only http(s) URLs from the data become links; anything else is shown as plain text. */
+export function safeHref(url: string | null | undefined): string | null {
+  const u = url?.trim();
+  return u && /^https?:\/\//i.test(u) ? u : null;
+}
+
+/** True when the open drawer switches from one experiment to another (Related), so focus must move. */
+export const isSwitch = (prev: string | null, next: string | null) => prev !== null && next !== null && prev !== next;
+
+/** Rationale lines for the picked habitat only; never every habitat's lines when the preset is missing. */
+export const rationaleFor = <C extends { kind: string; investigationId: string; habitat?: string }>(claims: C[], investigationId: string, habitat: string) =>
+  claims.filter((c) => c.kind === "rationale" && c.investigationId === investigationId && c.habitat === habitat);

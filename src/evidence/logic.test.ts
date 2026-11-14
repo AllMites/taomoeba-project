@@ -1,5 +1,53 @@
 import { describe, expect, it } from "vitest";
-import { conditionRows, formatRange, scoreText, strengthWord, textOrNotOnRecord, visibleBlocks } from "./logic.ts";
+import {
+  columnHeader, conditionRows, formatRange, isSwitch, rationaleFor, safeHref, scoreText, strengthWord, textOrNotOnRecord, visibleBlocks,
+} from "./logic.ts";
+
+describe("columnHeader", () => {
+  it("drops the source unit so a converted column shows one unit", () => {
+    expect(columnHeader({ original: "Ambient Pressure (atm)", unit: "kPa" })).toBe("Ambient Pressure (kPa)");
+    expect(columnHeader({ original: "Ambient pressure; mmHg", unit: "kPa" })).toBe("Ambient pressure (kPa)");
+    expect(columnHeader({ original: "Sample Width (cm)", unit: "cm" })).toBe("Sample Width (cm)");
+    expect(columnHeader({ original: "Peak burner T (C )", unit: "C" })).toBe("Peak burner T (C)");
+    expect(columnHeader({ original: "O initial ambient composition; mole fraction", unit: "%" })).toBe("O initial ambient composition (%)");
+  });
+  it("keeps notes and qualifiers that are not units", () => {
+    expect(columnHeader({ original: "Percent O2 (Note 1)", unit: "%" })).toBe("Percent O2 (Note 1) (%)");
+    expect(columnHeader({ original: "XO2 (init)", unit: "%" })).toBe("XO2 (init) (%)");
+    expect(columnHeader({ original: "Material", unit: null })).toBe("Material");
+  });
+});
+
+describe("safeHref", () => {
+  it("links only http(s)", () => {
+    expect(safeHref("https://psi.nasa.gov/x")).toBe("https://psi.nasa.gov/x");
+    expect(safeHref("http://example.org")).toBe("http://example.org");
+    expect(safeHref("javascript:alert(1)")).toBeNull();
+    expect(safeHref("data:text/html,x")).toBeNull();
+    expect(safeHref("")).toBeNull();
+  });
+});
+
+describe("isSwitch", () => {
+  it("is true only when one open experiment replaces another", () => {
+    expect(isSwitch("PSI-69", "PSI-68")).toBe(true);
+    expect(isSwitch(null, "PSI-69")).toBe(false);
+    expect(isSwitch("PSI-69", null)).toBe(false);
+    expect(isSwitch("PSI-69", "PSI-69")).toBe(false);
+  });
+});
+
+describe("rationaleFor", () => {
+  const claims = [
+    { kind: "rationale", investigationId: "PSI-99", habitat: "iss" },
+    { kind: "rationale", investigationId: "PSI-99", habitat: "moon" },
+    { kind: "summary", investigationId: "PSI-99" },
+  ];
+  it("returns the picked habitat's lines and none for a habitat with no lines", () => {
+    expect(rationaleFor(claims, "PSI-99", "iss")).toHaveLength(1);
+    expect(rationaleFor(claims, "PSI-99", "mars")).toHaveLength(0);
+  });
+});
 
 describe("formatRange", () => {
   it("handles null, single value, span", () => {
@@ -48,6 +96,9 @@ describe("words", () => {
   it("strength and score", () => {
     expect(strengthWord(null)).toBe("Not on record");
     expect(strengthWord(1)).toBe("Strong");
+    expect(strengthWord(0.8)).toBe("Strong");
+    // matches the card rationale, which calls 0.725 a "partial goal fit"
+    expect(strengthWord(0.77)).toBe("Partial");
     expect(strengthWord(0.5)).toBe("Partial");
     expect(strengthWord(0.1)).toBe("Weak");
     expect(scoreText(0.775)).toBe("Score 0.78 of 1");
