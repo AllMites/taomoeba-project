@@ -57,5 +57,5 @@ export function compareLine(same: boolean, pickedIss: boolean): string {
   if (same && pickedIss) return "You picked the station: its air is the reference, so one flame is shown.";
   return same
     ? "Your habitat has the same air as the station, so one flame is shown."
-    : "Same flame, same airflow. Only the air differs.";
+    : "Same flame, same airflow. Only the air differs. Drawn rule: more oxygen is brighter and tighter, less pressure is larger and dimmer.";
 }
