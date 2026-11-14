@@ -12,6 +12,9 @@ Each lane edits only the paths it owns. Shared files are integrator only.
 | Q Ask + Brief | `src/ask/`, `src/brief/` |
 | H Drawer | `src/evidence/` |
 | O Deploy | `wrangler.toml`, `scripts/deploy/`, `docs/DEPLOY.md` |
-| Integrator only | `src/contracts/`, `src/app/store.ts`, `src/data/`, `package.json`, `docs/PAGE_PLAN.md` |
+| D Fire FX + Saffire | `src/fx/`, `src/scenes/saffire/`, `public/models/saffire/`, `public/data/scenes/saffire.json` |
+| G Lunar | `src/scenes/lunar/`, `public/models/lunar/` |
+| Q2 Conversation | `src/ask/`, `server/` |
+| Integrator only | `src/contracts/`, `src/app/store.ts`, `src/data/`, `src/scenes/registry.ts`, `src/scenes/dev.tsx`, `scenes.html`, `package.json`, `docs/PAGE_PLAN.md` |
 
 Lane reports go in `docs/lane-reports/<lane>.md`, never the repo root.

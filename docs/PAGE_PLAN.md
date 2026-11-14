@@ -10,6 +10,7 @@ their habitat, and why. First click: pick a habitat. Everything below changes wi
 | 1 | Hero: title, one line, habitat picker (ISS / Moon Base / Pressurized rover) | What is this, where do I start? | | C Shell |
 | 2 | Ask box: question in, cited answer out, matching cards light up | Does CO2 put out a droplet flame? | SI-powered | Q Ask + Brief |
 | 3 | Habitat brief: takeaways for the picked habitat, each with its source | What does the evidence say for my habitat? | Interpret | Q Ask + Brief |
+| 3b | Replay (extra, after the gate): two 3D scenes, loaded on demand. Past: a SAFFIRE fire in a cargo ship. Your habitat: the same flame at the picked habitat's air | What does this fire look like? | | D, G; mounted by the integrator |
 | 4 | Filter row: Prevention / Detection / Suppression, search | Show me detection only | Find | R Ranking |
 | 5 | Ranked experiments: cards in order, top 8 then "Show all" | Which apply, and why this order? | Rank, Summarize | R Ranking |
 | 6 | Limits strip | Can I trust this? | | C Shell |
@@ -47,8 +48,16 @@ list it in your lane report.
    contrast in light and dark, meaning never by colour alone, respects reduced motion.
 8. Works at 1440x900 and at 375 wide with no sideways scroll.
 9. Each of the seven screens must read as a still image: one clear focal point.
-10. No new dependencies. Native elements first (`<dialog>`, `<details>`, radio inputs).
+10. No new dependencies (the integrator added three, @react-three/fiber and drei for `src/scenes/` and `src/fx/` only). Native elements first (`<dialog>`, `<details>`, radio inputs).
 11. No words "AI-powered", no "according to NASA". Use "SI" where the model is named.
+
+## 3D scenes (`src/contracts/scene.ts`)
+
+- A scene is the default export of `src/scenes/<id>/index.tsx`: a `SceneModule` whose Component fills its parent box.
+- The page loads scenes lazily through `src/scenes/registry.ts`. The 2D page must work with WebGL off.
+- Develop at `/scenes.html?scene=saffire&habitat=moon&calm=0` (dev server only).
+- Budget per scene: 1.5 MB of models, 100k triangles, 6 textures, 8 materials. 30 fps or better on a phone.
+- `calm` true: one still frame, no loop.
 
 ## Data facts to design around
 
