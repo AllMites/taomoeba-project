@@ -336,3 +336,8 @@ main > * { min-width: 0; margin-block: 0; }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
+
+/* The chat panel (src/ask) is a 26.25rem side panel on wide screens: make room so it covers nothing. */
+@media (min-width: 60rem) {
+  body:has(.ask-panel[open]) { padding-right: 26.25rem; }
+}

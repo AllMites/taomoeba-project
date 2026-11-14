@@ -51,6 +51,12 @@ export default function Ranking() {
   const litOrder = new Map(shown.filter((r) => lit.has(r.inv.id)).map((r, i) => [r.inv.id, i]));
   const litKey = highlightIds.join("|");
 
+  // Once an answer has opened the list to show its cards, it stays open: clearing the highlights
+  // (a new chat) must not collapse it and pull the page up under the reader.
+  useEffect(() => {
+    if (litKey) setShowAll(true);
+  }, [litKey]);
+
   // A new answer scrolls its first lit card into view. The list has already opened if the card was hidden.
   useEffect(() => {
     if (!litKey || !ready) return;
