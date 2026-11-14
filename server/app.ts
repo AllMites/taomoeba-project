@@ -4,7 +4,7 @@ import { z } from "zod";
 import claimsFixture from "../public/data/fixtures/claims.fixture.json";
 import sourcesFixture from "../public/data/fixtures/sources.fixture.json";
 import { HabitatId } from "../src/contracts/habitat.ts";
-import { ask, type AskEnv, type AskExtras } from "./ask.ts";
+import { ask, type AskEnv, type AskExtras, type SourceInfo } from "./ask.ts";
 import type { DataFact } from "./facts.ts";
 import { buildIndex, type Bm25Index, type Chunk } from "./bm25.ts";
 import { verify } from "./verify.ts";
@@ -13,6 +13,9 @@ export type Env = AskEnv & {
   TYPESAFE_API_KEY?: string;
   // Static-assets binding (Lane O): used to load /data/index.json built by Lane B.
   ASSETS?: { fetch: (r: Request | string) => Promise<Response> };
+  // Private KV store (wrangler.toml [[kv_namespaces]] binding LIBRARY): key "restricted-index" holds the text of
+  // papers NASA marks "short quotes only" (built by scripts/rag/add_papers.py). Not set = the site runs without them.
+  LIBRARY?: { get: (key: string, type: "json") => Promise<unknown> };
 };
 
 export const MAX_QUESTION = 300;
@@ -74,7 +77,27 @@ export function licensesFrom(sources: unknown): Record<string, string> {
   return Object.fromEntries(rows.filter((r) => r?.id).map((r) => [r.id!, r.license ?? ""]));
 }
 
-export function createApp(opts: { index?: Bm25Index; facts?: DataFact[]; licenses?: Record<string, string> } = {}) {
+/** Title, link and licence by source id, from sources.json and library.json (metadata only, no paper text). */
+export function sourceInfoFrom(...lists: unknown[]): Record<string, SourceInfo> {
+  const out: Record<string, SourceInfo> = {};
+  for (const list of lists) {
+    const rows = (Array.isArray(list) ? list : ((list as { items?: unknown[] })?.items ?? [])) as Partial<SourceInfo & { id: string }>[];
+    for (const r of rows) if (r?.id && r.title) out[r.id] = { title: r.title, url: r.url ?? "", license: r.license ?? "" };
+  }
+  return out;
+}
+
+/** Private library chunks from KV, marked restricted. Anything unexpected = no private papers, never an error. */
+export function restrictedChunks(raw: unknown): Chunk[] {
+  const rows = ((raw as { chunks?: unknown[] })?.chunks ?? []) as Partial<Chunk>[];
+  return rows
+    .filter((c) => typeof c?.id === "string" && typeof c.sourceId === "string" && typeof c.text === "string")
+    .map((c) => ({ id: c.id!, sourceId: c.sourceId!, investigationId: c.investigationId ?? null, text: c.text!, restricted: true }));
+}
+
+export function createApp(
+  opts: { index?: Bm25Index; facts?: DataFact[]; licenses?: Record<string, string>; sources?: Record<string, SourceInfo> } = {},
+) {
   // ponytail: rate limit and cache are per-isolate memory only. Ceiling: each Worker isolate has its own
   // bucket, so abuse across isolates is not capped. Move to a Durable Object or KV if abused.
   const buckets = new Map<string, { tokens: number; at: number }>();
@@ -84,7 +107,7 @@ export function createApp(opts: { index?: Bm25Index; facts?: DataFact[]; license
 
   /** Data facts (public/data/facts.json) and source licenses (sources.json); missing files mean none, never an error. */
   const getExtras = (env: Env, origin: string): Promise<AskExtras> => {
-    if (opts.index) return Promise.resolve({ facts: opts.facts ?? [], licenses: opts.licenses ?? {} });
+    if (opts.index) return Promise.resolve({ facts: opts.facts ?? [], licenses: opts.licenses ?? {}, sources: opts.sources ?? {} });
     extrasLoaded ??= (async () => {
       const get = async (path: string) => {
         try {
@@ -94,8 +117,12 @@ export function createApp(opts: { index?: Bm25Index; facts?: DataFact[]; license
           return null;
         }
       };
-      const [facts, sources] = await Promise.all([get("/data/facts.json"), get("/data/sources.json")]);
-      return { facts: Array.isArray(facts) ? (facts as DataFact[]) : [], licenses: licensesFrom(sources) };
+      const [facts, sources, library] = await Promise.all([get("/data/facts.json"), get("/data/sources.json"), get("/data/library.json")]);
+      return {
+        facts: Array.isArray(facts) ? (facts as DataFact[]) : [],
+        licenses: { ...licensesFrom(sources), ...licensesFrom(library) },
+        sources: sourceInfoFrom(sources, library),
+      };
     })();
     return extrasLoaded;
   };
@@ -108,7 +135,13 @@ export function createApp(opts: { index?: Bm25Index; facts?: DataFact[]; license
         if (r?.ok) {
           const base = (await r.json()) as Bm25Index;
           const cr = await env.ASSETS?.fetch(new URL("/data/claims.json", origin).toString());
-          return withClaims(base, cr?.ok ? await cr.json() : []);
+          let priv: Chunk[] = [];
+          try {
+            priv = restrictedChunks(await env.LIBRARY?.get("restricted-index", "json"));
+          } catch {
+            /* no private library: the public one still works */
+          }
+          return withClaims({ ...base, chunks: [...base.chunks, ...priv] }, cr?.ok ? await cr.json() : []);
         }
       } catch {
         /* fall through to fixtures */

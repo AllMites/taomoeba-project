@@ -21,3 +21,6 @@ __pycache__/
 
 # Raw downloads
 /data/raw/
+
+# Server-only paper text (short quotes only): uploaded to the Worker KV store, never committed
+/library/

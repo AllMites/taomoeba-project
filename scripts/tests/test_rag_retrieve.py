@@ -26,5 +26,7 @@ def test_synonyms_find_flex_for_the_co2_question():
     q = "does carbon dioxide put out a droplet flame"
     assert "co2" in expand_query(q) and "extinguish" in expand_query(q)
     assert "carbon dioxide" in expand_query("CO2 and helium") and "helium" in expand_query("he")
-    top = retrieve(q, k=3)
+    # top 5, not 3: since the full-text NASA papers were added, the CO2-suppression papers (also on topic) can
+    # outrank the FLEX record; the live path searches 20 passages and re-ranks them anyway.
+    top = retrieve(q, k=5)
     assert "PSI-69" in {r["chunk"]["investigationId"] for r in top}, [r["chunk"]["id"] for r in top]

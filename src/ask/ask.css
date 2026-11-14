@@ -78,3 +78,5 @@
 .ask-rel { flex-basis: 100%; margin: 0; font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted); }
 .ask-rel-contradicts { color: var(--color-text); border-left: 2px solid var(--color-flame); padding-left: var(--space-2); }
 .ask-claim { margin: var(--space-2) 0 0; overflow-wrap: anywhere; }
+.ask-quote-note { margin: var(--space-1) 0 0; padding-left: var(--space-3); }
+.ask-link { margin: var(--space-2) 0 0; }

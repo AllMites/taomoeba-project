@@ -1,7 +1,7 @@
 import type { Claim } from "../src/contracts/claim.ts";
 import type { HabitatId } from "../src/contracts/habitat.ts";
 import { score, scoreCapped, type Bm25Index } from "./bm25.ts";
-import { addsFacts, coverage, inScope, MIN_COVERAGE, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
+import { addsFacts, coverage, expandQuery, inScope, MIN_COVERAGE, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
 import { findFacts, onlyDashboard, type DataFact } from "./facts.ts";
 import { callHaiku, jsonBlock } from "./llm.ts";
 import { POOL, rerank } from "./rerank.ts";
@@ -20,10 +20,23 @@ export type AskResult = {
   mode: AskMode;
   facts?: FactView[];
   relations?: Record<string, Relation>;
+  /** Title, link and licence of each cited source, so the page can name papers that have no public file. */
+  sources?: Record<string, SourceInfo>;
 };
 export type AskEnv = { ANTHROPIC_API_KEY?: string; TYPESAFE_API_KEY?: string; SPEND_MODE?: string; fetchImpl?: typeof fetch };
 /** Data the Worker loads beside the index: facts (public/data/facts.json) and source licenses (sources.json). */
-export type AskExtras = { facts?: DataFact[]; licenses?: Record<string, string> };
+export type SourceInfo = { title: string; url: string; license: string };
+export type AskExtras = { facts?: DataFact[]; licenses?: Record<string, string>; sources?: Record<string, SourceInfo> };
+
+/** Open = public domain or CC0 (same rule as Lane B's tests). Anything else is quoted briefly and paraphrased. */
+export const isOpenLicense = (license: string | undefined) => !license || /^(CC0|Public domain)/i.test(license);
+const isRestricted = (c: { sourceId: string; restricted?: boolean }, licenses: Record<string, string>) =>
+  !!c.restricted || !isOpenLicense(licenses[c.sourceId]);
+/** A quote from a short-quotes-only source, cut to 15 words. */
+const shortQuote = (s: string) => {
+  const w = s.split(/\s+/);
+  return w.length <= 15 ? s : `${w.slice(0, 15).join(" ")} …`;
+};
 
 export const NO_COVER = "The PSI records I have do not cover that.";
 export const DATA_ONLY = "No paper in the library explains this finding.";
@@ -51,7 +64,7 @@ function finish(answer: string, claims: Claim[], mode: AskMode, facts: DataFact[
 }
 
 /** Not about fire at all AND little overlap with what was found: say so instead of quoting noise. */
-const offTopic = (index: Bm25Index, question: string, texts: string[]) => !inScope(question) && coverage(question, texts, index.idf) < MIN_COVERAGE;
+export const offTopic = (index: Bm25Index, question: string, texts: string[]) => !inScope(question) && coverage(question, texts, index.idf) < MIN_COVERAGE;
 
 export function mockAnswer(index: Bm25Index): AskResult {
   const c = index.chunks[0];
@@ -68,13 +81,18 @@ const forHabitat = (index: Bm25Index, habitat?: string): Bm25Index =>
 export function extractive(index: Bm25Index, question: string, habitat?: string, extras: AskExtras = {}): AskResult {
   const facts = findFacts(extras.facts ?? [], question);
   if (onlyDashboard(facts)) return finish("", [], "extractive", facts); // the ranking is the answer
-  const hits = score(forHabitat(index, habitat), question + (facts[0] ? ` ${facts[0].keywords}` : ""), 3);
+  // Quote-only mode copies sentences word for word, so short-quotes-only papers are left out of it.
+  const quotable = { ...index, chunks: forHabitat(index, habitat).chunks.filter((c) => !isRestricted(c, extras.licenses ?? {})) };
+  const hits = score(quotable, expandQuery(question) + (facts[0] ? ` ${facts[0].keywords}` : ""), 3);
   if (!hits.length || (!facts.length && offTopic(index, question, hits.map((h) => h.chunk.text))))
     return facts.length ? finish(DATA_ONLY, [], "extractive", facts) : finish(NO_COVER, [], "extractive");
   // Best sentence per chunk, then top 2 across chunks.
   const picks = hits
     .map((h) => {
-      const best = sentences(h.chunk.text)
+      const all = sentences(h.chunk.text);
+      // a quotable sentence: 6 to 45 words, ends like a sentence, not a run of headings ("PART VI: Board Findings")
+      const ok = all.filter((s) => { const n = s.split(/\s+/).length; return n >= 6 && n <= 45 && /[.!?)"']$/.test(s) && !/\bPART [IVX]+\b/.test(s); });
+      const best = (ok.length ? ok : all)
         .map((s) => ({ s, sc: score({ ...index, chunks: [{ ...h.chunk, text: s }] }, question, 1)[0]?.score ?? 0 }))
         .sort((a, b) => b.sc - a.sc)[0];
       return { chunk: h.chunk, s: best?.s ?? h.chunk.text, sc: h.score };
@@ -163,7 +181,7 @@ type Ctx = Bm25Index["chunks"][number];
 
 export function buildClaimsPrompt(question: string, habitat: HabitatId | undefined, ctx: Ctx[], facts: DataFact[], licenses: Record<string, string> = {}) {
   const excerpts = ctx
-    .map((c) => `<excerpt id="${c.sourceId}" license="${(licenses[c.sourceId] ?? "open").includes("opyright") ? "copyrighted" : "open"}">${asData(c.text)}</excerpt>`)
+    .map((c) => `<excerpt id="${c.sourceId}" license="${isRestricted(c, licenses) ? "copyrighted" : "open"}">${asData(c.text)}</excerpt>`)
     .join("\n");
   const notes = [facts.length ? DATA_NOTE : "", habitat === "moon" || habitat === "rover" ? MOON_NOTE : ""].filter(Boolean).join("\n");
   const finding = facts.map((f, j) => `<data_finding id="D${j + 1}">${asData(f.statement)}</data_finding>`).join("\n");
@@ -206,7 +224,7 @@ export function parseClaims(reply: string, ctx: Ctx[], licenses: Record<string, 
               ? "banned phrasing"
               : wordCount(text) > 25 || sentenceCount(text) > 1
                 ? "over 25 words or more than one sentence"
-                : (licenses[sid!] ?? "").includes("opyright") && quotesTooMuch(text, src.text)
+                : isRestricted(src!, licenses) && quotesTooMuch(text, src!.text)
                   ? "copies more than 15 words of a copyrighted source"
                   : addsFacts(text, excerpt);
     if (why) {
@@ -233,7 +251,7 @@ export async function live(index: Bm25Index, question: string, habitat: HabitatI
   // 1. Wide keyword pool (max 2 chunks per source), searched with the data finding's terms too.
   // Only the sources' own text can be quoted, so our derived sentences (claims, brief takeaways) stay out of the pool.
   const sourceText = { ...index, chunks: forHabitat(index, habitat).chunks.filter((c) => !c.derived) };
-  const pool = scoreCapped(sourceText, question + (facts[0] ? ` ${facts[0].keywords}` : ""), POOL, 2).map((h) => h.chunk);
+  const pool = scoreCapped(sourceText, expandQuery(question) + (facts[0] ? ` ${facts[0].keywords}` : ""), POOL, 2).map((h) => h.chunk);
   if (!pool.length || (!facts.length && offTopic(index, question, pool.slice(0, 5).map((c) => c.text))))
     return facts.length ? finish(DATA_ONLY, [], "live", facts) : finish(NO_COVER, [], "live");
   // 2. Haiku re-ranks by how directly each passage answers (it sees the data finding too); it may say none does.
@@ -275,7 +293,9 @@ export async function live(index: Bm25Index, question: string, habitat: HabitatI
     if (facts.length) return finish(DATA_ONLY, [], "live", facts);
     throw new Error("all_claims_unsupported");
   }
-  const claims = kept.map((c, i) => ({ ...c, id: `ask-${i + 1}` }));
+  // Claims from short-quotes-only papers show a quote of at most 15 words (it was checked in full above).
+  const restrictedIds = new Set(ctx.filter((c) => isRestricted(c, licenses)).map((c) => c.sourceId));
+  const claims = kept.map((c, i) => ({ ...c, id: `ask-${i + 1}`, excerpt: restrictedIds.has(c.sourceIds[0]) ? shortQuote(c.excerpt) : c.excerpt }));
   const relations: Record<string, Relation> = {};
   kept.forEach((c, i) => {
     if (parsed!.relations[c.id]) relations[`ask-${i + 1}`] = parsed!.relations[c.id];
@@ -292,11 +312,17 @@ export async function ask(
 ): Promise<AskResult & { degraded?: boolean }> {
   const mode = pickMode(env);
   if (mode === "mock") return mockAnswer(index);
-  if (mode === "extractive") return extractive(index, question, habitat, extras);
+  if (mode === "extractive") return withSources(extractive(index, question, habitat, extras), extras);
   try {
-    return await live(index, question, habitat, env, extras);
+    return withSources(await live(index, question, habitat, env, extras), extras);
   } catch (e) {
     console.warn("ask: live failed, quoting instead:", e instanceof Error ? e.message : "unknown");
-    return { ...extractive(index, question, habitat, extras), degraded: true }; // live failed: stay honest, quote the records
+    return { ...withSources(extractive(index, question, habitat, extras), extras), degraded: true }; // live failed: stay honest, quote the records
   }
+}
+
+function withSources<T extends AskResult>(r: T, extras: AskExtras): T {
+  const info = extras.sources ?? {};
+  const cited = [...new Set(r.claims.flatMap((c) => c.sourceIds))].filter((id) => info[id]);
+  return cited.length ? { ...r, sources: Object.fromEntries(cited.map((id) => [id, info[id]])) } : r;
 }

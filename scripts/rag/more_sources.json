@@ -1,0 +1,187 @@
+{
+ "_about": "More NASA sources: the Space Apps challenge resources plus the Apollo 1, Apollo 13 and Mir fire records. Download with scripts/rag/download_more.py (saves to library/raw/, not committed), then add with scripts/rag/add_papers.py <x5 folder> --more library/raw. NASA web pages and NASA-authored documents are U.S. government works (public domain); NTRS items use the licence NTRS states.",
+ "items": [
+  {
+   "id": "nasa:researchers-guide-combustion",
+   "title": "A Researcher's Guide to: Combustion Science (NASA ISS, NP-2015-10-034-JSC)",
+   "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2016/05/np-2015-10-034-jsc_combustion_in_reduced_gravity-iss-mini-book-011116-508.pdf",
+   "topic": "other",
+   "investigations": []
+  },
+  {
+   "id": "nasa:glenn-acme",
+   "title": "NASA Glenn experiment summary: Advanced Combustion via Microgravity Experiments (ACME)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/advanced-combustion-via-microgravity-experiments-acme.pdf",
+   "topic": "other",
+   "investigations": [
+    "PSI-10",
+    "PSI-159"
+   ]
+  },
+  {
+   "id": "nasa:glenn-bass",
+   "title": "NASA Glenn experiment summary: Burning and Suppression of Solids (BASS)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/burning-and-suppression-of-solids-bass.pdf",
+   "topic": "fire-growth",
+   "investigations": [
+    "PSI-25",
+    "PSI-26"
+   ]
+  },
+  {
+   "id": "nasa:glenn-daft",
+   "title": "NASA Glenn experiment summary: Dust and Aerosol Measurement Feasibility Test (DAFT)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/dust-and-aerosol-measurement-feasibility-test-daft.pdf",
+   "topic": "detection",
+   "investigations": [
+    "PSI-47"
+   ]
+  },
+  {
+   "id": "nasa:glenn-flex",
+   "title": "NASA Glenn experiment summary: Flame Extinguishment Experiment (FLEX)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/flame-extinguishment-experiment-flex.pdf",
+   "topic": "suppression",
+   "investigations": [
+    "PSI-69",
+    "PSI-68"
+   ]
+  },
+  {
+   "id": "nasa:glenn-saffire",
+   "title": "NASA Glenn experiment summary: Spacecraft Fire Safety Demonstration (Saffire)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/spacecraft-fire-safety-demonstration-saffire.pdf",
+   "topic": "fire-growth",
+   "investigations": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ]
+  },
+  {
+   "id": "nasa:glenn-same",
+   "title": "NASA Glenn experiment summary: Smoke Aerosol Measurement Experiment (SAME)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/smoke-aerosol-measurement-experiment-same.pdf",
+   "topic": "detection",
+   "investigations": [
+    "PSI-102",
+    "PSI-101"
+   ]
+  },
+  {
+   "id": "nasa:glenn-slice",
+   "title": "NASA Glenn experiment summary: Structure and Liftoff in Combustion Experiment (SLICE)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/structure-liftoff-in-combustion-experiment-slice.pdf",
+   "topic": "other",
+   "investigations": [
+    "PSI-106"
+   ]
+  },
+  {
+   "id": "nasa:glenn-spice",
+   "title": "NASA Glenn experiment summary: Smoke Point in Co-flow Experiment (SPICE)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/smoke-point-in-co-flow-experiment-spice.pdf",
+   "topic": "detection",
+   "investigations": [
+    "PSI-107"
+   ]
+  },
+  {
+   "id": "nasa:glenn-fm2",
+   "title": "NASA Glenn: Flammability of Materials on the Moon (FM2)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-of-materials-on-the-moon-fm2/",
+   "download": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-of-materials-on-the-moon-fm2/",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "nasa:glenn-sofie",
+   "title": "NASA Glenn: Solid Fuel Ignition and Extinction (SoFIE)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/solid-fuel-ignition-and-extinction-sofie/",
+   "download": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/solid-fuel-ignition-and-extinction-sofie/",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "nasa:glenn-flare",
+   "title": "NASA Glenn: Flammability Limits at Reduced-g Experiment (FLARE)",
+   "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/",
+   "download": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-limits-at-reduced-g-experiment-flare/",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "nasa:apollo204-findings",
+   "title": "Report of Apollo 204 (Apollo 1) Review Board: findings, determinations and recommendations",
+   "url": "https://www.nasa.gov/wp-content/uploads/static/history/Apollo204/find.html",
+   "download": "https://www.nasa.gov/wp-content/uploads/static/history/Apollo204/find.html",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "nasa:apollo204-report",
+   "title": "Report of the Apollo 204 (Apollo 1) Review Board",
+   "url": "https://www.nasa.gov/history/Apollo204/desc.html",
+   "download": "https://www.nasa.gov/history/Apollo204/desc.html",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "nasa:apollo204-fire-origin",
+   "title": "Apollo 204 (Apollo 1) Review Board, Appendix D-5: Origin and Propagation of Fire",
+   "url": "https://www.nasa.gov/wp-content/uploads/static/history/Apollo204/appendices/AppendixD-5.pdf",
+   "download": "https://www.nasa.gov/wp-content/uploads/static/history/Apollo204/appendices/AppendixD-5.pdf",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "nasa:apollo13-review-board",
+   "title": "Report of Apollo 13 Review Board (1970)",
+   "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_13_review_board.txt",
+   "download": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo_13_review_board.txt",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "nasa:apollo13-review-50-years",
+   "title": "50 Years Ago: Apollo 13 Review Board Report (NASA History)",
+   "url": "https://www.nasa.gov/history/50-years-ago-apollo-13-review-board-report",
+   "download": "https://www.nasa.gov/history/50-years-ago-apollo-13-review-board-report",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "ntrs:20110015690",
+   "title": "A Case Study of the Failure on Apollo 13: Based on TMX-65270, Report of Apollo 13 Review Board",
+   "url": "https://ntrs.nasa.gov/citations/20110015690",
+   "download": "https://ntrs.nasa.gov/api/citations/20110015690/downloads/20110015690.pdf",
+   "topic": "fire-growth",
+   "investigations": []
+  },
+  {
+   "id": "ntrs:20030068062",
+   "title": "Fire in Space: What Do You Do? (lessons from the Mir fire for the ISS)",
+   "url": "https://ntrs.nasa.gov/citations/20030068062",
+   "download": "https://ntrs.nasa.gov/api/citations/20030068062/downloads/20030068062.pdf",
+   "topic": "suppression",
+   "investigations": []
+  },
+  {
+   "id": "nasa:mir-fire-25-years",
+   "title": "25 Years Ago: Fire Aboard Space Station Mir (NASA History)",
+   "url": "https://www.nasa.gov/feature/25-years-ago-fire-aboard-space-station-mir",
+   "download": "https://www.nasa.gov/feature/25-years-ago-fire-aboard-space-station-mir",
+   "topic": "suppression",
+   "investigations": []
+  }
+ ]
+}

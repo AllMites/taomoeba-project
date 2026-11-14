@@ -45,7 +45,7 @@ def test_sources_schema_and_count(sources, corpus):
     for s in sources:
         v.validate(s)
         assert s["id"] in corpus, f"no corpus text for {s['id']}"
-    assert 20 <= len(sources) <= 40
+    assert 20 <= len(sources) <= 80  # 40 until the full-text NASA papers and incident reports were added
     assert len({s["id"] for s in sources}) == len(sources)
 
 

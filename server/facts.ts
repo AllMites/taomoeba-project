@@ -1,7 +1,7 @@
 // Data facts: numbers computed by code from the team's data (public/data/facts.json, built by
 // scripts/rag/build_facts.py). The SI never writes these numbers; it only links papers to them.
 // find() matches a question to facts; ported from the measured Python version (facts.py).
-import { SCOPE_STEMS, terms } from "./checks.ts";
+import { isScopeWord, terms } from "./checks.ts";
 
 export type DataFact = {
   id: string;
@@ -83,7 +83,7 @@ export function findFacts(facts: DataFact[], question: string, k = 2): DataFact[
   if (!q.length) return [];
   // The question names a fire-science term that no fact uses ("Burning Rate Emulator", "water mist", "SAME smoke"):
   // it is about that topic in the papers, not about the team's data.
-  if (q.some((w) => !(w in ix.idf) && SCOPE_STEMS.some((s) => w.startsWith(s)))) return [];
+  if (q.some((w) => !(w in ix.idf) && isScopeWord(w))) return [];
   const scored: { s: number; f: DataFact }[] = [];
   const allowed = dashboardAllowed(question);
   ix.tf.forEach((m, i) => {
