@@ -1,6 +1,6 @@
 # Deploy (Cloudflare Worker, one URL)
 
-One Worker `flame-in-freefall` serves `dist/` as static assets (SPA fallback for hash routes) and runs `server/index.ts` first for `/ask`, `/rank`, `/verify`, `/health`. Config: `wrangler.toml`.
+One Worker `flame-in-freefall` serves `dist/` as static assets (no SPA fallback: the app uses hash routes, and a missing file must 404 so the loader falls back to fixtures) and runs `server/index.ts` first for `/ask`, `/rank`, `/verify`, `/health`. Config: `wrangler.toml`.
 
 ## Prerequisites
 - `npm ci`, then `npx wrangler whoami` shows the owner account (else `npx wrangler login`).
@@ -25,7 +25,7 @@ npm run build
 npx wrangler deploy
 node scripts/deploy/smoke.mjs https://flame-in-freefall.<account-subdomain>.workers.dev
 ```
-The smoke script exits non-zero if `/`, `/health` or a data file fails.
+The smoke script exits non-zero if `/`, `/health` or a data file fails, if a JSON path is not served as JSON, or if a missing data file does not return 404.
 
 ## Secrets (never in files)
 ```bash

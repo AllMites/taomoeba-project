@@ -6,7 +6,9 @@ compatibility_date = "2026-11-01"
 [assets]
 directory = "./dist"
 binding = "ASSETS"
-not_found_handling = "single-page-application"
+# "none": a missing file (e.g. /data/investigations.json) falls to the Worker and 404s, so the
+# front-end loader uses its fixture. Hash routes never reach the server, so no SPA fallback is needed.
+not_found_handling = "none"
 run_worker_first = ["/ask", "/rank", "/verify", "/health"]
 
 [vars]

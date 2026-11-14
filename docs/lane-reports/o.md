@@ -26,6 +26,8 @@ smoke against a dead port -> FAIL x3, exit 1
 ```
 Server killed (workerd and wrangler node PIDs); port 8871 free.
 
+Review correction: `not_found_handling` is now `"none"`. With the SPA setting, `/data/does-not-exist.json` returned 200 `index.html`; now it and `/some/route` return 404. Smoke checks that 404 and JSON content types.
+
 ## For Lane E / integrator
 - Worker `export default app` (Hono) works as-is. `/ask` must exist on the Hono app (not present in scaffold yet).
 - Unmatched API paths go to Hono only for the 4 listed; any new API path must be added to `run_worker_first` in `wrangler.toml`.
