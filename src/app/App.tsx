@@ -8,6 +8,7 @@ import Evidence from "../evidence/index.tsx";
 import Ranking from "../ranking/index.tsx";
 import "./app.css";
 import { FLAME_O2, flameVars } from "./flame.ts";
+import { heroReturnFocus, STICKY_SELECT_ID } from "./focus.ts";
 import { pickHabitat, prefersCalm } from "./motion.ts";
 import { useStore } from "./store.ts";
 import { displayClass } from "./type.ts";
@@ -137,10 +138,10 @@ function StickyBar({ habitats }: { habitats: HabitatPreset[] }) {
   const habitat = useStore((s) => s.habitat);
   return (
     <div className="sticky">
-      <label htmlFor="sticky-habitat" className="t-readout">
+      <label htmlFor={STICKY_SELECT_ID} className="t-readout">
         Your habitat
       </label>
-      <select id="sticky-habitat" value={habitat} onChange={(e) => pickHabitat(e.target.value as typeof habitat)}>
+      <select id={STICKY_SELECT_ID} value={habitat} onChange={(e) => pickHabitat(e.target.value as typeof habitat)}>
         {pickerHabitats(habitats).map((h) => (
           <option key={h.id} value={h.id}>
             {h.label}
@@ -166,7 +167,12 @@ export default function App() {
   useEffect(() => {
     const el = heroRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(([e]) => setPastHero(!!e && !e.isIntersecting));
+    const io = new IntersectionObserver(([e]) => {
+      const past = !!e && !e.isIntersecting;
+      // The bar is about to go away: keep keyboard focus by moving it to the picker's checked radio.
+      if (!past) heroReturnFocus(document)?.focus({ preventScroll: true });
+      setPastHero(past);
+    });
     io.observe(el);
     return () => io.disconnect();
   }, []);

@@ -86,8 +86,24 @@ const HEADER_UNIT = /\s*(?:\(\s*(?:atm|mmhg|bar|kpa|psi|c|k|s|sec|seconds?|min|m
  * header (pressure in atm or mmHg is stored as kPa), so the source unit is dropped and `unit` shown once.
  */
 export function columnHeader(c: { original: string; unit: string | null }): string {
-  if (!c.unit) return c.original;
-  return `${c.original.replace(HEADER_UNIT, "")} (${c.unit})`;
+  const original = restoreMicro(c.original);
+  if (!c.unit) return original;
+  return `${original.replace(HEADER_UNIT, "")} (${c.unit})`;
+}
+
+/** NASA's file lost the micro sign: "?-g Burn Length" was "µ-g Burn Length". Say it in words. Other typos ("Samle") stay as the source has them. */
+const restoreMicro = (h: string) => h.replace(/^\?-g\b/, "Microgravity");
+
+/**
+ * Word for one factor in the drawer. Goal fit takes the band its own reason states ("rated the fit high"),
+ * so the word cannot disagree with the sentence under it; other factors use strengthWord.
+ */
+export function factorWord(f: { key: string; value: number | null; reason: string }): string {
+  if (f.key === "goalFit" && f.value !== null) {
+    const m = /rated the fit (high|medium|low)\b/i.exec(f.reason);
+    if (m) return m[1].charAt(0).toUpperCase() + m[1].slice(1).toLowerCase();
+  }
+  return strengthWord(f.value);
 }
 
 /** Only http(s) URLs from the data become links; anything else is shown as plain text. */

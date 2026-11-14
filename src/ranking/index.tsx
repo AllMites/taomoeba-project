@@ -5,7 +5,7 @@ import { HOW_RANKING_WORKS } from "../data/rankRule.ts";
 import { rankedFor } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import ExperimentCard from "./ExperimentCard.tsx";
-import { buildRows, firstRevealedId, isFiltering, litHidden, matchRows, visibleRows } from "./logic.ts";
+import { buildRows, countText, firstRevealedId, isFiltering, litFilteredOut, litHidden, visibleRows } from "./logic.ts";
 import "./ranking.css";
 
 const FILTERS: { value: PdsFilter; label: string; hint: string }[] = [
@@ -41,7 +41,11 @@ export default function Ranking() {
 
   const shown = visibleRows(rows, { pds, search, showAll, highlightIds });
   const filtering = isFiltering(pds, search);
-  const matchCount = filtering ? matchRows(rows, pds, search).length : rows.length;
+  const hiddenLit = filtering ? litFilteredOut(shown, highlightIds) : [];
+  const clearFilter = () => {
+    setPds("all");
+    setSearch("");
+  };
   const lit = new Set(highlightIds);
   // Cited cards light in list order, one after another (CSS staggers by --lit-i).
   const litOrder = new Map(shown.filter((r) => lit.has(r.inv.id)).map((r, i) => [r.inv.id, i]));
@@ -62,7 +66,7 @@ export default function Ranking() {
     <section id="ranking" className="rk" aria-labelledby="ranking-h" ref={sectionRef}>
       <div className="sec-label">
         <p className="sec-word t-readout">Rank</p>
-        <h2 id="ranking-h" className="sec-h">
+        <h2 id="ranking-h" className="sec-h" tabIndex={-1}>
           Experiments that fit your habitat
         </h2>
       </div>
@@ -101,20 +105,25 @@ export default function Ranking() {
             </label>
           </div>
           <p className="rk-count" role="status">
-            {matchCount} of {rows.length} experiments
+            {countText(shown.length, rows.length, filtering)}
           </p>
+          {hiddenLit.length > 0 && (
+            <p className="rk-note">
+              <span>
+                {hiddenLit.length === 1
+                  ? "1 experiment from the answer is hidden by your filter."
+                  : `${hiddenLit.length} experiments from the answer are hidden by your filter.`}
+              </span>
+              <button type="button" className="quiet" onClick={clearFilter}>
+                Clear filter
+              </button>
+            </p>
+          )}
 
           {shown.length === 0 ? (
             <div className="rk-empty">
               <p>No experiments match.</p>
-              <button
-                type="button"
-                className="quiet"
-                onClick={() => {
-                  setPds("all");
-                  setSearch("");
-                }}
-              >
+              <button type="button" className="quiet" onClick={clearFilter}>
                 Clear filter and search
               </button>
             </div>

@@ -1,6 +1,6 @@
 import { expect, it } from "vitest";
 import type { Investigation, RankItem } from "../contracts/index.ts";
-import { buildRows, covers, dotLevel, dotName, firstRevealedId, matchRows, rangeText, rankNumeral, scalePct, TOP_COUNT, visibleRows } from "./logic.ts";
+import { buildRows, countText, covers, dotLevel, factorLevel, goalBandOf, litFilteredOut, dotName, firstRevealedId, matchRows, rangeText, rankNumeral, scalePct, TOP_COUNT, visibleRows } from "./logic.ts";
 
 const inv = (id: string, pds: Investigation["pds"], extra: Partial<Investigation> = {}) =>
   ({ id, title: `Exp ${id}`, hardware: "Rack", hardwareGroup: "g", pds, fuel: "ethylene", ...extra }) as Investigation;
@@ -89,4 +89,27 @@ it("says a range covers the habitat only when the value is inside it, ends inclu
 it("writes rank numerals with two digits", () => {
   expect(rankNumeral(1)).toBe("01");
   expect(rankNumeral(26)).toBe("26");
+});
+
+it("words the count: Top 8 of 26 when cut, N of M experiments when filtering", () => {
+  expect(countText(8, 26, false)).toBe("Top 8 of 26");
+  expect(countText(26, 26, false)).toBe("26 of 26 experiments");
+  expect(countText(5, 26, true)).toBe("5 of 26 experiments");
+  expect(countText(26, 26, true)).toBe("26 of 26 experiments");
+});
+
+it("finds cited experiments the filter hides", () => {
+  const shown = visibleRows(rows, { ...base, pds: "Detection" });
+  expect(litFilteredOut(shown, ["P1", "P2", "S1"])).toEqual(["P2", "S1"]);
+  expect(litFilteredOut(shown, [])).toEqual([]);
+});
+
+it("takes the goal-fit mark from the reason's own band, not the value", () => {
+  const g = (value: number, band: string) => ({ key: "goalFit" as const, value, reason: `SI read the stated goal and rated the fit ${band}.` });
+  expect(goalBandOf(g(0.75, "high"))).toBe("high");
+  expect(factorLevel(g(0.68, "medium"))).toBe("mid"); // dotLevel(0.68) alone would say high
+  expect(factorLevel(g(0.75, "high"))).toBe("high");
+  expect(factorLevel(g(0.25, "low"))).toBe("low");
+  expect(factorLevel({ key: "goalFit", value: null, reason: "SI rating unavailable." })).toBe("unknown");
+  expect(factorLevel({ key: "o2", value: 0.68, reason: "rated the fit medium" })).toBe("high"); // other factors keep the value
 });

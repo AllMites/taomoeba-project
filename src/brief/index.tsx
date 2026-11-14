@@ -4,6 +4,7 @@ import type { Claim, Source } from "../contracts/index.ts";
 import { briefFor } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { orderBrief, parseCount, safeHref, singleExperiment } from "./brief.ts";
+import NewTabLink from "../app/NewTabLink.tsx";
 import "./brief.css";
 
 const SHOWN = 5;
@@ -49,10 +50,7 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
                 return (
                   <li key={s.id}>
                     {href ? (
-                      <a href={href} target="_blank" rel="noopener noreferrer">
-                        {s.title}
-                        <span className="sr-only"> (opens in a new tab)</span>
-                      </a>
+                      <NewTabLink href={href}>{s.title}</NewTabLink>
                     ) : (
                       s.title
                     )}

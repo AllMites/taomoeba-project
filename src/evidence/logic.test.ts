@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  columnHeader, conditionRows, formatRange, isSwitch, rationaleFor, safeHref, scoreText, strengthWord, textOrNotOnRecord, visibleBlocks,
+  columnHeader, conditionRows, factorWord, formatRange, isSwitch, rationaleFor, safeHref, scoreText, strengthWord, textOrNotOnRecord, visibleBlocks,
 } from "./logic.ts";
 
 describe("columnHeader", () => {
@@ -102,5 +102,25 @@ describe("words", () => {
     expect(strengthWord(0.5)).toBe("Partial");
     expect(strengthWord(0.1)).toBe("Weak");
     expect(scoreText(0.775)).toBe("Score 0.78 of 1");
+  });
+});
+
+describe("columnHeader micro sign", () => {
+  it("shows Microgravity where NASA's file lost the micro sign, and keeps NASA's own typos", () => {
+    expect(columnHeader({ original: "?-g Burn Length", unit: "cm" })).toBe("Microgravity Burn Length (cm)");
+    expect(columnHeader({ original: "?-g Spread Length", unit: null })).toBe("Microgravity Spread Length");
+    expect(columnHeader({ original: "Samle", unit: null })).toBe("Samle");
+    expect(columnHeader({ original: "Note ?-g", unit: null })).toBe("Note ?-g");
+  });
+});
+
+describe("factorWord", () => {
+  it("words goal fit by the band its reason states, other factors by value", () => {
+    const reason = (b: string) => `SI read the stated goal and rated the fit ${b}.`;
+    expect(factorWord({ key: "goalFit", value: 0.75, reason: reason("high") })).toBe("High"); // strengthWord says Partial
+    expect(factorWord({ key: "goalFit", value: 0.5, reason: reason("medium") })).toBe("Medium");
+    expect(factorWord({ key: "goalFit", value: 0.25, reason: reason("low") })).toBe("Low");
+    expect(factorWord({ key: "goalFit", value: null, reason: "SI rating unavailable." })).toBe("Not on record");
+    expect(factorWord({ key: "o2", value: 0.9, reason: "x" })).toBe("Strong");
   });
 });

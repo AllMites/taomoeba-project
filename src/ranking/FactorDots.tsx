@@ -1,5 +1,5 @@
 import type { RankFactor } from "../contracts/index.ts";
-import { dotLevel, dotName, SHORT_LABEL, type DotLevel } from "./logic.ts";
+import { dotName, factorLevel, SHORT_LABEL, type DotLevel } from "./logic.ts";
 
 function Dot({ level }: { level: DotLevel }) {
   return (
@@ -30,7 +30,7 @@ export default function FactorDots({ factors, id }: { factors: RankFactor[]; id?
         const name = dotName(f);
         return (
           <span key={f.key} className="rk-dot-item" role="img" aria-label={name} title={name}>
-            <Dot level={dotLevel(f.value)} />
+            <Dot level={factorLevel(f)} />
             <span className="rk-dot-label" aria-hidden="true">{SHORT_LABEL[f.key]}</span>
           </span>
         );

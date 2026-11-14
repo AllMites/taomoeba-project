@@ -53,7 +53,27 @@ it("lists Moon Base best first, top 8, with Show all", () => {
   const h = html();
   expect(cardIds(h)).toEqual(["PSI-69", "PSI-68", "PSI-159", "PSI-10", "PSI-20", "PSI-100", "PSI-26", "PSI-47"]);
   expect(h).toContain("Show all 26 experiments");
-  expect(h).toContain("26 of 26 experiments");
+  expect(h).toContain("Top 8 of 26");
+  expect(h).not.toContain("26 of 26 experiments");
+});
+
+it("counts matches as N of M experiments while filtering", () => {
+  useStore.setState({ pds: "Detection" });
+  expect(html()).toMatch(/\d+ of 26 experiments/);
+});
+
+it("lets the ask box's link move focus to the ranking heading", () => {
+  expect(html()).toMatch(/<h2 id="ranking-h"[^>]*tabindex="-1"/);
+});
+
+it("says when a filter hides a card the last answer cited, with a button that clears it", () => {
+  useStore.setState({ highlightIds: ["PSI-69"], pds: "Prevention" }); // FLEX is Suppression
+  const h = html();
+  expect(cardIds(h)).not.toContain("PSI-69");
+  expect(h).toContain("1 experiment from the answer is hidden by your filter.");
+  expect(h).toMatch(/<button[^>]*>Clear filter<\/button>/);
+  useStore.setState({ pds: "Suppression" });
+  expect(html()).not.toContain("hidden by your filter");
 });
 
 it("never prints null, undefined or NaN, and never a bare score", () => {

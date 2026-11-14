@@ -8,7 +8,8 @@ import type { HabitatId } from "../contracts/index.ts";
 import { rankNumeral } from "../ranking/logic.ts";
 import PdsTag from "../ranking/PdsTag.tsx";
 import "./evidence.css";
-import { columnHeader, conditionRows, isSwitch, NOT_ON_RECORD, rationaleFor, safeHref, scoreText, strengthWord, visibleBlocks } from "./logic.ts";
+import { columnHeader, conditionRows, factorWord, isSwitch, NOT_ON_RECORD, rationaleFor, safeHref, scoreText, visibleBlocks } from "./logic.ts";
+import NewTabLink from "../app/NewTabLink.tsx";
 
 type SourceMap = Map<string, Source>;
 
@@ -25,7 +26,7 @@ function SourceNote({ excerpt, sourceIds, sources }: { excerpt: string; sourceId
           return (
             <li key={id}>
               {s && href ? (
-                <a href={href} target="_blank" rel="noopener noreferrer">{s.title}</a>
+                <NewTabLink href={href}>{s.title}</NewTabLink>
               ) : (
                 <span>{s?.title ?? id}</span>
               )}
@@ -207,7 +208,7 @@ function Detail(props: {
         <Block id="ev-why" title="Why it ranks here">
           <ul className="ev-factors">
             {factors.map((f) => {
-              const word = strengthWord(f.value);
+              const word = factorWord(f);
               return (
                 <li key={f.key}>
                   <div className="ev-factor-top">
