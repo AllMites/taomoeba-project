@@ -1,0 +1,32 @@
+{
+  "items": [
+    {
+      "id": "iss",
+      "label": "ISS",
+      "o2Percent": 21.0,
+      "pressureKPa": 101.3,
+      "note": "Sea-level cabin air, the atmosphere almost all station fire tests use."
+    },
+    {
+      "id": "moon",
+      "label": "Moon Base",
+      "o2Percent": 30.0,
+      "pressureKPa": 70.3,
+      "note": "Planned lunar cabin: less pressure and more oxygen than the station."
+    },
+    {
+      "id": "rover",
+      "label": "Pressurized rover",
+      "o2Percent": 30.0,
+      "pressureKPa": 70.3,
+      "note": "Same cabin atmosphere as the Moon Base preset."
+    },
+    {
+      "id": "suit-ref",
+      "label": "Suit reference",
+      "o2Percent": 100.0,
+      "pressureKPa": 29.6,
+      "note": "Pure oxygen at low pressure, as in a spacesuit (reference only)."
+    }
+  ]
+}

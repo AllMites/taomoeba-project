@@ -1,0 +1,925 @@
+{
+  "items": [
+    {
+      "id": "PSI-10",
+      "title": "ACME/Flame Design",
+      "hardware": "Advanced Combustion via Microgravity Experiments (ACME) + Combustion Integrated Rack (CIR)",
+      "hardwareGroup": "ACME (CIR)",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: shows how fuel mix and oxygen level change how hot and sooty a flame gets",
+      "sensors": [
+        "camera",
+        "radiometer",
+        "thermocouple"
+      ],
+      "objectives": "The primary objectives of this flight experiment are: A. Obtain soot-inception limits of quasi-steady normal and inverse spherical diffusion flames as functions of flow rate, Zst, amount of inert (N2 or CO2), and pressure for C2H4 and CH4 flames.",
+      "fuelKind": "gas",
+      "fuel": "C2H4, C3H8",
+      "sampleShape": "burner jet",
+      "o2Range": [
+        19.8,
+        85.0
+      ],
+      "pressureRange": [
+        43.0,
+        305.8
+      ],
+      "airflowRange": null,
+      "measurements": [
+        "fuel flow rate"
+      ],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "pressure",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-10"
+      ]
+    },
+    {
+      "id": "PSI-20",
+      "title": "ACME BRE",
+      "hardware": "Combustion Integrated Rack (CIR) + ACME",
+      "hardwareGroup": "ACME (CIR)",
+      "pds": "Prevention",
+      "pdsBasis": "Finds the oxygen level where a burning flame can no longer survive (a flammability limit).",
+      "sensors": [
+        "camera"
+      ],
+      "objectives": "The BRE flight program seeks to establish the burning conditions in a quiescent microgravity ambient in terms of material properties. The specific flight objectives are as follows. 1. Observe burning behavior in long-duration microgravity for CH4/N2 and C2H4/N2mixtures on porous circular burners of 25 and 50 mm diameter.",
+      "fuelKind": "gas",
+      "fuel": "C2H4, CH4",
+      "sampleShape": "burner jet",
+      "o2Range": [
+        21.0,
+        40.0
+      ],
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-20"
+      ]
+    },
+    {
+      "id": "PSI-21",
+      "title": "ACME CLD Flame",
+      "hardware": "Combustion Integrated Rack (CIR) + ACME",
+      "hardwareGroup": "ACME (CIR)",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire",
+      "sensors": [
+        "camera",
+        "pyrometer"
+      ],
+      "objectives": "In order to provide the experimental data needed to allow rigorous testing of computational models at the extremes of the fuel dilution spectrum, we have the following objectives: A) Characterize the behavior of weak coflow diffusion flames of methane and ethylene, as a function of velocity and fuel dilution, through measurement of flame shape, lift-off heights, temperatures and extinction limits. B) Characterize...",
+      "fuelKind": "gas",
+      "fuel": "C2H4, C2H6, CH4",
+      "sampleShape": "burner jet",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [
+        "fuel flow rate"
+      ],
+      "variables": [
+        {
+          "name": "fuel",
+          "varies": true
+        },
+        {
+          "name": "diluent",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-21"
+      ]
+    },
+    {
+      "id": "PSI-22",
+      "title": "ACME E-FIELD Flames",
+      "hardware": "Combustion Integrated Rack (CIR) + ACME",
+      "hardwareGroup": "ACME (CIR)",
+      "pds": "Suppression",
+      "pdsBasis": "indirect: electric fields can steady or blow out a flame, a possible way to control one",
+      "sensors": [
+        "camera",
+        "schlieren optics"
+      ],
+      "objectives": "The objective of this investigation is to better understand the relationship between electric field voltage and chemi-ion current, analyze the dynamic response of flames to electric field changes, evaluate soot formation, and characterize stabilized near-limit lifted flames.",
+      "fuelKind": "gas",
+      "fuel": "C2H4, CH4",
+      "sampleShape": "burner jet",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-22"
+      ]
+    },
+    {
+      "id": "PSI-23",
+      "title": "ACME s-Flame",
+      "hardware": "Combustion Integrated Rack (CIR) + ACME",
+      "hardwareGroup": "ACME (CIR)",
+      "pds": "Suppression",
+      "pdsBasis": "indirect: finds how close a flame is to going out as oxygen and fuel dilution change",
+      "sensors": [
+        "camera"
+      ],
+      "objectives": "A series of experiments is proposed with the following specific objectives, in both soot-free and sooty flames, to compare with detailed computational simulation to assess transport properties and detailed chemical kinetics (including chemiluminescence): Objective A. Measure and characterize the transient structure (such as temperature and species distribution) of diffusion flames established at initially...",
+      "fuelKind": "gas",
+      "fuel": "C2H4, CH4, H2",
+      "sampleShape": "burner jet",
+      "o2Range": [
+        21.0,
+        30.0
+      ],
+      "pressureRange": [
+        101.3,
+        101.3
+      ],
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "pressure",
+          "varies": false
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-23"
+      ]
+    },
+    {
+      "id": "PSI-25",
+      "title": "BASS-II",
+      "hardware": "Microgravity Science Glovebox (MSG)",
+      "hardwareGroup": "MSG flow duct",
+      "pds": "Prevention",
+      "pdsBasis": "Maps which solid materials burn in slow air flow and how much oxygen they need.",
+      "sensors": [
+        "camera"
+      ],
+      "objectives": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth. Objectives Include: 1) Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity. 2) Begin to bridge the gap between the normal gravity NASA-STD-6001 Test #1 method, ground-based...",
+      "fuelKind": "solid",
+      "fuel": "0.5\" black rod, 1 cm / 0.2 mm PMMA film, 1 cm SIBAL, 1 cm SIBAL / top side ign and 47 more",
+      "sampleShape": "sphere / flat sheet / cylinder",
+      "o2Range": [
+        13.6,
+        22.2
+      ],
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [
+        "CO and CO2 levels"
+      ],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-25"
+      ]
+    },
+    {
+      "id": "PSI-26",
+      "title": "BASS",
+      "hardware": "Microgravity Science Glovebox",
+      "hardwareGroup": "MSG flow duct",
+      "pds": "Prevention",
+      "pdsBasis": "Tests whether solid materials burn or go out in slow air flow, the basis of material screening.",
+      "sensors": [
+        "camera"
+      ],
+      "objectives": "The two main objectives for BASS are to: 1.) Begin to bridge the gap between the normal gravity NASA-STD-6001 Test#1 method, ground-based microgravity tests, and actual material flammability in microgravity. The relation between these can be investigated by observing flames burning for the longer times available in flight.",
+      "fuelKind": "solid",
+      "fuel": "1 cm sphere, 1 cm sphere / wake, 1 cm wake sphere, 2 cm pmma sphere and 27 more",
+      "sampleShape": "sphere / flat sheet",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-26"
+      ]
+    },
+    {
+      "id": "PSI-39",
+      "title": "CFI",
+      "hardware": "Multi-User Droplet Combustion Apparatus (MDCA) + Combustion Integrated Rack (CIR)",
+      "hardwareGroup": "MDCA (CIR)",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: cool flames can burn where normal flames would not, so screening limits must allow for them",
+      "sensors": [
+        "camera",
+        "radiometer"
+      ],
+      "objectives": "The objectives of this investigation are to: 1) Examine the combustion behavior of n-dodecane and mixtures of n-dodecane/iso-dodecane at pressures ranging from 0.25 atm to 5 atm. 2) Analyze the effects of helium dilution on cool flame behavior. 3) Examine the behavior of combustion characteristics. 4) Investigate the relationship between droplet size, pressure, and flame extinction, and (5) understand the...",
+      "fuelKind": "droplet",
+      "fuel": "C12H26, [.60]/[.40] C12H26/iso-dodecane, [.75]/[.25] C12H26/iso-dodecane",
+      "sampleShape": "droplet",
+      "o2Range": [
+        17.0,
+        21.0
+      ],
+      "pressureRange": [
+        50.7,
+        506.6
+      ],
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "pressure",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        },
+        {
+          "name": "diluent",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-39"
+      ]
+    },
+    {
+      "id": "PSI-47",
+      "title": "DAFT / DAFT-2",
+      "hardware": "TSI P-Trak",
+      "hardwareGroup": "Particle counter",
+      "pds": "Detection",
+      "pdsBasis": "Tests particle counters for smoke detection in weightlessness.",
+      "sensors": [
+        "particle counter"
+      ],
+      "objectives": "The focus of DAFT / DAFT-2 was to mitigate the risk for the Smoke Aerosol Measurement Experiment (SAME). SAME relied on a commercially available condensate nuclei counter, the TSI P-Trak, to quantify smoke aerosols in a microgravity environment, however there were concerns that th P-Trak would not be reliable in microgravity as it relies on gravity to recycle isopropyl alcohol used in the measurement process.",
+      "fuelKind": "aerosol",
+      "fuel": "Arizona Road Dust (ARD Fine)",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "fuel",
+          "varies": false
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-47"
+      ]
+    },
+    {
+      "id": "PSI-60",
+      "title": "Computational and Experimental Analysis of SPICE Data Sets",
+      "hardware": "Not stated",
+      "hardwareGroup": "Ground study",
+      "pds": "Detection",
+      "pdsBasis": "indirect: computer study of the soot data from SPICE, soot being what smoke detectors sense",
+      "sensors": [
+        "pyrometer"
+      ],
+      "objectives": "This ground investigation sought to increase understanding of the issues that control the large discrepancy between soot formation in 1g and in 0g flames. The objective of this investigation was to integrate computational and experimental methods to derive temperature distributions and soot volume fractions from the Smoke Point in Coflow Experiment (SPICE) data available in PSI.",
+      "fuelKind": "gas",
+      "fuel": "Not stated",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [],
+      "sourceIds": [
+        "psi:PSI-60"
+      ]
+    },
+    {
+      "id": "PSI-62",
+      "title": "Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography",
+      "hardware": "Not stated",
+      "hardwareGroup": "Ground study",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: computer model of how fast a flame spreads along a material",
+      "sensors": [
+        "camera"
+      ],
+      "objectives": "The objective of this research was to develop and validate new flamelet generated manifold (FGM) modeling techniques for concurrent flame spread in microgravity. Concurrent flame spread presented one of the greatest modeling challenges in combustion science due to the intricate coupling between heat transfer, mass transport, and chemical kinetics near the solid-vapor interface.",
+      "fuelKind": "solid",
+      "fuel": "Not stated",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [],
+      "sourceIds": [
+        "psi:PSI-62"
+      ]
+    },
+    {
+      "id": "PSI-68",
+      "title": "FLEX-2",
+      "hardware": "Combustion Integrated Rack (CIR) + Multi-user Droplet Combustion Appartatus (MDCA)",
+      "hardwareGroup": "MDCA (CIR)",
+      "pds": "Suppression",
+      "pdsBasis": "Finds when droplet flames go out as oxygen, pressure and diluent gas change.",
+      "sensors": [
+        "camera",
+        "radiometer"
+      ],
+      "objectives": "The primary goal of the FLEX-2 flight experiments is to extend the results of FLEX-1 to fuels and environmental conditions that mimic real combustor conditions, as well as, provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions in order to validate numerical simulations and to develop new theoretical models. Detailed experimental objectives can be further...",
+      "fuelKind": "droplet",
+      "fuel": "Decane, Ethanol, Heptane, Heptane / IsoOctane and 3 more",
+      "sampleShape": "droplet",
+      "o2Range": [
+        17.0,
+        30.0
+      ],
+      "pressureRange": [
+        50.7,
+        304.0
+      ],
+      "airflowRange": [
+        0.1,
+        5.0
+      ],
+      "measurements": [
+        "droplet diameter"
+      ],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "pressure",
+          "varies": true
+        },
+        {
+          "name": "airflow",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        },
+        {
+          "name": "diluent",
+          "varies": false
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-68"
+      ]
+    },
+    {
+      "id": "PSI-69",
+      "title": "FLEX",
+      "hardware": "Combustion Integrated Rack (CIR)-Fluids and Combustion Facility (FCF) + Multi-user Droplet Combustion Appartatus (MDCA)",
+      "hardwareGroup": "MDCA (CIR)",
+      "pds": "Suppression",
+      "pdsBasis": "Finds when droplet flames go out with CO2 or helium added to the air.",
+      "sensors": [
+        "camera",
+        "radiometer"
+      ],
+      "objectives": "The FLEX (Flame Extinguishment Experiment) investigation aims to map the flammability limits of liquid fuels in microgravity environments, measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6, and develop reliable predictive models for combustion limits under reduced gravity conditions. The mission seeks to validate and improve simplified models by incorporating detailed chemical...",
+      "fuelKind": "droplet",
+      "fuel": "Heptane, Methanol",
+      "sampleShape": "droplet",
+      "o2Range": [
+        12.0,
+        34.0
+      ],
+      "pressureRange": [
+        70.2,
+        309.3
+      ],
+      "airflowRange": null,
+      "measurements": [
+        "burn time",
+        "burning rate",
+        "droplet diameter",
+        "extinction diameter"
+      ],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "pressure",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        },
+        {
+          "name": "diluent",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-69"
+      ]
+    },
+    {
+      "id": "PSI-98",
+      "title": "SAFFIRE-I",
+      "hardware": "Saffire 1 enclosure in Cygnus",
+      "hardwareGroup": "Cygnus free-flyer",
+      "pds": "Prevention",
+      "pdsBasis": "Large-scale test of how fast a fire spreads over spacecraft fabric.",
+      "sensors": [
+        "camera",
+        "radiometer",
+        "thermocouple"
+      ],
+      "objectives": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test.",
+      "fuelKind": "solid",
+      "fuel": "SIBAL Fabric",
+      "sampleShape": "flat sheet",
+      "o2Range": [
+        21.5,
+        21.7
+      ],
+      "pressureRange": null,
+      "airflowRange": [
+        20.0,
+        20.0
+      ],
+      "measurements": [
+        "burn time",
+        "ignition power and time"
+      ],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": false
+        },
+        {
+          "name": "airflow",
+          "varies": false
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-98"
+      ]
+    },
+    {
+      "id": "PSI-99",
+      "title": "SAFFIRE-II",
+      "hardware": "Cygnus Pressurized Cargo Module + SAFFIRE",
+      "hardwareGroup": "Cygnus free-flyer",
+      "pds": "Prevention",
+      "pdsBasis": "Large-scale test of how fast a fire spreads over spacecraft materials.",
+      "sensors": [
+        "camera",
+        "radiometer",
+        "thermocouple"
+      ],
+      "objectives": "The objectives of SAFFIRE-II are to determine how rapidly a large scale fire grows in low-gravity and to investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test.",
+      "fuelKind": "solid",
+      "fuel": "Cotton-Fiberglass (SIBAL), PMMA, PMMA & Nomex, Silicone",
+      "sampleShape": "Not stated",
+      "o2Range": [
+        21.5,
+        22.1
+      ],
+      "pressureRange": null,
+      "airflowRange": [
+        20.0,
+        20.0
+      ],
+      "measurements": [
+        "burn time",
+        "ignition power and time",
+        "flame spread"
+      ],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": false
+        },
+        {
+          "name": "airflow",
+          "varies": false
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-99"
+      ]
+    },
+    {
+      "id": "PSI-100",
+      "title": "SAFFIRE-III",
+      "hardware": "Saffire III enclosure in Cygnus",
+      "hardwareGroup": "Cygnus free-flyer",
+      "pds": "Prevention",
+      "pdsBasis": "Large-scale test of how fire spreads with and against the air flow.",
+      "sensors": [
+        "camera",
+        "radiometer",
+        "thermocouple"
+      ],
+      "objectives": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test.",
+      "fuelKind": "solid",
+      "fuel": "SIBAL Fabric",
+      "sampleShape": "flat sheet",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": [
+        30.0,
+        30.0
+      ],
+      "measurements": [],
+      "variables": [
+        {
+          "name": "airflow",
+          "varies": false
+        },
+        {
+          "name": "fuel",
+          "varies": false
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-100"
+      ]
+    },
+    {
+      "id": "PSI-101",
+      "title": "SAME-R",
+      "hardware": "Comparitive Soot Diagnostic Hardware; Refer to final report",
+      "hardwareGroup": "Smoke diagnostics",
+      "pds": "Detection",
+      "pdsBasis": "Measures how smoke particles grow and age, which sets how a detector sees them.",
+      "sensors": [
+        "camera",
+        "particle counter"
+      ],
+      "objectives": "Similar to the original SAME investigation, the primary objective of the SAME-R investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment. One of the problems encountered during the SAME investigation was that after the thermal precipitators were returned to the...",
+      "fuelKind": "solid",
+      "fuel": "Kapton, Lampwick, Pyrell, Silicone and 1 more",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": [
+        0.0,
+        8.1
+      ],
+      "measurements": [
+        "smoke aging time",
+        "soot ratio"
+      ],
+      "variables": [
+        {
+          "name": "airflow",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-101"
+      ]
+    },
+    {
+      "id": "PSI-102",
+      "title": "SAME",
+      "hardware": "Comparitive Soot Diagnostic Hardware",
+      "hardwareGroup": "Smoke diagnostics",
+      "pds": "Detection",
+      "pdsBasis": "Measures smoke particle size and amount from heated materials, to design detectors.",
+      "sensors": [
+        "camera",
+        "particle counter"
+      ],
+      "objectives": "One of the major goals of this investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment. A numerical code was to be developed to predict the smoke droplet growth as a function of the fuel pyrolysis rate, the thermodynamic properties of the pyrolysis vapor, and...",
+      "fuelKind": "solid",
+      "fuel": "Dibutyl Phthalate, Kapton, Lampwick, Silicone Rubber and 1 more",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": [
+        5.0,
+        10.0
+      ],
+      "measurements": [
+        "weight loss rate",
+        "smoke aging time"
+      ],
+      "variables": [
+        {
+          "name": "airflow",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-102"
+      ]
+    },
+    {
+      "id": "PSI-106",
+      "title": "SLICE",
+      "hardware": "Not stated",
+      "hardwareGroup": "MSG flow duct",
+      "pds": "Suppression",
+      "pdsBasis": "indirect: shows when a flame lifts off its burner and blows out as the flow rises",
+      "sensors": [
+        "camera",
+        "pyrometer"
+      ],
+      "objectives": "The objective of this investigation is to better understand the structure and stability of laminar diffusion flames in microgravity. Specific objectives of this investigation were: 1. To investigate the structure of laminar diffusion flames in microgravity to understand the stabilizing mechanisms at the flames base. 2. Determine the liftoff velocity limits for different fuels and burner diameters. 3. Evaluate the...",
+      "fuelKind": "gas",
+      "fuel": "C2H4, C2H6, CH4",
+      "sampleShape": "burner jet",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-106"
+      ]
+    },
+    {
+      "id": "PSI-107",
+      "title": "SPICE",
+      "hardware": "Microgravity Science Glovebox (MSG)",
+      "hardwareGroup": "MSG flow duct",
+      "pds": "Detection",
+      "pdsBasis": "indirect: the smoke point shows how much soot a flame makes, which is what smoke detectors sense",
+      "sensors": [
+        "camera"
+      ],
+      "objectives": "The objective of SPICE is to better understand the complex process of combustion by observing flames in a microgravity environment aboard the International Space Station (ISS) and analogous ground experiments. Specific objectives were: (1) Identify the laminar smoke-point properties of non-buoyant jet diffusion flames under various co-flow conditions in microgravity. (2) Determine the effects of burner diameter and...",
+      "fuelKind": "gas",
+      "fuel": "Ethylene, Methane, Propane, Propylene",
+      "sampleShape": "burner jet",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": [
+        0.66,
+        85.28
+      ],
+      "measurements": [
+        "fuel flow rate"
+      ],
+      "variables": [
+        {
+          "name": "airflow",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-107"
+      ]
+    },
+    {
+      "id": "PSI-108",
+      "title": "STDCE-1",
+      "hardware": "STDCE Hardware",
+      "hardwareGroup": "STDCE",
+      "pds": "Other",
+      "pdsBasis": "Not a combustion study: it examines liquid flow driven by surface tension.",
+      "sensors": [
+        "camera",
+        "infrared camera"
+      ],
+      "objectives": "The main objectives of STDCE-1 are to investigate: -The extent and nature of thermocapillary flows in transient periods as well as under steady conditions. -Temperature distributions along the free surface and in the bulk fluid. -The effect of the heating mode and the heating level on the flows. -The effect of the liquid free surface on the flows -The onset conditions and nature of oscillatory flows",
+      "fuelKind": "droplet",
+      "fuel": "Not stated",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [],
+      "sourceIds": [
+        "psi:PSI-108"
+      ]
+    },
+    {
+      "id": "PSI-115",
+      "title": "Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity",
+      "hardware": "Not stated",
+      "hardwareGroup": "Ground study",
+      "pds": "Detection",
+      "pdsBasis": "indirect: computer study of how smoke particles grow in weightlessness",
+      "sensors": [],
+      "objectives": "The objective of this investigation was to use numerical simulation to explore the influence of gravity on pyrolysis smoke growth from a fundamental perspective. The intention of this effort is to quantify the differences between microgravity and Earth gravity smoke, and to identify the fluid dynamic mechanisms that cause the differences.",
+      "fuelKind": "aerosol",
+      "fuel": "Not stated",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [],
+      "sourceIds": [
+        "psi:PSI-115"
+      ]
+    },
+    {
+      "id": "PSI-117",
+      "title": "Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis",
+      "hardware": "Not stated",
+      "hardwareGroup": "Ground study",
+      "pds": "Suppression",
+      "pdsBasis": "indirect: computer study of what pushes a cool flame out or keeps it alive",
+      "sensors": [],
+      "objectives": "The objective of this ground investigation was to use flight data obtained from PSI through NASA’s Flame Extinguishment Experiment (FLEX) to quantify how externally imposed thermal and convective perturbations regulated the dynamics and ultimate fate of already established droplet cool flames, and to explain run-to-run variability by isolating the roles of deliberate heating and unintentional drift-induced...",
+      "fuelKind": "droplet",
+      "fuel": "Not stated",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [],
+      "sourceIds": [
+        "psi:PSI-117"
+      ]
+    },
+    {
+      "id": "PSI-142",
+      "title": "Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames",
+      "hardware": "Principal Investigator Laboratory Hardware",
+      "hardwareGroup": "PI laboratory",
+      "pds": "Suppression",
+      "pdsBasis": "indirect: computer and lab study of where cool flames go out",
+      "sensors": [],
+      "objectives": "By using the Flame Extinguishment (FLEX) experimental data from the Physical Sciences Informatics (PSI) system of combustion science, the purpose of this grant was to conduct new simulations and ground-based experiments using ozone-sensitized counterflow flames to: 1) Develop a new diagram of the flammability limits of diffusional cool flames affected by radiation, diffusion, and convection. 2) Bridge the knowledge...",
+      "fuelKind": "gas",
+      "fuel": "Not stated",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [],
+      "sourceIds": [
+        "psi:PSI-142"
+      ]
+    },
+    {
+      "id": "PSI-159",
+      "title": "ACME CFI-G",
+      "hardware": "ACME + Combustion Integrated Rack (CIR)",
+      "hardwareGroup": "ACME (CIR)",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: cool flames burn at low temperature and can survive where ordinary flames go out",
+      "sensors": [
+        "camera",
+        "radiometer",
+        "thermocouple"
+      ],
+      "objectives": "1. Plan and support flight testing on the International Space Station (ISS). 2. Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane; normal and inverse flames; and a broad range of Zst, Tad, and fluent flow rate. 3. Support the flight tests with advanced CFD simulations. 4. Identify or develop a chemical kinetics mechanism that yields good agreement between the CFD...",
+      "fuelKind": "gas",
+      "fuel": "butane, ethane, propane",
+      "sampleShape": "burner jet",
+      "o2Range": [
+        12.0,
+        85.0
+      ],
+      "pressureRange": [
+        49.5,
+        331.0
+      ],
+      "airflowRange": null,
+      "measurements": [
+        "burn time",
+        "burning rate",
+        "burner temperature",
+        "fuel flow rate"
+      ],
+      "variables": [
+        {
+          "name": "oxygen",
+          "varies": true
+        },
+        {
+          "name": "pressure",
+          "varies": true
+        },
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-159"
+      ]
+    },
+    {
+      "id": "PSI-181",
+      "title": "Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures",
+      "hardware": "Not stated",
+      "hardwareGroup": "Ground study",
+      "pds": "Other",
+      "pdsBasis": "Not a combustion study: it looks at how solder joints form.",
+      "sensors": [
+        "camera"
+      ],
+      "objectives": "This study addresses the reliability of solder joints in space by pursuing two principal objectives: (1) Characterization of solder-joint formation under microgravity conditions aboard the International Space Station, specifically examining the impact of suppressed convective flow and buoyancy on 40Pb-60Sn alloys utilized in the In-Space Soldering Investigation (ISSI). (2) Evaluation of the solder’s material and...",
+      "fuelKind": "solid",
+      "fuel": "Not stated",
+      "sampleShape": "Not stated",
+      "o2Range": null,
+      "pressureRange": null,
+      "airflowRange": null,
+      "measurements": [],
+      "variables": [
+        {
+          "name": "fuel",
+          "varies": true
+        }
+      ],
+      "sourceIds": [
+        "psi:PSI-181"
+      ]
+    }
+  ]
+}
