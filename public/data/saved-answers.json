@@ -594,6 +594,329 @@
      }
     }
    }
+  },
+  {
+   "question": "What did FLEX find about methanol droplet flames?",
+   "result": {
+    "answer": "Methanol burns with a very dim blue flame and produces little soot, unlike heptane. [nasa:glenn-flex] The FLEX study uses methanol and heptane as its two typical fuels. [nasa:glenn-flex]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Methanol burns with a very dim blue flame and produces little soot, unlike heptane.",
+      "sourceIds": [
+       "nasa:glenn-flex"
+      ],
+      "excerpt": "Methanol has a fuel-bound oxygen atom and burns with a very dim blue flame (not much soot production) with a small standoff distance, so it has widely different radiative characteristics than heptane."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The FLEX study uses methanol and heptane as its two typical fuels.",
+      "sourceIds": [
+       "nasa:glenn-flex"
+      ],
+      "excerpt": "The study will use two typical hydrocarbon fuels, an alcohol, methanol (CH3OH) and an alkane, heptane (C7H16)."
+     }
+    ],
+    "investigationIds": [
+     "PSI-69"
+    ],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 59,
+     "matched": 6,
+     "facts": 2,
+     "reranked": 20,
+     "kept": 2,
+     "dropped": 1,
+     "checked": 2
+    },
+    "facts": [
+     {
+      "id": "flex-dext-d0-methanol",
+      "statement": "For methanol in the FLEX table, flame extinction diameter rises with initial droplet diameter: rank correlation 0.59 over 116 runs with a recorded extinction diameter.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     },
+     {
+      "id": "flex-runs",
+      "statement": "The cleaned FLEX table has 261 usable droplet runs (153 methanol, 108 heptane) on 80 test dates from 2009-03-05 to 2011-12-08.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     }
+    ],
+    "relations": {
+     "ask-1": "related",
+     "ask-2": "related"
+    },
+    "summary": "The evidence shows that for methanol droplets, flame extinction diameter rises as the initial droplet diameter gets larger, with a rank correlation of 0.59 across 116 runs. Methanol flames are also very dim and blue, with little soot, unlike heptane. The evidence does not cover any habitat air or gravity conditions, so it cannot say how these flames would behave in a spacecraft habitat.",
+    "sources": {
+     "nasa:glenn-flex": {
+      "title": "NASA Glenn experiment summary: Flame Extinguishment Experiment (FLEX)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "What did FLEX find about heptane droplet flames?",
+   "result": {
+    "answer": "The FLEX experiments identified both radiative and diffusive extinction limits for heptane and methanol droplets. [nasa:researchers-guide-combustion] The FLEX experiments found a limiting oxygen index for heptane and methanol droplets that is significantly lower than in normal gravity. [nasa:researchers-guide-combustion]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The FLEX experiments identified both radiative and diffusive extinction limits for heptane and methanol droplets.",
+      "sourceIds": [
+       "nasa:researchers-guide-combustion"
+      ],
+      "excerpt": "T o date, these experiments have identified both the radiative and diffusive extinction limits for heptane and methanol droplets and identified an LOI that is both significantly lower than in normal gravity and lower than previously predicted and anticipated."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "The FLEX experiments found a limiting oxygen index for heptane and methanol droplets that is significantly lower than in normal gravity.",
+      "sourceIds": [
+       "nasa:researchers-guide-combustion"
+      ],
+      "excerpt": "T o date, these experiments have identified both the radiative and diffusive extinction limits for heptane and methanol droplets and identified an LOI that is both significantly lower than in normal gravity and lower than previously predicted and anticipated."
+     }
+    ],
+    "investigationIds": [
+     "PSI-69"
+    ],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 59,
+     "matched": 6,
+     "facts": 2,
+     "reranked": 20,
+     "kept": 2,
+     "dropped": 1,
+     "checked": 2
+    },
+    "facts": [
+     {
+      "id": "flex-dext-d0-heptane",
+      "statement": "For heptane in the FLEX table, flame extinction diameter rises with initial droplet diameter: rank correlation 0.78 over 80 runs with a recorded extinction diameter.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     },
+     {
+      "id": "flex-runs",
+      "statement": "The cleaned FLEX table has 261 usable droplet runs (153 methanol, 108 heptane) on 80 test dates from 2009-03-05 to 2011-12-08.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     }
+    ],
+    "relations": {
+     "ask-1": "related",
+     "ask-2": "related"
+    },
+    "summary": "For heptane droplets, FLEX found that flame extinction diameter rises as the starting droplet gets bigger, based on 80 runs with a recorded extinction diameter. The experiments also identified radiative and diffusive extinction limits for heptane and methanol droplets. The evidence gives no detail on the heptane limits themselves.",
+    "sources": {
+     "nasa:researchers-guide-combustion": {
+      "title": "A Researcher's Guide to: Combustion Science (NASA ISS, NP-2015-10-034-JSC)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "How does carbon dioxide affect droplet flames?",
+   "result": {
+    "answer": "Carbon dioxide is one of the inert gas suppressants tested in FLEX to see how it changes the flammability limit of droplet flames. [nasa:glenn-flex] FLEX examined heptane and methanol droplets in oxygen and nitrogen mixtures diluted with a second inert gas, which can include carbon dioxide. [nasa:researchers-guide-combustion]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Carbon dioxide is one of the inert gas suppressants tested in FLEX to see how it changes the flammability limit of droplet flames.",
+      "sourceIds": [
+       "nasa:glenn-flex"
+      ],
+      "excerpt": "The suppressants are carbon dioxide and helium.",
+      "verdict": "supports"
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "FLEX examined heptane and methanol droplets in oxygen and nitrogen mixtures diluted with a second inert gas, which can include carbon dioxide.",
+      "sourceIds": [
+       "nasa:researchers-guide-combustion"
+      ],
+      "excerpt": "The objective of the FLEX is to study heptane and methanol droplets in ambient mixtures of oxygen and nitrogen diluted with a second inert gas (nitrogen, carbon dioxide, helium or xenon).",
+      "verdict": "supports"
+     }
+    ],
+    "investigationIds": [
+     "PSI-69"
+    ],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 59,
+     "matched": 6,
+     "facts": 2,
+     "reranked": 20,
+     "kept": 2,
+     "dropped": 1,
+     "checked": 2
+    },
+    "facts": [
+     {
+      "id": "flex-diluent-co2",
+      "statement": "120 FLEX runs used carbon dioxide in the surrounding gas (74 methanol, 46 heptane), with carbon dioxide fractions from 0.05 to 0.70.",
+      "dataset": "PSI-69 FLEX experiment table (cleaned)",
+      "caveat": "",
+      "source": "psi:PSI-69"
+     },
+     {
+      "id": "model-importance-flex_burning_rate",
+      "statement": "For burning rate, the inputs that matter most to the team's CatBoost model are oxygen fraction (error rises by 0.048 when shuffled), initial droplet diameter (error rises by 0.017 when shuffled), carbon dioxide fraction (error rises by 0.015 when shuffled); pressure matters little (error change 0.001).",
+      "dataset": "Team model results",
+      "caveat": "",
+      "source": "team:model-report"
+     }
+    ],
+    "relations": {
+     "ask-1": "explains",
+     "ask-2": "supports"
+    },
+    "summary": "Carbon dioxide is one of the inert gases FLEX tested to see how it changes the flammability limit of droplet flames, but the evidence does not report its effect on that limit. The study ran 120 runs with carbon dioxide fractions from 0.05 to 0.70 in methanol and heptane flames. In the team's burning-rate model, carbon dioxide fraction mattered less than oxygen fraction and droplet diameter.",
+    "sources": {
+     "nasa:glenn-flex": {
+      "title": "NASA Glenn experiment summary: Flame Extinguishment Experiment (FLEX)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     },
+     "nasa:researchers-guide-combustion": {
+      "title": "A Researcher's Guide to: Combustion Science (NASA ISS, NP-2015-10-034-JSC)",
+      "url": "https://www.nasa.gov/missions/station/a-researchers-guide-to-combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "Can we trust the model predictions for a Moon base?",
+   "result": {
+    "answer": "Previous computational modeling suggests that materials may burn at lower oxygen concentrations in lunar gravity compared to Earth. [nasa:glenn-fm2] FM2 is intended to verify whether some materials burning in partial-gravity environments may be more flammable compared to 1g. [nasa:glenn-fm2]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Previous computational modeling suggests that materials may burn at lower oxygen concentrations in lunar gravity compared to Earth.",
+      "sourceIds": [
+       "nasa:glenn-fm2"
+      ],
+      "excerpt": "Previous computational modeling, bolstered by experiments aboard parabolicflight aircraft and the ISS, suggest that materials may burn at lower oxygen concentrations in lunar gravity compared to Earth."
+     },
+     {
+      "id": "ask-2",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "FM2 is intended to verify whether some materials burning in partial-gravity environments may be more flammable compared to 1g.",
+      "sourceIds": [
+       "nasa:glenn-fm2"
+      ],
+      "excerpt": "Verify whether some materials burning in partial-gravity environments may be more flammable compared to 1g."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 59,
+     "matched": 6,
+     "facts": 2,
+     "reranked": 20,
+     "kept": 2,
+     "dropped": 1,
+     "checked": 2
+    },
+    "facts": [
+     {
+      "id": "model-moon-validity",
+      "statement": "Moon-Base conditions (30% oxygen or more at 10.2 psi = 527.5 mmHg) sit at the low-pressure edge of the FLEX data: only 9 methanol and 7 heptane runs have oxygen of 30% or more at 620 mmHg or less, so the extinction-diameter and test-end models are not valid there.",
+      "dataset": "Team model results",
+      "caveat": "No measured partial-gravity data exists in PSI; these are microgravity tables.",
+      "source": "team:model-report"
+     },
+     {
+      "id": "model-disruption-moon",
+      "statement": "At Moon-Base-like conditions (30% oxygen, 527.5 mmHg, 2 mm droplet) the disruption model gives a 89% chance a methanol droplet breaks apart and 95% for heptane, in line with the data: 17 of 23 FLEX runs at 28% oxygen or more broke apart.",
+      "dataset": "Team model results",
+      "caveat": "Few runs exist at exactly these conditions: read it as a trend, not a measurement.",
+      "source": "team:model-report"
+     }
+    ],
+    "relations": {
+     "ask-1": "related",
+     "ask-2": "related"
+    },
+    "summary": "The evidence does not establish that the model is trustworthy for a Moon base. Only 9 methanol and 7 heptane runs covered conditions near Moon-Base air at this low pressure, so the extinction-diameter and test-end models are not valid there. The disruption model does predict breakup at Moon-Base-like conditions (about 89% for methanol and 95% for heptane), in line with 17 of 23 runs at 28% oxygen or more, which suggests it fits the data better. Lunar-gravity flammability is still being tested, so the question remains open.",
+    "sources": {
+     "nasa:glenn-fm2": {
+      "title": "NASA Glenn: Flammability of Materials on the Moon (FM2)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/flammability-of-materials-on-the-moon-fm2/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
+  },
+  {
+   "question": "How do measured burning rates compare with droplet combustion theory?",
+   "result": {
+    "answer": "Models predict higher spread rates than observed, so need improvement. [nasa:glenn-bass]",
+    "claims": [
+     {
+      "id": "ask-1",
+      "investigationId": "",
+      "kind": "finding",
+      "text": "Models predict higher spread rates than observed, so need improvement.",
+      "sourceIds": [
+       "nasa:glenn-bass"
+      ],
+      "excerpt": "Models predict higher spread rates than observed, so need improvement."
+     }
+    ],
+    "investigationIds": [],
+    "mode": "live",
+    "model": "claude-haiku-5-5",
+    "steps": {
+     "searched": 59,
+     "matched": 6,
+     "facts": 0,
+     "reranked": 20,
+     "kept": 1,
+     "dropped": 0,
+     "checked": 1
+    },
+    "summary": "The evidence only says that models predict higher spread rates than observed, so the models need improvement. In other words, measured burning was slower than the models forecast. It does not give measured burning rates for droplets or compare them in detail with droplet combustion theory, so I can't say more than that.",
+    "sources": {
+     "nasa:glenn-bass": {
+      "title": "NASA Glenn experiment summary: Burning and Suppression of Solids (BASS)",
+      "url": "https://www.nasa.gov/glenn/glenn-expertise-space-exploration/physical-sciences-program/combustion-science/",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+     }
+    }
+   }
   }
  ]
 }

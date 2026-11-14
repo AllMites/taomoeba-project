@@ -1,0 +1,40 @@
+{
+ "date": "2026-11-14T15:26:09.553Z",
+ "questions": 100,
+ "papers": {
+  "n": 57,
+  "cites_a_labelled_paper": 14,
+  "first_claim_cites_a_labelled_paper": 11,
+  "answered": 51,
+  "wrongly_refused": 5
+ },
+ "offtopic": {
+  "n": 19,
+  "refused": 18
+ },
+ "data": {
+  "n": 10,
+  "right_fact": 10
+ },
+ "model": {
+  "n": 10,
+  "model_fact": 8
+ },
+ "paper_only_questions_without_data_facts": {
+  "n": 2,
+  "ok": 2
+ },
+ "errors": 0,
+ "modes": {
+  "live": 93,
+  "extractive": 7
+ },
+ "claims": {
+  "total": 129,
+  "not_double_checked": 0
+ },
+ "latency_ms": {
+  "median": 6795,
+  "p90": 10033
+ }
+}
