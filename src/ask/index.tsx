@@ -1,47 +1,98 @@
-import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
 import { useStore } from "../app/store.ts";
 import { useDataset } from "../data/useDataset.ts";
-import {
-  askForHabitat,
-  factKind,
-  isDataOnly,
-  isShortQuotesOnly,
-  MAX_QUESTION,
-  modeLabel,
-  readable,
-  RELATION_LABEL,
-  sourceKind,
-  type AskOutcome,
-  type AskResult,
-} from "./respond.ts";
+import { Controls, Launcher, Panel } from "./chat.tsx";
+import { askForHabitat, readable, type AskResult } from "./respond.ts";
+import { historyFrom, launcherHidden, startOver, type TurnState } from "./thread.ts";
 import "./ask.css";
 
-// One of each kind the box answers well: a data question (data finding + papers), a dashboard ranking,
-// a spacecraft fire incident, and a plain science question. Saved answers exist for all four
-// (public/data/saved-answers.json, made with scripts/rag/save_answers.mjs).
-const EXAMPLES = [
-  "Do bigger droplets go out at a bigger diameter?",
-  "Which experiment ranks highest for ISS?",
-  "What caused the Apollo 1 fire?",
-  "What is a cool flame?",
-];
-const SHOW_COUNT_FROM = MAX_QUESTION - 50;
+export { Answer, Composer, Controls, Launcher, Panel, Steps, TurnView } from "./chat.tsx";
 
-type State =
-  | { phase: "idle" }
-  | { phase: "loading" }
-  | { phase: "done"; outcome: AskOutcome };
+/**
+ * Cited experiments light up in the ranked list only when the person presses "Show the N experiments".
+ * The ranking lane scrolls to the first lit card the moment ids arrive in the store, so lighting them on
+ * every answer would move the page without a press.
+ */
+const LIGHT_ON_ANSWER = false;
+
+const WIDE = "(min-width: 600px)";
+const calmMotion = () => typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+const subscribeWide = (cb: () => void) => {
+  const m = window.matchMedia(WIDE);
+  m.addEventListener("change", cb);
+  return () => m.removeEventListener("change", cb);
+};
+const useWide = () => useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => true);
 
 export default function Ask() {
   const setHighlightIds = useStore((s) => s.setHighlightIds);
   const setSelected = useStore((s) => s.setSelectedInvestigationId);
+  const drawerOpen = useStore((s) => s.selectedInvestigationId !== null);
+  const habitatId = useStore((s) => s.habitat);
   const sources = useDataset("sources");
-  const [question, setQuestion] = useState("");
-  const [state, setState] = useState<State>({ phase: "idle" });
+  const habitats = useDataset("habitats");
+  const wide = useWide();
+
+  const [open, setOpen] = useState(false);
+  const [pageQuestion, setPageQuestion] = useState(""); // the small form in the page
+  const [draft, setDraft] = useState(""); // the composer in the panel
+  const [turns, setTurns] = useState<TurnState[]>([]);
+  const turnsRef = useRef<TurnState[]>([]);
   const abort = useRef<AbortController | null>(null);
-  const input = useRef<HTMLInputElement>(null);
+  const nextId = useRef(1);
+  const dialog = useRef<HTMLDialogElement>(null);
+  const body = useRef<HTMLDivElement>(null);
+  const composer = useRef<HTMLTextAreaElement>(null);
+  const pageInput = useRef<HTMLInputElement>(null);
+  const launcher = useRef<HTMLButtonElement>(null);
+  const opener = useRef<HTMLElement | null>(null);
+  const wasOpen = useRef(false);
   useEffect(() => () => abort.current?.abort(), []);
-  const busy = state.phase === "loading";
+
+  const update = (next: TurnState[]) => {
+    turnsRef.current = next;
+    setTurns(next);
+  };
+  const busy = turns.some((t) => t.outcome === null);
+
+  // Open and close the dialog: non-modal beside the page on wide screens, a modal sheet on narrow ones.
+  useEffect(() => {
+    const d = dialog.current;
+    if (!d || !open) return;
+    if (!d.open) {
+      if (wide) d.show();
+      else d.showModal();
+    }
+    composer.current?.focus({ preventScroll: true });
+    return () => {
+      if (d.open) d.close();
+    };
+  }, [open, wide]);
+
+  // Focus goes back to whatever opened the panel.
+  useEffect(() => {
+    if (wasOpen.current && !open) {
+      const el = opener.current && opener.current.isConnected ? opener.current : launcher.current;
+      el?.focus({ preventScroll: true });
+    }
+    wasOpen.current = open;
+  }, [open]);
+
+  // New messages scroll the panel's own list (never the page): to the top of the newest exchange.
+  const newest = turns[turns.length - 1];
+  const newestKey = newest ? `${newest.id}:${newest.outcome ? "done" : "wait"}` : "";
+  useEffect(() => {
+    const el = body.current;
+    const li = newest && el?.querySelector<HTMLElement>(`[data-turn="${newest.id}"]`);
+    if (!el || !li) return;
+    el.scrollTo({ top: Math.max(0, li.offsetTop - el.offsetTop), behavior: calmMotion() ? "auto" : "smooth" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newestKey]);
+
+  function openPanel() {
+    opener.current = (document.activeElement as HTMLElement | null) ?? null;
+    setOpen(true);
+  }
 
   async function submit(q: string) {
     const text = q.trim();
@@ -49,30 +100,75 @@ export default function Ask() {
     if (!text || abort.current) return;
     const ctl = new AbortController();
     abort.current = ctl;
-    setState({ phase: "loading" });
-    setHighlightIds([]);
-    const outcome = await askForHabitat(text, () => useStore.getState().habitat, undefined, ctl.signal);
+    const id = nextId.current++;
+    const history = historyFrom(turnsRef.current);
+    update([...turnsRef.current, { id, question: text, outcome: null }]);
+    if (LIGHT_ON_ANSWER) setHighlightIds([]);
+    const outcome = await askForHabitat(text, () => useStore.getState().habitat, undefined, ctl.signal, history);
     if (ctl.signal.aborted) return;
     abort.current = null;
-    setState({ phase: "done", outcome });
-    setHighlightIds(outcome.kind === "answer" ? outcome.result.investigationIds : []);
+    update(turnsRef.current.map((t) => (t.id === id ? { ...t, outcome } : t)));
+    if (outcome.kind === "error") setDraft((cur) => cur || text); // keep their words so they can send again
+    if (LIGHT_ON_ANSWER && outcome.kind === "answer") setHighlightIds(outcome.result.investigationIds);
   }
 
-  function onSubmit(e: FormEvent) {
+  /** From the page form or a chip there: open the panel with the question already sent. */
+  function sendFromPage(q: string) {
+    if (!q.trim() || abort.current) return;
+    openPanel();
+    setPageQuestion("");
+    void submit(q);
+  }
+  function sendFromPanel(q: string) {
+    if (!q.trim() || abort.current) return;
+    setDraft("");
+    void submit(q);
+  }
+
+  function onPageSubmit(e: FormEvent) {
     e.preventDefault();
-    void submit(question);
+    sendFromPage(pageQuestion);
   }
 
-  function clear() {
-    abort.current?.abort();
-    abort.current = null;
-    setState({ phase: "idle" });
-    setHighlightIds([]);
-    input.current?.focus(); // the Clear button goes away, so focus would otherwise drop to the page
+  function reset() {
+    startOver({
+      abort: () => {
+        abort.current?.abort();
+        abort.current = null;
+      },
+      clearTurns: () => update([]),
+      clearHighlights: () => setHighlightIds([]),
+      clearInput: () => setDraft(""),
+    });
+    composer.current?.focus({ preventScroll: true }); // the New chat button goes away, so focus would otherwise drop
   }
 
-  const outcome = state.phase === "done" ? state.outcome : null;
+  /** The one control that moves the page: light the cited experiments and scroll to the ranked list. */
+  function showExperiments(ids: string[]) {
+    if (!wide) setOpen(false); // a sheet would cover what the person asked to see
+    const same = ids.join("|") === useStore.getState().highlightIds.join("|");
+    setHighlightIds(ids);
+    // New ids: the ranking lane scrolls to the first lit card itself. Same ids: nothing would fire, so go there now.
+    if (same) (document.querySelector<HTMLElement>('[data-lit="true"]') ?? document.getElementById("ranking-h"))?.scrollIntoView({ block: "center", behavior: calmMotion() ? "auto" : "smooth" });
+  }
+  function openExperiment(id: string) {
+    if (!wide) setOpen(false); // the drawer would open behind the sheet
+    setSelected(id);
+  }
+
   const titleOf = (id: string) => (sources.status === "ready" ? sources.data.find((s) => s.id === id)?.title : undefined) ?? id;
+  const habitatLabel = habitats.status === "ready" ? habitats.data.find((h) => h.id === habitatId)?.label : undefined;
+  const last = newest?.outcome;
+  const lastResult: AskResult | null =
+    [...turns].reverse().map((t) => (t.outcome && t.outcome.kind !== "error" ? t.outcome.result : null)).find(Boolean) ?? null;
+  const live =
+    last === null
+      ? "Searching the records"
+      : last?.kind === "answer"
+        ? `Answer ready. ${readable(last.result.answer) || last.result.facts?.[0]?.statement || ""}`
+        : last?.kind === "nocover"
+          ? "The records do not cover that one."
+          : "";
 
   return (
     <section className="ask" aria-labelledby="ask-h">
@@ -82,158 +178,31 @@ export default function Ask() {
           Ask the records
         </h2>
       </div>
-      <Controls
-        question={question}
+      <p className="ask-intro">Chat with SI about NASA&apos;s fire experiments. Every answer shows its sources.</p>
+      <Controls question={pageQuestion} busy={busy} inputRef={pageInput} onChange={setPageQuestion} onSubmit={onPageSubmit} onPick={sendFromPage} />
+
+      <Launcher hidden={launcherHidden(open, drawerOpen)} onOpen={openPanel} buttonRef={launcher} />
+      <Panel
+        open={open}
+        wide={wide}
+        turns={turns}
         busy={busy}
-        inputRef={input}
-        onChange={setQuestion}
-        onSubmit={onSubmit}
-        onPick={(ex) => {
-          setQuestion(ex);
-          void submit(ex);
-        }}
+        draft={draft}
+        habitatLabel={habitatLabel}
+        live={live}
+        lastResult={lastResult}
+        titleOf={titleOf}
+        dialogRef={dialog}
+        bodyRef={body}
+        composerRef={composer}
+        onDraft={setDraft}
+        onSend={() => sendFromPanel(draft)}
+        onPick={sendFromPanel}
+        onClose={() => setOpen(false)}
+        onReset={reset}
+        onOpenExperiment={openExperiment}
+        onShow={showExperiments}
       />
-
-      <p role="status" className="ask-wait">
-        {busy ? "Looking through the records" : ""}
-      </p>
-
-      {outcome?.kind === "error" && <p role="alert" className="ask-error">{outcome.message}</p>}
-      {outcome?.kind === "nocover" && (
-        <p role="alert" className="ask-error">
-          The records do not cover that one. Try an example question above.
-        </p>
-      )}
-      {outcome?.kind === "answer" && (
-        <Answer result={outcome.result} titleOf={titleOf} onOpen={setSelected} />
-      )}
-      {outcome && (
-        <button type="button" className="quiet ask-clear" onClick={clear}>
-          Clear
-        </button>
-      )}
     </section>
-  );
-}
-
-/**
- * The form and example chips. While waiting they are aria-disabled, not disabled: a disabled button
- * drops keyboard focus to the page, and the chip or Ask button the user just pressed would lose it.
- */
-export function Controls(p: {
-  question: string;
-  busy: boolean;
-  inputRef?: RefObject<HTMLInputElement | null>;
-  onChange: (q: string) => void;
-  onSubmit: (e: FormEvent) => void;
-  onPick: (q: string) => void;
-}) {
-  return (
-    <>
-      <form className="ask-form" onSubmit={p.onSubmit}>
-        <label htmlFor="ask-q">Your question</label>
-        <div className="ask-row">
-          <input
-            id="ask-q"
-            ref={p.inputRef}
-            type="text"
-            value={p.question}
-            maxLength={MAX_QUESTION}
-            autoComplete="off"
-            aria-describedby="ask-count"
-            onChange={(e) => p.onChange(e.target.value)}
-          />
-          <button type="submit" className="pill ask-go" aria-disabled={p.busy || !p.question.trim()}>
-            Ask
-          </button>
-        </div>
-        <p id="ask-count" className="muted ask-count">
-          {p.question.length >= SHOW_COUNT_FROM ? `${p.question.length} of ${MAX_QUESTION} characters` : ""}
-        </p>
-      </form>
-
-      <ul className="ask-examples" aria-label="Example questions">
-        {EXAMPLES.map((ex) => (
-          <li key={ex}>
-            <button type="button" className="ask-chip" aria-disabled={p.busy} onClick={() => !p.busy && p.onPick(ex)}>
-              {ex}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </>
-  );
-}
-
-function Answer({ result, titleOf, onOpen }: { result: AskResult; titleOf: (id: string) => string; onOpen: (id: string) => void }) {
-  const n = result.investigationIds.length;
-  const facts = result.facts ?? [];
-  const dataOnly = isDataOnly(result.answer);
-  return (
-    <div className="ask-answer">
-      {facts.length > 0 && (
-        <div className="ask-facts">
-          <p className="ask-mode">What the data shows (computed from the tables, not written by SI)</p>
-          <ul>
-            {facts.map((f) => (
-              <li key={f.id} className="ask-fact">
-                <p className="ask-fact-text">{f.statement}</p>
-                <p className="muted ask-fact-src">
-                  {factKind(f)}: {f.dataset}
-                  {f.caveat ? ` · ${f.caveat}` : ""}
-                </p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-      {/* A ranking answer has no paper part: the server sends an empty answer. */}
-      {result.answer.trim() !== "" && (
-        <>
-          {facts.length > 0 && <p className="ask-mode">{dataOnly ? "What the papers say" : `What the papers say · ${modeLabel(result)}`}</p>}
-          {facts.length === 0 && <p className="ask-mode">{modeLabel(result)}</p>}
-          <p className={dataOnly ? "ask-note" : "ask-text t-statement"}>{readable(result.answer)}</p>
-        </>
-      )}
-      {n > 0 && (
-        <p className="ask-lit">
-          <a href="#ranking-h">
-            {n} {n === 1 ? "experiment lights" : "experiments light"} up below
-          </a>
-        </p>
-      )}
-      {result.claims.length > 0 && (
-        <ul className="ask-sources">
-          {result.claims.map((c) => (
-            <li key={c.id} className="ask-source">
-              {result.relations?.[c.id] && <p className={`ask-rel ask-rel-${result.relations[c.id]}`}>{RELATION_LABEL[result.relations[c.id]]}</p>}
-              <details>
-                <summary>
-                  {sourceKind(c.sourceIds[0] ?? "")}: {result.sources?.[c.sourceIds[0] ?? ""]?.title ?? titleOf(c.sourceIds[0] ?? "")}
-                  {c.flagged ? " (not double-checked)" : ""}
-                </summary>
-                <p className="ask-claim">{c.text}</p>
-                <p className="ask-excerpt">{c.excerpt}</p>
-                {isShortQuotesOnly(result.sources?.[c.sourceIds[0] ?? ""]?.license) && (
-                  <p className="muted ask-quote-note">Short quote: NASA lists this report as short quotes only.</p>
-                )}
-                {result.sources?.[c.sourceIds[0] ?? ""]?.url && (
-                  <p className="ask-link">
-                    <a href={result.sources[c.sourceIds[0] ?? ""].url} target="_blank" rel="noreferrer">
-                      Read the full source
-                    </a>
-                  </p>
-                )}
-              </details>
-              {c.investigationId && (
-                <button type="button" className="quiet" onClick={() => onOpen(c.investigationId)}>
-                  See experiment
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
   );
 }

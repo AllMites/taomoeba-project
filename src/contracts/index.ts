@@ -20,3 +20,4 @@ export const datasetSchemas = {
   habitats: HabitatPreset,
 } as const;
 export type DatasetName = keyof typeof datasetSchemas;
+export type * from "./scene.ts";

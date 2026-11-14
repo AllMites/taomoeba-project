@@ -13,7 +13,7 @@ const OPPOSITE: [string, string][] = [
 
 const words = (t: string) => t.toLowerCase().match(/[a-z']+/g) ?? [];
 
-function nums(t: string): Set<string> {
+export function nums(t: string): Set<string> {
   const out = new Set<string>();
   for (const m of t.match(NUM) ?? []) {
     const n = m.replace(",", ".");

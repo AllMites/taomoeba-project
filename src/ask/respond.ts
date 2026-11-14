@@ -2,6 +2,26 @@ import { z } from "zod";
 import { Claim } from "../contracts/index.ts";
 
 export const MAX_QUESTION = 300;
+export const MAX_ANSWER = 1200;
+export const MAX_HISTORY = 4;
+/** The server refuses a body over 8 KB (server/app.ts). Kept a little under, for the habitat and the JSON around it. */
+export const MAX_BODY_BYTES = 8 * 1024 - 256;
+
+/** One earlier turn as the server wants it. */
+export type HistoryTurn = { question: string; answer: string };
+
+/** What the server really did for one answer (server/ask.ts AskSteps). Zeros read as "nothing counted". */
+const StepsShape = z.object({
+  searched: z.number().catch(0),
+  matched: z.number().catch(0),
+  facts: z.number().catch(0),
+  reranked: z.number().catch(0),
+  kept: z.number().catch(0),
+  dropped: z.number().catch(0),
+  checked: z.number().catch(0),
+});
+export type AskSteps = z.infer<typeof StepsShape>;
+export const NO_STEPS: AskSteps = { searched: 0, matched: 0, facts: 0, reranked: 0, kept: 0, dropped: 0, checked: 0 };
 
 /** A finding computed by code from the team's data (server/facts.ts), shown before any paper. */
 const DataFact = z.object({ id: z.string(), statement: z.string(), dataset: z.string(), caveat: z.string().default(""), source: z.string() });
@@ -14,6 +34,11 @@ const AskResult = z.object({
   claims: z.array(Claim),
   investigationIds: z.array(z.string()),
   mode: z.enum(["live", "extractive", "mock", "saved"]),
+  steps: StepsShape.catch(NO_STEPS).default(NO_STEPS),
+  /** The model that wrote the answer; null when none did. */
+  model: z.string().nullable().catch(null).default(null),
+  /** True when the live writer failed and the server quoted the records instead. */
+  degraded: z.boolean().optional().catch(undefined),
   savedAt: z.string().optional().catch(undefined),
   // Optional, so older servers still parse; a bad relation label is dropped rather than failing the answer.
   facts: z.array(DataFact).optional().catch(undefined),
@@ -86,10 +111,16 @@ export async function askRecords(
   habitat: string,
   fetchImpl: typeof fetch = (u, i) => fetch(u, i),
   signal?: AbortSignal,
+  history: HistoryTurn[] = [],
 ): Promise<AskOutcome> {
+  // Characters are not bytes: four long turns in a script like Japanese can pass 8 KB. Drop the oldest turns
+  // until the body fits, rather than send one the server refuses on every retry.
+  let earlier = history.slice(-MAX_HISTORY);
+  const bodyOf = () => JSON.stringify(earlier.length ? { question, habitat, history: earlier } : { question, habitat });
+  while (earlier.length && new TextEncoder().encode(bodyOf()).length > MAX_BODY_BYTES) earlier = earlier.slice(1);
   let res: Response;
   try {
-    res = await fetchImpl("/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question, habitat }), signal });
+    res = await fetchImpl("/ask", { method: "POST", headers: { "content-type": "application/json" }, body: bodyOf(), signal });
   } catch {
     return err("offline", "Could not reach the question service. Check your connection and try again.");
   }
@@ -122,11 +153,12 @@ export async function askForHabitat(
   habitatNow: () => string,
   fetchImpl?: typeof fetch,
   signal?: AbortSignal,
+  history: HistoryTurn[] = [],
 ): Promise<AskOutcome> {
   let out: AskOutcome;
   for (let tries = 0; ; tries++) {
     const asked = habitatNow();
-    out = await askRecords(question, asked, fetchImpl, signal);
+    out = await askRecords(question, asked, fetchImpl, signal, history);
     if (signal?.aborted || habitatNow() === asked || tries >= 2) return out;
   }
 }

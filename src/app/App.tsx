@@ -7,6 +7,7 @@ import { useDataset } from "../data/useDataset.ts";
 import Evidence from "../evidence/index.tsx";
 import Ranking from "../ranking/index.tsx";
 import WhatIf from "../whatif/index.tsx";
+import Stage from "../scenes/Stage.tsx";
 import "./app.css";
 import { FLAME_O2, flameVars } from "./flame.ts";
 import { heroReturnFocus, STICKY_SELECT_ID } from "./focus.ts";
@@ -212,6 +213,7 @@ export default function App() {
       <main id="main" tabIndex={-1}>
         <Ask />
         <Brief />
+        <Stage />
         <Ranking />
         <WhatIf />
         <aside className="limits" aria-labelledby="limits-h">
