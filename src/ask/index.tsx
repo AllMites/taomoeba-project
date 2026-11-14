@@ -61,7 +61,12 @@ export default function Ask() {
 
   return (
     <section className="ask" aria-labelledby="ask-h">
-      <h2 id="ask-h">Ask the records</h2>
+      <div className="sec-label">
+        <p className="sec-word t-readout">SI-powered</p>
+        <h2 id="ask-h" className="sec-h">
+          Ask the records
+        </h2>
+      </div>
       <Controls
         question={question}
         busy={busy}
@@ -88,7 +93,7 @@ export default function Ask() {
         <Answer result={outcome.result} titleOf={titleOf} onOpen={setSelected} />
       )}
       {outcome && (
-        <button type="button" className="ask-btn ask-clear" onClick={clear}>
+        <button type="button" className="quiet ask-clear" onClick={clear}>
           Clear
         </button>
       )}
@@ -123,7 +128,7 @@ export function Controls(p: {
             aria-describedby="ask-count"
             onChange={(e) => p.onChange(e.target.value)}
           />
-          <button type="submit" className="ask-btn ask-go" aria-disabled={p.busy || !p.question.trim()}>
+          <button type="submit" className="pill ask-go" aria-disabled={p.busy || !p.question.trim()}>
             Ask
           </button>
         </div>
@@ -135,7 +140,7 @@ export function Controls(p: {
       <ul className="ask-examples" aria-label="Example questions">
         {EXAMPLES.map((ex) => (
           <li key={ex}>
-            <button type="button" className="ask-btn ask-chip" aria-disabled={p.busy} onClick={() => !p.busy && p.onPick(ex)}>
+            <button type="button" className="ask-chip" aria-disabled={p.busy} onClick={() => !p.busy && p.onPick(ex)}>
               {ex}
             </button>
           </li>
@@ -150,7 +155,7 @@ function Answer({ result, titleOf, onOpen }: { result: AskResult; titleOf: (id: 
   return (
     <div className="ask-answer">
       <p className="ask-mode">{MODE_LABEL[result.mode]}</p>
-      <p className="ask-text">{readable(result.answer)}</p>
+      <p className="ask-text t-statement">{readable(result.answer)}</p>
       {n > 0 && (
         <p className="ask-lit">
           <a href="#ranking-h">
@@ -167,7 +172,7 @@ function Answer({ result, titleOf, onOpen }: { result: AskResult; titleOf: (id: 
                 <p className="ask-excerpt">{c.excerpt}</p>
               </details>
               {c.investigationId && (
-                <button type="button" className="ask-btn" onClick={() => onOpen(c.investigationId)}>
+                <button type="button" className="quiet" onClick={() => onOpen(c.investigationId)}>
                   See experiment
                 </button>
               )}

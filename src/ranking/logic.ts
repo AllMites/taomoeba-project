@@ -95,3 +95,44 @@ export const scalePct = (o2: number) => Math.min(100, Math.max(0, (o2 / O2_SCALE
 /** "19.8 to 85%" with at most one decimal. */
 export const fmt = (n: number) => `${Math.round(n * 10) / 10}`;
 export const rangeText = (r: [number, number]) => (r[0] === r[1] ? `${fmt(r[0])}%` : `${fmt(r[0])} to ${fmt(r[1])}%`);
+
+/** A tested range narrower than this many points of oxygen is drawn as a tick, not a span. */
+export const TICK_BELOW = 1;
+
+/** True when the habitat's oxygen lies inside the tested range (ends included). */
+export const covers = (r: [number, number], o2: number) => o2 >= r[0] && o2 <= r[1];
+
+/** Rank numeral as the board writes it: two digits, "01". */
+export const rankNumeral = (n: number) => String(n).padStart(2, "0");
+
+/**
+ * The count line. A cut list says "Top 8 of 26"; a filter or search says "5 of 26 experiments";
+ * the whole list says "26 of 26 experiments".
+ */
+export function countText(shown: number, total: number, filtering: boolean): string {
+  if (!filtering && shown < total) return `Top ${shown} of ${total}`;
+  return `${shown} of ${total} experiments`;
+}
+
+/** Experiments the last answer cited that the current filter or search hides. */
+export function litFilteredOut(shown: Row[], highlightIds: string[]): string[] {
+  const visible = new Set(shown.map((r) => r.inv.id));
+  return highlightIds.filter((id) => !visible.has(id));
+}
+
+/**
+ * Goal fit band as the reason words it ("SI ... rated the fit high"), so the mark cannot disagree
+ * with its own sentence. null when the reason carries no band (other factors, or no rating).
+ */
+export function goalBandOf(f: Pick<RankFactor, "key" | "reason">): "high" | "medium" | "low" | null {
+  if (f.key !== "goalFit") return null;
+  const m = /rated the fit (high|medium|low)\b/i.exec(f.reason);
+  return m ? (m[1].toLowerCase() as "high" | "medium" | "low") : null;
+}
+
+/** Mark level for one factor: goal fit follows its reason's band, the rest follow the value. */
+export function factorLevel(f: Pick<RankFactor, "key" | "reason" | "value">): DotLevel {
+  const band = goalBandOf(f);
+  if (band) return band === "medium" ? "mid" : band;
+  return dotLevel(f.value);
+}

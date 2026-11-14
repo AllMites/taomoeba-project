@@ -4,6 +4,7 @@ import type { Claim, Source } from "../contracts/index.ts";
 import { briefFor } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { orderBrief, parseCount, safeHref, singleExperiment } from "./brief.ts";
+import NewTabLink from "../app/NewTabLink.tsx";
 import "./brief.css";
 
 const SHOWN = 5;
@@ -31,11 +32,11 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
   const cited = claim.sourceIds.flatMap((id) => sources.filter((s) => s.id === id));
   return (
     <li className="brief-card">
-      <p className="brief-text">{claim.text}</p>
+      <p className="brief-text t-statement">{claim.text}</p>
       {count && <Marks {...count} />}
       <div className="brief-actions">
         {one && (
-          <button type="button" className="brief-btn" onClick={() => open(one)}>
+          <button type="button" className="quiet" onClick={() => open(one)}>
             See experiment
           </button>
         )}
@@ -49,9 +50,7 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
                 return (
                   <li key={s.id}>
                     {href ? (
-                      <a href={href} target="_blank" rel="noopener noreferrer">
-                        {s.title}
-                      </a>
+                      <NewTabLink href={href}>{s.title}</NewTabLink>
                     ) : (
                       s.title
                     )}
@@ -77,7 +76,7 @@ function List({ claims, sources }: { claims: Claim[]; sources: Source[] }) {
         ))}
       </ul>
       {claims.length > SHOWN && (
-        <button type="button" className="brief-btn brief-more" aria-expanded={all} onClick={() => setAll(!all)}>
+        <button type="button" className="quiet brief-more" aria-expanded={all} onClick={() => setAll(!all)}>
           {all ? "Show fewer" : `Show all ${claims.length}`}
         </button>
       )}
@@ -109,8 +108,12 @@ export default function Brief() {
 
   return (
     <section className="brief" aria-labelledby="brief-h">
-      <h2 id="brief-h">Interpret</h2>
-      <p className="brief-sub">What the evidence says for {label}</p>
+      <div className="sec-label">
+        <p className="sec-word t-readout">Interpret</p>
+        <h2 id="brief-h" className="sec-h">
+          What the evidence says for {label}
+        </h2>
+      </div>
       {body}
     </section>
   );
