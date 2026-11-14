@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
 import { useStore } from "../app/store.ts";
 import { useDataset } from "../data/useDataset.ts";
-import { askRecords, MAX_QUESTION, MODE_LABEL, readable, type AskOutcome, type AskResult } from "./respond.ts";
+import { askForHabitat, MAX_QUESTION, MODE_LABEL, readable, type AskOutcome, type AskResult } from "./respond.ts";
 import "./ask.css";
 
 // Chosen against public/data/index.json: the records answer each of these directly.
@@ -18,25 +18,27 @@ type State =
   | { phase: "done"; outcome: AskOutcome };
 
 export default function Ask() {
-  const habitat = useStore((s) => s.habitat);
   const setHighlightIds = useStore((s) => s.setHighlightIds);
   const setSelected = useStore((s) => s.setSelectedInvestigationId);
   const sources = useDataset("sources");
   const [question, setQuestion] = useState("");
   const [state, setState] = useState<State>({ phase: "idle" });
   const abort = useRef<AbortController | null>(null);
+  const input = useRef<HTMLInputElement>(null);
   useEffect(() => () => abort.current?.abort(), []);
+  const busy = state.phase === "loading";
 
   async function submit(q: string) {
     const text = q.trim();
-    if (!text) return;
-    abort.current?.abort();
+    // One question at a time: a second Enter or click while waiting does nothing.
+    if (!text || abort.current) return;
     const ctl = new AbortController();
     abort.current = ctl;
     setState({ phase: "loading" });
     setHighlightIds([]);
-    const outcome = await askRecords(text, habitat, undefined, ctl.signal);
+    const outcome = await askForHabitat(text, () => useStore.getState().habitat, undefined, ctl.signal);
     if (ctl.signal.aborted) return;
+    abort.current = null;
     setState({ phase: "done", outcome });
     setHighlightIds(outcome.kind === "answer" ? outcome.result.investigationIds : []);
   }
@@ -48,8 +50,10 @@ export default function Ask() {
 
   function clear() {
     abort.current?.abort();
+    abort.current = null;
     setState({ phase: "idle" });
     setHighlightIds([]);
+    input.current?.focus(); // the Clear button goes away, so focus would otherwise drop to the page
   }
 
   const outcome = state.phase === "done" ? state.outcome : null;
@@ -58,47 +62,20 @@ export default function Ask() {
   return (
     <section className="ask" aria-labelledby="ask-h">
       <h2 id="ask-h">Ask the records</h2>
-      <form className="ask-form" onSubmit={onSubmit}>
-        <label htmlFor="ask-q">Your question</label>
-        <div className="ask-row">
-          <input
-            id="ask-q"
-            type="text"
-            value={question}
-            maxLength={MAX_QUESTION}
-            autoComplete="off"
-            aria-describedby="ask-count"
-            onChange={(e) => setQuestion(e.target.value)}
-          />
-          <button type="submit" className="ask-btn ask-go" disabled={state.phase === "loading" || !question.trim()}>
-            Ask
-          </button>
-        </div>
-        <p id="ask-count" className="muted ask-count">
-          {question.length >= SHOW_COUNT_FROM ? `${question.length} of ${MAX_QUESTION} characters` : ""}
-        </p>
-      </form>
-
-      <ul className="ask-examples" aria-label="Example questions">
-        {EXAMPLES.map((ex) => (
-          <li key={ex}>
-            <button
-              type="button"
-              className="ask-btn ask-chip"
-              disabled={state.phase === "loading"}
-              onClick={() => {
-                setQuestion(ex);
-                void submit(ex);
-              }}
-            >
-              {ex}
-            </button>
-          </li>
-        ))}
-      </ul>
+      <Controls
+        question={question}
+        busy={busy}
+        inputRef={input}
+        onChange={setQuestion}
+        onSubmit={onSubmit}
+        onPick={(ex) => {
+          setQuestion(ex);
+          void submit(ex);
+        }}
+      />
 
       <p role="status" className="ask-wait">
-        {state.phase === "loading" ? "Looking through the records" : ""}
+        {busy ? "Looking through the records" : ""}
       </p>
 
       {outcome?.kind === "error" && <p role="alert" className="ask-error">{outcome.message}</p>}
@@ -116,6 +93,55 @@ export default function Ask() {
         </button>
       )}
     </section>
+  );
+}
+
+/**
+ * The form and example chips. While waiting they are aria-disabled, not disabled: a disabled button
+ * drops keyboard focus to the page, and the chip or Ask button the user just pressed would lose it.
+ */
+export function Controls(p: {
+  question: string;
+  busy: boolean;
+  inputRef?: RefObject<HTMLInputElement | null>;
+  onChange: (q: string) => void;
+  onSubmit: (e: FormEvent) => void;
+  onPick: (q: string) => void;
+}) {
+  return (
+    <>
+      <form className="ask-form" onSubmit={p.onSubmit}>
+        <label htmlFor="ask-q">Your question</label>
+        <div className="ask-row">
+          <input
+            id="ask-q"
+            ref={p.inputRef}
+            type="text"
+            value={p.question}
+            maxLength={MAX_QUESTION}
+            autoComplete="off"
+            aria-describedby="ask-count"
+            onChange={(e) => p.onChange(e.target.value)}
+          />
+          <button type="submit" className="ask-btn ask-go" aria-disabled={p.busy || !p.question.trim()}>
+            Ask
+          </button>
+        </div>
+        <p id="ask-count" className="muted ask-count">
+          {p.question.length >= SHOW_COUNT_FROM ? `${p.question.length} of ${MAX_QUESTION} characters` : ""}
+        </p>
+      </form>
+
+      <ul className="ask-examples" aria-label="Example questions">
+        {EXAMPLES.map((ex) => (
+          <li key={ex}>
+            <button type="button" className="ask-btn ask-chip" aria-disabled={p.busy} onClick={() => !p.busy && p.onPick(ex)}>
+              {ex}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
 

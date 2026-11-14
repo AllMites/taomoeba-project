@@ -1,5 +1,5 @@
 import { expect, it } from "vitest";
-import { askRecords, readable } from "./respond.ts";
+import { askForHabitat, askRecords, readable } from "./respond.ts";
 
 const claim = { id: "ask-1", investigationId: "PSI-20", kind: "finding", text: "t", sourceIds: ["psi:PSI-20"], excerpt: "e" };
 const json = (body: unknown, status = 200) =>
@@ -39,4 +39,47 @@ it("treats JSON of the wrong shape as not running", async () => {
 
 it("strips source ids and the quoting lead-in", () => {
   expect(readable('I am quoting the PSI records directly: "Hi there." [psi:PSI-20] "Next." [ntrs:1]')).toBe('"Hi there." "Next."');
+});
+
+it("reports a rate limit even when the 429 body is an HTML page", async () => {
+  const page = () => Promise.resolve(new Response("<html>Rate limited</html>", { status: 429, headers: { "content-type": "text/html" } }));
+  expect(await ask(page)).toMatchObject({ kind: "error", reason: "rate" });
+});
+
+it("re-asks when the habitat changes while the reply is on its way", async () => {
+  let habitat = "iss";
+  const asked: string[] = [];
+  const f = (_u: unknown, init?: RequestInit) => {
+    const h = JSON.parse(String(init?.body)).habitat as string;
+    asked.push(h);
+    if (h === "iss") habitat = "moon"; // the user picks Moon Base while the ISS reply is in flight
+    return json({ answer: `For ${h}.`, claims: [claim], investigationIds: [h], mode: "live" });
+  };
+  const out = await askForHabitat("q", () => habitat, f as typeof fetch);
+  expect(asked).toEqual(["iss", "moon"]);
+  expect(out).toMatchObject({ kind: "answer", result: { investigationIds: ["moon"] } });
+});
+
+it("does not re-ask once the question was cleared", async () => {
+  let habitat = "iss";
+  const ctl = new AbortController();
+  let calls = 0;
+  const f = () => {
+    calls++;
+    habitat = "moon";
+    ctl.abort();
+    return json({ answer: "A.", claims: [], investigationIds: [], mode: "mock" });
+  };
+  await askForHabitat("q", () => habitat, f as typeof fetch, ctl.signal);
+  expect(calls).toBe(1);
+});
+
+it("handles exactly 300 characters and a reply without claims", async () => {
+  let sent = "";
+  const f = (_u: unknown, init?: RequestInit) => {
+    sent = JSON.parse(String(init?.body)).question;
+    return json({ answer: "A.", investigationIds: [], mode: "live" });
+  };
+  expect(await askRecords("x".repeat(300), "moon", f as typeof fetch)).toMatchObject({ kind: "error", reason: "unavailable" });
+  expect(sent).toHaveLength(300);
 });

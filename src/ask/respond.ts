@@ -47,6 +47,8 @@ export async function askRecords(
   } catch {
     return err("offline", "Could not reach the question service. Check your connection and try again.");
   }
+  // Before the body: a rate limit from Cloudflare itself can come back as an HTML page.
+  if (res.status === 429) return err("rate", "Too many questions at once. Wait a few seconds and try again.");
   let body: unknown;
   try {
     body = await res.json();
@@ -54,7 +56,6 @@ export async function askRecords(
     // Plain `npm run dev` has no /ask: Vite answers with index.html (or a 404 page), which is not JSON.
     return err("unavailable", "The question service is not running here.");
   }
-  if (res.status === 429) return err("rate", "Too many questions at once. Wait a few seconds and try again.");
   if (res.status === 400) {
     const code = (body as { error?: string } | null)?.error;
     if (code === "too_long") return err("toolong", `That question is too long. Keep it under ${MAX_QUESTION} characters.`);
@@ -64,4 +65,22 @@ export async function askRecords(
   const parsed = AskResult.safeParse(body);
   if (!parsed.success) return err("unavailable", "The question service is not running here.");
   return { kind: isNoCover(parsed.data.answer) ? "nocover" : "answer", result: parsed.data };
+}
+
+/**
+ * Ask for the habitat picked now. If the pick changes while the reply is on its way, that reply is
+ * for the old habitat, so ask again (at most 3 times) rather than show it under the new one.
+ */
+export async function askForHabitat(
+  question: string,
+  habitatNow: () => string,
+  fetchImpl?: typeof fetch,
+  signal?: AbortSignal,
+): Promise<AskOutcome> {
+  let out: AskOutcome;
+  for (let tries = 0; ; tries++) {
+    const asked = habitatNow();
+    out = await askRecords(question, asked, fetchImpl, signal);
+    if (signal?.aborted || habitatNow() === asked || tries >= 2) return out;
+  }
 }

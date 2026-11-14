@@ -3,22 +3,22 @@ import { useStore } from "../app/store.ts";
 import type { Claim, Source } from "../contracts/index.ts";
 import { briefFor } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
-import { orderBrief, parseCount, singleExperiment } from "./brief.ts";
+import { orderBrief, parseCount, safeHref, singleExperiment } from "./brief.ts";
 import "./brief.css";
 
 const SHOWN = 5;
 const MAX_MARKS = 60;
 
 /** "6 of 24" as a row of marks: filled = counted, hollow = not. Text equivalent for screen readers. */
-function Marks({ n, of }: { n: number; of: number }) {
+function Marks({ n, of, label }: { n: number; of: number; label: string }) {
   if (of > MAX_MARKS) return null;
   return (
-    <div className="brief-marks" role="img" aria-label={`${n} of ${of} experiments`}>
+    <div className="brief-marks" role="img" aria-label={label}>
       {Array.from({ length: of }, (_, i) => (
         <span key={i} className={i < n ? "mark on" : "mark"} aria-hidden="true" />
       ))}
       <span className="brief-marks-text" aria-hidden="true">
-        {n} of {of} experiments
+        {label}
       </span>
     </div>
   );
@@ -32,7 +32,7 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
   return (
     <li className="brief-card">
       <p className="brief-text">{claim.text}</p>
-      {count && <Marks n={count.n} of={count.of} />}
+      {count && <Marks {...count} />}
       <div className="brief-actions">
         {one && (
           <button type="button" className="brief-btn" onClick={() => open(one)}>
@@ -44,13 +44,20 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
           <p className="brief-excerpt">{claim.excerpt}</p>
           {cited.length > 0 && (
             <ul className="brief-sources">
-              {cited.map((s) => (
-                <li key={s.id}>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer">
-                    {s.title}
-                  </a>
-                </li>
-              ))}
+              {cited.map((s) => {
+                const href = safeHref(s.url);
+                return (
+                  <li key={s.id}>
+                    {href ? (
+                      <a href={href} target="_blank" rel="noopener noreferrer">
+                        {s.title}
+                      </a>
+                    ) : (
+                      s.title
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           )}
         </details>
