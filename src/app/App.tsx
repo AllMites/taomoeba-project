@@ -37,6 +37,20 @@ function Dots({ filled, total }: { filled: number; total: number }) {
   );
 }
 
+/**
+ * Decorative scene per habitat, generated with Higgsfield (GPT Image 2). Space Apps requires a visible mark on
+ * SI-generated images: each file has one baked into its corner, and SiMark repeats it where a crop could hide that.
+ */
+const SCENES: Record<string, { src: string; alt: string } | undefined> = {
+  iss: { src: "/img/iss.webp", alt: "Illustration: inside a space station module, seen through a round window." },
+  moon: { src: "/img/moon.webp", alt: "Illustration: a small habitat on the lunar surface, seen through a window." },
+  rover: { src: "/img/rover.webp", alt: "Illustration: a rover cabin with two seats facing the lunar surface." },
+};
+
+function SiMark() {
+  return <span className="si-mark t-readout">SI-generated image</span>;
+}
+
 function Picker({ habitats }: { habitats: HabitatPreset[] }) {
   const habitat = useStore((s) => s.habitat);
   return (
@@ -45,6 +59,12 @@ function Picker({ habitats }: { habitats: HabitatPreset[] }) {
       <div className="choices">
         {pickerHabitats(habitats).map((h) => (
           <label key={h.id} className="choice">
+            {SCENES[h.id] && (
+              <span className="choice-view">
+                <img src={SCENES[h.id]!.src} alt={SCENES[h.id]!.alt} width={1920} height={1086} decoding="async" />
+                <SiMark />
+              </span>
+            )}
             <input type="radio" name="habitat" value={h.id} checked={habitat === h.id} onChange={() => pickHabitat(h.id)} />
             <span className="choice-top">
               <span className="choice-dot" aria-hidden="true" />
@@ -78,14 +98,13 @@ function Porthole({ picked }: { picked: HabitatPreset | undefined }) {
   return (
     <div className="porthole">
       <div className="porthole-glass">
-        {/* Image slot: a real flame photograph can go in here as <img alt="..."> and fills it (object-fit: cover). Empty for now. */}
-        <div className="porthole-slot" />
         <div className="hero-copy">
           <h1 className="brand t-display t-upper">
             Flame in <span className="brand-line">Freefall</span>
           </h1>
           <p className="lede t-statement">Pick where your crew will live, and see which NASA fire experiments match its air.</p>
         </div>
+        <SiMark />
         <div className="hero-stage" aria-hidden="true">
           <div className="sphere-drift">
             <div className="sphere" />
@@ -227,6 +246,7 @@ export default function App() {
       <footer className="foot">
         <p>Data: NASA Physical Sciences Informatics (PSI).</p>
         <p className="muted">Summaries are written by SI from quoted sources. Each one shows its source on request.</p>
+        <p className="muted">The flame and the three habitat views are SI-generated illustrations, not NASA photographs.</p>
         {isFixture && <span className="badge">sample data</span>}
       </footer>
       <Evidence />

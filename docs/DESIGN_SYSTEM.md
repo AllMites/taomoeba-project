@@ -119,5 +119,20 @@ Browsers without these features get the same page, static.
 
 ## Imagery
 
-No generated images in the shipped app. The flame sphere is drawn in code. Real NASA flame
-photographs from the PSI records (public domain, credited) may sit inside a porthole frame.
+Four SI-generated illustrations, and no others: the hero flame sphere and one window view per
+habitat (station, Moon surface, rover cabin). Files are in `public/img/`. Made with Higgsfield
+(GPT Image 2).
+
+Rules, from the Space Apps Project Submission Guide:
+
+- Every generated image carries a visible mark. Each file has "SI-GENERATED IMAGE" baked into its
+  corner, and the page repeats the mark in HTML (`SiMark`) because crops can hide the baked one.
+  Keep both when reusing an image in the deck.
+- No NASA logos, flags, patches or mission names in any generated image. Check each new output
+  by eye before it ships.
+- They are decoration. Anything that shows evidence (bars, counts, tables, quotes) stays code and
+  NASA data. Real NASA photographs are never mixed in unlabelled next to generated ones.
+- The footer says the four pictures are illustrations, not NASA photographs.
+- The "Use of SI" field on the project page must list Higgsfield and these four images.
+
+The porthole glass stays dark in light mode too (`--glass-*` tokens): it looks out into space.

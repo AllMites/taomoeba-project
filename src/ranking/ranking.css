@@ -30,25 +30,38 @@
   border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); padding: var(--space-2) var(--space-4);
 }
 .rk-count { margin: var(--space-4) 0 var(--space-3); color: var(--color-text-muted); }
-.rk-note { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-left: 3px solid var(--color-flame); background: var(--color-surface); border-radius: 0 var(--radius-1) var(--radius-1) 0; }
+.rk-note { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-left: 1px solid var(--color-flame); background: var(--color-surface); border-radius: 0 var(--radius-1) var(--radius-1) 0; }
 
-/* ---- Experiment cards ---- */
-.rk-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
-.rk-li { display: flex; min-width: 0; }
+/* ---- Experiments: one row each, in rank order. Who it is on the left, how well it fits on the right. ---- */
+.rk-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--color-border); }
+.rk-li { display: flex; min-width: 0; border-bottom: 1px solid var(--color-border); }
 .rk-card {
+  --rk-num-w: 5.25rem;
   position: relative;
-  width: 100%; display: flex; flex-direction: column; gap: var(--space-3); text-align: left; font: inherit; color: var(--color-text);
-  background: var(--color-surface); border: 1px solid transparent; border-radius: var(--radius-2);
-  padding: var(--space-4) var(--space-5) var(--space-5); cursor: pointer; overflow-wrap: anywhere; min-width: 0;
+  width: 100%; min-width: 0; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); column-gap: var(--space-7); row-gap: var(--space-3);
+  align-items: start; text-align: left; font: inherit; color: var(--color-text);
+  background: transparent; border: 1px solid transparent; border-radius: var(--radius-2);
+  padding: var(--space-5) var(--space-4); cursor: pointer; overflow-wrap: anywhere;
   transition: border-color var(--motion-fast) var(--ease), background-color var(--motion-fast) var(--ease);
 }
-.rk-card:hover { border-color: var(--color-border-strong); background: color-mix(in srgb, var(--color-surface) 70%, var(--color-surface-2)); }
-.rk-card[data-selected="true"] { border-color: var(--color-accent); }
+.rk-card > .rk-head { grid-column: 1; grid-row: 1; }
+.rk-card > .rk-sum { grid-column: 1; grid-row: 2 / span 2; padding-left: calc(var(--rk-num-w) + var(--space-4)); max-width: 68ch; }
+.rk-card > .rk-o2 { grid-column: 2; grid-row: 1; }
+.rk-card > .rk-dots { grid-column: 2; grid-row: 2; }
+.rk-card > .rk-why { grid-column: 2; grid-row: 3; }
+.rk-card:hover { background: var(--color-surface); }
+.rk-card:hover .rk-num, .rk-card[data-selected="true"] .rk-num { color: var(--color-text); }
+.rk-card[data-selected="true"] { border-color: var(--color-accent); background: var(--color-surface); }
 /* Lit by an answer: a warm edge, and the words "In the answer". */
 .rk-card[data-lit="true"] { border-color: var(--color-flame); box-shadow: 0 0 0 1px var(--color-flame); background: var(--color-highlight-bg); }
+@media (max-width: 56rem) {
+  .rk-card { grid-template-columns: minmax(0, 1fr); --rk-num-w: 3.75rem; padding-inline: var(--space-2); }
+  .rk-card > .rk-head, .rk-card > .rk-sum, .rk-card > .rk-o2, .rk-card > .rk-dots, .rk-card > .rk-why { grid-column: 1; grid-row: auto; }
+  .rk-card > .rk-sum { padding-left: 0; }
+}
 
 .rk-head { display: flex; align-items: flex-start; gap: var(--space-4); }
-.rk-num { flex: none; font-size: var(--text-3xl); line-height: 0.82; color: var(--color-text-muted); letter-spacing: 0; min-width: 2ch; }
+.rk-num { flex: none; width: var(--rk-num-w); font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem); line-height: 0.9; color: var(--color-text-muted); letter-spacing: 0; transition: color var(--motion-fast) var(--ease); }
 .rk-headtext { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
 .rk-title { font-size: var(--text-lg); line-height: 1.1; overflow-wrap: break-word; }
 .rk-lit { align-self: flex-start; color: var(--color-flame); border: 1px solid var(--color-flame); border-radius: var(--radius-full); padding: 2px var(--space-2); font-size: 0.75rem; }
@@ -68,7 +81,7 @@
 .rk-label { display: block; color: var(--color-text-muted); font-size: 0.75rem; margin-bottom: var(--space-1); }
 
 /* ---- Oxygen bar ---- */
-.rk-o2 { display: block; padding-top: var(--space-4); }
+.rk-o2 { display: block; padding-top: var(--space-5); }
 .rk-o2-track { display: block; position: relative; height: 0.625rem; background: var(--color-meter-track); border-radius: var(--radius-full); margin-bottom: var(--space-2); }
 .rk-o2-span { position: absolute; top: 0; bottom: 0; background: var(--color-text-muted); border-radius: var(--radius-full); }
 .rk-o2[data-covers="true"] .rk-o2-span, .rk-o2[data-covers="true"] .rk-o2-tick { background: var(--color-match); }

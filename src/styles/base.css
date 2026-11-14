@@ -59,10 +59,10 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; }
 }
 
 /* Section label: challenge word as a mono readout above a plain heading. */
-.sec-label { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-5); }
+.sec-label { display: flex; flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-6); }
 .sec-word { color: var(--color-accent); display: inline-flex; align-items: center; gap: var(--space-2); }
 .sec-word::before { content: ""; width: 1.5rem; height: 1px; background: currentColor; }
-.sec-h { font-family: var(--font-sans); font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; }
+.sec-h { font-family: var(--font-sans); font-size: var(--text-2xl); font-weight: 600; letter-spacing: -0.025em; line-height: 1.05; text-wrap: balance; }
 
 /* Pill: the primary action, one per view. Fill + dark mono capitals + arrow. */
 .pill {

@@ -6,8 +6,8 @@ import "./ask.css";
 
 // Chosen against public/data/index.json: the records answer each of these directly.
 const EXAMPLES = [
-  "Why does smoke detection matter on a spacecraft?",
-  "How does oxygen level change burning in microgravity?",
+  "Which experiments tested 30% oxygen?",
+  "What happened to silicone in microgravity?",
   "What is a cool flame?",
 ];
 const SHOW_COUNT_FROM = MAX_QUESTION - 50;

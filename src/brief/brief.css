@@ -1,22 +1,26 @@
 /* Lane Q: habitat brief. Colours come from tokens only. */
-.brief-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
+.brief-list { list-style: none; margin: 0; padding: 0; display: grid; column-gap: var(--space-7); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .brief-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-2);
-  padding: var(--space-5);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
   min-width: 0;
+  padding: var(--space-5) 0;
+  border-top: 1px solid var(--color-border);
 }
-.brief-text { margin: 0; font-size: var(--text-lg); line-height: 1.3; overflow-wrap: anywhere; }
+.brief-text { margin: 0; font-size: var(--text-lg); line-height: 1.35; max-width: 44ch; overflow-wrap: anywhere; text-wrap: pretty; }
+/* The first takeaway is the one a designer must not miss: it runs the full width, larger. */
+.brief-card:first-child { grid-column: 1 / -1; border-top-color: var(--color-border-strong); }
+.brief-card:first-child .brief-text { font-size: var(--text-2xl); line-height: 1.15; letter-spacing: -0.02em; max-width: 32ch; }
+@media (max-width: 52rem) { .brief-list { grid-template-columns: minmax(0, 1fr); } }
 
 .brief-marks { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
 .mark { width: 0.7rem; height: 0.7rem; border-radius: 50%; border: 2px solid var(--color-border-strong); }
 .mark.on { background: var(--color-accent); border-color: var(--color-accent); }
 .brief-marks-text { flex-basis: 100%; font-size: 0.875rem; color: var(--color-text-muted); margin-top: var(--space-1); }
 
-.brief-actions { margin-top: auto; display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+.brief-actions { display: flex; flex-wrap: wrap; align-items: flex-start; gap: var(--space-2) var(--space-4); }
+.brief-how { flex: 1 1 14rem; min-width: 0; }
 .brief-more { margin-top: var(--space-5); }
 
 /* Source disclosure: quiet text button, the quote under a flame-coloured rule. */
@@ -25,7 +29,7 @@
 .brief-excerpt {
   margin: var(--space-2) 0;
   padding-left: var(--space-3);
-  border-left: 3px solid var(--color-flame);
+  border-left: 1px solid var(--color-flame);
   font-size: 0.9375rem;
   color: var(--color-text-muted);
   overflow-wrap: anywhere;

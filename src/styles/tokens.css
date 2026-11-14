@@ -108,6 +108,14 @@
   --shadow-2: -24px 0 64px rgb(0 0 0 / 0.55);
   --shadow-porthole: inset 0 0 0 1px var(--porthole-edge), inset 0 24px 64px rgb(0 0 0 / 0.75), inset 0 -8px 32px rgb(0 0 0 / 0.5);
 
+  /* The porthole glass looks out into space, so it stays dark in both schemes. */
+  --glass-sky: radial-gradient(120% 90% at 72% 42%, #003a70 0%, #061a30 42%, #0b0d12 100%);
+  --glass-text: #f2efe9;
+  --glass-muted: #aab4bf;
+  --glass-accent: #ffbb5c;
+  --glass-panel: rgb(11 13 18 / 0.72);
+  --glass-edge: rgb(242 239 233 / 0.28);
+  --scrim-image: linear-gradient(180deg, rgb(11 13 18 / 0) 45%, rgb(11 13 18 / 0.55) 100%);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;

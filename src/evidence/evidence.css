@@ -83,7 +83,7 @@ body:has(.ev-dialog[open]) { overflow: hidden; }
 .ev-source blockquote {
   margin: var(--space-2) 0;
   padding: var(--space-1) var(--space-3);
-  border-left: 3px solid var(--color-flame);
+  border-left: 1px solid var(--color-flame);
   color: var(--color-text-muted);
 }
 .ev-source ul { padding-left: var(--space-3); }
