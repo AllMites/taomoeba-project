@@ -6,6 +6,7 @@ import { pickerHabitats } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import Evidence from "../evidence/index.tsx";
 import Ranking from "../ranking/index.tsx";
+import Stage from "../scenes/Stage.tsx";
 import "./app.css";
 import { FLAME_O2, flameVars } from "./flame.ts";
 import { heroReturnFocus, STICKY_SELECT_ID } from "./focus.ts";
@@ -211,6 +212,7 @@ export default function App() {
       <main id="main" tabIndex={-1}>
         <Ask />
         <Brief />
+        <Stage />
         <Ranking />
         <aside className="limits" aria-labelledby="limits-h">
           <h2 id="limits-h" className="sec-h">What this data cannot tell you</h2>

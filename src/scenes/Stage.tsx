@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Component, useState, type ReactNode } from "react";
 import { prefersCalm } from "../app/motion.ts";
 import { useStore } from "../app/store.ts";
 import type { SceneId, SceneModule } from "../contracts/index.ts";
@@ -10,6 +10,32 @@ const TABS: { id: SceneId; label: string }[] = [
   { id: "saffire", label: "A real fire in a cargo ship" },
   { id: "lunar", label: "Your habitat" },
 ];
+
+/** A scene that throws (no WebGL, a model that will not load) falls back to the still picture under it. */
+class SceneGuard extends Component<{ children: ReactNode; onFail: () => void }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onFail();
+  }
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
+/** Still picture per view. Moon and rover have a 4:5 crop for phones; any other habitat uses the flames-only still. */
+function Poster({ tab, habitatId }: { tab: SceneId; habitatId: string }) {
+  if (tab === "saffire") return <img className="stage-poster" src="/img/scenes/saffire.webp" alt="" />;
+  const shot = habitatId === "moon" || habitatId === "rover" ? habitatId : "iss";
+  return (
+    <picture>
+      {shot !== "iss" && <source media="(max-width: 600px)" srcSet={`/img/scenes/lunar-${shot}-narrow.webp`} />}
+      <img className="stage-poster" src={`/img/scenes/lunar-${shot}.webp`} alt="" />
+    </picture>
+  );
+}
 
 /**
  * Replay section. The 3D code and models load only after the visitor presses "Load 3D view", so the
@@ -23,7 +49,6 @@ export default function Stage() {
   const [loaded, setLoaded] = useState<Partial<Record<SceneId, SceneModule>>>({});
   const [failed, setFailed] = useState(false);
   const mod = loaded[tab];
-  const poster = tab === "saffire" ? "/img/scenes/saffire.webp" : `/img/scenes/lunar-${habitatId}.webp`;
 
   function load() {
     setFailed(false);
@@ -45,15 +70,20 @@ export default function Stage() {
         <legend className="sr-only">Which view</legend>
         {TABS.map((t) => (
           <label key={t.id} className="stage-tab">
-            <input type="radio" name="stage" checked={tab === t.id} onChange={() => setTab(t.id)} />
+            <input type="radio" name="stage" checked={tab === t.id} onChange={() => { setTab(t.id); setFailed(false); }} />
             <span>{t.label}</span>
           </label>
         ))}
       </fieldset>
       {mod && <p className="stage-caption">{mod.caption}</p>}
-      <div className="stage-box" style={{ backgroundImage: `url(${poster})` }}>
+      <div className="stage-box">
+        <Poster tab={tab} habitatId={habitatId} />
         {mod ? (
-          <mod.Component habitat={habitat} calm={prefersCalm()} />
+          <SceneGuard key={tab} onFail={() => setFailed(true)}>
+            <div className="stage-scene">
+              <mod.Component habitat={habitat} calm={prefersCalm()} />
+            </div>
+          </SceneGuard>
         ) : (
           <button type="button" className="pill stage-load" onClick={load}>
             Load 3D view

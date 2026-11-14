@@ -3,5 +3,8 @@
 .stage-tab:has(input:checked) { border-color: var(--color-accent); color: var(--color-accent); }
 .stage-tab:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: 2px; }
 .stage-caption { margin-bottom: var(--space-4); max-width: 60ch; }
-.stage-box { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 80vh; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-2); background: var(--color-surface) center / cover no-repeat; }
+.stage-box { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 80vh; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-2); background: var(--color-surface); }
+.stage-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.stage-scene { position: absolute; inset: 0; }
+.stage-load { position: relative; }
 @media (max-width: 600px) { .stage-box { aspect-ratio: 4 / 5; } }
