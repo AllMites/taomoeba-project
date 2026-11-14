@@ -25,6 +25,13 @@ body:has(.ev-dialog[open]) { overflow: hidden; }
 @media (max-width: 600px) {
   .ev-dialog { width: 100vw; border-radius: 0; }
 }
+@media (prefers-reduced-motion: no-preference) {
+  .ev-dialog[open] { animation: ev-in var(--motion-mid) var(--ease); }
+  @keyframes ev-in { from { translate: 2rem 0; opacity: 0; } }
+}
+/* Shared with the opening card: the numeral and title travel into this header (src/app/motion.ts). */
+.ev-num { view-transition-name: ev-num; }
+.ev-title { view-transition-name: ev-title; }
 
 .ev-panel { display: flex; flex-direction: column; height: 100%; }
 .ev-bar { display: flex; justify-content: flex-end; padding: var(--space-3) var(--space-5) 0; }

@@ -8,6 +8,7 @@ import Evidence from "../evidence/index.tsx";
 import Ranking from "../ranking/index.tsx";
 import "./app.css";
 import { FLAME_O2, flameVars } from "./flame.ts";
+import { pickHabitat, prefersCalm } from "./motion.ts";
 import { useStore } from "./store.ts";
 import { displayClass } from "./type.ts";
 
@@ -37,14 +38,13 @@ function Dots({ filled, total }: { filled: number; total: number }) {
 
 function Picker({ habitats }: { habitats: HabitatPreset[] }) {
   const habitat = useStore((s) => s.habitat);
-  const setHabitat = useStore((s) => s.setHabitat);
   return (
     <fieldset className="picker">
       <legend className="t-readout">Pick your habitat</legend>
       <div className="choices">
         {pickerHabitats(habitats).map((h) => (
           <label key={h.id} className="choice">
-            <input type="radio" name="habitat" value={h.id} checked={habitat === h.id} onChange={() => setHabitat(h.id)} />
+            <input type="radio" name="habitat" value={h.id} checked={habitat === h.id} onChange={() => pickHabitat(h.id)} />
             <span className="choice-top">
               <span className="choice-dot" aria-hidden="true" />
               <span className={`choice-name ${displayClass(h.label)}`}>{h.label}</span>
@@ -107,15 +107,40 @@ function Porthole({ picked }: { picked: HabitatPreset | undefined }) {
   );
 }
 
+/**
+ * Sections below the fold rise and fade in once as they enter view. Sections already in view are never
+ * hidden; nothing is hidden at all under reduced motion or without IntersectionObserver.
+ */
+function useReveal() {
+  useEffect(() => {
+    if (prefersCalm() || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          (e.target as HTMLElement).dataset.reveal = "done";
+          io.unobserve(e.target);
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px" },
+    );
+    for (const el of document.querySelectorAll<HTMLElement>("main > section, main > aside")) {
+      if (el.getBoundingClientRect().top < window.innerHeight) continue;
+      el.dataset.reveal = "pending";
+      io.observe(el);
+    }
+    return () => io.disconnect();
+  }, []);
+}
+
 function StickyBar({ habitats }: { habitats: HabitatPreset[] }) {
   const habitat = useStore((s) => s.habitat);
-  const setHabitat = useStore((s) => s.setHabitat);
   return (
     <div className="sticky">
       <label htmlFor="sticky-habitat" className="t-readout">
         Your habitat
       </label>
-      <select id="sticky-habitat" value={habitat} onChange={(e) => setHabitat(e.target.value as typeof habitat)}>
+      <select id="sticky-habitat" value={habitat} onChange={(e) => pickHabitat(e.target.value as typeof habitat)}>
         {pickerHabitats(habitats).map((h) => (
           <option key={h.id} value={h.id}>
             {h.label}
@@ -145,6 +170,8 @@ export default function App() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  useReveal();
 
   const limits = useMemo(() => (inv.status === "ready" ? limitsFrom(inv.data) : null), [inv]);
 

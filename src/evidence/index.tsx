@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useStore } from "../app/store.ts";
 import type { Claim, HabitatPreset, Investigation, RankItem, Source } from "../contracts/index.ts";
 import { claimsFor, loadRuns, rankedFor, runUrls, type RunTable } from "../data/select.ts";
@@ -321,7 +321,8 @@ export default function Evidence() {
   const bodyRef = useRef<HTMLDivElement>(null);
 
   // Open/close the native dialog to follow the store. Native close() returns focus to the opener.
-  useEffect(() => {
+  // A layout effect, so the dialog is open inside the same commit a view transition captures.
+  useLayoutEffect(() => {
     const d = ref.current;
     if (!d) return;
     if (id !== null && !d.open) d.showModal();

@@ -96,6 +96,27 @@
 .rk-dot-slash { stroke: var(--color-unknown); stroke-width: 1.8; stroke-linecap: round; }
 .rk-why { display: block; font-size: 0.875rem; color: var(--color-text-muted); }
 
-.rk-more { display: flex; width: fit-content; margin: var(--space-6) auto 0; }
+.pill.rk-more { display: flex; width: fit-content; margin: var(--space-6) auto 0; }
 .rk-empty { padding: var(--space-6); text-align: center; background: var(--color-surface); border: 1px dashed var(--color-unknown); border-radius: var(--radius-2); }
 .rk-empty p { margin: 0 0 var(--space-3); font-weight: 600; }
+
+/* Motion: an answer lights its cards one after another, 60ms apart, a warm edge sweeping once. */
+@media (prefers-reduced-motion: no-preference) {
+  .rk-card[data-lit="true"] { transition-delay: calc(var(--lit-i, 0) * 60ms); }
+  .rk-card[data-lit="true"]::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    padding: 2px;
+    border-radius: inherit;
+    background: linear-gradient(100deg, transparent 35%, var(--color-flame) 50%, transparent 65%) 0 0 / 300% 100% no-repeat;
+    -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    pointer-events: none;
+    animation: rk-sweep var(--motion-slow) var(--ease) calc(var(--lit-i, 0) * 60ms) both;
+  }
+  @keyframes rk-sweep {
+    from { background-position: 100% 0; opacity: 1; }
+    to { background-position: 0% 0; opacity: 0; }
+  }
+}

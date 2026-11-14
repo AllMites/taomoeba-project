@@ -275,3 +275,41 @@ main > * { min-width: 0; margin-block: 0; }
   .hero-stage { width: 80%; }
   .hero-stage { --leader-len: 1.75rem; }
 }
+
+/* ===================== Motion (docs/DESIGN_SYSTEM.md, Motion) =====================
+ * Every item is opt-in: browsers without the feature, and prefers-reduced-motion: reduce, get the static page.
+ * base.css also stops every animation and transition under reduced motion. */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Parallax: the sphere drifts slower than the text and dims as the hero scrolls away; the frame stays put. */
+  @supports (animation-timeline: view()) {
+    /* inset 0: ignore the page's scroll-padding, so the drift starts at the top of the page. */
+    .porthole { view-timeline: --porthole block; view-timeline-inset: 0px; }
+    .sphere-drift {
+      animation: sphere-drift linear both;
+      animation-timeline: --porthole;
+      animation-range: exit 0% exit 100%;
+    }
+    @keyframes sphere-drift {
+      from { translate: 0 0; opacity: 1; }
+      to { translate: 0 45%; opacity: 0.25; }
+    }
+  }
+
+  /* Sticky bar slides in from the top when it appears. */
+  .sticky { animation: sticky-in var(--motion-mid) var(--ease) both; }
+  @keyframes sticky-in { from { translate: 0 -100%; } }
+
+  /* Sections rise 12px and fade in once on entering view (useReveal marks them; nothing is hidden without it). */
+  [data-reveal="pending"] { opacity: 0; translate: 0 12px; }
+  [data-reveal="done"] { transition: opacity var(--motion-slow) var(--ease), translate var(--motion-slow) var(--ease); }
+
+  /* View transitions: habitat pick (cards glide) and card to drawer (numeral and title travel). */
+  ::view-transition-group(*) { animation-duration: var(--motion-mid); animation-timing-function: var(--ease); }
+  ::view-transition-group(ev-num), ::view-transition-group(ev-title) { animation-duration: var(--motion-slow); }
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: var(--motion-fast); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}

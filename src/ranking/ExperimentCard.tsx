@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { useStore } from "../app/store.ts";
+import { cardTransitionName, openFromCard } from "../app/motion.ts";
 import { displayClass } from "../app/type.ts";
 import FactorDots from "./FactorDots.tsx";
 import { rankNumeral, type Row } from "./logic.ts";
@@ -7,7 +8,6 @@ import OxygenBar from "./OxygenBar.tsx";
 import PdsTag from "./PdsTag.tsx";
 
 export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { row: Row; habitatO2: number; lit: boolean; litIndex?: number }) {
-  const select = useStore((s) => s.setSelectedInvestigationId);
   const selected = useStore((s) => s.selectedInvestigationId === row.inv.id);
   const { inv, item } = row;
   const uid = useId();
@@ -15,7 +15,7 @@ export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { 
     parts.filter(Boolean).map((p) => `${uid}-${p}`).join(" ");
   // Short name (rank, title, lit), the rest as description: the whole card as a name ran to ~600 characters.
   return (
-    <li className="rk-li" data-vt={inv.id}>
+    <li className="rk-li" style={{ viewTransitionName: cardTransitionName(inv.id) }}>
       <button
         type="button"
         className="rk-card"
@@ -26,7 +26,7 @@ export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { 
         aria-haspopup="dialog"
         aria-labelledby={ids("n", "t", lit && "l")}
         aria-describedby={ids("m", row.summary && "s", "o", item.factors && "f", "w")}
-        onClick={() => select(inv.id)}
+        onClick={(e) => openFromCard(e.currentTarget, inv.id)}
       >
         <span className="rk-head">
           <span className="rk-num t-display" id={`${uid}-n`} aria-label={`Rank ${row.position}`}>
