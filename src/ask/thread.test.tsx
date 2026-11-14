@@ -155,6 +155,12 @@ it("the writer line under the title follows the last reply", () => {
   expect(writerLine(result({ mode: "mock", model: null }))).toContain("Sample answers");
 });
 
+it("the writer line after a fallback whose sentences failed the checks does not say the writer did not answer", () => {
+  const refused = writerLine(result({ mode: "extractive", model: null, degraded: true, steps: { ...NO_STEPS, searched: 30, matched: 2, kept: 1, dropped: 2 } }));
+  expect(refused).not.toContain("did not answer");
+  expect(refused).toContain("failed the checks");
+});
+
 // ---- the panel ----
 it("the empty panel explains the steps and offers the examples; the composer is labelled", () => {
   const html = panel([]);
@@ -262,6 +268,12 @@ it("Start over aborts, clears the thread, the highlights and the input", () => {
   const d = { abort: vi.fn(), clearTurns: vi.fn(), clearHighlights: vi.fn(), clearInput: vi.fn() };
   startOver(d);
   for (const f of Object.values(d)) expect(f).toHaveBeenCalledTimes(1);
+});
+
+it("the page under the phone sheet cannot scroll, and the lock is CSS so every close path releases it", () => {
+  // Checked in headless Chrome at 375 px: without this rule a wheel over the sheet's header moved the page 600 px.
+  const css = readFileSync(new URL("./ask.css", import.meta.url), "utf8");
+  expect(css).toMatch(/html:has\(\.ask-panel:modal\)\s*\{\s*overflow:\s*hidden;?\s*\}/);
 });
 
 // ---- the page never moves uninvited ----

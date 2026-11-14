@@ -115,7 +115,8 @@ export function writerLine(last: AskResult | null): string {
   const from = "answers only from NASA records";
   if (!last) return `Every answer shows its sources · ${from}`;
   if (last.mode === "mock") return `Sample answers, the live service is off · ${from}`;
-  if (last.degraded) return `The SI writer did not answer, so this is quoting · ${from}`;
+  // A fallback whose sentences the checks refused: the writer did answer, so the line must not say it did not.
+  if (last.degraded) return last.steps.dropped > 0 ? `SI's sentences failed the checks, so this is quoting · ${from}` : `The SI writer did not answer, so this is quoting · ${from}`;
   if (last.mode === "extractive") return `Quoting mode, the SI writer is off · ${from}`;
   return last.model ? `${modelLabel(last.model)} · ${from}` : `Every answer shows its sources · ${from}`;
 }

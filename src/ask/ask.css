@@ -56,6 +56,9 @@
 }
 .ask-panel[open] { display: flex; flex-direction: column; }
 .ask-panel::backdrop { background: var(--color-bg); }
+/* The phone sheet is modal and covers the page: the page under it must not scroll. Pure CSS, so every close path
+   (Close, Escape, See experiment, Show, a resize to wide) releases it. */
+html:has(.ask-panel:modal) { overflow: hidden; }
 @media (max-width: 599.98px) {
   .ask-panel { width: 100vw; border-left: 0; }
 }
