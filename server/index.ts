@@ -1,9 +1,4 @@
-import { Hono } from "hono";
+import { createApp } from "./app.ts";
 
-const app = new Hono();
-
-app.get("/health", (c) => c.json({ ok: true }));
-app.post("/rank", (c) => c.json({ error: "not_implemented", message: "POST /rank is not implemented yet" }, 501));
-app.post("/verify", (c) => c.json({ error: "not_implemented", message: "POST /verify is not implemented yet" }, 501));
-
-export default app;
+// Worker entry: only the default handler may be exported here.
+export default createApp();
