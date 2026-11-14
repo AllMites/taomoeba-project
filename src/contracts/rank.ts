@@ -3,7 +3,7 @@ import { HabitatId } from "./habitat.ts";
 import { Provenance } from "./provenance.ts";
 
 // One visible reason behind a rank. value is 0 to 1, or null when it cannot be known
-// (shown as "not on record" and counted as 0 in the score). reason is one plain sentence.
+// (shown as "not on record" and counted as half in the score). reason is one plain sentence.
 export const RankFactor = z.object({
   key: z.enum(["o2", "pressure", "directness", "evidence", "goalFit"]),
   label: z.string(),
@@ -25,7 +25,7 @@ export const RankItem = z.object({
   rationale: z.string(),
   claimIds: z.array(z.string()),
   provenance: Provenance,
-  // score is the plain mean of these factors, so every rank can be checked by hand.
+  // score is the weighted mean of these factors (rule in src/data/rankRule.ts), so every rank can be checked by hand.
   factors: z.array(RankFactor).optional(),
 });
 export type RankItem = z.infer<typeof RankItem>;
