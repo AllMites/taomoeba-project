@@ -1,13 +1,18 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html, body { margin: 0; }
+html { scroll-behavior: smooth; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0; }
+p { margin: 0; }
+h2, h3, [id] { scroll-margin-top: 5rem; }
 
 body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  line-height: 1.5;
-  overflow-x: hidden;
+  font-size: var(--text-base);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
 }
 
 a { color: var(--color-accent); }
@@ -28,17 +33,6 @@ a { color: var(--color-accent); }
   z-index: 10;
 }
 .skip:focus { top: var(--space-2); }
-
-.topbar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: var(--space-3) var(--space-4);
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
-}
-.brand { font-weight: 700; font-size: 1.125rem; align-self: center; }
 
 .field { display: flex; flex-direction: column; gap: var(--space-1); font-size: 0.875rem; color: var(--color-text-muted); min-width: 0; }
 .field input, .field select {
@@ -61,11 +55,6 @@ a { color: var(--color-accent); }
   align-self: center;
 }
 
-.nav { display: flex; flex-wrap: wrap; gap: var(--space-4); padding: var(--space-2) var(--space-4); border-bottom: 1px solid var(--color-border); }
-.nav a { padding: var(--space-1) 0; text-decoration: none; color: var(--color-text-muted); }
-.nav a[aria-current="page"] { color: var(--color-text); font-weight: 600; border-bottom: 2px solid var(--color-accent); }
-
-main { padding: var(--space-4); max-width: 80rem; margin: 0 auto; }
 main:focus { outline: none; }
 
 .cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); }
@@ -83,7 +72,15 @@ main:focus { outline: none; }
 }
 .card[aria-pressed="true"] { border-color: var(--color-accent); box-shadow: 0 0 0 2px var(--color-accent); }
 
-.muted { color: var(--color-text-muted); font-size: 0.875rem; }
+.muted { color: var(--color-text-muted); font-size: var(--text-sm); }
+.unknown { color: var(--color-unknown); font-style: italic; }
 .block { display: block; }
 
 .evidence { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-2); padding: var(--space-4); }
+
+.card:hover { border-color: var(--color-edge); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
