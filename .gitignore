@@ -24,3 +24,6 @@ __pycache__/
 
 # Server-only paper text (short quotes only): uploaded to the Worker KV store, never committed
 /library/
+
+# Ask box measurements (scripts/rag/eval_ask.mjs); commit a run on purpose if you want it kept
+/eval-results/
