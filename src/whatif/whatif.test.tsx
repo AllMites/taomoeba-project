@@ -6,7 +6,9 @@ import {
   burnPlan,
   diameterAt,
   effects,
+  gravityFactor,
   habitatPoint,
+  measuredShare,
   indexOf,
   isMoonLike,
   mixesOf,
@@ -17,6 +19,7 @@ import {
   predict,
   signed,
   support,
+  theoryRate,
   type Gas,
   type Sel,
 } from "./logic.ts";
@@ -200,5 +203,54 @@ describe("the predicted burn (d²-law)", () => {
     const moon = renderToStaticMarkup(<WhatIfView doc={doc} sel={at("methanol", "n2", 0, 0.3, 527.5, 2)} onChange={noop} />);
     expect(moon).toContain("Not shown for Moon-Base-like air");
     expect(moon).toContain("Illustration of textbook physics, not data"); // the Earth vs microgravity panel still shows
+  });
+});
+
+describe("textbook physics beside the data model", () => {
+  const air = at("methanol", "n2", 0, 0.21, 760, 2.0);
+  it("looks up the theory values the model package computes (physics.py, 07_physics_check.py)", () => {
+    expect(theoryRate(doc, air)).toBeCloseTo(0.734, 3);
+    expect(theoryRate(doc, { ...air, fuel: 1 })).toBeCloseTo(1.476, 3);
+    expect(gravityFactor(doc, air, "earth")).toBeCloseTo(1.52, 2);
+    expect(gravityFactor(doc, air, "moon")).toBeCloseTo(1.33, 2);
+    expect(measuredShare(doc, air)).toBeCloseTo(0.665, 3);
+  });
+  it("the textbook rate has no pressure or size term; gravity matters more for bigger droplets", () => {
+    for (let p = 0; p < doc.axes.p_mmHg.length; p++)
+      for (let d = 0; d < doc.axes.d0.length; d++) expect(theoryRate(doc, { ...air, p, d0: d })).toBe(theoryRate(doc, air));
+    expect(gravityFactor(doc, { ...air, d0: air.d0 + 2 }, "moon")!).toBeGreaterThan(gravityFactor(doc, air, "moon")!);
+    expect(gravityFactor(doc, air, "earth")!).toBeGreaterThan(gravityFactor(doc, air, "moon")!);
+  });
+  it("impossible mixes have no theory value either", () => {
+    const s = at("methanol", "co2", 0.7, 0.34, 760, 2.0);
+    expect(theoryRate(doc, s)).toBeNull();
+    expect(gravityFactor(doc, s, "moon")).toBeNull();
+  });
+  it("effects say what the textbook predicts and whether the model agrees", () => {
+    const rows = effects(doc, air);
+    const o2 = rows.find((r) => r.change.includes("oxygen"))!;
+    expect(o2.theory).toBe("faster");
+    expect(o2.agrees).toBe(true);
+    expect(rows.find((r) => r.change.startsWith("Pressure"))!.theory).toBe("none");
+    expect(rows.find((r) => r.change.startsWith("Droplet"))!.agrees).toBeUndefined();
+    const he = rows.find((r) => r.change.includes("helium"))!;
+    expect(he.theory).toBe("faster");
+  });
+  it("a theory block of the wrong size is dropped, the grid still loads", () => {
+    const raw = JSON.parse(readFileSync(`${process.cwd()}/public/data/whatif.json`, "utf8"));
+    raw.theory.k = raw.theory.k.slice(1);
+    const d = parseDoc(raw)!;
+    expect(d).not.toBeNull();
+    expect(d.theory).toBeUndefined();
+    expect(theoryRate(d, air)).toBeNull();
+  });
+  it("renders the textbook column, the textbook line and the labelled gravity estimate", () => {
+    const html = renderToStaticMarkup(<WhatIfView doc={doc} sel={air} onChange={() => {}} />);
+    expect(html).toContain("Textbook says");
+    expect(html).toContain("same as model");
+    expect(html).toContain("Textbook formula: 0.73 mm²/s");
+    expect(html).toContain("a theory estimate");
+    expect(html).toContain("it is not data");
+    expect(html).toMatch(/Moon \(1\/6 g\)/);
   });
 });

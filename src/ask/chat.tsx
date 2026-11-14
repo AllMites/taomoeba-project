@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, type KeyboardEvent, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type RefObject } from "react";
+import { citationText } from "./cite.ts";
 import {
   factKind,
   isDataOnly,
@@ -311,7 +312,31 @@ export function TurnView({
         </div>
       )}
       {o?.kind === "answer" && <Answer result={o.result} titleOf={titleOf} onOpen={onOpen} onShow={onShow} />}
+      {o?.kind === "answer" && <CopyCitation text={() => citationText(turn.question, o.result, titleOf)} />}
     </li>
+  );
+}
+
+/** Copy the answer with its numbered sources, for a researcher's notes. */
+export function CopyCitation({ text }: { text: () => string }) {
+  const [state, setState] = useState<"idle" | "done" | "failed">("idle");
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(text());
+      setState("done");
+    } catch {
+      setState("failed");
+    }
+  }
+  return (
+    <p className="ask-cite">
+      <button type="button" className="quiet" onClick={() => void copy()}>
+        Copy answer with sources
+      </button>
+      <span role="status" className="muted">
+        {state === "done" ? " Copied." : state === "failed" ? " Copy did not work in this browser." : ""}
+      </span>
+    </p>
   );
 }
 

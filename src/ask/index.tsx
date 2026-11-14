@@ -125,6 +125,15 @@ export default function Ask() {
     void submit(q);
   }
 
+  // Another section (the what-if tool) asked a question for the person: send it like a chip on the page.
+  const askRequest = useStore((s) => s.askRequest);
+  useEffect(() => {
+    if (!askRequest) return;
+    useStore.getState().clearAskRequest?.();
+    sendFromPage(askRequest.question);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [askRequest]);
+
   function onPageSubmit(e: FormEvent) {
     e.preventDefault();
     sendFromPage(pageQuestion);

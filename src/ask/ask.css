@@ -236,3 +236,4 @@ html:has(.ask-panel:modal) { overflow: hidden; }
 .ask-summary { margin: 0 0 var(--space-3); }
 .ask-summary .ask-text { margin: 0 0 var(--space-1); }
 .ask-summary-note { margin: 0; font-size: 0.75rem; }
+.ask-cite { margin: var(--space-1) 0 0; font-size: var(--text-sm); }

@@ -430,6 +430,62 @@
   "caveat": "No measured partial-gravity data exists in PSI; these are microgravity tables."
  },
  {
+  "id": "physics-textbook-gap",
+  "dataset": "Team physics check",
+  "source": "team:model-report",
+  "statement": "FLEX droplets burn well below the textbook (classical droplet-combustion theory) burning rate: the median run reaches about 0.67 of the textbook value for methanol and 0.35 for heptane (257 runs).",
+  "numbers": [
+   "0.35",
+   "0.67",
+   "257"
+  ],
+  "keywords": "textbook theory classical droplet combustion theory d2 law predicted expected measured compare slower than theory physics gap ratio",
+  "method": "measured burning rate divided by the theory value per run, median per fuel (07_physics_check.py)",
+  "caveat": "The textbook formula leaves out radiation heat loss, soot and unsteady effects, and the team's gas property values are rough: trust the direction and rough size, not the exact ratios."
+ },
+ {
+  "id": "physics-no-accuracy-gain",
+  "dataset": "Team physics check",
+  "source": "team:model-report",
+  "statement": "Adding the textbook burning-rate value to the team's Ridge model barely changes its error on held-out test days (0.0735 against 0.0736 mm2/s); the textbook value alone, even scaled per fuel, does worse (0.185) than always guessing the mean (0.138).",
+  "numbers": [
+   "0.0735",
+   "0.0736",
+   "0.138",
+   "0.185"
+  ],
+  "keywords": "physics theory hybrid physics-informed model improve accuracy error textbook add help better",
+  "method": "grouped cross-validation on whole test dates, same folds as the other models",
+  "caveat": ""
+ },
+ {
+  "id": "physics-direction",
+  "dataset": "Team physics check",
+  "source": "team:model-report",
+  "statement": "On every FLEX run, the team's burning-rate model moves the same way as textbook theory when a gas replaces nitrogen: more oxygen and more helium make droplets burn faster, more carbon dioxide makes them burn slower.",
+  "numbers": [],
+  "keywords": "physics theory agree consistent direction oxygen helium carbon dioxide CO2 burning rate faster slower model sanity check",
+  "method": "sign of the change in the Ridge prediction and in the theory value, per run (07_physics_check.py)",
+  "caveat": ""
+ },
+ {
+  "id": "physics-gravity-estimate",
+  "dataset": "Team physics check",
+  "source": "team:model-report",
+  "statement": "A textbook buoyancy estimate, not a measurement, says a 2 mm droplet in air at sea-level pressure would burn about 1.5 times as fast on Earth, 1.4 times on Mars and 1.3 times on the Moon as on the ISS; in Moon Base air (30% oxygen, 527.5 mmHg) the Moon factor is about 1.3.",
+  "numbers": [
+   "1.3",
+   "1.4",
+   "1.5",
+   "2",
+   "30",
+   "527.5"
+  ],
+  "keywords": "Moon lunar Mars Earth gravity partial gravity buoyancy faster burn burning rate estimate theory scaling Grashof convection",
+  "method": "natural-convection correlation Nu = 2 + 0.6 Gr^(1/4) Pr^(1/3) with rough gas properties (physics.py)",
+  "caveat": "No partial-gravity droplet data exists in PSI to check this against."
+ },
+ {
   "id": "dash-rank-PSI-69-iss",
   "dataset": "Team dashboard ranking",
   "source": "psi:PSI-69",

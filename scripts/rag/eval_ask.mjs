@@ -2,6 +2,8 @@
 //
 //   node scripts/rag/eval_ask.mjs https://<your-site>           (or http://localhost:8787 with wrangler dev)
 //   node scripts/rag/eval_ask.mjs https://<your-site> --limit 10 (a quick first look)
+//   node scripts/rag/eval_ask.mjs https://<your-site> --publish  (also writes public/data/ask-eval.json, the scores the
+//                                                                  site's "How we know" section shows; full runs only)
 //
 // Every question is asked fresh (no cache, no saved answer), one every 7 s to stay inside the site's rate limit, so
 // 100 questions take about 12 minutes and cost about USD 0.40 in API calls. Writes eval-results/ask-<date>.json with
@@ -13,6 +15,7 @@ const args = process.argv.slice(2);
 const BASE = (args.find((a) => /^https?:\/\//.test(a)) ?? "http://localhost:8787").replace(/\/$/, "");
 const limitAt = args.indexOf("--limit");
 const LIMIT = limitAt >= 0 ? Number(args[limitAt + 1]) : Infinity;
+const PUBLISH = args.includes("--publish");
 const QUESTIONS = JSON.parse(readFileSync(new URL("./eval_questions.json", import.meta.url), "utf8")).slice(0, LIMIT);
 const NO_COVER = "The PSI records I have do not cover";
 const DATA_ONLY = "No paper in the library explains";
@@ -110,3 +113,13 @@ mkdirSync("eval-results", { recursive: true });
 const out = `eval-results/ask-${summary.date.slice(0, 10)}.json`;
 writeFileSync(out, JSON.stringify({ summary, rows }, null, 1) + "\n");
 console.log(`\nEvery answer: ${out}`);
+if (PUBLISH) {
+  if (Number.isFinite(LIMIT)) console.log("Not published: --publish needs the full question set (no --limit).");
+  else if (summary.errors > 0) console.log(`Not published: ${summary.errors} questions failed with errors; run again.`);
+  else {
+    const { site, ...pub } = summary; // the address stays out of the public file
+    const dest = new URL("../../public/data/ask-eval.json", import.meta.url);
+    writeFileSync(dest, JSON.stringify(pub, null, 1) + "\n");
+    console.log("Published the scores to public/data/ask-eval.json");
+  }
+}

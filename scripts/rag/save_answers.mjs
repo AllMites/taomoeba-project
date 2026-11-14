@@ -10,12 +10,15 @@
 //
 // Redo only some questions and keep the rest of the saved file:
 //   node scripts/rag/save_answers.mjs --only "What caused the Apollo 1 fire?"
+// Save only the questions below that have no saved answer yet (keeps the rest; cheapest after adding questions):
+//   node scripts/rag/save_answers.mjs https://<site> --new
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 
 const args = process.argv.slice(2);
 const onlyAt = args.indexOf("--only");
 const ONLY = onlyAt >= 0 ? args.slice(onlyAt + 1) : null;
-const BASE = (onlyAt === 0 ? null : args[0]) ?? "http://localhost:8787";
+const NEW = args.includes("--new");
+const BASE = args.slice(0, onlyAt >= 0 ? onlyAt : args.length).find((a) => /^https?:\/\//.test(a)) ?? "http://localhost:8787";
 const OUT = new URL("../../public/data/saved-answers.json", import.meta.url);
 const QUESTIONS = [
   // example chips on the page
@@ -34,13 +37,21 @@ const QUESTIONS = [
   "What happened to silicone in microgravity?",
   "Which experiments tested 30% oxygen?",
   "How does fire spread over solid materials in microgravity?",
+  // the what-if tool's "Ask about this setting" chips (src/whatif/askAbout.ts, ASK_ABOUT_QUESTIONS)
+  "What did FLEX find about methanol droplet flames?",
+  "What did FLEX find about heptane droplet flames?",
+  "How does carbon dioxide affect droplet flames?",
+  "Can we trust the model predictions for a Moon base?",
+  "Would a droplet burn faster on the Moon than on the ISS?",
+  "How do measured burning rates compare with droplet combustion theory?",
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const norm = (q) => q.toLowerCase().replace(/\s+/g, " ").replace(/[\s?.!]+$/, "").trim();
 // With --only, start from the saved file and replace just the named questions.
-const prev = ONLY && existsSync(OUT) ? JSON.parse(readFileSync(OUT, "utf8")).items ?? [] : [];
-const asked = ONLY ?? QUESTIONS;
+const prev = (ONLY || NEW) && existsSync(OUT) ? JSON.parse(readFileSync(OUT, "utf8")).items ?? [] : [];
+const asked = ONLY ?? (NEW ? QUESTIONS.filter((q) => !prev.some((it) => norm(it.question) === norm(q))) : QUESTIONS);
+if (NEW) console.log(`${asked.length} questions without a saved answer: ${asked.join(" | ") || "none"}`);
 const items = prev.filter((it) => !asked.some((q) => norm(q) === norm(it.question)));
 for (const [i, question] of asked.entries()) {
   if (i) await sleep(7000);

@@ -26,6 +26,16 @@ export const WhatIfDoc = z.object({
     d2law: z.object({ runs: z.number(), corr: z.number(), median_rel_err: z.number() }).optional(),
   }),
   tested: z.object({ runs: z.number(), test_dates: z.number() }),
+  // Textbook physics stored beside the grid (model package physics.py, checked in 07_physics_check.py)
+  theory: z
+    .object({
+      k: z.array(z.number().int()), // theory burning rate *1000, row-major fuel, mix, o2
+      gravity: z.object({ earth: z.array(z.number().int()), moon: z.array(z.number().int()) }), // factor *1000, mix, o2, p, d0
+      measured_over_theory: z.record(z.string(), z.number()),
+      direction_agreement: z.record(z.string(), z.number()),
+      rmse: z.object({ ridge: z.number(), ridge_plus_theory: z.number(), theory_scaled: z.number() }),
+    })
+    .optional(),
 });
 export type WhatIfDoc = z.infer<typeof WhatIfDoc>;
 
@@ -52,7 +62,12 @@ export function parseDoc(raw: unknown): WhatIfDoc | null {
   if (!r.success) return null;
   const a = r.data.axes;
   const n = a.fuel.length * a.mix.length * a.o2.length * a.p_mmHg.length * a.d0.length;
-  return r.data.values.length === n * N ? r.data : null; // an incomplete grid would silently misplace every value
+  if (r.data.values.length !== n * N) return null; // an incomplete grid would silently misplace every value
+  const t = r.data.theory;
+  const nk = a.fuel.length * a.mix.length * a.o2.length;
+  const ng = a.mix.length * a.o2.length * a.p_mmHg.length * a.d0.length;
+  if (t && (t.k.length !== nk || t.gravity.earth.length !== ng || t.gravity.moon.length !== ng)) return { ...r.data, theory: undefined };
+  return r.data;
 }
 
 /** Row-major position of a selection (fuel, mix, o2, pressure, d0), as written by the grid script. */
@@ -126,6 +141,30 @@ export function support(p: Prediction): Support {
   };
 }
 
+// ---- textbook physics beside the data model ---------------------------------------------------------------------
+
+/** Textbook (classical droplet theory) burning rate, mm2/s, or null when absent or impossible. No pressure or size term. */
+export function theoryRate(doc: WhatIfDoc, s: Sel): number | null {
+  const t = doc.theory;
+  if (!t) return null;
+  const v = t.k[(s.fuel * doc.axes.mix.length + s.mix) * doc.axes.o2.length + s.o2];
+  return v < 0 ? null : v / 1000;
+}
+
+export type World = "earth" | "moon";
+
+/** Textbook buoyancy factor: how many times faster than with no gravity. A scaling estimate, not data. */
+export function gravityFactor(doc: WhatIfDoc, s: Sel, world: World): number | null {
+  const t = doc.theory;
+  if (!t) return null;
+  const a = doc.axes;
+  const v = t.gravity[world][((s.mix * a.o2.length + s.o2) * a.p_mmHg.length + s.p) * a.d0.length + s.d0];
+  return v < 0 ? null : v / 1000;
+}
+
+/** Share of the textbook value that FLEX runs of this fuel actually reached (median), e.g. 0.67. */
+export const measuredShare = (doc: WhatIfDoc, s: Sel): number | null => doc.theory?.measured_over_theory[doc.axes.fuel[s.fuel]] ?? null;
+
 // ---- gas mix helpers -----------------------------------------------------------------------------------------
 
 export const GAS_LABEL: Record<Gas, string> = { n2: "Nitrogen only", co2: "Add carbon dioxide", he: "Add helium" };
@@ -174,7 +213,12 @@ export type Effect = {
   dExt?: number; // mm
   dBurn?: number; // mm2/s
   note?: string; // the changed point is impossible, out of range or far from data
+  theory?: "faster" | "slower" | "none"; // what the textbook formula says this change does to burning rate
+  agrees?: boolean; // model and textbook move the same way (only when the textbook has a term for the change)
 };
+
+/** Smallest model change in burning rate (mm2/s) read as a real direction; smaller is "about the same". */
+const BURN_SAME = 0.01;
 
 export function effects(doc: WhatIfDoc, s: Sel): Effect[] {
   const a = doc.axes;
@@ -204,11 +248,23 @@ export function effects(doc: WhatIfDoc, s: Sel): Effect[] {
   out.push({ change: `Switch to ${a.fuel[s.fuel === 0 ? 1 : 0]}`, to: { ...s, fuel: s.fuel === 0 ? 1 : 0 } });
 
   const here = predict(doc, s);
+  const k0 = theoryRate(doc, s);
   return out.map(({ change, to }) => {
     const there = predict(doc, to);
     if (!here.possible || !there.possible) return { change, to, note: "not a possible mix" };
     const sup = support(there).level;
+    const k1 = theoryRate(doc, to);
+    let theory: Effect["theory"];
+    let agrees: boolean | undefined;
+    if (k0 !== null && k1 !== null) {
+      const dk = k1 - k0;
+      theory = Math.abs(dk) < 1e-9 ? "none" : dk > 0 ? "faster" : "slower";
+      const dm = there.burningRate - here.burningRate;
+      if (theory !== "none" && Math.abs(dm) >= BURN_SAME) agrees = (dm > 0) === (theory === "faster");
+    }
     return {
+      theory,
+      agrees,
       change,
       to,
       dChance: Math.round((there.pDisruption - here.pDisruption) * 100),

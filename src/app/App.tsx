@@ -6,6 +6,7 @@ import { pickerHabitats } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
 import Evidence from "../evidence/index.tsx";
 import Ranking from "../ranking/index.tsx";
+import Trust from "../trust/index.tsx";
 import WhatIf from "../whatif/index.tsx";
 import Stage from "../scenes/Stage.tsx";
 import "./app.css";
@@ -216,6 +217,7 @@ export default function App() {
         <Stage />
         <Ranking />
         <WhatIf />
+        <Trust />
         <aside className="limits" aria-labelledby="limits-h">
           <h2 id="limits-h" className="sec-h">What this data cannot tell you</h2>
           {limits && (

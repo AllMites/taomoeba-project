@@ -232,6 +232,39 @@ add("model-moon-validity", TEAM, "x3:report",
     "Moon base lunar habitat valid validity predictions 30% oxygen low pressure 10.2 psi extrapolation coverage",
     "coverage counts from results.json", "No measured partial-gravity data exists in PSI; these are microgravity tables.")
 
+pc_path = X3 / "out" / "physics_check.json"  # textbook-theory check (07_physics_check.py, REPORT.md section 10)
+if pc_path.exists():
+    PHY = "Team physics check"
+    pc = json.load(open(pc_path, encoding="utf-8"))
+    ratio, rm, agree = pc["ratio_measured_over_theory_median"], pc["rmse_mm2_per_s"], pc["direction_agreement"]
+    gf, gm = pc["gravity_factor_air_760mmHg"]["d0_2.0mm"], pc["gravity_factor_moon_base"]["d0_2.0mm"]
+    add("physics-textbook-gap", PHY, "x3:report",
+        f"FLEX droplets burn well below the textbook (classical droplet-combustion theory) burning rate: the median run reaches about "
+        f"{r(ratio['Methanol'])} of the textbook value for methanol and {r(ratio['Heptane'])} for heptane ({pc['n']} runs).",
+        "textbook theory classical droplet combustion theory d2 law predicted expected measured compare slower than theory physics gap ratio",
+        "measured burning rate divided by the theory value per run, median per fuel (07_physics_check.py)",
+        "The textbook formula leaves out radiation heat loss, soot and unsteady effects, and the team's gas property values are rough: "
+        "trust the direction and rough size, not the exact ratios.")
+    add("physics-no-accuracy-gain", PHY, "x3:report",
+        f"Adding the textbook burning-rate value to the team's Ridge model barely changes its error on held-out test days "
+        f"({r(rm['ridge_plus_theory']['mean'], 4)} against {r(rm['ridge']['mean'], 4)} mm2/s); the textbook value alone, even scaled per fuel, "
+        f"does worse ({r(rm['theory_scaled']['mean'], 3)}) than always guessing the mean ({r(rm['mean']['mean'], 3)}).",
+        "physics theory hybrid physics-informed model improve accuracy error textbook add help better",
+        "grouped cross-validation on whole test dates, same folds as the other models")
+    if all(v["agree_frac"] == 1.0 for v in agree.values()):
+        add("physics-direction", PHY, "x3:report",
+            "On every FLEX run, the team's burning-rate model moves the same way as textbook theory when a gas replaces nitrogen: "
+            "more oxygen and more helium make droplets burn faster, more carbon dioxide makes them burn slower.",
+            "physics theory agree consistent direction oxygen helium carbon dioxide CO2 burning rate faster slower model sanity check",
+            "sign of the change in the Ridge prediction and in the theory value, per run (07_physics_check.py)")
+    add("physics-gravity-estimate", PHY, "x3:report",
+        f"A textbook buoyancy estimate, not a measurement, says a 2 mm droplet in air at sea-level pressure would burn about {r(gf['earth'], 1)} times "
+        f"as fast on Earth, {r(gf['mars'], 1)} times on Mars and {r(gf['moon'], 1)} times on the Moon as on the ISS; in Moon Base air "
+        f"(30% oxygen, 527.5 mmHg) the Moon factor is about {r(gm, 1)}.",
+        "Moon lunar Mars Earth gravity partial gravity buoyancy faster burn burning rate estimate theory scaling Grashof convection",
+        "natural-convection correlation Nu = 2 + 0.6 Gr^(1/4) Pr^(1/3) with rough gas properties (physics.py)",
+        "No partial-gravity droplet data exists in PSI to check this against.")
+
 # ---------------- 4. Dashboard rankings (real files only) ----------------
 if DASH and (DASH / "rank.json").exists():
     rank = json.load(open(DASH / "rank.json", encoding="utf-8"))

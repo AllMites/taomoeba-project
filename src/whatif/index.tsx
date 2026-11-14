@@ -9,21 +9,26 @@ import {
   habitatPoint,
   isMoonLike,
   LEVEL_LABEL,
+  measuredShare,
   mixesOf,
   nearest,
   o2Curve,
-  parseDoc,
   pct,
   predict,
   pressureLabel,
   signed,
   support,
+  theoryRate,
+  type Effect,
   type Gas,
   type Prediction,
   type Sel,
   type WhatIfDoc,
 } from "./logic.ts";
 import { WatchBurn } from "./Burn.tsx";
+import { loadWhatIf } from "./load.ts";
+import { askAbout } from "./askAbout.ts";
+import { downloadText, oxygenSweep, toCsv } from "./csv.ts";
 import "./whatif.css";
 
 /** Air at sea level with a 2 mm methanol droplet: the plainest starting point. */
@@ -43,15 +48,11 @@ export default function WhatIf() {
 
   useEffect(() => {
     let live = true;
-    fetch("/data/whatif.json")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((j) => {
-        const doc = parseDoc(j);
-        if (!live) return;
-        setState(doc ? { phase: "ready", doc } : { phase: "error" });
-        if (doc) setSel(startSel(doc));
-      })
-      .catch(() => live && setState({ phase: "error" }));
+    void loadWhatIf().then((doc) => {
+      if (!live) return;
+      setState(doc ? { phase: "ready", doc } : { phase: "error" });
+      if (doc) setSel(startSel(doc));
+    });
     return () => {
       live = false;
     };
@@ -70,7 +71,17 @@ export default function WhatIf() {
   const h = habitats.status === "ready" ? habitats.data.find((x) => x.id === habitatId) : undefined;
   const hp = h ? habitatPoint(state.doc, h.o2Percent, h.pressureKPa) : null;
   const habitat = h ? { label: h.label, apply: hp ? () => setSel({ ...sel, ...hp }) : null } : undefined;
-  return <WhatIfView doc={state.doc} sel={sel} onChange={setSel} habitat={habitat} pinned={pinned} onPin={setPinned} />;
+  return (
+    <WhatIfView
+      doc={state.doc}
+      sel={sel}
+      onChange={setSel}
+      habitat={habitat}
+      pinned={pinned}
+      onPin={setPinned}
+      onAsk={(q) => useStore.getState().requestAsk?.(q)}
+    />
+  );
 }
 
 function Heading() {
@@ -92,6 +103,7 @@ export function WhatIfView(p: {
   habitat?: { label: string; apply: (() => void) | null };
   pinned?: Sel | null;
   onPin?: (s: Sel | null) => void;
+  onAsk?: (question: string) => void;
 }) {
   const { doc, sel, onChange } = p;
   const a = doc.axes;
@@ -248,10 +260,12 @@ export function WhatIfView(p: {
                     {pr.burningRate.toFixed(2)} <small>mm²/s</small>
                   </span>
                   <span className="muted">How fast the square of the droplet's diameter shrinks. Typical model error {m.burning_rate.rmse} mm²/s.</span>
+                  <TextbookLine doc={doc} sel={sel} />
                 </li>
               </ul>
               <WatchBurn
                 doc={doc}
+                sel={sel}
                 fuel={a.fuel[sel.fuel]}
                 d0={a.d0[sel.d0]}
                 burningRate={pr.burningRate}
@@ -261,16 +275,73 @@ export function WhatIfView(p: {
                 level={sup.level}
               />
               <Effects doc={doc} sel={sel} onGo={onChange} />
+              <TakeFurther doc={doc} sel={sel} pinned={p.pinned ?? null} onAsk={p.onAsk} />
             </>
           )}
           {p.pinned && <Compare doc={doc} a={p.pinned} b={sel} />}
           <p className="whatif-foot muted">
             How these were tested: every score comes from test days held out of training. Models: {m.ext_diameter.name};{" "}
-            {m.disruption.name}; {m.burning_rate.name}. Nothing here covers solid materials, other fuels or Moon gravity.
+            {m.disruption.name}; {m.burning_rate.name}. Nothing here covers solid materials or other fuels, and Moon gravity appears only as the labelled theory estimate.
           </p>
         </div>
       </div>
     </section>
+  );
+}
+
+/** Take the numbers away (CSV) or ask the records about this setting. */
+function TakeFurther({ doc, sel, pinned, onAsk }: { doc: WhatIfDoc; sel: Sel; pinned: Sel | null; onAsk?: (q: string) => void }) {
+  const fuel = doc.axes.fuel[sel.fuel];
+  const rows = pinned ? [{ sel: pinned, label: "pinned" }, { sel, label: "current" }] : [{ sel, label: "current" }];
+  return (
+    <div className="whatif-further">
+      <h3 className="whatif-h3">Take it further</h3>
+      {onAsk && (
+        <div className="whatif-askabout">
+          <p className="muted whatif-small">Ask the records about this setting (opens the chat):</p>
+          <ul className="whatif-askchips">
+            {askAbout(doc, sel).map((q) => (
+              <li key={q}>
+                <button type="button" className="whatif-chip" onClick={() => onAsk(q)}>
+                  {q}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div className="whatif-downloads">
+        <button type="button" className="quiet" onClick={() => downloadText(`flame-whatif-${fuel}.csv`, toCsv(doc, rows))}>
+          Download {pinned ? "both settings" : "this setting"} (CSV)
+        </button>
+        <button type="button" className="quiet" onClick={() => downloadText(`flame-whatif-${fuel}-oxygen-sweep.csv`, toCsv(doc, oxygenSweep(doc, sel)))}>
+          Download the oxygen sweep, 12–34% (CSV)
+        </button>
+      </div>
+      <p className="muted whatif-small">Each file lists the models, their tested accuracy and how much FLEX data sits near every row.</p>
+    </div>
+  );
+}
+
+/** Burning-rate direction from textbook theory, and whether the data model moves the same way. */
+function textbookCell(r: Effect): string {
+  if (!r.theory) return "–";
+  if (r.theory === "none") return "no term for this";
+  const word = r.theory === "faster" ? "burns faster" : "burns slower";
+  if (r.agrees === undefined) return word;
+  return r.agrees ? `${word} ✓ same as model` : `${word} ✗ model differs`;
+}
+
+/** The textbook value next to the model's, and how far real FLEX droplets fell short of it. */
+function TextbookLine({ doc, sel }: { doc: WhatIfDoc; sel: Sel }) {
+  const k = theoryRate(doc, sel);
+  const share = measuredShare(doc, sel);
+  if (k === null || share === null) return null;
+  return (
+    <span className="muted whatif-textbook">
+      Textbook formula: {k.toFixed(2)} mm²/s. Real FLEX {doc.axes.fuel[sel.fuel]} droplets burned at about {pct(share)} of the textbook
+      value, so use the model's number.
+    </span>
   );
 }
 
@@ -288,6 +359,7 @@ function Effects({ doc, sel, onGo }: { doc: WhatIfDoc; sel: Sel; onGo: (s: Sel) 
               <th scope="col">Chance of break-up</th>
               <th scope="col">Flame goes out at</th>
               <th scope="col">Burning rate</th>
+              {doc.theory && <th scope="col">Textbook says</th>}
             </tr>
           </thead>
           <tbody>
@@ -302,12 +374,20 @@ function Effects({ doc, sel, onGo }: { doc: WhatIfDoc; sel: Sel; onGo: (s: Sel) 
                 <td>{signed(r.dChance, "pts")}</td>
                 <td>{signed(r.dExt, "mm", 2)}</td>
                 <td>{signed(r.dBurn, "mm²/s", 2)}</td>
+                {doc.theory && <td className={r.agrees === false ? "whatif-differs" : undefined}>{textbookCell(r)}</td>}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
       <p className="muted whatif-small">Read from the same model predictions. Click a change to try it.</p>
+      {doc.theory && (
+        <p className="muted whatif-small">
+          "Textbook says" is what classical droplet theory predicts for burning rate, as a cross-check on the data model. On every
+          FLEX run the two move the same way for oxygen, helium and CO₂. The formula has no pressure or droplet-size term, so for
+          those rows only the data speak.
+        </p>
+      )}
     </div>
   );
 }
