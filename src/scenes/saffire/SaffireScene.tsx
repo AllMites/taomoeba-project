@@ -65,7 +65,7 @@ function phaseLine(rec: SaffireRecord, f: ReplayFrame): string {
   return `Out at ${fmt(v.burnTimeS.value ?? 0)} s, ${fmt(v.burnLengthCm.value ?? 0)} cm burned`;
 }
 
-function Readout({ label, value, unit, of }: { label: string; value: number | null; unit: string; of?: number | null }) {
+function Readout({ label, value, unit, of }: { label: string; value: number | string | null; unit: string; of?: number | null }) {
   return (
     <div className="sf-ro">
       <dt>{label}</dt>
@@ -98,13 +98,15 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
   const [hud, setHud] = useState<ReplayFrame | null>(null);
   const leaders = useRef<LeaderRefs>({ root: null, lines: [], dots: [], boxes: [], anchors: [] });
 
-  // Start position: mid-burn when calm (one still frame), else the start of ignition.
+  // Start position: mid-burn for a still frame (calm, or the poster when WebGL is off or lost), else the start
+  // of ignition, so the HUD always matches what is on screen.
+  const still = calm || !webgl || lost;
   useEffect(() => {
     if (!ready) return;
-    clock.current = calm ? midBurn(ready) : loopSpan(ready).start;
+    clock.current = still ? midBurn(ready) : loopSpan(ready).start;
     setHud(frameAt(ready, clock.current));
-    setPlaying(!calm);
-  }, [ready, calm]);
+    setPlaying(!still);
+  }, [ready, still]);
 
   // Size class and on-screen state.
   useEffect(() => {
@@ -210,10 +212,10 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
             <Readout label="Air flow" value={v.airflowCmS.value} unit="cm/s" />
             <Readout label="Pressure" value={v.pressureKPa.value} unit="kPa" />
             <Readout label="Time" value={Math.floor(hud.burnS)} unit="s" of={v.burnTimeS.value} />
-            <Readout label="Flame front" value={hud.frontCm == null ? null : Number(hud.frontCm.toFixed(1))} unit="cm" of={v.burnLengthCm.value} />
+            <Readout label="Flame front" value={hud.frontCm == null ? null : hud.frontCm.toFixed(1)} unit="cm" of={v.burnLengthCm.value} />
           </dl>
           <p className="sf-phase">{phaseLine(ready, hud)}</p>
-          <p className="t-readout sf-speed">{calm && !playing ? "Still frame, mid-burn" : `Replay ${PLAYBACK_SPEED}× speed`}</p>
+          <p className="t-readout sf-speed">{(calm || !useCanvas) && !playing ? "Still frame, mid-burn" : `Replay ${PLAYBACK_SPEED}× speed`}</p>
         </div>
       )}
 
