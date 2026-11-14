@@ -18,7 +18,7 @@ export function historyFrom(turns: TurnState[]): HistoryTurn[] {
     .flatMap((t): HistoryTurn[] => {
       const o = t.outcome;
       if (o?.kind !== "answer") return [];
-      const text = [...(o.result.facts ?? []).map((f) => f.statement), readable(o.result.answer)].filter(Boolean).join(" ");
+      const text = [o.result.summary ?? "", ...(o.result.facts ?? []).map((f) => f.statement), readable(o.result.answer)].filter(Boolean).join(" ");
       return [{ question: t.question.slice(0, MAX_QUESTION), answer: text.slice(0, MAX_ANSWER) }];
     })
     .slice(-MAX_HISTORY);

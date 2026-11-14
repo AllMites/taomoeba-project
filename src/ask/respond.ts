@@ -40,6 +40,8 @@ const AskResult = z.object({
   /** True when the live writer failed and the server quoted the records instead. */
   degraded: z.boolean().optional().catch(undefined),
   savedAt: z.string().optional().catch(undefined),
+  /** SI's direct answer, written from the kept sentences only. */
+  summary: z.string().optional().catch(undefined),
   // Optional, so older servers still parse; a bad relation label is dropped rather than failing the answer.
   facts: z.array(DataFact).optional().catch(undefined),
   relations: z.record(z.string(), Relation.catch("related")).optional().catch(undefined),

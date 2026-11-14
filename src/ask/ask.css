@@ -231,3 +231,8 @@ html:has(.ask-panel:modal) { overflow: hidden; }
 .ask-compose-meta { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); align-items: baseline; justify-content: space-between; margin-bottom: var(--space-2); }
 .ask-composer .ask-count { min-height: 0; }
 .ask-composer .ask-count:empty { display: none; }
+
+/* SI's direct answer sits first; the checked sentences it was built from follow. */
+.ask-summary { margin: 0 0 var(--space-3); }
+.ask-summary .ask-text { margin: 0 0 var(--space-1); }
+.ask-summary-note { margin: 0; font-size: 0.75rem; }

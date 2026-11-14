@@ -357,10 +357,17 @@ export function Answer({
           </ul>
         </div>
       )}
+      {result.summary && (
+        <div className="ask-summary">
+          <p className="ask-text">{result.summary}</p>
+          <p className="muted ask-summary-note">SI wrote this answer from the checked sentences below. It is a reading of them, not a test result.</p>
+        </div>
+      )}
       {/* A ranking answer has no paper part: the server sends an empty answer. */}
       {!isRankingOnly(result) && result.answer.trim() !== "" && (
         <>
           {facts.length > 0 && !dataOnly && <p className="ask-mode">What the papers say</p>}
+          {result.summary && facts.length === 0 && <p className="ask-mode">The checked sentences</p>}
           <p className={dataOnly ? "ask-note" : "ask-text"}>{readable(result.answer)}</p>
         </>
       )}

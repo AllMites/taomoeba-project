@@ -11,12 +11,12 @@ const facts = factsJson as DataFact[];
 const SENT = "Median particle diameter was larger than typical ground-based smoke detector test aerosols.";
 
 /** Fake Anthropic API: answers the re-ranker, the claim writer and the support checker by their system prompt. */
-function fakeApi(r: { rerank?: string; claims?: string; support?: string }) {
+function fakeApi(r: { rerank?: string; claims?: string; support?: string; answer?: string }) {
   const calls: string[] = [];
   const fetchImpl = (async (_u: string, init: RequestInit) => {
     const body = JSON.parse(String(init.body));
     const sys: string = body.system;
-    const kind = sys.startsWith("You rank passages") ? "rerank" : sys.startsWith("You check whether") ? "support" : "claims";
+    const kind = sys.startsWith("You rank passages") ? "rerank" : sys.startsWith("You check whether") ? "support" : sys.startsWith("You are SI") ? "answer" : "claims";
     calls.push(kind);
     expect(body.thinking).toEqual({ type: "disabled" });
     const text = r[kind] ?? (kind === "rerank" ? '{"ranking": [1], "none_relevant": false}' : '{"results": [{"n": 1, "supported": true, "reason": "same"}]}');
@@ -77,7 +77,7 @@ describe("live answers: re-rank, exact-sentence claims, checks, support check", 
     expect(j.claims[0].excerpt).toBe(SENT);
     expect(j.claims[0].flagged).toBeUndefined();
     expect(j.answer).toBe("Smoke particles were larger than the test aerosols used for detectors. [SRC-05]");
-    expect(api.calls).toEqual(["rerank", "claims", "support"]);
+    expect(api.calls).toEqual(["rerank", "claims", "support", "answer"]);
   });
   it("drops a claim that adds a number, an excerpt not in the source, and an invented source; all dropped -> quotes", async () => {
     const api = fakeApi({

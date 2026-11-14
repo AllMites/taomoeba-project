@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { createApp, fixtureIndex } from "./app.ts";
-import { asksAboutHabitat, buildClaimsPrompt, extractive, HABITAT_AIR, NO_STEPS, parseClaims, retrievalQuery } from "./ask.ts";
+import { asksAboutHabitat, buildClaimsPrompt, extractive, HABITAT_AIR, NO_STEPS, parseClaims, retrievalQuery, checkSummary, withoutSourceName } from "./ask.ts";
 import { buildIndex } from "./bm25.ts";
 
 const index = fixtureIndex();
@@ -11,11 +11,11 @@ const OK_CLAIM = { text: "Smoke particles were larger than the test aerosols use
 type Seen = { kind: string; body: any }[];
 
 /** Fake Anthropic API: answers the re-ranker, the writer and the support checker by their system prompt, and records every body. */
-function fakeApi(r: { rerank?: string; claims?: string; support?: string; fail?: "writer" } = {}) {
+function fakeApi(r: { rerank?: string; claims?: string; support?: string; answer?: string; fail?: "writer" } = {}) {
   const seen: Seen = [];
   const fetchImpl = (async (_u: string, init: RequestInit) => {
     const body = JSON.parse(String(init.body));
-    const kind = body.system.startsWith("You rank passages") ? "rerank" : body.system.startsWith("You check whether") ? "support" : "claims";
+    const kind = body.system.startsWith("You rank passages") ? "rerank" : body.system.startsWith("You check whether") ? "support" : body.system.startsWith("You are SI") ? "answer" : "claims";
     seen.push({ kind, body });
     if (kind === "claims" && r.fail === "writer") return new Response("{}", { status: 500 });
     const text = r[kind as "rerank"] ?? (kind === "rerank" ? '{"ranking": [1], "none_relevant": false}' : '{"results": [{"n": 1, "supported": true, "reason": "same"}]}');
@@ -49,7 +49,7 @@ describe("history on /ask", () => {
     const r = await post(createApp({ index }), { question: "and the size?", history: [turn("What size are smoke particles?", "Larger than test aerosols.")] }, { ANTHROPIC_API_KEY: "k", fetchImpl: api.fetchImpl });
     const j = await r.json();
     expect(j.mode).toBe("live");
-    expect(api.seen.map((s) => s.kind)).toEqual(["rerank", "claims", "support"]);
+    expect(api.seen.map((s) => s.kind)).toEqual(["rerank", "claims", "support", "answer"]);
     expect(api.seen[0].body.messages[0].content).toContain("This follows the earlier question: What size are smoke particles?");
   });
 
@@ -86,7 +86,7 @@ describe("habitat air", () => {
     for (const h of items) expect(HABITAT_AIR[h.id]).toBe(`${h.label}: ${h.o2Percent}% oxygen, ${h.pressureKPa} kPa`);
     const p = buildClaimsPrompt("q", "moon", [], []);
     expect(p.user).toContain(`<habitat>${HABITAT_AIR.moon}</habitat>`);
-    expect(p.system).toMatch(/compare the oxygen and pressure/);
+    expect(p.system).toMatch(/Never write the habitat.s own oxygen or pressure figures in a claim/);
   });
 
   it("a habitat comparison that uses the site's own air figures passes; the same figures on another question do not", async () => {
@@ -209,4 +209,27 @@ describe("steps, model, degraded", () => {
     expect(j.steps).toEqual(NO_STEPS);
     expect(j.model).toBeNull();
   });
+});
+
+it("a number in the source's own name is not counted as an invented number", () => {
+  expect(withoutSourceName("In the Apollo 204 fire the cabin lost oxygen.", "nasa:apollo204-report")).toBe("In the Apollo fire the cabin lost oxygen.");
+  // Any other number stays for the number check, even beside the same name.
+  expect(withoutSourceName("Apollo 13 burned for 204 seconds.", "nasa:apollo204-report")).toBe("Apollo 13 burned for 204 seconds.");
+});
+
+it("the direct answer is dropped if it states a number that is not in the evidence or the habitat air", () => {
+  const evidence = "1. Materials may burn at lower oxygen in lunar gravity.";
+  const air = "Moon Base: 30% oxygen, 70.3 kPa";
+  expect(checkSummary("Your base has 30% oxygen, more than Earth at 21%.", evidence, air)).not.toBeNull();
+  expect(checkSummary("Flames spread 45% faster there.", evidence, air)).toBeNull();
+  expect(checkSummary("See [nasa:x] for more.", evidence, air)).toBeNull();
+});
+
+it("a live answer carries SI's direct answer when it passes its check, and none when it states a new number", async () => {
+  const env = (answer: string) => ({ ANTHROPIC_API_KEY: "k", fetchImpl: fakeApi({ claims: claims(OK_CLAIM), answer }).fetchImpl });
+  const good = await (await post(createApp({ index }), { question: "smoke particle size" }, env("The records suggest smoke particles differ in size."))).json();
+  expect(good.summary).toBe("The records suggest smoke particles differ in size.");
+  const bad = await (await post(createApp({ index }), { question: "smoke particle size" }, env("Particles were 987 times larger."))).json();
+  expect(bad.claims.length).toBeGreaterThan(0);
+  expect(bad.summary).toBeUndefined();
 });
