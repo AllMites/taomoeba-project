@@ -1,17 +1,75 @@
-/* Neutral placeholder palette. A mood board replaces these values; components use tokens only. */
+/*
+ * DESIGN TOKENS. The mood board swap happens in this one file; components use these names only.
+ * Dark and calm is the default (near-black, one warm accent). Light scheme follows the OS setting.
+ * Rules: body text >= 4.5:1 on --color-bg / --color-surface / --color-surface-2; UI marks >= 3:1.
+ *
+ * COLOUR - surfaces and text
+ *   --color-bg              page background
+ *   --color-surface         cards, bars, dialogs
+ *   --color-surface-2       a level above surface (nested panels, hover, inputs)
+ *   --color-border          dividers and card outlines (decorative; use --color-edge for control outlines)
+ *   --color-edge            outline of controls that must be seen (radios, inputs), >= 3:1
+ *   --color-text            body text
+ *   --color-text-muted      secondary text
+ *   --color-unknown         "Not on record" text; muted, still >= 4.5:1
+ * COLOUR - accent and state
+ *   --color-accent          the one warm accent: links, selected marks, key numbers
+ *   --color-accent-contrast text drawn ON an accent fill
+ *   --color-focus           focus ring
+ *   --color-highlight       outline of a card lit by an answer or by the picked habitat
+ *   --color-highlight-bg    fill of a lit card
+ *   --color-glow            soft glow colour for the one focal visual per screen (decorative only)
+ *   --color-badge-bg / -text  "sample data" badge
+ * COLOUR - meters (oxygen and pressure bars)
+ *   --color-meter-track     empty bar
+ *   --color-meter-fill      range an experiment tested
+ *   --color-marker          the habitat's own value drawn on a bar
+ * COLOUR - Prevention / Detection / Suppression tags (fill + text on that fill)
+ *   --color-tag-prevention / --color-tag-prevention-text
+ *   --color-tag-detection  / --color-tag-detection-text
+ *   --color-tag-suppression/ --color-tag-suppression-text
+ *
+ * SHADOW     --shadow-1 resting card, --shadow-2 raised (sticky bar, dialog)
+ * SPACE      --space-1 .. --space-8 (0.25rem to 5rem)
+ * RADIUS     --radius-1 chips, --radius-2 cards, --radius-3 large panels and picker cards
+ * TYPE       --font-sans body, --font-display headings, --font-mono ids and numbers
+ *            --text-xs .. --text-3xl, fluid at the top end
+ * MOTION     --motion-fast (hover, focus), --motion-slow (the hero pulse); both become 0s under reduced motion
+ */
 :root {
-  color-scheme: light dark;
+  color-scheme: dark light;
 
-  --color-bg: #f7f7f8;
-  --color-surface: #ffffff;
-  --color-border: #c9ccd2;
-  --color-text: #1b1d22;
-  --color-text-muted: #4a4f59;
-  --color-accent: #1d4ed8;
-  --color-accent-contrast: #ffffff;
-  --color-focus: #1d4ed8;
-  --color-badge-bg: #fff1c2;
-  --color-badge-text: #4a3500;
+  /* dark (default) */
+  --color-bg: #0b0c10;
+  --color-surface: #14161c;
+  --color-surface-2: #1d2029;
+  --color-border: #2c303b;
+  --color-edge: #7d8496;
+  --color-text: #eeece8;
+  --color-text-muted: #adb1bd;
+  --color-unknown: #a2a7b4;
+  --color-accent: #ffb454;
+  --color-accent-contrast: #1a1000;
+  --color-focus: #ffd08a;
+  --color-highlight: #ffb454;
+  --color-highlight-bg: #2a2114;
+  --color-glow: #ff9a3c;
+  --color-badge-bg: #4a3a00;
+  --color-badge-text: #ffe9a8;
+
+  --color-meter-track: #2c303b;
+  --color-meter-fill: #ffb454;
+  --color-marker: #8fd0ff;
+
+  --color-tag-prevention: #1c3a2c;
+  --color-tag-prevention-text: #9be3bd;
+  --color-tag-detection: #1c2f4a;
+  --color-tag-detection-text: #a6cfff;
+  --color-tag-suppression: #4a2330;
+  --color-tag-suppression-text: #ffb3c4;
+
+  --shadow-1: 0 1px 2px rgb(0 0 0 / 0.5), 0 0 0 1px rgb(255 255 255 / 0.03);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(255 255 255 / 0.05);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -19,25 +77,67 @@
   --space-4: 1rem;
   --space-5: 1.5rem;
   --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 5rem;
 
   --radius-1: 4px;
   --radius-2: 8px;
+  --radius-3: 16px;
 
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: clamp(2.25rem, 1.5rem + 3.5vw, 3.75rem);
+
+  --motion-fast: 120ms;
+  --motion-slow: 4s;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --color-bg: #111317;
-    --color-surface: #1a1d23;
-    --color-border: #3a3f4a;
-    --color-text: #eceef2;
-    --color-text-muted: #b4b9c4;
-    --color-accent: #8ab4ff;
-    --color-accent-contrast: #0b0d10;
-    --color-focus: #8ab4ff;
-    --color-badge-bg: #4a3a00;
-    --color-badge-text: #ffe9a8;
+    --color-bg: #faf7f2;
+    --color-surface: #ffffff;
+    --color-surface-2: #f1ece3;
+    --color-border: #d9d2c6;
+    --color-edge: #7a7468;
+    --color-text: #1d1b18;
+    --color-text-muted: #55514a;
+    --color-unknown: #5c5850;
+    --color-accent: #9a4a00;
+    --color-accent-contrast: #ffffff;
+    --color-focus: #9a4a00;
+    --color-highlight: #b45f06;
+    --color-highlight-bg: #fff1dc;
+    --color-glow: #ff9a3c;
+    --color-badge-bg: #fff1c2;
+    --color-badge-text: #4a3500;
+
+    --color-meter-track: #e4ddd0;
+    --color-meter-fill: #b45f06;
+    --color-marker: #0b5c9e;
+
+    --color-tag-prevention: #d6f0e1;
+    --color-tag-prevention-text: #0f4a2e;
+    --color-tag-detection: #d9e8fb;
+    --color-tag-detection-text: #123e72;
+    --color-tag-suppression: #fbdde5;
+    --color-tag-suppression-text: #7a1236;
+
+    --shadow-1: 0 1px 2px rgb(40 30 10 / 0.12), 0 0 0 1px rgb(40 30 10 / 0.04);
+    --shadow-2: 0 8px 24px rgb(40 30 10 / 0.18), 0 0 0 1px rgb(40 30 10 / 0.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 0s;
+    --motion-slow: 0s;
   }
 }
