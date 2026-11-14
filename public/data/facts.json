@@ -221,10 +221,10 @@
   "id": "model-recommended",
   "dataset": "Team model results",
   "source": "team:model-report",
-  "statement": "The team recommends three models: Ridge for droplet burning rate, CatBoost for flame extinction diameter (inside the tested range only) and CatBoost for whether a gas flame self-extinguishes; the other models are kept for comparison only.",
+  "statement": "The team recommends four models: Ridge for droplet burning rate, the refined CatBoost for flame extinction diameter (inside the tested range only), a logistic model for the chance a droplet breaks apart, and CatBoost for whether a gas flame self-extinguishes; the other models are kept for comparison only.",
   "numbers": [],
-  "keywords": "which model recommended use ship burning rate extinction diameter self-extinguish team models",
-  "method": "verdict table, REPORT.md section 1",
+  "keywords": "which model recommended use ship burning rate extinction diameter disruption break apart self-extinguish team models",
+  "method": "verdict tables, REPORT.md sections 1 and 9",
   "caveat": ""
  },
  {
@@ -361,6 +361,56 @@
   "keywords": "model predict prediction burning rate oxygen O2 Heptane trend rise partial dependence",
   "method": "partial dependence, all other inputs fixed",
   "caveat": "Above about 28% oxygen the two models diverge; burning-rate unit not verified."
+ },
+ {
+  "id": "model-dext-refined",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "The refined extinction-diameter model (CatBoost with physics-based inputs, constrained to rise with initial droplet size) has error (RMSE) 0.487 mm against 0.497 mm before, and was better in 64% of held-out folds; its plus-or-minus 0.84 mm band covered 92% of runs on held-out test dates.",
+  "numbers": [
+   "0.487",
+   "0.497",
+   "0.84",
+   "64",
+   "92"
+  ],
+  "keywords": "refined improved better extinction diameter model accuracy error RMSE uncertainty band range how sure confidence",
+  "method": "grouped cross-validation, REPORT.md section 9",
+  "caveat": "Inside the tested range only."
+ },
+ {
+  "id": "model-disruption",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "A new model gives the chance a FLEX droplet breaks apart (disruption): on held-out test dates it ranks break-ups above other endings with AUC 0.86, and its average predicted chance matched the observed rate of 21% of runs. Asking whether a droplet breaks apart works better than the original three-way test-end model (balanced accuracy 0.77 against 0.58).",
+  "numbers": [
+   "0.58",
+   "0.77",
+   "0.86",
+   "21"
+  ],
+  "keywords": "disruption break apart breaks up droplet model chance likely likelihood probability predict test end how runs ended accuracy",
+  "method": "grouped cross-validation, REPORT.md section 9",
+  "caveat": ""
+ },
+ {
+  "id": "model-disruption-moon",
+  "dataset": "Team model results",
+  "source": "team:model-report",
+  "statement": "At Moon-Base-like conditions (30% oxygen, 527.5 mmHg, 2 mm droplet) the disruption model gives a 89% chance a methanol droplet breaks apart and 95% for heptane, in line with the data: 17 of 23 FLEX runs at 28% oxygen or more broke apart.",
+  "numbers": [
+   "17",
+   "2",
+   "23",
+   "28",
+   "30",
+   "527.5",
+   "89",
+   "95"
+  ],
+  "keywords": "Moon base lunar 30% oxygen low pressure disruption break apart",
+  "method": "disruption model prediction and FLEX outcome counts",
+  "caveat": "Few runs exist at exactly these conditions: read it as a trend, not a measurement."
  },
  {
   "id": "model-moon-validity",

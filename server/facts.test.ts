@@ -14,6 +14,9 @@ const CASES: [string, string[]][] = [
   ["How accurate is the burning rate model?", ["model-br-accuracy"]],
   ["What matters most for extinction diameter in the model?", ["model-importance-flex_ext_diameter"]],
   ["Can we trust the model predictions for a Moon base?", ["model-moon-validity"]],
+  ["Will droplets break apart at Moon base conditions?", ["model-disruption-moon"]],
+  ["How likely is a droplet to break apart?", ["model-disruption"]],
+  ["How accurate is the refined extinction diameter model?", ["model-dext-refined"]],
   ["Why is the ignition model not used?", ["model-ignition-weak"]],
   ["Why is FLEX ranked first for the Moon base?", ["dash-rank-PSI-69-moon"]],
   ["How does SAFFIRE-I rank for the ISS?", ["dash-rank-PSI-98-iss"]],
@@ -51,4 +54,8 @@ describe("dashboard ranking facts only for ranking questions", () => {
     expect(got.length).toBeGreaterThan(0);
     expect(got.every((id) => id.startsWith("dash-") && id.endsWith("-moon"))).toBe(true);
   });
+});
+
+it("a dashboard ranking question gets ranking facts only", () => {
+  expect(findFacts(facts as DataFact[], "Which experiment ranks highest for ISS?").map((f) => f.id)).toEqual(["dash-rank-PSI-69-iss"]);
 });

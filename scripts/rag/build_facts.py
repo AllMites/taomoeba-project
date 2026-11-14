@@ -146,11 +146,20 @@ def m(target, model, metric):
     return cv[target]["models"][model][metric] if "models" in cv[target] else cv[target][model][metric]
 
 
+ref = res.get("refined")  # refinement round (x3 REPORT.md section 9, 05_refine_fit.py); absent in older packages
 try:
-    add("model-recommended", TEAM, "x3:report",
-        "The team recommends three models: Ridge for droplet burning rate, CatBoost for flame extinction diameter (inside the "
-        "tested range only) and CatBoost for whether a gas flame self-extinguishes; the other models are kept for comparison only.",
-        "which model recommended use ship burning rate extinction diameter self-extinguish team models", "verdict table, REPORT.md section 1")
+    if ref:
+        add("model-recommended", TEAM, "x3:report",
+            "The team recommends four models: Ridge for droplet burning rate, the refined CatBoost for flame extinction diameter "
+            "(inside the tested range only), a logistic model for the chance a droplet breaks apart, and CatBoost for whether a gas "
+            "flame self-extinguishes; the other models are kept for comparison only.",
+            "which model recommended use ship burning rate extinction diameter disruption break apart self-extinguish team models",
+            "verdict tables, REPORT.md sections 1 and 9")
+    else:
+        add("model-recommended", TEAM, "x3:report",
+            "The team recommends three models: Ridge for droplet burning rate, CatBoost for flame extinction diameter (inside the "
+            "tested range only) and CatBoost for whether a gas flame self-extinguishes; the other models are kept for comparison only.",
+            "which model recommended use ship burning rate extinction diameter self-extinguish team models", "verdict table, REPORT.md section 1")
     add("model-br-accuracy", TEAM, "x3:report",
         "For FLEX burning rate, the linear Ridge model has error (RMSE) 0.074 against 0.082 for CatBoost and 0.138 for always guessing the mean.",
         "burning rate model accuracy error RMSE Ridge CatBoost how good", "grouped cross-validation, REPORT.md section 1")
@@ -190,6 +199,30 @@ for fuel, d in pd_.items():
         f"{r(lo['catboost'])} to {r(hi['catboost'])}.",
         f"model predict prediction burning rate oxygen O2 {fuel} trend rise partial dependence", "partial dependence, all other inputs fixed",
         "Above about 28% oxygen the two models diverge; burning-rate unit not verified.")
+
+if ref:
+    e, dz, hi, mp = ref["ext_diameter_v2"], ref["disruption"], ref["high_o2_runs"], ref["moon_point"]
+    add("model-dext-refined", TEAM, "x3:report",
+        f"The refined extinction-diameter model (CatBoost with physics-based inputs, constrained to rise "
+        f"with initial droplet size) has error (RMSE) {r(e['cv_rmse_mm'], 3)} mm against {r(e['cv_rmse_mm_original'], 3)} mm before, and was better "
+        f"in {int(round(e['beats_original_frac_of_folds'] * 100))}% of held-out folds; its plus-or-minus {r(e['band_half_width_mm'], 2)} mm band "
+        f"covered {int(round(e['band_coverage_held_out'] * 100))}% of runs on held-out test dates.",
+        "refined improved better extinction diameter model accuracy error RMSE uncertainty band range how sure confidence",
+        "grouped cross-validation, REPORT.md section 9", "Inside the tested range only.")
+    add("model-disruption", TEAM, "x3:report",
+        f"A new model gives the chance a FLEX droplet breaks apart (disruption): on held-out test dates it ranks break-ups above other "
+        f"endings with AUC {r(dz['cv_auc'], 2)}, and its average predicted chance matched the observed rate of {int(round(dz['base_rate'] * 100))}% of runs. "
+        f"Asking whether a droplet breaks apart works better than the original three-way test-end model "
+        f"(balanced accuracy {r(dz['cv_bacc'], 2)} against {r(dz['three_class_bacc_original'], 2)}).",
+        "disruption break apart breaks up droplet model chance likely likelihood probability predict test end how runs ended accuracy",
+        "grouped cross-validation, REPORT.md section 9")
+    add("model-disruption-moon", TEAM, "x3:report",
+        f"At Moon-Base-like conditions (30% oxygen, 527.5 mmHg, 2 mm droplet) the disruption model gives a "
+        f"{int(round(mp['p_disruption']['methanol'] * 100))}% chance a methanol droplet breaks apart and {int(round(mp['p_disruption']['heptane'] * 100))}% "
+        f"for heptane, in line with the data: {hi['disruption']} of {hi['n']} FLEX runs at 28% oxygen or more broke apart.",
+        "Moon base lunar 30% oxygen low pressure disruption break apart",
+        "disruption model prediction and FLEX outcome counts",
+        "Few runs exist at exactly these conditions: read it as a trend, not a measurement.")
 
 cov = res["importance_pd_coverage"]["coverage_flex"]
 add("model-moon-validity", TEAM, "x3:report",

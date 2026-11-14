@@ -8,7 +8,7 @@ const noop = () => {};
 it("keeps the Ask button and example chips focusable while waiting", () => {
   const html = renderToStaticMarkup(<Controls question="What is a cool flame?" busy onChange={noop} onSubmit={noop} onPick={noop} />);
   expect(html).not.toMatch(/\sdisabled=""/);
-  expect(html.match(/aria-disabled="true"/g)).toHaveLength(4); // Ask + 3 examples
+  expect(html.match(/aria-disabled="true"/g)).toHaveLength(5); // Ask + 4 examples
 });
 
 it("labels the input and caps it at 300 characters", () => {

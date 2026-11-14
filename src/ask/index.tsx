@@ -7,7 +7,7 @@ import {
   isDataOnly,
   isShortQuotesOnly,
   MAX_QUESTION,
-  MODE_LABEL,
+  modeLabel,
   readable,
   RELATION_LABEL,
   sourceKind,
@@ -16,10 +16,13 @@ import {
 } from "./respond.ts";
 import "./ask.css";
 
-// Chosen against public/data/index.json: the records answer each of these directly.
+// One of each kind the box answers well: a data question (data finding + papers), a dashboard ranking,
+// a spacecraft fire incident, and a plain science question. Saved answers exist for all four
+// (public/data/saved-answers.json, made with scripts/rag/save_answers.mjs).
 const EXAMPLES = [
-  "Which experiments tested 30% oxygen?",
-  "What happened to silicone in microgravity?",
+  "Do bigger droplets go out at a bigger diameter?",
+  "Which experiment ranks highest for ISS?",
+  "What caused the Apollo 1 fire?",
   "What is a cool flame?",
 ];
 const SHOW_COUNT_FROM = MAX_QUESTION - 50;
@@ -187,8 +190,8 @@ function Answer({ result, titleOf, onOpen }: { result: AskResult; titleOf: (id: 
       {/* A ranking answer has no paper part: the server sends an empty answer. */}
       {result.answer.trim() !== "" && (
         <>
-          {facts.length > 0 && <p className="ask-mode">{dataOnly ? "What the papers say" : `What the papers say · ${MODE_LABEL[result.mode]}`}</p>}
-          {facts.length === 0 && <p className="ask-mode">{MODE_LABEL[result.mode]}</p>}
+          {facts.length > 0 && <p className="ask-mode">{dataOnly ? "What the papers say" : `What the papers say · ${modeLabel(result)}`}</p>}
+          {facts.length === 0 && <p className="ask-mode">{modeLabel(result)}</p>}
           <p className={dataOnly ? "ask-note" : "ask-text t-statement"}>{readable(result.answer)}</p>
         </>
       )}
