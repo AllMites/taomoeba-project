@@ -412,6 +412,41 @@
       "url": "https://www.nasa.gov/feature/25-years-ago-fire-aboard-space-station-mir",
       "excerpt": "24, 1997, the six crew members aboard the Russian space station Mir faced significant danger when a fire ignited in an oxygen generating system.",
       "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:spinoff-water-mist",
+      "title": "Water-mist fire extinguishers for the ISS, and the zero-leak valve now used on Earth (NASA Spinoff)",
+      "url": "https://spinoff.nasa.gov/node/11065",
+      "excerpt": "There's no safe way to set anything substantial on fire on the space station to observe how spreading flames act in zero gravity, to test a fire extinguisher, or to see if protective gear will perform as designed.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:spinoff-pbi",
+      "title": "PBI fibre from spaceflight suits in firefighter turnout gear (NASA Spinoff)",
+      "url": "https://spinoff.nasa.gov/node/10564",
+      "excerpt": "Insulating and protecting astronauts from temperature extremes, from the 3 K (-455 °F) of deep space to the 1,533 K (2,300 °F) of atmospheric reentry, is central to NASA's human space flight program.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:same-factsheet",
+      "title": "Smoke Aerosol Measurement Experiment (SAME) fact sheet (NASA)",
+      "url": "https://www.nasa.gov/wp-content/uploads/2025/07/smoke-aerosol-measurement-experiment-same.pdf",
+      "excerpt": "Smoke Aerosol Measurement Experiment (SAME) Spacecraft smoke detectors must detect different types of smoke.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:studying-combustion",
+      "title": "Studying Combustion and Fire Safety on the Space Station (NASA)",
+      "url": "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/",
+      "excerpt": "Research on the International Space Station is helping scientists to understand how fire spreads and behaves in different environments and learn how to prevent and extinguish fires in space.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
+    },
+    {
+      "id": "nasa:spinoff-breathing",
+      "title": "Space Technology for the Fire Department: firefighter breathing system (NASA Spinoff)",
+      "url": "https://spinoff.nasa.gov/node/9518",
+      "excerpt": "A National Bureau of Standards/NASA project directed by Johnson resulted in a lightweight breathing system including face mask, frame, harness and air bottle marketed by Scott Aviation.",
+      "license": "Public domain (NASA work, U.S. government; nasa.gov)"
     }
   ]
 }

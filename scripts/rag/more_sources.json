@@ -182,6 +182,55 @@
    "download": "https://www.nasa.gov/feature/25-years-ago-fire-aboard-space-station-mir",
    "topic": "suppression",
    "investigations": []
+  },
+  {
+   "id": "nasa:spinoff-water-mist",
+   "title": "Water-mist fire extinguishers for the ISS, and the zero-leak valve now used on Earth (NASA Spinoff)",
+   "url": "https://spinoff.nasa.gov/node/11065",
+   "download": "https://spinoff.nasa.gov/node/11065",
+   "topic": "suppression",
+   "investigations": []
+  },
+  {
+   "id": "nasa:spinoff-breathing",
+   "title": "Space Technology for the Fire Department: firefighter breathing system (NASA Spinoff)",
+   "url": "https://spinoff.nasa.gov/node/9518",
+   "download": "https://spinoff.nasa.gov/node/9518",
+   "topic": "other",
+   "investigations": []
+  },
+  {
+   "id": "nasa:spinoff-pbi",
+   "title": "PBI fibre from spaceflight suits in firefighter turnout gear (NASA Spinoff)",
+   "url": "https://spinoff.nasa.gov/node/10564",
+   "download": "https://spinoff.nasa.gov/node/10564",
+   "topic": "other",
+   "investigations": []
+  },
+  {
+   "id": "nasa:same-factsheet",
+   "title": "Smoke Aerosol Measurement Experiment (SAME) fact sheet (NASA)",
+   "url": "https://www.nasa.gov/wp-content/uploads/2025/07/smoke-aerosol-measurement-experiment-same.pdf",
+   "download": "https://www.nasa.gov/wp-content/uploads/2025/07/smoke-aerosol-measurement-experiment-same.pdf",
+   "topic": "detection",
+   "investigations": [
+    "PSI-102",
+    "PSI-101"
+   ]
+  },
+  {
+   "id": "nasa:studying-combustion",
+   "title": "Studying Combustion and Fire Safety on the Space Station (NASA)",
+   "url": "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/",
+   "download": "https://www.nasa.gov/missions/station/studying-combustion-and-fire-safety/",
+   "topic": "other",
+   "investigations": [
+    "PSI-69",
+    "PSI-68",
+    "PSI-10",
+    "PSI-20",
+    "PSI-159"
+   ]
   }
  ]
 }

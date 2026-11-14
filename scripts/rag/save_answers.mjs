@@ -44,6 +44,12 @@ const QUESTIONS = [
   "Can we trust the model predictions for a Moon base?",
   "Would a droplet burn faster on the Moon than on the ISS?",
   "How do measured burning rates compare with droplet combustion theory?",
+  // the "On Earth too" cards' Ask buttons (public/data/earth.json)
+  "How does water mist put out fires?",
+  "What did SAME find about smoke particles?",
+  "How could ACME research reduce pollution on Earth?",
+  "How did NASA help firefighters' breathing equipment?",
+  "What is PBI fabric and how do firefighters use it?",
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
