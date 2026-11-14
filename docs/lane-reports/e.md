@@ -20,11 +20,15 @@ Worker entry is `server/index.ts` (default export only; workerd rejects other ex
 - **Live mode never ran against Anthropic** (no key). Tested only with a stubbed fetch (parsing, unknown-id drop, failure falls back to extractive). The request body follows the claude-api skill (no temperature, `output_config.effort`); first real call may need tuning.
 - `/rank` stays a 501 stub; ranks are precomputed.
 
-## Rank script (`node scripts/rank/build.ts`)
-- `ALPHA = 0.5` in `scripts/rank/build.ts`. Fixture run: 32 items (8 investigations x 4 habitats), 32 TypeSafe Score calls, 16,452 in / 608 out tokens, 7.4 s. Cached in `scripts/rank/.cache/` (rerun = 0 calls).
-- With fixture inputs the output goes to `scripts/rank/.cache/rank.fixtures.json` (gitignored), not `public/data/rank.json`, so it cannot be committed by accident. `rank.json` is NOT committed. With Lane A's real files it writes `public/data/rank.json`.
-- Fixture overlap is empty, so every item is `overlap:null`, `dimsUsed:0`, `illustrative`. The measured path is only unit-tested.
-- Reads `public/data/habitats.json` if present, else the habitat fixture (4 habitats; no `mars`). claimIds come from `public/data/claims/*.json` if present, else the claims fixture.
+## Rank script round 2 (`node scripts/rank/build.ts`, idempotent)
+- score = plain mean of 5 factors in order o2, pressure, directness, evidence, goalFit; null counts as 0 (`FACTOR_WEIGHTS`, `HOW_RANKING_WORKS` exported). `overlap`/`dimsUsed`/`siRelevance` kept.
+- Real data: 104 items, `public/data/rank.json` committed. 100 TypeSafe Score calls, 46,657 in / 1,900 out tokens (about 20 s); rerun = 0 calls, all cached. No dollar figure: TypeSafe returns tokens only.
+- Null factors: o2 64, pressure 80, directness 0, evidence 104 (Lane A has not added `evidence` yet), goalFit 0.
+- Moon Base top 5 (o2/pressure/directness/evidence/goalFit -> score): PSI-69 1/1/1/null/0.908 -> 0.782; PSI-68 1/1/1/null/0.575 -> 0.715; PSI-10 1/1/0.5/null/0.63 -> 0.626; PSI-159 1/1/0.5/null/0.595 -> 0.619; PSI-20 1/null/1/null/0.68 -> 0.536.
+- o2 and pressure agree with `overlap.json` for every single-dimension row (tested). Goal-fit questions are 4 strings (one per habitat; no `mars`, none in habitats.json). Goal fit judges only the first ~400 chars of `objectives` (the shown excerpt).
+- provenance: `measured` only when a condition comes from a table (no `conditionBasis` counts as table); record-only or none = `illustrative`.
+- Fixture inputs still write to `scripts/rank/.cache/rank.fixtures.json`. Claim ids from `public/data/claims/*.json` if present, else the fixture.
+- Integrator: create a local `.dev.vars` (gitignored) with `SPEND_MODE=mock` so `wrangler dev` ignores real keys from `.env`. Example: `.dev.vars.example` content is just that one line.
 
 ## Lane O must add
 - `wrangler.toml`: `main = "server/index.ts"` (already), an `[assets]` binding named `ASSETS` (so `/data/index.json` loads; else bundled fixture index is used).

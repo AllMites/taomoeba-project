@@ -1,0 +1,4788 @@
+{
+  "items": [
+    {
+      "id": "rank-PSI-10-iss",
+      "investigationId": "PSI-10",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.658,
+      "score": 0.632,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 19.8 to 85% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 43 to 305.8 kPa, which covers this habitat's 101.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel mix and oxygen level change how hot and sooty a flame gets."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.658,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-10",
+          "excerpt": "The primary objectives of this flight experiment are: A. Obtain soot-inception limits of quasi-steady normal and inverse spherical diffusion flames as functions of flow rate, Zst, amount of inert (N2 or CO2), and pressure for C2H4 and CH4 flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-10-moon",
+      "investigationId": "PSI-10",
+      "habitat": "moon",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.63,
+      "score": 0.626,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 19.8 to 85% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 43 to 305.8 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel mix and oxygen level change how hot and sooty a flame gets."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.63,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-10",
+          "excerpt": "The primary objectives of this flight experiment are: A. Obtain soot-inception limits of quasi-steady normal and inverse spherical diffusion flames as functions of flow rate, Zst, amount of inert (N2 or CO2), and pressure for C2H4 and CH4 flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-10-rover",
+      "investigationId": "PSI-10",
+      "habitat": "rover",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.673,
+      "score": 0.635,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 19.8 to 85% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 43 to 305.8 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel mix and oxygen level change how hot and sooty a flame gets."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.673,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-10",
+          "excerpt": "The primary objectives of this flight experiment are: A. Obtain soot-inception limits of quasi-steady normal and inverse spherical diffusion flames as functions of flow rate, Zst, amount of inert (N2 or CO2), and pressure for C2H4 and CH4 flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-10-suit-ref",
+      "investigationId": "PSI-10",
+      "habitat": "suit-ref",
+      "overlap": 0.859,
+      "dimsUsed": 2,
+      "siRelevance": 0.583,
+      "score": 0.56,
+      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0.77,
+          "reason": "Tested at 19.8 to 85% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0.949,
+          "reason": "Tested at 43 to 305.8 kPa; this habitat is at 29.6 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel mix and oxygen level change how hot and sooty a flame gets."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.583,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-10",
+          "excerpt": "The primary objectives of this flight experiment are: A. Obtain soot-inception limits of quasi-steady normal and inverse spherical diffusion flames as functions of flow rate, Zst, amount of inert (N2 or CO2), and pressure for C2H4 and CH4 flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-20-iss",
+      "investigationId": "PSI-20",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 1,
+      "siRelevance": 0.66,
+      "score": 0.532,
+      "rationale": "Strong oxygen match; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 21 to 40% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.66,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-20",
+          "excerpt": "The BRE flight program seeks to establish the burning conditions in a quiescent microgravity ambient in terms of material properties. The specific flight objectives are as follows. 1. Observe burning behavior in long-duration microgravity for CH4/N2 and C2H4/N2mixtures on porous circular burners of 25 and 50 mm diameter."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-20-moon",
+      "investigationId": "PSI-20",
+      "habitat": "moon",
+      "overlap": 1,
+      "dimsUsed": 1,
+      "siRelevance": 0.68,
+      "score": 0.536,
+      "rationale": "Strong oxygen match; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 21 to 40% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.68,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-20",
+          "excerpt": "The BRE flight program seeks to establish the burning conditions in a quiescent microgravity ambient in terms of material properties. The specific flight objectives are as follows. 1. Observe burning behavior in long-duration microgravity for CH4/N2 and C2H4/N2mixtures on porous circular burners of 25 and 50 mm diameter."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-20-rover",
+      "investigationId": "PSI-20",
+      "habitat": "rover",
+      "overlap": 1,
+      "dimsUsed": 1,
+      "siRelevance": 0.663,
+      "score": 0.533,
+      "rationale": "Strong oxygen match; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 21 to 40% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.663,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-20",
+          "excerpt": "The BRE flight program seeks to establish the burning conditions in a quiescent microgravity ambient in terms of material properties. The specific flight objectives are as follows. 1. Observe burning behavior in long-duration microgravity for CH4/N2 and C2H4/N2mixtures on porous circular burners of 25 and 50 mm diameter."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-20-suit-ref",
+      "investigationId": "PSI-20",
+      "habitat": "suit-ref",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.553,
+      "score": 0.311,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21 to 40% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.553,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-20",
+          "excerpt": "The BRE flight program seeks to establish the burning conditions in a quiescent microgravity ambient in terms of material properties. The specific flight objectives are as follows. 1. Observe burning behavior in long-duration microgravity for CH4/N2 and C2H4/N2mixtures on porous circular burners of 25 and 50 mm diameter."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-21-iss",
+      "investigationId": "PSI-21",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.488,
+      "score": 0.198,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.488,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-21",
+          "excerpt": "In order to provide the experimental data needed to allow rigorous testing of computational models at the extremes of the fuel dilution spectrum, we have the following objectives: A) Characterize the behavior of weak coflow diffusion flames of methane and ethylene, as a function of velocity and fuel dilution, through measurement of flame shape, lift-off heights, temperatures and extinction limits."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-21-moon",
+      "investigationId": "PSI-21",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.49,
+      "score": 0.198,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.49,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-21",
+          "excerpt": "In order to provide the experimental data needed to allow rigorous testing of computational models at the extremes of the fuel dilution spectrum, we have the following objectives: A) Characterize the behavior of weak coflow diffusion flames of methane and ethylene, as a function of velocity and fuel dilution, through measurement of flame shape, lift-off heights, temperatures and extinction limits."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-21-rover",
+      "investigationId": "PSI-21",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.55,
+      "score": 0.21,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.55,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-21",
+          "excerpt": "In order to provide the experimental data needed to allow rigorous testing of computational models at the extremes of the fuel dilution spectrum, we have the following objectives: A) Characterize the behavior of weak coflow diffusion flames of methane and ethylene, as a function of velocity and fuel dilution, through measurement of flame shape, lift-off heights, temperatures and extinction limits."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-21-suit-ref",
+      "investigationId": "PSI-21",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.405,
+      "score": 0.181,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows how fuel dilution changes the shape and soot of a gas flame, as in a leak fire."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.405,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-21",
+          "excerpt": "In order to provide the experimental data needed to allow rigorous testing of computational models at the extremes of the fuel dilution spectrum, we have the following objectives: A) Characterize the behavior of weak coflow diffusion flames of methane and ethylene, as a function of velocity and fuel dilution, through measurement of flame shape, lift-off heights, temperatures and extinction limits."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-22-iss",
+      "investigationId": "PSI-22",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.648,
+      "score": 0.23,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Electric fields can steady or blow out a flame, a possible way to control one."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.648,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-22",
+          "excerpt": "The objective of this investigation is to better understand the relationship between electric field voltage and chemi-ion current, analyze the dynamic response of flames to electric field changes, evaluate soot formation, and characterize stabilized near-limit lifted flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-22-moon",
+      "investigationId": "PSI-22",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.58,
+      "score": 0.216,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Electric fields can steady or blow out a flame, a possible way to control one."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.58,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-22",
+          "excerpt": "The objective of this investigation is to better understand the relationship between electric field voltage and chemi-ion current, analyze the dynamic response of flames to electric field changes, evaluate soot formation, and characterize stabilized near-limit lifted flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-22-rover",
+      "investigationId": "PSI-22",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.65,
+      "score": 0.23,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Electric fields can steady or blow out a flame, a possible way to control one."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.65,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-22",
+          "excerpt": "The objective of this investigation is to better understand the relationship between electric field voltage and chemi-ion current, analyze the dynamic response of flames to electric field changes, evaluate soot formation, and characterize stabilized near-limit lifted flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-22-suit-ref",
+      "investigationId": "PSI-22",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.53,
+      "score": 0.206,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Electric fields can steady or blow out a flame, a possible way to control one."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.53,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-22",
+          "excerpt": "The objective of this investigation is to better understand the relationship between electric field voltage and chemi-ion current, analyze the dynamic response of flames to electric field changes, evaluate soot formation, and characterize stabilized near-limit lifted flames."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-23-iss",
+      "investigationId": "PSI-23",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.473,
+      "score": 0.595,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 21 to 30% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 101.3 kPa, which covers this habitat's 101.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Finds how close a flame is to going out as oxygen and fuel dilution change."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.473,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-23",
+          "excerpt": "A series of experiments is proposed with the following specific objectives, in both soot-free and sooty flames, to compare with detailed computational simulation to assess transport properties and detailed chemical kinetics (including chemiluminescence): Objective A."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-23-moon",
+      "investigationId": "PSI-23",
+      "habitat": "moon",
+      "overlap": 0.5,
+      "dimsUsed": 2,
+      "siRelevance": 0.495,
+      "score": 0.399,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 21 to 30% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0,
+          "reason": "Tested at 101.3 kPa; this habitat is at 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Finds how close a flame is to going out as oxygen and fuel dilution change."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.495,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-23",
+          "excerpt": "A series of experiments is proposed with the following specific objectives, in both soot-free and sooty flames, to compare with detailed computational simulation to assess transport properties and detailed chemical kinetics (including chemiluminescence): Objective A."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-23-rover",
+      "investigationId": "PSI-23",
+      "habitat": "rover",
+      "overlap": 0.5,
+      "dimsUsed": 2,
+      "siRelevance": 0.555,
+      "score": 0.411,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 21 to 30% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0,
+          "reason": "Tested at 101.3 kPa; this habitat is at 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Finds how close a flame is to going out as oxygen and fuel dilution change."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.555,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-23",
+          "excerpt": "A series of experiments is proposed with the following specific objectives, in both soot-free and sooty flames, to compare with detailed computational simulation to assess transport properties and detailed chemical kinetics (including chemiluminescence): Objective A."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-23-suit-ref",
+      "investigationId": "PSI-23",
+      "habitat": "suit-ref",
+      "overlap": 0,
+      "dimsUsed": 2,
+      "siRelevance": 0.568,
+      "score": 0.214,
+      "rationale": "Partial goal fit; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21 to 30% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0,
+          "reason": "Tested at 101.3 kPa; this habitat is at 29.6 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Finds how close a flame is to going out as oxygen and fuel dilution change."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.568,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-23",
+          "excerpt": "A series of experiments is proposed with the following specific objectives, in both soot-free and sooty flames, to compare with detailed computational simulation to assess transport properties and detailed chemical kinetics (including chemiluminescence): Objective A."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-25-iss",
+      "investigationId": "PSI-25",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 1,
+      "siRelevance": 0.895,
+      "score": 0.579,
+      "rationale": "Strong oxygen match; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 13.6 to 22.2% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.895,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-25",
+          "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth. Objectives Include: 1) Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-25-moon",
+      "investigationId": "PSI-25",
+      "habitat": "moon",
+      "overlap": 0.093,
+      "dimsUsed": 1,
+      "siRelevance": 0.87,
+      "score": 0.393,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0.093,
+          "reason": "Tested at 13.6 to 22.2% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.87,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-25",
+          "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth. Objectives Include: 1) Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-25-rover",
+      "investigationId": "PSI-25",
+      "habitat": "rover",
+      "overlap": 0.093,
+      "dimsUsed": 1,
+      "siRelevance": 0.87,
+      "score": 0.393,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0.093,
+          "reason": "Tested at 13.6 to 22.2% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.87,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-25",
+          "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth. Objectives Include: 1) Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-25-suit-ref",
+      "investigationId": "PSI-25",
+      "habitat": "suit-ref",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.718,
+      "score": 0.344,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 13.6 to 22.2% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.718,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-25",
+          "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth. Objectives Include: 1) Study the ignition, flame growth, flame spread, and extinction limits for solid fuels burning in low-velocity forced flows in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-26-iss",
+      "investigationId": "PSI-26",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.713,
+      "score": 0.343,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.713,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-26",
+          "excerpt": "The two main objectives for BASS are to: 1.) Begin to bridge the gap between the normal gravity NASA-STD-6001 Test#1 method, ground-based microgravity tests, and actual material flammability in microgravity. The relation between these can be investigated by observing flames burning for the longer times available in flight."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-26-moon",
+      "investigationId": "PSI-26",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.705,
+      "score": 0.341,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.705,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-26",
+          "excerpt": "The two main objectives for BASS are to: 1.) Begin to bridge the gap between the normal gravity NASA-STD-6001 Test#1 method, ground-based microgravity tests, and actual material flammability in microgravity. The relation between these can be investigated by observing flames burning for the longer times available in flight."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-26-rover",
+      "investigationId": "PSI-26",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.723,
+      "score": 0.345,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.723,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-26",
+          "excerpt": "The two main objectives for BASS are to: 1.) Begin to bridge the gap between the normal gravity NASA-STD-6001 Test#1 method, ground-based microgravity tests, and actual material flammability in microgravity. The relation between these can be investigated by observing flames burning for the longer times available in flight."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-26-suit-ref",
+      "investigationId": "PSI-26",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.69,
+      "score": 0.338,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.69,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-26",
+          "excerpt": "The two main objectives for BASS are to: 1.) Begin to bridge the gap between the normal gravity NASA-STD-6001 Test#1 method, ground-based microgravity tests, and actual material flammability in microgravity. The relation between these can be investigated by observing flames burning for the longer times available in flight."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-39-iss",
+      "investigationId": "PSI-39",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.543,
+      "score": 0.609,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 17 to 21% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 50.7 to 506.6 kPa, which covers this habitat's 101.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames can burn where normal flames would not, so screening limits must allow for them."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.543,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-39",
+          "excerpt": "The objectives of this investigation are to: 1) Examine the combustion behavior of n-dodecane and mixtures of n-dodecane/iso-dodecane at pressures ranging from 0.25 atm to 5 atm. 2) Analyze the effects of helium dilution on cool flame behavior. 3) Examine the behavior of combustion characteristics."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-39-moon",
+      "investigationId": "PSI-39",
+      "habitat": "moon",
+      "overlap": 0.5,
+      "dimsUsed": 2,
+      "siRelevance": 0.653,
+      "score": 0.431,
+      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 17 to 21% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 50.7 to 506.6 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames can burn where normal flames would not, so screening limits must allow for them."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.653,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-39",
+          "excerpt": "The objectives of this investigation are to: 1) Examine the combustion behavior of n-dodecane and mixtures of n-dodecane/iso-dodecane at pressures ranging from 0.25 atm to 5 atm. 2) Analyze the effects of helium dilution on cool flame behavior. 3) Examine the behavior of combustion characteristics."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-39-rover",
+      "investigationId": "PSI-39",
+      "habitat": "rover",
+      "overlap": 0.5,
+      "dimsUsed": 2,
+      "siRelevance": 0.7,
+      "score": 0.44,
+      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 17 to 21% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 50.7 to 506.6 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames can burn where normal flames would not, so screening limits must allow for them."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.7,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-39",
+          "excerpt": "The objectives of this investigation are to: 1) Examine the combustion behavior of n-dodecane and mixtures of n-dodecane/iso-dodecane at pressures ranging from 0.25 atm to 5 atm. 2) Analyze the effects of helium dilution on cool flame behavior. 3) Examine the behavior of combustion characteristics."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-39-suit-ref",
+      "investigationId": "PSI-39",
+      "habitat": "suit-ref",
+      "overlap": 0.477,
+      "dimsUsed": 2,
+      "siRelevance": 0.558,
+      "score": 0.402,
+      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 17 to 21% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0.954,
+          "reason": "Tested at 50.7 to 506.6 kPa; this habitat is at 29.6 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames can burn where normal flames would not, so screening limits must allow for them."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.558,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-39",
+          "excerpt": "The objectives of this investigation are to: 1) Examine the combustion behavior of n-dodecane and mixtures of n-dodecane/iso-dodecane at pressures ranging from 0.25 atm to 5 atm. 2) Analyze the effects of helium dilution on cool flame behavior. 3) Examine the behavior of combustion characteristics."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-47-iss",
+      "investigationId": "PSI-47",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.748,
+      "score": 0.35,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.748,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-47",
+          "excerpt": "The focus of DAFT / DAFT-2 was to mitigate the risk for the Smoke Aerosol Measurement Experiment (SAME)."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-47-moon",
+      "investigationId": "PSI-47",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.7,
+      "score": 0.34,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.7,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-47",
+          "excerpt": "The focus of DAFT / DAFT-2 was to mitigate the risk for the Smoke Aerosol Measurement Experiment (SAME)."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-47-rover",
+      "investigationId": "PSI-47",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.733,
+      "score": 0.347,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.733,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-47",
+          "excerpt": "The focus of DAFT / DAFT-2 was to mitigate the risk for the Smoke Aerosol Measurement Experiment (SAME)."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-47-suit-ref",
+      "investigationId": "PSI-47",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.613,
+      "score": 0.323,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.613,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-47",
+          "excerpt": "The focus of DAFT / DAFT-2 was to mitigate the risk for the Smoke Aerosol Measurement Experiment (SAME)."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-60-iss",
+      "investigationId": "PSI-60",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.475,
+      "score": 0.195,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of the soot data from SPICE, soot being what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.475,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-60",
+          "excerpt": "This ground investigation sought to increase understanding of the issues that control the large discrepancy between soot formation in 1g and in 0g flames. The objective of this investigation was to integrate computational and experimental methods to derive temperature distributions and soot volume fractions from the Smoke Point in Coflow Experiment (SPICE) data available in PSI."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-60-moon",
+      "investigationId": "PSI-60",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.453,
+      "score": 0.191,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of the soot data from SPICE, soot being what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.453,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-60",
+          "excerpt": "This ground investigation sought to increase understanding of the issues that control the large discrepancy between soot formation in 1g and in 0g flames. The objective of this investigation was to integrate computational and experimental methods to derive temperature distributions and soot volume fractions from the Smoke Point in Coflow Experiment (SPICE) data available in PSI."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-60-rover",
+      "investigationId": "PSI-60",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.45,
+      "score": 0.19,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of the soot data from SPICE, soot being what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.45,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-60",
+          "excerpt": "This ground investigation sought to increase understanding of the issues that control the large discrepancy between soot formation in 1g and in 0g flames. The objective of this investigation was to integrate computational and experimental methods to derive temperature distributions and soot volume fractions from the Smoke Point in Coflow Experiment (SPICE) data available in PSI."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-60-suit-ref",
+      "investigationId": "PSI-60",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.428,
+      "score": 0.186,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of the soot data from SPICE, soot being what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.428,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-60",
+          "excerpt": "This ground investigation sought to increase understanding of the issues that control the large discrepancy between soot formation in 1g and in 0g flames. The objective of this investigation was to integrate computational and experimental methods to derive temperature distributions and soot volume fractions from the Smoke Point in Coflow Experiment (SPICE) data available in PSI."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-62-iss",
+      "investigationId": "PSI-62",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.645,
+      "score": 0.229,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer model of how fast a flame spreads along a material."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.645,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-62",
+          "excerpt": "The objective of this research was to develop and validate new flamelet generated manifold (FGM) modeling techniques for concurrent flame spread in microgravity. Concurrent flame spread presented one of the greatest modeling challenges in combustion science due to the intricate coupling between heat transfer, mass transport, and chemical kinetics near the solid-vapor interface."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-62-moon",
+      "investigationId": "PSI-62",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.693,
+      "score": 0.239,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer model of how fast a flame spreads along a material."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.693,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-62",
+          "excerpt": "The objective of this research was to develop and validate new flamelet generated manifold (FGM) modeling techniques for concurrent flame spread in microgravity. Concurrent flame spread presented one of the greatest modeling challenges in combustion science due to the intricate coupling between heat transfer, mass transport, and chemical kinetics near the solid-vapor interface."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-62-rover",
+      "investigationId": "PSI-62",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.665,
+      "score": 0.233,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer model of how fast a flame spreads along a material."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.665,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-62",
+          "excerpt": "The objective of this research was to develop and validate new flamelet generated manifold (FGM) modeling techniques for concurrent flame spread in microgravity. Concurrent flame spread presented one of the greatest modeling challenges in combustion science due to the intricate coupling between heat transfer, mass transport, and chemical kinetics near the solid-vapor interface."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-62-suit-ref",
+      "investigationId": "PSI-62",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.608,
+      "score": 0.222,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer model of how fast a flame spreads along a material."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.608,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-62",
+          "excerpt": "The objective of this research was to develop and validate new flamelet generated manifold (FGM) modeling techniques for concurrent flame spread in microgravity. Concurrent flame spread presented one of the greatest modeling challenges in combustion science due to the intricate coupling between heat transfer, mass transport, and chemical kinetics near the solid-vapor interface."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-68-iss",
+      "investigationId": "PSI-68",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.44,
+      "score": 0.688,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 17 to 30% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 50.7 to 304 kPa, which covers this habitat's 101.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.44,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-68",
+          "excerpt": "The primary goal of the FLEX-2 flight experiments is to extend the results of FLEX-1 to fuels and environmental conditions that mimic real combustor conditions, as well as, provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions in order to validate numerical simulations and to develop new theoretical models."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-68-moon",
+      "investigationId": "PSI-68",
+      "habitat": "moon",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.575,
+      "score": 0.715,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 17 to 30% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 50.7 to 304 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.575,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-68",
+          "excerpt": "The primary goal of the FLEX-2 flight experiments is to extend the results of FLEX-1 to fuels and environmental conditions that mimic real combustor conditions, as well as, provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions in order to validate numerical simulations and to develop new theoretical models."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-68-rover",
+      "investigationId": "PSI-68",
+      "habitat": "rover",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.465,
+      "score": 0.693,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 17 to 30% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 50.7 to 304 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.465,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-68",
+          "excerpt": "The primary goal of the FLEX-2 flight experiments is to extend the results of FLEX-1 to fuels and environmental conditions that mimic real combustor conditions, as well as, provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions in order to validate numerical simulations and to develop new theoretical models."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-68-suit-ref",
+      "investigationId": "PSI-68",
+      "habitat": "suit-ref",
+      "overlap": 0.458,
+      "dimsUsed": 2,
+      "siRelevance": 0.395,
+      "score": 0.462,
+      "rationale": "Strong link to fire safety; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 17 to 30% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0.917,
+          "reason": "Tested at 50.7 to 304 kPa; this habitat is at 29.6 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.395,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-68",
+          "excerpt": "The primary goal of the FLEX-2 flight experiments is to extend the results of FLEX-1 to fuels and environmental conditions that mimic real combustor conditions, as well as, provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions in order to validate numerical simulations and to develop new theoretical models."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-69-iss",
+      "investigationId": "PSI-69",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.865,
+      "score": 0.773,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 12 to 34% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 70.2 to 309.3 kPa, which covers this habitat's 101.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.865,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-69",
+          "excerpt": "The FLEX (Flame Extinguishment Experiment) investigation aims to map the flammability limits of liquid fuels in microgravity environments, measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6, and develop reliable predictive models for combustion limits under reduced gravity conditions."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-69-moon",
+      "investigationId": "PSI-69",
+      "habitat": "moon",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.908,
+      "score": 0.782,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 12 to 34% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 70.2 to 309.3 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.908,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-69",
+          "excerpt": "The FLEX (Flame Extinguishment Experiment) investigation aims to map the flammability limits of liquid fuels in microgravity environments, measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6, and develop reliable predictive models for combustion limits under reduced gravity conditions."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-69-rover",
+      "investigationId": "PSI-69",
+      "habitat": "rover",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.863,
+      "score": 0.773,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 12 to 34% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 70.2 to 309.3 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.863,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-69",
+          "excerpt": "The FLEX (Flame Extinguishment Experiment) investigation aims to map the flammability limits of liquid fuels in microgravity environments, measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6, and develop reliable predictive models for combustion limits under reduced gravity conditions."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-69-suit-ref",
+      "investigationId": "PSI-69",
+      "habitat": "suit-ref",
+      "overlap": 0.415,
+      "dimsUsed": 2,
+      "siRelevance": 0.658,
+      "score": 0.498,
+      "rationale": "Strong link to fire safety; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 12 to 34% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0.83,
+          "reason": "Tested at 70.2 to 309.3 kPa; this habitat is at 29.6 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about suppression."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.658,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-69",
+          "excerpt": "The FLEX (Flame Extinguishment Experiment) investigation aims to map the flammability limits of liquid fuels in microgravity environments, measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6, and develop reliable predictive models for combustion limits under reduced gravity conditions."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-98-iss",
+      "investigationId": "PSI-98",
+      "habitat": "iss",
+      "overlap": 0.9,
+      "dimsUsed": 1,
+      "siRelevance": 0.925,
+      "score": 0.565,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0.9,
+          "reason": "Tested at 21.5 to 21.7% oxygen; this habitat is at 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.925,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-98",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-98-moon",
+      "investigationId": "PSI-98",
+      "habitat": "moon",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.93,
+      "score": 0.386,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21.5 to 21.7% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.93,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-98",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-98-rover",
+      "investigationId": "PSI-98",
+      "habitat": "rover",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.915,
+      "score": 0.383,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21.5 to 21.7% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.915,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-98",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-98-suit-ref",
+      "investigationId": "PSI-98",
+      "habitat": "suit-ref",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.85,
+      "score": 0.37,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21.5 to 21.7% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.85,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-98",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-99-iss",
+      "investigationId": "PSI-99",
+      "habitat": "iss",
+      "overlap": 0.9,
+      "dimsUsed": 1,
+      "siRelevance": 0.86,
+      "score": 0.552,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0.9,
+          "reason": "Tested at 21.5 to 22.1% oxygen; this habitat is at 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.86,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-99",
+          "excerpt": "The objectives of SAFFIRE-II are to determine how rapidly a large scale fire grows in low-gravity and to investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-99-moon",
+      "investigationId": "PSI-99",
+      "habitat": "moon",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.935,
+      "score": 0.387,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21.5 to 22.1% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.935,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-99",
+          "excerpt": "The objectives of SAFFIRE-II are to determine how rapidly a large scale fire grows in low-gravity and to investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-99-rover",
+      "investigationId": "PSI-99",
+      "habitat": "rover",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.875,
+      "score": 0.375,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21.5 to 22.1% oxygen; this habitat is at 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.875,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-99",
+          "excerpt": "The objectives of SAFFIRE-II are to determine how rapidly a large scale fire grows in low-gravity and to investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-99-suit-ref",
+      "investigationId": "PSI-99",
+      "habitat": "suit-ref",
+      "overlap": 0,
+      "dimsUsed": 1,
+      "siRelevance": 0.773,
+      "score": 0.355,
+      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0,
+          "reason": "Tested at 21.5 to 22.1% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.773,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-99",
+          "excerpt": "The objectives of SAFFIRE-II are to determine how rapidly a large scale fire grows in low-gravity and to investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-100-iss",
+      "investigationId": "PSI-100",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.925,
+      "score": 0.385,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.925,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-100",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-100-moon",
+      "investigationId": "PSI-100",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.93,
+      "score": 0.386,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.93,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-100",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-100-rover",
+      "investigationId": "PSI-100",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.915,
+      "score": 0.383,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.915,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-100",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-100-suit-ref",
+      "investigationId": "PSI-100",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.85,
+      "score": 0.37,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about prevention."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.85,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-100",
+          "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA’s normal gravity material flammability screening test."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-101-iss",
+      "investigationId": "PSI-101",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.545,
+      "score": 0.309,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.545,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-101",
+          "excerpt": "Similar to the original SAME investigation, the primary objective of the SAME-R investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-101-moon",
+      "investigationId": "PSI-101",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.525,
+      "score": 0.305,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.525,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-101",
+          "excerpt": "Similar to the original SAME investigation, the primary objective of the SAME-R investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-101-rover",
+      "investigationId": "PSI-101",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.613,
+      "score": 0.323,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.613,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-101",
+          "excerpt": "Similar to the original SAME investigation, the primary objective of the SAME-R investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-101-suit-ref",
+      "investigationId": "PSI-101",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.338,
+      "score": 0.268,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.338,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-101",
+          "excerpt": "Similar to the original SAME investigation, the primary objective of the SAME-R investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-102-iss",
+      "investigationId": "PSI-102",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.538,
+      "score": 0.308,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.538,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-102",
+          "excerpt": "One of the major goals of this investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-102-moon",
+      "investigationId": "PSI-102",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.515,
+      "score": 0.303,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.515,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-102",
+          "excerpt": "One of the major goals of this investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-102-rover",
+      "investigationId": "PSI-102",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.578,
+      "score": 0.316,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.578,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-102",
+          "excerpt": "One of the major goals of this investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-102-suit-ref",
+      "investigationId": "PSI-102",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.39,
+      "score": 0.278,
+      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 1,
+          "reason": "Directly about detection."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.39,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-102",
+          "excerpt": "One of the major goals of this investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-106-iss",
+      "investigationId": "PSI-106",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.568,
+      "score": 0.214,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows when a flame lifts off its burner and blows out as the flow rises."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.568,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-106",
+          "excerpt": "The objective of this investigation is to better understand the structure and stability of laminar diffusion flames in microgravity. Specific objectives of this investigation were: 1. To investigate the structure of laminar diffusion flames in microgravity to understand the stabilizing mechanisms at the flames base. 2. Determine the liftoff velocity limits for different fuels and burner diameters."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-106-moon",
+      "investigationId": "PSI-106",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.575,
+      "score": 0.215,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows when a flame lifts off its burner and blows out as the flow rises."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.575,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-106",
+          "excerpt": "The objective of this investigation is to better understand the structure and stability of laminar diffusion flames in microgravity. Specific objectives of this investigation were: 1. To investigate the structure of laminar diffusion flames in microgravity to understand the stabilizing mechanisms at the flames base. 2. Determine the liftoff velocity limits for different fuels and burner diameters."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-106-rover",
+      "investigationId": "PSI-106",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.575,
+      "score": 0.215,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows when a flame lifts off its burner and blows out as the flow rises."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.575,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-106",
+          "excerpt": "The objective of this investigation is to better understand the structure and stability of laminar diffusion flames in microgravity. Specific objectives of this investigation were: 1. To investigate the structure of laminar diffusion flames in microgravity to understand the stabilizing mechanisms at the flames base. 2. Determine the liftoff velocity limits for different fuels and burner diameters."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-106-suit-ref",
+      "investigationId": "PSI-106",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.398,
+      "score": 0.18,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Shows when a flame lifts off its burner and blows out as the flow rises."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.398,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-106",
+          "excerpt": "The objective of this investigation is to better understand the structure and stability of laminar diffusion flames in microgravity. Specific objectives of this investigation were: 1. To investigate the structure of laminar diffusion flames in microgravity to understand the stabilizing mechanisms at the flames base. 2. Determine the liftoff velocity limits for different fuels and burner diameters."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-107-iss",
+      "investigationId": "PSI-107",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.583,
+      "score": 0.217,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "The smoke point shows how much soot a flame makes, which is what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.583,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-107",
+          "excerpt": "The objective of SPICE is to better understand the complex process of combustion by observing flames in a microgravity environment aboard the International Space Station (ISS) and analogous ground experiments. Specific objectives were: (1) Identify the laminar smoke-point properties of non-buoyant jet diffusion flames under various co-flow conditions in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-107-moon",
+      "investigationId": "PSI-107",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.585,
+      "score": 0.217,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "The smoke point shows how much soot a flame makes, which is what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.585,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-107",
+          "excerpt": "The objective of SPICE is to better understand the complex process of combustion by observing flames in a microgravity environment aboard the International Space Station (ISS) and analogous ground experiments. Specific objectives were: (1) Identify the laminar smoke-point properties of non-buoyant jet diffusion flames under various co-flow conditions in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-107-rover",
+      "investigationId": "PSI-107",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.558,
+      "score": 0.212,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "The smoke point shows how much soot a flame makes, which is what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.558,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-107",
+          "excerpt": "The objective of SPICE is to better understand the complex process of combustion by observing flames in a microgravity environment aboard the International Space Station (ISS) and analogous ground experiments. Specific objectives were: (1) Identify the laminar smoke-point properties of non-buoyant jet diffusion flames under various co-flow conditions in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-107-suit-ref",
+      "investigationId": "PSI-107",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.48,
+      "score": 0.196,
+      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "The smoke point shows how much soot a flame makes, which is what smoke detectors sense."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.48,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-107",
+          "excerpt": "The objective of SPICE is to better understand the complex process of combustion by observing flames in a microgravity environment aboard the International Space Station (ISS) and analogous ground experiments. Specific objectives were: (1) Identify the laminar smoke-point properties of non-buoyant jet diffusion flames under various co-flow conditions in microgravity."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-108-iss",
+      "investigationId": "PSI-108",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.173,
+      "score": 0.035,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.173,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-108",
+          "excerpt": "The main objectives of STDCE-1 are to investigate: -The extent and nature of thermocapillary flows in transient periods as well as under steady conditions. -Temperature distributions along the free surface and in the bulk fluid. -The effect of the heating mode and the heating level on the flows."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-108-moon",
+      "investigationId": "PSI-108",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.125,
+      "score": 0.025,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.125,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-108",
+          "excerpt": "The main objectives of STDCE-1 are to investigate: -The extent and nature of thermocapillary flows in transient periods as well as under steady conditions. -Temperature distributions along the free surface and in the bulk fluid. -The effect of the heating mode and the heating level on the flows."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-108-rover",
+      "investigationId": "PSI-108",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.15,
+      "score": 0.03,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.15,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-108",
+          "excerpt": "The main objectives of STDCE-1 are to investigate: -The extent and nature of thermocapillary flows in transient periods as well as under steady conditions. -Temperature distributions along the free surface and in the bulk fluid. -The effect of the heating mode and the heating level on the flows."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-108-suit-ref",
+      "investigationId": "PSI-108",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.11,
+      "score": 0.022,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.11,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-108",
+          "excerpt": "The main objectives of STDCE-1 are to investigate: -The extent and nature of thermocapillary flows in transient periods as well as under steady conditions. -Temperature distributions along the free surface and in the bulk fluid. -The effect of the heating mode and the heating level on the flows."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-115-iss",
+      "investigationId": "PSI-115",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.723,
+      "score": 0.245,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of how smoke particles grow in weightlessness."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.723,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-115",
+          "excerpt": "The objective of this investigation was to use numerical simulation to explore the influence of gravity on pyrolysis smoke growth from a fundamental perspective. The intention of this effort is to quantify the differences between microgravity and Earth gravity smoke, and to identify the fluid dynamic mechanisms that cause the differences."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-115-moon",
+      "investigationId": "PSI-115",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.7,
+      "score": 0.24,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of how smoke particles grow in weightlessness."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.7,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-115",
+          "excerpt": "The objective of this investigation was to use numerical simulation to explore the influence of gravity on pyrolysis smoke growth from a fundamental perspective. The intention of this effort is to quantify the differences between microgravity and Earth gravity smoke, and to identify the fluid dynamic mechanisms that cause the differences."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-115-rover",
+      "investigationId": "PSI-115",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.673,
+      "score": 0.235,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of how smoke particles grow in weightlessness."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.673,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-115",
+          "excerpt": "The objective of this investigation was to use numerical simulation to explore the influence of gravity on pyrolysis smoke growth from a fundamental perspective. The intention of this effort is to quantify the differences between microgravity and Earth gravity smoke, and to identify the fluid dynamic mechanisms that cause the differences."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-115-suit-ref",
+      "investigationId": "PSI-115",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.633,
+      "score": 0.227,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of how smoke particles grow in weightlessness."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.633,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-115",
+          "excerpt": "The objective of this investigation was to use numerical simulation to explore the influence of gravity on pyrolysis smoke growth from a fundamental perspective. The intention of this effort is to quantify the differences between microgravity and Earth gravity smoke, and to identify the fluid dynamic mechanisms that cause the differences."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-117-iss",
+      "investigationId": "PSI-117",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.838,
+      "score": 0.268,
+      "rationale": "Strong goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of what pushes a cool flame out or keeps it alive."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.838,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-117",
+          "excerpt": "The objective of this ground investigation was to use flight data obtained from PSI through NASA’s Flame Extinguishment Experiment (FLEX) to quantify how externally imposed thermal and convective perturbations regulated the dynamics and ultimate fate of already established droplet cool flames, and to explain run-to-run variability by isolating the roles of deliberate heating and unintentional"
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-117-moon",
+      "investigationId": "PSI-117",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.705,
+      "score": 0.241,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of what pushes a cool flame out or keeps it alive."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.705,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-117",
+          "excerpt": "The objective of this ground investigation was to use flight data obtained from PSI through NASA’s Flame Extinguishment Experiment (FLEX) to quantify how externally imposed thermal and convective perturbations regulated the dynamics and ultimate fate of already established droplet cool flames, and to explain run-to-run variability by isolating the roles of deliberate heating and unintentional"
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-117-rover",
+      "investigationId": "PSI-117",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.823,
+      "score": 0.265,
+      "rationale": "Strong goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of what pushes a cool flame out or keeps it alive."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.823,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-117",
+          "excerpt": "The objective of this ground investigation was to use flight data obtained from PSI through NASA’s Flame Extinguishment Experiment (FLEX) to quantify how externally imposed thermal and convective perturbations regulated the dynamics and ultimate fate of already established droplet cool flames, and to explain run-to-run variability by isolating the roles of deliberate heating and unintentional"
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-117-suit-ref",
+      "investigationId": "PSI-117",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.778,
+      "score": 0.256,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer study of what pushes a cool flame out or keeps it alive."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.778,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-117",
+          "excerpt": "The objective of this ground investigation was to use flight data obtained from PSI through NASA’s Flame Extinguishment Experiment (FLEX) to quantify how externally imposed thermal and convective perturbations regulated the dynamics and ultimate fate of already established droplet cool flames, and to explain run-to-run variability by isolating the roles of deliberate heating and unintentional"
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-142-iss",
+      "investigationId": "PSI-142",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.575,
+      "score": 0.215,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer and lab study of where cool flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.575,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-142",
+          "excerpt": "By using the Flame Extinguishment (FLEX) experimental data from the Physical Sciences Informatics (PSI) system of combustion science, the purpose of this grant was to conduct new simulations and ground-based experiments using ozone-sensitized counterflow flames to: 1) Develop a new diagram of the flammability limits of diffusional cool flames affected by radiation, diffusion, and convection."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-142-moon",
+      "investigationId": "PSI-142",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.695,
+      "score": 0.239,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer and lab study of where cool flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.695,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-142",
+          "excerpt": "By using the Flame Extinguishment (FLEX) experimental data from the Physical Sciences Informatics (PSI) system of combustion science, the purpose of this grant was to conduct new simulations and ground-based experiments using ozone-sensitized counterflow flames to: 1) Develop a new diagram of the flammability limits of diffusional cool flames affected by radiation, diffusion, and convection."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-142-rover",
+      "investigationId": "PSI-142",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.75,
+      "score": 0.25,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer and lab study of where cool flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.75,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-142",
+          "excerpt": "By using the Flame Extinguishment (FLEX) experimental data from the Physical Sciences Informatics (PSI) system of combustion science, the purpose of this grant was to conduct new simulations and ground-based experiments using ozone-sensitized counterflow flames to: 1) Develop a new diagram of the flammability limits of diffusional cool flames affected by radiation, diffusion, and convection."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-142-suit-ref",
+      "investigationId": "PSI-142",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.635,
+      "score": 0.227,
+      "rationale": "Partial goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Computer and lab study of where cool flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.635,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-142",
+          "excerpt": "By using the Flame Extinguishment (FLEX) experimental data from the Physical Sciences Informatics (PSI) system of combustion science, the purpose of this grant was to conduct new simulations and ground-based experiments using ozone-sensitized counterflow flames to: 1) Develop a new diagram of the flammability limits of diffusional cool flames affected by radiation, diffusion, and convection."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-159-iss",
+      "investigationId": "PSI-159",
+      "habitat": "iss",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.733,
+      "score": 0.647,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 12 to 85% oxygen, which covers this habitat's 21%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 49.5 to 331 kPa, which covers this habitat's 101.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames burn at low temperature and can survive where ordinary flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.733,
+          "reason": "SI read the stated goal and rated the fit high.",
+          "sourceId": "psi:PSI-159",
+          "excerpt": "1. Plan and support flight testing on the International Space Station (ISS). 2. Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane; normal and inverse flames; and a broad range of Zst, Tad, and fluent flow rate. 3. Support the flight tests with advanced CFD simulations. 4."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-159-moon",
+      "investigationId": "PSI-159",
+      "habitat": "moon",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.595,
+      "score": 0.619,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 12 to 85% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 49.5 to 331 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames burn at low temperature and can survive where ordinary flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.595,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-159",
+          "excerpt": "1. Plan and support flight testing on the International Space Station (ISS). 2. Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane; normal and inverse flames; and a broad range of Zst, Tad, and fluent flow rate. 3. Support the flight tests with advanced CFD simulations. 4."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-159-rover",
+      "investigationId": "PSI-159",
+      "habitat": "rover",
+      "overlap": 1,
+      "dimsUsed": 2,
+      "siRelevance": 0.625,
+      "score": 0.625,
+      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 1,
+          "reason": "Tested at 12 to 85% oxygen, which covers this habitat's 30%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 1,
+          "reason": "Tested at 49.5 to 331 kPa, which covers this habitat's 70.3 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames burn at low temperature and can survive where ordinary flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.625,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-159",
+          "excerpt": "1. Plan and support flight testing on the International Space Station (ISS). 2. Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane; normal and inverse flames; and a broad range of Zst, Tad, and fluent flow rate. 3. Support the flight tests with advanced CFD simulations. 4."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-159-suit-ref",
+      "investigationId": "PSI-159",
+      "habitat": "suit-ref",
+      "overlap": 0.862,
+      "dimsUsed": 2,
+      "siRelevance": 0.545,
+      "score": 0.554,
+      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "claimIds": [],
+      "provenance": "measured",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": 0.795,
+          "reason": "Tested at 12 to 85% oxygen; this habitat is at 100%."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": 0.929,
+          "reason": "Tested at 49.5 to 331 kPa; this habitat is at 29.6 kPa."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0.5,
+          "reason": "Cool flames burn at low temperature and can survive where ordinary flames go out."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.545,
+          "reason": "SI read the stated goal and rated the fit medium.",
+          "sourceId": "psi:PSI-159",
+          "excerpt": "1. Plan and support flight testing on the International Space Station (ISS). 2. Determine the conditions for which cool diffusion flames occur for propane, n-butane, and n-pentane; normal and inverse flames; and a broad range of Zst, Tad, and fluent flow rate. 3. Support the flight tests with advanced CFD simulations. 4."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-181-iss",
+      "investigationId": "PSI-181",
+      "habitat": "iss",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.143,
+      "score": 0.029,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.143,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-181",
+          "excerpt": "This study addresses the reliability of solder joints in space by pursuing two principal objectives: (1) Characterization of solder-joint formation under microgravity conditions aboard the International Space Station, specifically examining the impact of suppressed convective flow and buoyancy on 40Pb-60Sn alloys utilized in the In-Space Soldering Investigation (ISSI)."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-181-moon",
+      "investigationId": "PSI-181",
+      "habitat": "moon",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.155,
+      "score": 0.031,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.155,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-181",
+          "excerpt": "This study addresses the reliability of solder joints in space by pursuing two principal objectives: (1) Characterization of solder-joint formation under microgravity conditions aboard the International Space Station, specifically examining the impact of suppressed convective flow and buoyancy on 40Pb-60Sn alloys utilized in the In-Space Soldering Investigation (ISSI)."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-181-rover",
+      "investigationId": "PSI-181",
+      "habitat": "rover",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.123,
+      "score": 0.025,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.123,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-181",
+          "excerpt": "This study addresses the reliability of solder joints in space by pursuing two principal objectives: (1) Characterization of solder-joint formation under microgravity conditions aboard the International Space Station, specifically examining the impact of suppressed convective flow and buoyancy on 40Pb-60Sn alloys utilized in the In-Space Soldering Investigation (ISSI)."
+        }
+      ]
+    },
+    {
+      "id": "rank-PSI-181-suit-ref",
+      "investigationId": "PSI-181",
+      "habitat": "suit-ref",
+      "overlap": null,
+      "dimsUsed": 0,
+      "siRelevance": 0.048,
+      "score": 0.01,
+      "rationale": "Weak goal fit; oxygen is not on record.",
+      "claimIds": [],
+      "provenance": "illustrative",
+      "factors": [
+        {
+          "key": "o2",
+          "label": "Oxygen match",
+          "value": null,
+          "reason": "Oxygen level is not on record."
+        },
+        {
+          "key": "pressure",
+          "label": "Pressure match",
+          "value": null,
+          "reason": "Pressure is not on record."
+        },
+        {
+          "key": "directness",
+          "label": "Direct or indirect",
+          "value": 0,
+          "reason": "Not a combustion experiment."
+        },
+        {
+          "key": "evidence",
+          "label": "Flight or ground",
+          "value": null,
+          "reason": "Not stated."
+        },
+        {
+          "key": "goalFit",
+          "label": "Goal fit (SI-judged)",
+          "value": 0.048,
+          "reason": "SI read the stated goal and rated the fit low.",
+          "sourceId": "psi:PSI-181",
+          "excerpt": "This study addresses the reliability of solder joints in space by pursuing two principal objectives: (1) Characterization of solder-joint formation under microgravity conditions aboard the International Space Station, specifically examining the impact of suppressed convective flow and buoyancy on 40Pb-60Sn alloys utilized in the In-Space Soldering Investigation (ISSI)."
+        }
+      ]
+    }
+  ]
+}
