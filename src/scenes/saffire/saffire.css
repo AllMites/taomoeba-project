@@ -1,0 +1,162 @@
+/* SAFFIRE replay. The canvas is always dark (it looks into a dark cargo module), so the DOM over it uses the
+   --glass-* tokens, which stay dark in both schemes. Spacing: 4 / 8 / 16 / 24 / 32 only. */
+
+.sf-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-2);
+  background: var(--glass-sky);
+  color: var(--glass-text);
+  isolation: isolate;
+}
+
+.sf-canvas, .sf-poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sf-poster { object-fit: cover; }
+
+.sf-error { padding: var(--space-5); color: var(--glass-muted); }
+
+.sf-leaders {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.sf-leaders line { stroke: var(--glass-text); stroke-width: 1; opacity: 0.7; }
+.sf-leaders circle { fill: none; stroke: var(--glass-text); stroke-width: 1.5; }
+
+/* ---- HUD: readouts, top left ---- */
+.sf-hud {
+  position: absolute;
+  z-index: 2;
+  top: var(--space-4);
+  left: var(--space-4);
+  max-width: 17rem;
+  padding: var(--space-4);
+  border-radius: var(--radius-1);
+  background: var(--glass-panel);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+.sf-head { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; }
+.sf-name {
+  font-family: var(--font-display);
+  font-stretch: var(--font-stretch-display);
+  font-weight: 800;
+  font-size: var(--text-base);
+  letter-spacing: 0.02em;
+}
+.sf-small { font-size: var(--text-xs); color: var(--glass-muted); }
+
+.sf-readouts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  align-items: baseline;
+}
+.sf-ro { display: contents; }
+.sf-ro dt { font-size: var(--text-xs); color: var(--glass-muted); }
+.sf-ro dd { margin: 0; color: var(--glass-text); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sf-of { color: var(--glass-muted); }
+.sf-missing { font-size: var(--text-xs); color: var(--glass-muted); }
+.sf-phase { font-size: var(--text-xs); color: var(--glass-text); }
+.sf-speed { font-size: var(--text-xs); color: var(--glass-muted); }
+
+/* ---- Callouts: one cited sentence + source chip, at most two ---- */
+.sf-callouts { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.sf-callout {
+  position: absolute;
+  margin: 0;
+  max-width: 17rem;
+  padding: var(--space-4);
+  border-radius: var(--radius-1);
+  background: var(--glass-panel);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  pointer-events: auto;
+}
+.sf-callout p { font-size: var(--text-sm); line-height: 1.4; }
+.sf-at-silicone { top: var(--space-4); right: var(--space-4); }
+.sf-at-box { bottom: var(--space-4); left: var(--space-4); }
+.sf-chip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--glass-edge);
+}
+.sf-chip-title { font-size: var(--text-xs); color: var(--glass-text); }
+
+/* ---- Controls, bottom right ---- */
+.sf-controls {
+  position: absolute;
+  z-index: 3;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+.sf-pager { display: flex; gap: var(--space-1); }
+.sf-btn {
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--radius-full);
+  background: var(--glass-panel);
+  color: var(--glass-text);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sf-btn:hover { border-color: var(--glass-accent); color: var(--glass-accent); }
+.sf-btn[aria-pressed="true"].sf-page { border: 2px solid var(--glass-accent); color: var(--glass-accent); }
+.sf-root :focus-visible { outline: 3px solid var(--glass-accent); outline-offset: 2px; }
+
+/* ---- Narrow box (phone): readouts in a compact band on top, one note at a time at the bottom ---- */
+.sf-narrow .sf-hud {
+  top: var(--space-2);
+  left: var(--space-2);
+  right: var(--space-2);
+  max-width: none;
+  padding: var(--space-2);
+  gap: var(--space-1);
+}
+.sf-narrow .sf-head { display: none; }
+.sf-narrow .sf-readouts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-1) var(--space-2); }
+.sf-narrow .sf-ro { display: flex; flex-direction: column; min-width: 0; }
+.sf-narrow .sf-ro dd.t-readout { font-size: var(--text-xs); }
+.sf-narrow .sf-callout {
+  left: var(--space-2);
+  right: var(--space-2);
+  top: auto;
+  bottom: calc(2.75rem + var(--space-4));
+  max-width: none;
+  padding: var(--space-2);
+  gap: var(--space-1);
+}
+.sf-narrow .sf-callout p { font-size: var(--text-xs); }
+.sf-narrow .sf-chip { flex-direction: row; flex-wrap: wrap; column-gap: var(--space-2); padding-top: var(--space-1); }
+.sf-narrow .sf-controls { left: var(--space-2); right: var(--space-2); bottom: var(--space-2); justify-content: space-between; }
+.sf-narrow .sf-btn { padding: var(--space-2); }
+
+@media (prefers-contrast: more) {
+  .sf-hud, .sf-callout, .sf-btn { background: var(--glass-sky); }
+}

@@ -1,17 +1,12 @@
-import { Canvas } from "@react-three/fiber";
 import type { SceneModule } from "../../contracts/index.ts";
+import { SaffireScene } from "./SaffireScene.tsx";
 
-// Placeholder from the integrator: proves the 3D stack builds. The lane replaces this file.
-function Scene() {
-  return (
-    <Canvas camera={{ position: [0, 0, 3] }}>
-      <mesh>
-        <sphereGeometry args={[0.6, 32, 32]} />
-        <meshBasicMaterial color="#3d7bff" wireframe />
-      </mesh>
-    </Canvas>
-  );
-}
+const scene: SceneModule = {
+  id: "saffire",
+  title: "A real fire inside a cargo spacecraft",
+  caption:
+    "A fabric strip from SAFFIRE-II burns inside a Cygnus cargo ship; its spread and timing come from the run table, its look is illustrative.",
+  Component: SaffireScene,
+};
 
-const scene: SceneModule = { id: "saffire", title: "saffire (placeholder)", caption: "Placeholder scene.", Component: Scene };
 export default scene;
