@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { createApp, fixtureIndex } from "./app.ts";
-import { asksAboutHabitat, buildClaimsPrompt, extractive, HABITAT_AIR, NO_STEPS, retrievalQuery } from "./ask.ts";
+import { asksAboutHabitat, buildClaimsPrompt, extractive, HABITAT_AIR, NO_STEPS, parseClaims, retrievalQuery } from "./ask.ts";
 import { buildIndex } from "./bm25.ts";
 
 const index = fixtureIndex();
@@ -104,6 +104,44 @@ describe("habitat air", () => {
     expect(asksAboutHabitat("How hot is the flame?")).toBe(false);
     const no = await run("How hot are oxygen burns tested?");
     expect(no.j.mode).toBe("extractive"); // 30 is not in the excerpt, and the question is not about the habitat
+  });
+});
+
+describe("habitat air: only the habitat's own figures are set aside, nothing else", () => {
+  const EX = "Burns were tested at about 21% oxygen.";
+  const ctx = [{ id: "x", sourceId: "SRC-05", investigationId: "PSI-05", text: `${EX} Smoke detector test aerosols were smaller.` }];
+  const kept = (text: string, air: string | undefined = HABITAT_AIR.moon) => parseClaims(claims({ text, source: "SRC-05", excerpt: EX }), ctx as never, {}, air)!.claims.length;
+
+  it("a real comparison passes: the habitat named, its figures with units, the tested figure from the excerpt", () => {
+    expect(kept("This test used about 21% oxygen, but the Moon Base has 30% oxygen at 70.3 kPa.")).toBe(1);
+    expect(kept("This test used about 21% oxygen; the Moon Base has 30 percent oxygen.")).toBe(1);
+  });
+  it("a habitat number without its unit is still a number the excerpt lacks", () => {
+    expect(kept("At about 21% oxygen flames spread, and on the Moon Base they spread 30 times faster.")).toBe(0);
+    expect(kept("At about 21% oxygen, 100 samples burned in the suit.", HABITAT_AIR["suit-ref"])).toBe(0);
+  });
+  it("the habitat's figures are not accepted as a finding when the claim does not name the habitat", () => {
+    expect(kept("Flames spread faster at 30% oxygen than at about 21% oxygen.")).toBe(0);
+  });
+  it("the habitat's figures alone, with no tested figure from the excerpt, are not a comparison", () => {
+    expect(kept("The Moon Base has 30% oxygen, so flames there spread faster.")).toBe(0);
+  });
+  it("another number in a comparison claim must still be in the excerpt", () => {
+    expect(kept("This test used about 21% oxygen and 50 kPa, but the Moon Base has 30% oxygen.")).toBe(0);
+  });
+  it("the support check sees the habitat air only beside the claim that states it", async () => {
+    const idx = buildIndex([{ id: "x", sourceId: "SRC-05", investigationId: "PSI-05", text: `${EX} Smoke detector test aerosols were smaller.` }]);
+    const api = fakeApi({
+      claims: claims(
+        { text: "This test used about 21% oxygen, but the Moon Base has 30% oxygen.", source: "SRC-05", excerpt: EX },
+        { text: "Smoke detector test aerosols were smaller.", source: "SRC-05", excerpt: "Smoke detector test aerosols were smaller." },
+      ),
+      support: '{"results": [{"n": 1, "supported": true, "reason": "a"}, {"n": 2, "supported": true, "reason": "b"}]}',
+    });
+    await post(createApp({ index: idx }), { question: "What does that mean for my habitat? oxygen burns", habitat: "moon" }, { ANTHROPIC_API_KEY: "k", fetchImpl: api.fetchImpl });
+    const items = api.seen.find((s) => s.kind === "support")!.body.messages[0].content.split("</item>");
+    expect(items[0]).toContain(HABITAT_AIR.moon);
+    expect(items[1]).not.toContain(HABITAT_AIR.moon);
   });
 });
 

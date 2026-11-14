@@ -1,7 +1,7 @@
 import type { Claim } from "../src/contracts/claim.ts";
 import type { HabitatId } from "../src/contracts/habitat.ts";
 import { score, scoreCapped, type Bm25Index } from "./bm25.ts";
-import { addsFacts, coverage, expandQuery, inScope, MIN_COVERAGE, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
+import { addsFacts, coverage, expandQuery, inScope, MIN_COVERAGE, nums, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
 import { findFacts, onlyDashboard, type DataFact } from "./facts.ts";
 import { callHaiku, jsonBlock, MODEL, type ChatMessage } from "./llm.ts";
 import { POOL, rerank } from "./rerank.ts";
@@ -238,7 +238,7 @@ const RELATIONS = new Set<Relation>(["explains", "supports", "contradicts", "rel
 type Ctx = Bm25Index["chunks"][number];
 
 // ponytail: copy of public/data/habitats.json (label and air only), so the prompt needs no extra fetch.
-// server.test.ts fails if the two drift apart.
+// ask.thread.test.ts fails if the two drift apart.
 export const HABITAT_AIR: Record<string, string> = {
   "iss": "ISS: 21% oxygen, 101.3 kPa",
   "moon": "Moon Base: 30% oxygen, 70.3 kPa",
@@ -247,6 +247,30 @@ export const HABITAT_AIR: Record<string, string> = {
 };
 /** Questions that ask about the picked habitat. Only then may a claim use the habitat's own air figures. */
 export const asksAboutHabitat = (question: string) => /\b(habitat|cabin|moon|lunar|iss|station|rover|suit)\b/i.test(question);
+
+/** The habitat's own air figures with their units, as a claim may write them: "30% oxygen" or "30 percent", "70.3 kPa". */
+function habitatFigures(air: string): RegExp[] {
+  const m = /(\d+(?:\.\d+)?)% oxygen, (\d+(?:\.\d+)?) kPa/.exec(air);
+  if (!m) return [];
+  const n = (x: string) => `(?<![\\w.])${x.replace(".", "\\.")}`;
+  return [new RegExp(`${n(m[1])}\\s*(?:%|percent\\b)`, "gi"), new RegExp(`${n(m[2])}\\s*kpa\\b`, "gi")];
+}
+
+/**
+ * A habitat comparison may state the habitat's own air, which no excerpt holds. The exception is narrow: only the
+ * habitat's figures written with their units, only in a claim that names the habitat and also states a number from
+ * the excerpt (the tested side of the comparison). Returns the claim with just those figures taken out, so Raenn's
+ * checks judge every other number and word unchanged; when the exception does not apply, the claim as it is.
+ */
+export function withoutHabitatAir(text: string, excerpt: string, air?: string): string {
+  if (!air || !asksAboutHabitat(text)) return text;
+  const out = habitatFigures(air).reduce((t, re) => t.replace(re, " "), text);
+  if (out === text) return text;
+  const tested = nums(excerpt);
+  return [...nums(out)].some((x) => tested.has(x)) ? out : text;
+}
+const AIR_NOTE = (air: string) =>
+  ` (Not from the source: this site gives the reader's habitat air as ${air}. The claim may state that air to compare it; every result the claim states must still be in the quote.)`;
 
 /**
  * Earlier turns as plain alternating messages. They come from the client, so they are cleaned like every other piece
@@ -309,7 +333,7 @@ export function parseClaims(reply: string, ctx: Ctx[], licenses: Record<string, 
                 ? "over 25 words or more than one sentence"
                 : isRestricted(src!, licenses) && quotesTooMuch(text, src!.text)
                   ? "copies more than 15 words of a copyrighted source"
-                  : addsFacts(text, habitatAir ? `${excerpt} ${habitatAir}` : excerpt); // the site's own figures for the habitat may be compared against
+                  : addsFacts(withoutHabitatAir(text, excerpt, habitatAir), excerpt); // only the habitat's own air figures are set aside
     if (why) {
       dropped.push({ reason: why, text });
       continue;
@@ -386,9 +410,10 @@ export async function live(
     return finish(NO_COVER, [], "live", [], undefined, st);
   }
   // 5. Second check: Haiku reads each claim beside its quote. "Not supported" drops it; no verdict = flagged.
-  // On a habitat question the quote is followed by the site's own habitat air, so a comparison can be judged.
-  const airNote = habitatAir ? ` (The reader's habitat air, stated by this site and not by the source: ${habitatAir}.)` : "";
-  const verdicts = await checkSupport(parsed.claims.map((c) => [c.text, c.excerpt + airNote] as [string, string]), env);
+  // Only a claim that really states the habitat's air (as above) gets the site's air after its quote; every other
+  // claim is judged against its quote alone.
+  const quoteFor = (c: Claim) => (habitatAir && withoutHabitatAir(c.text, c.excerpt, habitatAir) !== c.text ? c.excerpt + AIR_NOTE(habitatAir) : c.excerpt);
+  const verdicts = await checkSupport(parsed.claims.map((c) => [c.text, quoteFor(c)] as [string, string]), env);
   const kept: Claim[] = [];
   let unsupported = 0;
   let confirmed = 0;
