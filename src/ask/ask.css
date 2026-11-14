@@ -73,15 +73,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   padding: var(--space-4);
   border-bottom: 1px solid var(--color-border);
 }
-.ask-panel-title { flex: 1 1 12rem; min-width: 0; }
-.ask-panel-h { margin: 0; font-size: var(--text-lg); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
-.ask-writer { margin: var(--space-1) 0 0; overflow-wrap: anywhere; }
-.ask-panel-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+.ask-panel-h { flex: 1 1 auto; margin: 0; font-size: var(--text-lg); font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+.ask-writer { flex-basis: 100%; margin: calc(-1 * var(--space-1)) 0 0; overflow-wrap: anywhere; }
+.ask-panel-actions { display: flex; gap: var(--space-2); }
 
 .ask-body { position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-4); }
 .ask-empty { display: grid; gap: var(--space-4); }
@@ -163,7 +162,7 @@
 .ask-facts { width: 100%; }
 .ask-facts ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
 .ask-fact { padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-2); background: var(--color-bg); }
-.ask-fact-text { margin: 0; line-height: 1.4; overflow-wrap: anywhere; }
+.ask-fact-text { margin: 0; font-size: var(--text-sm); line-height: 1.4; overflow-wrap: anywhere; }
 .ask-fact-src { margin: var(--space-1) 0 0; font-size: var(--text-sm); }
 
 /* Sources */
@@ -180,7 +179,7 @@
 
 /* ---- Input and chips (the page form and the composer share these) ---- */
 .ask-form label, .ask-compose-label { display: block; font-weight: 600; margin-bottom: var(--space-2); }
-.ask-compose-label { font-size: var(--text-sm); color: var(--color-text-muted); }
+.ask-compose-label { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); }
 .ask-row { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: flex-end; }
 .ask-row input,
 .ask-row textarea {
@@ -225,6 +224,7 @@
   background: var(--color-surface-2);
 }
 .ask-composer .ask-examples { margin: 0 0 var(--space-2); }
-.ask-habitat { margin: 0 0 var(--space-2); }
+.ask-habitat { margin: 0; }
+.ask-compose-meta { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-3); align-items: baseline; justify-content: space-between; margin-bottom: var(--space-2); }
 .ask-composer .ask-count { min-height: 0; }
 .ask-composer .ask-count:empty { display: none; }

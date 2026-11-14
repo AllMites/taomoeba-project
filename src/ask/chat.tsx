@@ -126,7 +126,6 @@ export function Composer(p: {
   return (
     <div className="ask-composer">
       <Chips chips={p.chips} label={p.chipsLabel} busy={p.busy} onPick={p.onPick} />
-      {p.habitatLabel && <p className="ask-habitat muted">Answering for: {p.habitatLabel}</p>}
       <form
         className="ask-compose-form"
         onSubmit={(e) => {
@@ -134,9 +133,12 @@ export function Composer(p: {
           p.onSend();
         }}
       >
-        <label htmlFor="ask-compose" className="ask-compose-label">
-          {p.label}
-        </label>
+        <div className="ask-compose-meta">
+          <label htmlFor="ask-compose" className="ask-compose-label">
+            {p.label}
+          </label>
+          {p.habitatLabel && <p className="ask-habitat muted">Answering for: {p.habitatLabel}</p>}
+        </div>
         <div className="ask-row">
           <textarea
             id="ask-compose"
@@ -223,12 +225,9 @@ export function Panel(p: PanelProps) {
       }}
     >
       <header className="ask-panel-head">
-        <div className="ask-panel-title">
-          <h2 id="ask-panel-h" className="ask-panel-h">
-            Ask the records
-          </h2>
-          <p className="ask-writer muted">{writerLine(p.lastResult)}</p>
-        </div>
+        <h2 id="ask-panel-h" className="ask-panel-h">
+          Ask the records
+        </h2>
         <div className="ask-panel-actions">
           {!first && (
             <button type="button" className="quiet" onClick={p.onReset}>
@@ -239,6 +238,7 @@ export function Panel(p: PanelProps) {
             Close
           </button>
         </div>
+        <p className="ask-writer muted">{writerLine(p.lastResult)}</p>
       </header>
 
       <div className="ask-body" ref={p.bodyRef}>
