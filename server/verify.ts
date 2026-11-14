@@ -27,6 +27,21 @@ export function norm(s: string): string {
     .toLowerCase();
 }
 
+const WORD = /[\p{L}\p{N}]/u;
+
+/** Normalized excerpt occurs in the normalized source on word boundaries (no match starting or ending mid-word). */
+export function containsVerbatim(source: string, excerpt: string): boolean {
+  const s = norm(source);
+  const e = norm(excerpt);
+  if (!e) return false;
+  for (let i = s.indexOf(e); i !== -1; i = s.indexOf(e, i + 1)) {
+    const before = s[i - 1] ?? " ";
+    const after = s[i + e.length] ?? " ";
+    if (!(WORD.test(before) && WORD.test(e[0])) && !(WORD.test(after) && WORD.test(e[e.length - 1]))) return true;
+  }
+  return false;
+}
+
 export async function judge(
   text: string,
   excerpt: string,
@@ -67,7 +82,7 @@ export async function judge(
 
 export async function verify(input: VerifyInput, env: VerifyEnv = {}): Promise<VerifyResult> {
   // Without sourceText there is nothing to match the excerpt against: report not-verbatim, but do not flag on that alone.
-  const verbatim = input.sourceText !== undefined && norm(input.excerpt) !== "" && norm(input.sourceText).includes(norm(input.excerpt));
+  const verbatim = input.sourceText !== undefined && containsVerbatim(input.sourceText, input.excerpt);
   const missingSource = input.sourceText === undefined;
   if (!env.TYPESAFE_API_KEY) return { verbatim, flagged: true }; // unchecked = flagged
   try {

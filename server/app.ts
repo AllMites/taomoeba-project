@@ -1,4 +1,5 @@
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
+import { bodyLimit } from "hono/body-limit";
 import { z } from "zod";
 import claimsFixture from "../public/data/fixtures/claims.fixture.json";
 import sourcesFixture from "../public/data/fixtures/sources.fixture.json";
@@ -17,6 +18,21 @@ export const MAX_QUESTION = 300;
 const BUCKET_CAPACITY = 10; // requests of burst per IP
 const REFILL_PER_SEC = 1 / 6; // one request every 6 s sustained
 const CACHE_MAX = 200;
+const BUCKETS_MAX = 5000;
+
+/**
+ * Rate-limit key from CF-Connecting-IP (set by Cloudflare, not spoofable; X-Forwarded-For is never read).
+ * IPv6 is keyed by its /64, since one client usually holds a whole /64 and could rotate addresses inside it.
+ */
+export function clientKey(ip: string | undefined): string {
+  if (!ip) return "anon";
+  if (!ip.includes(":")) return ip;
+  const [head, tail = ""] = ip.toLowerCase().split("::");
+  const h = head ? head.split(":") : [];
+  const t = tail ? tail.split(":") : [];
+  const full = ip.includes("::") ? [...h, ...Array(Math.max(0, 8 - h.length - t.length)).fill("0"), ...t] : h;
+  return full.slice(0, 4).map((x) => x.replace(/^0+(?=.)/, "")).join(":") + "::/64";
+}
 
 /** Tiny index from the fixtures, used until Lane B's public/data/index.json exists. */
 export function fixtureIndex(): Bm25Index {
@@ -58,24 +74,28 @@ export function createApp(opts: { index?: Bm25Index } = {}) {
     return loaded;
   };
 
-  const take = (ip: string) => {
+  const take = (key: string) => {
     const now = Date.now();
-    const b = buckets.get(ip) ?? { tokens: BUCKET_CAPACITY, at: now };
+    const b = buckets.get(key) ?? { tokens: BUCKET_CAPACITY, at: now };
     b.tokens = Math.min(BUCKET_CAPACITY, b.tokens + ((now - b.at) / 1000) * REFILL_PER_SEC);
     b.at = now;
     const ok = b.tokens >= 1;
     if (ok) b.tokens -= 1;
-    buckets.set(ip, b);
-    if (buckets.size > 5000) buckets.delete(buckets.keys().next().value!);
+    buckets.delete(key); // re-insert so Map order is least-recently-used first
+    buckets.set(key, b);
+    if (buckets.size > BUCKETS_MAX) buckets.delete(buckets.keys().next().value!);
     return ok;
   };
+  const limited = (route: string, c: Context) => !take(`${route}|${clientKey(c.req.header("cf-connecting-ip"))}`);
+  const tooBig = (maxSize: number) =>
+    bodyLimit({ maxSize, onError: (c) => c.json({ error: "too_large", message: "Request body is too large." }, 413) });
 
   const app = new Hono<{ Bindings: Env }>();
   app.onError((_e, c) => c.json({ error: "server_error", message: "Something went wrong." }, 500));
   app.get("/health", (c) => c.json({ ok: true }));
 
-  app.post("/ask", async (c) => {
-    if (!take(c.req.header("cf-connecting-ip") ?? "anon")) return c.json({ error: "rate_limited", message: "Too many questions. Try again in a few seconds." }, 429);
+  app.post("/ask", tooBig(4 * 1024), async (c) => {
+    if (limited("ask", c)) return c.json({ error: "rate_limited", message: "Too many questions. Try again in a few seconds." }, 429);
     const body = AskBody.safeParse(await c.req.json().catch(() => null));
     if (!body.success) return c.json({ error: "bad_request", message: "Send { question: string, habitat?: HabitatId }." }, 400);
     const question = body.data.question.trim();
@@ -93,7 +113,8 @@ export function createApp(opts: { index?: Bm25Index } = {}) {
     return c.json(result);
   });
 
-  app.post("/verify", async (c) => {
+  app.post("/verify", tooBig(1024 * 1024), async (c) => {
+    if (limited("verify", c)) return c.json({ error: "rate_limited", message: "Too many checks. Try again in a few seconds." }, 429);
     const body = VerifyBody.safeParse(await c.req.json().catch(() => null));
     if (!body.success) return c.json({ error: "bad_request", message: "Send { text, excerpt, sourceText? }." }, 400);
     const { usage: _usage, ...out } = await verify(body.data, { TYPESAFE_API_KEY: c.env?.TYPESAFE_API_KEY });
