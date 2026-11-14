@@ -1,0 +1,11 @@
+{
+  "fixture": true,
+  "items": [
+    { "id": "CLM-01", "investigationId": "PSI-01", "text": "Flame spread over a large solid sample was faster in microgravity than predicted from ground tests.", "sourceIds": ["SRC-01"], "excerpt": "Flame spread over the sample was faster than ground tests at the same airflow.", "verdict": "supports", "confidence": 0.82 },
+    { "id": "CLM-02", "investigationId": "PSI-02", "text": "Droplet extinction diameter depends on oxygen concentration.", "sourceIds": ["SRC-02"], "excerpt": "Droplets extinguished at a diameter that depended on oxygen concentration.", "verdict": "supports", "confidence": 0.9 },
+    { "id": "CLM-03", "investigationId": "PSI-03", "text": "Solid fuels can burn at lower oxygen levels in microgravity than the normal-gravity limit suggests.", "sourceIds": ["SRC-03"], "excerpt": "Spread was sustained at lower oxygen levels in microgravity than in normal gravity.", "verdict": "supports", "confidence": 0.77 },
+    { "id": "CLM-04", "investigationId": "PSI-04", "text": "Gas jet flames blow off at lower velocities as pressure drops.", "sourceIds": ["SRC-04"], "excerpt": "Blow-off velocity fell as pressure was reduced.", "verdict": "supports", "confidence": 0.7 },
+    { "id": "CLM-05", "investigationId": "PSI-05", "text": "Smoke particles are larger than the aerosols used to certify ground detectors.", "sourceIds": ["SRC-05"], "excerpt": "Median particle diameter was larger than typical ground-based smoke detector test aerosols.", "verdict": "supports", "confidence": 0.85, "flagged": true },
+    { "id": "CLM-06", "investigationId": "PSI-06", "text": "Cool-flame extinction occurs at a larger droplet diameter than hot-flame extinction.", "sourceIds": ["SRC-02"], "excerpt": "Droplets extinguished at a diameter that depended on oxygen concentration.", "verdict": "unrelated", "confidence": 0.4 }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "fixture": true,
+  "items": [
+    { "id": "SRC-01", "title": "Large-scale fire spread in a spacecraft module: flight results", "url": "https://ntrs.nasa.gov/", "excerpt": "Flame spread over the sample was faster than ground tests at the same airflow.", "license": "Public domain (NASA)" },
+    { "id": "SRC-02", "title": "Droplet burning and extinction in microgravity", "url": "https://ntrs.nasa.gov/", "excerpt": "Droplets extinguished at a diameter that depended on oxygen concentration.", "license": "Public domain (NASA)" },
+    { "id": "SRC-03", "title": "Solid fuel flammability boundaries at low flow", "url": "https://ntrs.nasa.gov/", "excerpt": "Spread was sustained at lower oxygen levels in microgravity than in normal gravity.", "license": "Public domain (NASA)" },
+    { "id": "SRC-04", "title": "Gas jet diffusion flame behavior under varied flow", "url": "https://ntrs.nasa.gov/", "excerpt": "Blow-off velocity fell as pressure was reduced.", "license": "Public domain (NASA)" },
+    { "id": "SRC-05", "title": "Smoke particle size from overheated spacecraft materials", "url": "https://ntrs.nasa.gov/", "excerpt": "Median particle diameter was larger than typical ground-based smoke detector test aerosols.", "license": "Public domain (NASA)" }
+  ]
+}

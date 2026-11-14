@@ -1,0 +1,23 @@
+# Pre-kickoff material: stays local, never committed
+/prep/
+/experiments/
+/data/explore/
+/.claude/
+
+# Secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Build and deps
+node_modules/
+dist/
+.wrangler/
+.venv/
+__pycache__/
+.pytest_cache/
+*.tsbuildinfo
+
+# Raw downloads
+/data/raw/

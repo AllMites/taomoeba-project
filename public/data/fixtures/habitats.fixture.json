@@ -1,0 +1,9 @@
+{
+  "fixture": true,
+  "items": [
+    { "id": "iss", "label": "ISS", "o2Percent": 21, "pressureKPa": 101.3, "note": "Sea-level cabin air." },
+    { "id": "moon", "label": "Moon Base", "o2Percent": 30, "pressureKPa": 70.3, "note": "Reduced-pressure, oxygen-enriched cabin." },
+    { "id": "rover", "label": "Pressurized rover", "o2Percent": 30, "pressureKPa": 70.3, "note": "Same cabin atmosphere as the Moon Base preset." },
+    { "id": "suit-ref", "label": "Suit reference", "o2Percent": 100, "pressureKPa": 29.6, "note": "Pure oxygen at low pressure, as in a suit." }
+  ]
+}

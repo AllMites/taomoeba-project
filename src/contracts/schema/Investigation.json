@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "hardware": {
+      "type": "string"
+    },
+    "hardwareGroup": {
+      "type": "string"
+    },
+    "pds": {
+      "type": "string",
+      "enum": [
+        "Prevention",
+        "Detection",
+        "Suppression",
+        "Other"
+      ]
+    },
+    "pdsBasis": {
+      "type": "string"
+    },
+    "sensors": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "objectives": {
+      "type": "string"
+    },
+    "fuelKind": {
+      "type": "string",
+      "enum": [
+        "solid",
+        "gas",
+        "droplet",
+        "aerosol"
+      ]
+    },
+    "fuel": {
+      "type": "string"
+    },
+    "sampleShape": {
+      "type": "string"
+    },
+    "o2Range": {
+      "anyOf": [
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pressureRange": {
+      "anyOf": [
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "airflowRange": {
+      "anyOf": [
+        {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "measurements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variables": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "varies": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "varies"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "sourceIds": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "hardware",
+    "hardwareGroup",
+    "pds",
+    "pdsBasis",
+    "sensors",
+    "objectives",
+    "fuelKind",
+    "fuel",
+    "sampleShape",
+    "o2Range",
+    "pressureRange",
+    "airflowRange",
+    "measurements",
+    "variables",
+    "sourceIds"
+  ],
+  "additionalProperties": false
+}

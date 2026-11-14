@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "enum": [
+        "iss",
+        "moon",
+        "rover",
+        "mars",
+        "suit-ref"
+      ]
+    },
+    "label": {
+      "type": "string"
+    },
+    "o2Percent": {
+      "type": "number"
+    },
+    "pressureKPa": {
+      "type": "number"
+    },
+    "note": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "label",
+    "o2Percent",
+    "pressureKPa",
+    "note"
+  ],
+  "additionalProperties": false
+}

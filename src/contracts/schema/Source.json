@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "url": {
+      "type": "string"
+    },
+    "doi": {
+      "type": "string"
+    },
+    "excerpt": {
+      "type": "string"
+    },
+    "license": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "url",
+    "excerpt",
+    "license"
+  ],
+  "additionalProperties": false
+}

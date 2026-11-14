@@ -1,0 +1,188 @@
+{
+  "fixture": true,
+  "items": [
+    {
+      "id": "PSI-01",
+      "title": "SAFFIRE-II",
+      "hardware": "Spacecraft Fire Experiment module",
+      "hardwareGroup": "Free-flyer",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: large-scale flame spread over a solid fuel bounds how fast a real cabin fire can grow",
+      "sensors": ["thermocouple", "radiometer", "video"],
+      "objectives": "Measure flame spread and heat release over a large solid fuel sample in a ventilated module.",
+      "fuelKind": "solid",
+      "fuel": "Cotton-fiberglass blend",
+      "sampleShape": "flat sheet",
+      "o2Range": [21, 21],
+      "pressureRange": [101.3, 101.3],
+      "airflowRange": [10, 25],
+      "measurements": ["spread rate", "peak temperature", "radiant flux"],
+      "variables": [
+        { "name": "airflow", "varies": true },
+        { "name": "oxygen", "varies": false },
+        { "name": "pressure", "varies": false }
+      ],
+      "sourceIds": ["SRC-01"]
+    },
+    {
+      "id": "PSI-02",
+      "title": "FLEX",
+      "hardware": "Combustion Integrated Rack",
+      "hardwareGroup": "CIR",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: droplet burning limits show which fuel and atmosphere pairs can sustain a flame",
+      "sensors": ["camera", "radiometer"],
+      "objectives": "Study burning and extinction of isolated fuel droplets across oxygen and diluent mixes.",
+      "fuelKind": "droplet",
+      "fuel": "n-heptane",
+      "sampleShape": "spherical droplet",
+      "o2Range": [18, 30],
+      "pressureRange": [50, 200],
+      "airflowRange": null,
+      "measurements": ["burn time", "droplet diameter", "extinction diameter"],
+      "variables": [
+        { "name": "oxygen", "varies": true },
+        { "name": "pressure", "varies": true },
+        { "name": "diluent", "varies": true }
+      ],
+      "sourceIds": ["SRC-02"]
+    },
+    {
+      "id": "PSI-03",
+      "title": "BASS-II",
+      "hardware": "Combustion Integrated Rack",
+      "hardwareGroup": "CIR",
+      "pds": "Prevention",
+      "pdsBasis": "indirect: flammability maps of solids in low flow show where material screening tests are too strict or too loose",
+      "sensors": ["thermocouple", "camera"],
+      "objectives": "Map the flammability boundary of solid fuels as oxygen and flow velocity change.",
+      "fuelKind": "solid",
+      "fuel": "PMMA and cellulose",
+      "sampleShape": "thin cylinder and sheet",
+      "o2Range": [15, 35],
+      "pressureRange": [70, 101.3],
+      "airflowRange": [0, 20],
+      "measurements": ["limiting oxygen index", "spread rate", "extinction time"],
+      "variables": [
+        { "name": "oxygen", "varies": true },
+        { "name": "airflow", "varies": true },
+        { "name": "pressure", "varies": false }
+      ],
+      "sourceIds": ["SRC-03"]
+    },
+    {
+      "id": "PSI-04",
+      "title": "ACME BRE",
+      "hardware": "Combustion Integrated Rack",
+      "hardwareGroup": "CIR",
+      "pds": "Suppression",
+      "pdsBasis": "direct: tests how a diffusion flame responds to flow and diluent, as in extinguishing agents",
+      "sensors": ["camera", "thermocouple", "radiometer"],
+      "objectives": "Characterize gas jet diffusion flames and the conditions under which they blow off or extinguish.",
+      "fuelKind": "gas",
+      "fuel": "Methane and ethylene",
+      "sampleShape": "nozzle jet",
+      "o2Range": [21, 35],
+      "pressureRange": [70, 101.3],
+      "airflowRange": [5, 60],
+      "measurements": ["flame length", "soot yield", "blow-off velocity"],
+      "variables": [
+        { "name": "oxygen", "varies": true },
+        { "name": "fuel flow", "varies": true },
+        { "name": "pressure", "varies": true }
+      ],
+      "sourceIds": ["SRC-04"]
+    },
+    {
+      "id": "PSI-05",
+      "title": "SAME-R",
+      "hardware": "Smoke aerosol measurement unit",
+      "hardwareGroup": "Smoke",
+      "pds": "Detection",
+      "pdsBasis": "direct: measures smoke particle size and concentration that detectors must sense",
+      "sensors": ["particle counter", "light scattering"],
+      "objectives": "Measure smoke particle size distributions from overheated spacecraft materials.",
+      "fuelKind": "aerosol",
+      "fuel": "Pyrolyzed cable insulation",
+      "sampleShape": "wire segment",
+      "o2Range": [21, 21],
+      "pressureRange": [101.3, 101.3],
+      "airflowRange": [2, 10],
+      "measurements": ["particle diameter", "number concentration", "mass concentration"],
+      "variables": [
+        { "name": "material", "varies": true },
+        { "name": "airflow", "varies": true },
+        { "name": "oxygen", "varies": false }
+      ],
+      "sourceIds": ["SRC-05"]
+    },
+    {
+      "id": "PSI-06",
+      "title": "CFI-G",
+      "hardware": "Combustion Integrated Rack",
+      "hardwareGroup": "CIR",
+      "pds": "Suppression",
+      "pdsBasis": "indirect: cool-flame extinction behavior informs how long a low-temperature flame can persist after suppression",
+      "sensors": ["camera", "radiometer"],
+      "objectives": "Observe cool-flame and hot-flame extinction of burning droplets in microgravity.",
+      "fuelKind": "droplet",
+      "fuel": "n-decane",
+      "sampleShape": "suspended droplet",
+      "o2Range": [10, 21],
+      "pressureRange": [100, 300],
+      "airflowRange": null,
+      "measurements": ["extinction diameter", "flame standoff", "burn rate"],
+      "variables": [
+        { "name": "oxygen", "varies": true },
+        { "name": "pressure", "varies": true }
+      ],
+      "sourceIds": ["SRC-02"]
+    },
+    {
+      "id": "PSI-07",
+      "title": "SPICE",
+      "hardware": "Smoke aerosol measurement unit",
+      "hardwareGroup": "Smoke",
+      "pds": "Detection",
+      "pdsBasis": "direct: characterizes smoke from burning solids to tune detector response",
+      "sensors": ["particle counter", "camera"],
+      "objectives": "Quantify smoke particulates from small solid-fuel burns across oxygen levels.",
+      "fuelKind": "aerosol",
+      "fuel": "Cellulose paper and PMMA",
+      "sampleShape": "small sheet",
+      "o2Range": [21, 30],
+      "pressureRange": [70.3, 101.3],
+      "airflowRange": [0, 15],
+      "measurements": ["particle diameter", "smoke yield"],
+      "variables": [
+        { "name": "oxygen", "varies": true },
+        { "name": "pressure", "varies": true },
+        { "name": "airflow", "varies": false }
+      ],
+      "sourceIds": ["SRC-05"]
+    },
+    {
+      "id": "PSI-08",
+      "title": "DAFT",
+      "hardware": "Combustion Integrated Rack",
+      "hardwareGroup": "CIR",
+      "pds": "Suppression",
+      "pdsBasis": "indirect: flame response to flow and agent dilution shows what it takes to put a gas flame out",
+      "sensors": ["camera", "thermocouple"],
+      "objectives": "Study flame structure and extinction of laminar gas flames under varied flow and dilution.",
+      "fuelKind": "gas",
+      "fuel": "Hydrogen-methane blend",
+      "sampleShape": "burner flame",
+      "o2Range": [19, 40],
+      "pressureRange": [50, 101.3],
+      "airflowRange": [1, 40],
+      "measurements": ["flame temperature", "extinction strain rate"],
+      "variables": [
+        { "name": "oxygen", "varies": true },
+        { "name": "dilution", "varies": true },
+        { "name": "pressure", "varies": false }
+      ],
+      "sourceIds": ["SRC-04"]
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+name = "flame-in-freefall-api"
+main = "server/index.ts"
+compatibility_date = "2026-11-01"
