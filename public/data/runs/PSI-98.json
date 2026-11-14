@@ -67,6 +67,10 @@
    "original": "Camera 2"
   }
  ],
+ "notes": [
+  "F1C1/F1C2 Pre-test flow visulation data for sample 1",
+  "F2C1/F2C2 Pre-test flow visulation data for sample 2"
+ ],
  "rows": [
   {
    "sample_number": "S1",
@@ -97,36 +101,6 @@
    "flow_direction": "Opposed",
    "camera_1": "S2C1",
    "camera_2": "S2C2"
-  },
-  {
-   "sample_number": "F1C1/F1C2",
-   "material": "Pre-test flow visulation data for sample 1",
-   "sample_thickness_cm": null,
-   "sample_length_cm": null,
-   "sample_width_cm": null,
-   "airflow_cm_s": null,
-   "o2_percent": null,
-   "ignition_power_w": null,
-   "ignition_time_s": null,
-   "burn_time_s": null,
-   "flow_direction": null,
-   "camera_1": null,
-   "camera_2": null
-  },
-  {
-   "sample_number": "F2C1/F2C2",
-   "material": "Pre-test flow visulation data for sample 2",
-   "sample_thickness_cm": null,
-   "sample_length_cm": null,
-   "sample_width_cm": null,
-   "airflow_cm_s": null,
-   "o2_percent": null,
-   "ignition_power_w": null,
-   "ignition_time_s": null,
-   "burn_time_s": null,
-   "flow_direction": null,
-   "camera_1": null,
-   "camera_2": null
   }
  ]
 }

@@ -215,7 +215,7 @@ def investigation(src):
     if excerpt and "record" in basis_.values():
         basis_["excerpt"] = excerpt
     usable = not other and i not in runs.SKIP and any(rows for _, rows in tabs)
-    run_cols, run_rows = runs.build_table(tabs) if usable else ([], [])
+    run_cols, run_rows, run_notes = runs.build_table(tabs) if usable else ([], [], [])
     return {
         "id": i,
         "title": clean(src.get("Acronym")) or clean(src["Title"]),
@@ -237,7 +237,7 @@ def investigation(src):
         "conditionBasis": basis_,
         "evidence": evidence(src),
         "runs": {"path": f"runs/{i}.json", "rows": len(run_rows), "columns": [x["name"] for x in run_cols]} if usable else None,
-        "_runs": (run_cols, run_rows),
+        "_runs": (run_cols, run_rows, run_notes),
     }
 
 
@@ -254,11 +254,11 @@ def write_runs(invs):
         old.unlink()
     total = 0
     for inv in invs:
-        cols, rows = inv.pop("_runs")
+        cols, rows, notes = inv.pop("_runs")
         if inv["runs"] is None:
             continue
         i = inv["id"]
-        (d / f"{i}.json").write_text(json.dumps({"source": f"psi:{i}", "columns": cols, "rows": rows},
+        (d / f"{i}.json").write_text(json.dumps({"source": f"psi:{i}", "columns": cols, "notes": notes, "rows": rows},
                                                 ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         (d / f"{i}.csv").write_text(runs.to_csv(cols, rows), encoding="utf-8", newline="")
     total = sum(f.stat().st_size for f in d.glob("*"))

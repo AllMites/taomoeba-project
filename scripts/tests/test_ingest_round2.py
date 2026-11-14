@@ -114,7 +114,7 @@ def test_flex_row_count():
 @pytest.mark.parametrize("i", ["PSI-69", "PSI-25", "PSI-107"])
 def test_run_rows_match_source_lines(i):
     src = sum(len(tables.read_rows(p)[1]) for p in (RAW / i / "tables").glob("*.csv"))
-    assert INV[i]["runs"]["rows"] == src
+    assert INV[i]["runs"]["rows"] + len(run_json(i)["notes"]) == src
 
 
 def cell_numbers(v):
@@ -148,7 +148,7 @@ def test_related():
 
 
 def test_run_numbers_keep_psi_precision():
-    cols, rows = runs.build_table([(["Tad (K)", "Note"], [{"Tad (K)": "2595.073097", "Note": "-"}])])
+    cols, rows, notes = runs.build_table([(["Tad (K)", "Note"], [{"Tad (K)": "2595.073097", "Note": "-"}])])
     assert rows == [{"tad_k": 2595.073097, "note": "-"}]
 
 
@@ -213,3 +213,34 @@ def test_test_matrix_files_are_never_listed(monkeypatch):
          "sortingCategory": "Science Documents", "bytes_size": "100", "version": 1}]}
     monkeypatch.setattr(psi, "file_tree", lambda _i: {"version": 1, "tree": tree})
     assert [n for n, _, _ in psi.tables_of("PSI-26")] == ["Experimental table/PSI-26_Experimental table_BASS.csv"]
+
+
+def test_no_footnote_rows_and_notes():
+    for i, inv in INV.items():
+        if inv["runs"] is None:
+            continue
+        j = run_json(i)
+        width = len(j["columns"])
+        for r in j["rows"]:
+            # >= 3 non-empty cells (tables narrower than 3 columns need every column)
+            assert sum(v not in (None, "") for v in r.values()) >= min(3, width), (i, r)
+        assert inv["runs"]["rows"] == len(j["rows"])
+    j = run_json("PSI-99")
+    assert len(j["rows"]) == 9 and any(n.startswith("Note 1") for n in j["notes"])
+    assert len(run_json("PSI-69")["rows"]) == 274 and run_json("PSI-69")["notes"] == []
+
+
+def test_column_names_and_micro_sign():
+    from ingest.runs import snake
+    assert snake("µ-g Burn Length") == snake("μ-g Burn Length") == snake("?-g Burn Length") == "microgravity_burn_length"
+    assert snake("1-g Spread Rate") == "normal_gravity_spread_rate"
+    for i, inv in INV.items():
+        if inv["runs"]:
+            assert not any(re.match(r"g_", n) for n in inv["runs"]["columns"]), i
+    originals = {c["original"] for c in run_json("PSI-99")["columns"]}
+    assert "?-g Burn Length" in originals  # PSI's own file holds a literal "?" here; kept exactly
+
+
+def test_files_are_utf8():
+    for p in (DATA / "runs").glob("*"):
+        p.read_bytes().decode("utf-8")
