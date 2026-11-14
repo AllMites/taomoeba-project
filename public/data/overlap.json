@@ -60,57 +60,45 @@
       "investigationId": "PSI-20",
       "habitat": "iss",
       "overlap": 1.0,
-      "dimsUsed": 2,
+      "dimsUsed": 1,
       "o2Tested": [
         21.0,
         40.0
       ],
-      "pressureTestedKPa": [
-        56.5,
-        101.4
-      ]
+      "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-20",
       "habitat": "moon",
       "overlap": 1.0,
-      "dimsUsed": 2,
+      "dimsUsed": 1,
       "o2Tested": [
         21.0,
         40.0
       ],
-      "pressureTestedKPa": [
-        56.5,
-        101.4
-      ]
+      "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-20",
       "habitat": "rover",
       "overlap": 1.0,
-      "dimsUsed": 2,
+      "dimsUsed": 1,
       "o2Tested": [
         21.0,
         40.0
       ],
-      "pressureTestedKPa": [
-        56.5,
-        101.4
-      ]
+      "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-20",
       "habitat": "suit-ref",
-      "overlap": 0.2,
-      "dimsUsed": 2,
+      "overlap": 0.0,
+      "dimsUsed": 1,
       "o2Tested": [
         21.0,
         40.0
       ],
-      "pressureTestedKPa": [
-        56.5,
-        101.4
-      ]
+      "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-21",
@@ -759,89 +747,65 @@
     {
       "investigationId": "PSI-106",
       "habitat": "iss",
-      "overlap": 1.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-106",
       "habitat": "moon",
-      "overlap": 0.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-106",
       "habitat": "rover",
-      "overlap": 0.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-106",
       "habitat": "suit-ref",
-      "overlap": 0.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-107",
       "habitat": "iss",
-      "overlap": 1.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-107",
       "habitat": "moon",
-      "overlap": 0.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-107",
       "habitat": "rover",
-      "overlap": 0.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {
       "investigationId": "PSI-107",
       "habitat": "suit-ref",
-      "overlap": 0.0,
-      "dimsUsed": 1,
-      "o2Tested": [
-        21.0,
-        21.0
-      ],
+      "overlap": null,
+      "dimsUsed": 0,
+      "o2Tested": null,
       "pressureTestedKPa": null
     },
     {

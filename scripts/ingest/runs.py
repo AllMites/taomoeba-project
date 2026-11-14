@@ -73,10 +73,14 @@ def _cell(kind, header, cell, scale):
 
 
 def _plain(cell):
+    """Non-condition cell: a plain number becomes a number at PSI's full precision, anything else stays text."""
     c = cell.strip()
     if not c:
         return None
-    return _fmt(float(c)) if re.fullmatch(r"-?\d+(\.\d+)?", c) and not re.fullmatch(r"-?0\d+", c) else c
+    if not re.fullmatch(r"-?\d+(\.\d+)?", c) or re.fullmatch(r"-?0\d+", c):
+        return c
+    v = float(c)
+    return int(v) if v.is_integer() else v
 
 
 def build_table(tabs):

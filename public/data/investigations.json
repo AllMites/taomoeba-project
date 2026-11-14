@@ -112,10 +112,7 @@
         21.0,
         40.0
       ],
-      "pressureRange": [
-        56.5,
-        101.4
-      ],
+      "pressureRange": null,
       "airflowRange": null,
       "measurements": [],
       "variables": [
@@ -133,8 +130,7 @@
       ],
       "conditionBasis": {
         "o2": "table",
-        "pressure": "record",
-        "excerpt": "NASA - considered atmosphere for human space missions will be examined: 14.7 psia, 21 % oxygen: 10.2 psia, 26.5 %; and 8.2 psia, 34 % oxygen."
+        "pressure": null
       },
       "evidence": "flight",
       "runs": {
@@ -457,7 +453,7 @@
       "related": [
         {
           "id": "PSI-26",
-          "reason": "Its PSI record names BASS"
+          "reason": "Listed as related in its PSI record"
         },
         {
           "id": "PSI-106",
@@ -1282,10 +1278,7 @@
       "fuelKind": "gas",
       "fuel": "C2H4, C2H6, CH4",
       "sampleShape": "burner jet",
-      "o2Range": [
-        21.0,
-        21.0
-      ],
+      "o2Range": null,
       "pressureRange": null,
       "airflowRange": null,
       "measurements": [],
@@ -1299,9 +1292,8 @@
         "psi:PSI-106"
       ],
       "conditionBasis": {
-        "o2": "record",
-        "pressure": null,
-        "excerpt": "Flames were then manually ignited and observed under controlled coflow air conditions."
+        "o2": null,
+        "pressure": null
       },
       "evidence": "flight",
       "runs": {
@@ -1345,10 +1337,7 @@
       "fuelKind": "gas",
       "fuel": "Ethylene, Methane, Propane, Propylene",
       "sampleShape": "burner jet",
-      "o2Range": [
-        21.0,
-        21.0
-      ],
+      "o2Range": null,
       "pressureRange": null,
       "airflowRange": [
         0.66,
@@ -1371,9 +1360,8 @@
         "psi:PSI-107"
       ],
       "conditionBasis": {
-        "o2": "record",
-        "pressure": null,
-        "excerpt": "Each flame was ignited in a controlled co-flow air environment, with burner diameters of 0.41 mm, 0.76 mm, and 1.6 mm and co-flow velocities ranging from 5.4 cm/s to 65 cm/s."
+        "o2": null,
+        "pressure": null
       },
       "evidence": "flight",
       "runs": {

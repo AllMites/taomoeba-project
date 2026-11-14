@@ -128,23 +128,28 @@ RECORD_FIELDS = ("Objectives", "Approach", "Hypothesis")
 RE_REC_O2 = re.compile(r"(\d+(?:\.\d+)?)\s*(?:%|percent)\s*(?:of\s+)?(?:oxygen|O2)\b", re.I)
 RE_REC_P = re.compile(r"(\d+(?:\.\d+)?)\s*(psia|psi|atm|kpa|mmhg|bar)\b", re.I)
 # Two conversions only, both applied only when the sentence itself says it:
-#   "air" / "cabin air" / "ambient air" / "co-flow air environment"  -> 21 % oxygen
-#   "ambient pressure"                                                -> 101.3 kPa (1 atm)
-RE_REC_AIR = re.compile(r"\b(cabin air|ambient air|air environment|co-?flow air (?:environment|conditions)|1 atm air)\b", re.I)
+#   "cabin air" / "ambient air" / "air environment"  -> 21 % oxygen
+#   "ambient pressure"                                -> 101.3 kPa (1 atm)
+RE_REC_AIR = re.compile(r"\b(cabin air|ambient air|air environment|1 atm air)\b", re.I)
 RE_REC_AMB_P = re.compile(r"\bambient pressure\b", re.I)
+# Sentences that cannot state the test atmosphere: a gas stream fed to the burner or sample
+# (co-flow, airflow) rather than the surrounding atmosphere, and plans, proposals, design
+# capabilities ("will be examined", "considered", "up to") rather than conditions that were run.
+RE_REC_SKIP = re.compile(r"co-?flow|air ?flow|flow velocit|\b(will|would|shall|should|could|can|may|propos\w*|plann?\w*|"
+                         r"desired|consider\w*|capab\w*|design\w*|requirements?|up to)\b", re.I)
 RE_SPLIT = r"(?<=[^\d.][.!?])\s+(?=[A-Z])"
 
 
 def record_sentences(src):
     text = " ".join(clean(src.get(f)) for f in RECORD_FIELDS)
-    return [x for x in re.split(RE_SPLIT, text) if x]
+    return [x.strip() for x in re.split(RE_SPLIT, text) if x.strip()]
 
 
 def record_conditions(src, need_o2, need_p):
     """Test atmosphere stated in the PSI record text. Returns (o2Range, pressureRange, excerpt)."""
     o2, p, used = [], [], []
     for sent in record_sentences(src):
-        if re.search(r"air ?flow|flow velocity", sent, re.I) and not RE_REC_AIR.search(sent):
+        if RE_REC_SKIP.search(sent):
             continue
         so = [float(v) for v in RE_REC_O2.findall(sent)] + ([21.0] if RE_REC_AIR.search(sent) else [])
         sp = [float(n) * T_KPA[u.lower()] for n, u in RE_REC_P.findall(sent)] + ([101.325] if RE_REC_AMB_P.search(sent) else [])
@@ -169,8 +174,13 @@ MENTION = [("BASS-II", "PSI-25"), ("BASS", "PSI-26"), ("FLEX-2", "PSI-68"), ("FL
 NO_GROUP = {"Ground study", "PI laboratory", "Not stated"}
 
 
+def record_text_dashes(src):
+    """Record text with Unicode hyphens and dashes as '-', so 'BASS–II' is read as BASS-II, not BASS."""
+    return re.sub("[‐-―−]", "-", " ".join(clean(src.get(f)) for f in RECORD_FIELDS))
+
+
 def related(inv, srcs, invs):
-    me, text = inv["id"], " ".join(clean(srcs[inv["id"]].get(f)) for f in RECORD_FIELDS)
+    me, text = inv["id"], record_text_dashes(srcs[inv["id"]])
     out = {}
     for key, oid in MENTION:
         if oid != me and re.search(rf"(?<![\w-]){re.escape(key)}(?![\w-])", text, re.I if " " in key else 0):

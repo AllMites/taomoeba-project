@@ -4,6 +4,7 @@ Cache lives in data/raw/ (gitignored). A rerun with a warm cache makes no networ
 Only "Experimental table" files under 20 MB are ever downloaded.
 """
 import json
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -88,8 +89,8 @@ def tables_of(psi_id):
     """(name, file_version, size) of small 'Experimental table' files; dedupe by name."""
     seen = {}
     for f in walk(file_tree(psi_id)["tree"]):
-        if f.get("sortingCategory") != "Experimental table":
-            continue
+        if f.get("sortingCategory") != "Experimental table" or re.search(r"test\s*matrix", f["key"], re.I):
+            continue  # Test Matrix files (planned or as-run) are never read, whatever their category
         if float(f.get("bytes_size") or 0) > MAX_BYTES:
             continue
         name = f["key"].split("/", 2)[-1]
