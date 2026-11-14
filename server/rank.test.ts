@@ -4,7 +4,7 @@ import type { HabitatPreset } from "../src/contracts/habitat.ts";
 import type { Investigation } from "../src/contracts/investigation.ts";
 import { RankItem } from "../src/contracts/rank.ts";
 import {
-  buildItems, computeScore, dimScore, FACTOR_ORDER, goalBand, goalExcerpt, HOW_RANKING_WORKS, loadInputs, rationale, typesafeGoal, type Inputs,
+  buildItems, computeScore, dimScore, FACTOR_ORDER, FLOOR, goalBand, goalExcerpt, HOW_RANKING_WORKS, loadInputs, rationale, typesafeGoal, type Inputs,
 } from "../scripts/rank/build.ts";
 
 const moon: HabitatPreset = { id: "moon", label: "Moon Base", o2Percent: 30, pressureKPa: 70.3, note: "" };
@@ -127,6 +127,36 @@ describe("wording", () => {
   });
   it("HOW_RANKING_WORKS is four sentences", () => {
     expect(HOW_RANKING_WORKS.split(/(?<=\.)\s+/)).toHaveLength(4);
+  });
+  it("HOW_RANKING_WORKS states the decay rule and its floors, so a judge can redo the condition checks", () => {
+    expect(HOW_RANKING_WORKS).toMatch(/straight line to 0/);
+    expect(HOW_RANKING_WORKS).toContain(`${FLOOR.o2} points of oxygen`);
+    expect(HOW_RANKING_WORKS).toContain(`${FLOOR.pressure} kPa`);
+  });
+  it("weakest factor names a measured mismatch before a gap, and both missing conditions together", async () => {
+    const [m, n] = await buildItems(inputs([inv({ id: "M", o2Range: [17, 21], pressureRange: [50.7, 506.6] }), inv({ id: "N" })]), goal(0.6));
+    // moon: o2 0 (measured), pressure 1, evidence null; both add 0, the measured 0 is named
+    expect(m.rationale).toBe("Strong pressure match; weak oxygen match.");
+    expect(n.rationale).toBe("Strong link to fire safety; oxygen and pressure are not on record.");
+  });
+  it("a TypeSafe answer off the 0..4 level line gives null and is not cached", async () => {
+    const bad = (score: unknown) => (async () => new Response(JSON.stringify({ answers: { goalFit: { score } }, usage: { input_tokens: 1, output_tokens: 1 } }))) as unknown as typeof fetch;
+    const one = inv({ objectives: "Review-only probe sentence 7c1e, never cached." });
+    for (const s of [7, -1, undefined, "x"]) expect(await typesafeGoal("test-key", bad(s))(one, moon)).toBeNull();
+    expect(await typesafeGoal(undefined)(one, moon)).toBeNull();
+  });
+  it("committed rank.json is schema-valid, complete, and every score is the mean of its factors", () => {
+    const f = new URL("../public/data/rank.json", import.meta.url);
+    if (!existsSync(f)) return;
+    const real = loadInputs();
+    const items = (JSON.parse(readFileSync(f, "utf8")) as { items: unknown[] }).items.map((x) => RankItem.parse(x));
+    expect(items).toHaveLength(real.investigations.length * real.habitats.length);
+    for (const it of items) {
+      expect(it.factors!.map((x) => x.key)).toEqual(FACTOR_ORDER);
+      const mean = Math.round((it.factors!.reduce((s, x) => s + (x.value ?? 0), 0) / 5) * 1000) / 1000;
+      expect(it.score).toBe(mean);
+      expect(it.rationale).toBe(rationale(it.factors!));
+    }
   });
   it("real data builds and is deterministic", async () => {
     if (!existsSync(new URL("../public/data/investigations.json", import.meta.url))) return;

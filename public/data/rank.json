@@ -330,7 +330,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.553,
       "score": 0.311,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -376,7 +376,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.488,
       "score": 0.198,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -422,7 +422,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.49,
       "score": 0.198,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -468,7 +468,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.55,
       "score": 0.21,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -514,7 +514,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.405,
       "score": 0.181,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -560,7 +560,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.648,
       "score": 0.23,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -606,7 +606,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.58,
       "score": 0.216,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -652,7 +652,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.65,
       "score": 0.23,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -698,7 +698,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.53,
       "score": 0.206,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -790,7 +790,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.495,
       "score": 0.399,
-      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "rationale": "Strong oxygen match; weak pressure match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -836,7 +836,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.555,
       "score": 0.411,
-      "rationale": "Strong oxygen match; flight or ground is not stated.",
+      "rationale": "Strong oxygen match; weak pressure match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -882,7 +882,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.568,
       "score": 0.214,
-      "rationale": "Partial goal fit; flight or ground is not stated.",
+      "rationale": "Partial goal fit; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -1066,7 +1066,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.718,
       "score": 0.344,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -1112,7 +1112,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.713,
       "score": 0.343,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1158,7 +1158,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.705,
       "score": 0.341,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1204,7 +1204,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.723,
       "score": 0.345,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1250,7 +1250,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.69,
       "score": 0.338,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1342,7 +1342,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.653,
       "score": 0.431,
-      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "rationale": "Strong pressure match; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -1388,7 +1388,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.7,
       "score": 0.44,
-      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "rationale": "Strong pressure match; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -1434,7 +1434,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.558,
       "score": 0.402,
-      "rationale": "Strong pressure match; flight or ground is not stated.",
+      "rationale": "Strong pressure match; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -1480,7 +1480,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.748,
       "score": 0.35,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1526,7 +1526,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.7,
       "score": 0.34,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1572,7 +1572,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.733,
       "score": 0.347,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1618,7 +1618,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.613,
       "score": 0.323,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1664,7 +1664,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.475,
       "score": 0.195,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1710,7 +1710,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.453,
       "score": 0.191,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1756,7 +1756,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.45,
       "score": 0.19,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1802,7 +1802,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.428,
       "score": 0.186,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1848,7 +1848,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.645,
       "score": 0.229,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1894,7 +1894,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.693,
       "score": 0.239,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1940,7 +1940,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.665,
       "score": 0.233,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -1986,7 +1986,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.608,
       "score": 0.222,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -2170,7 +2170,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.395,
       "score": 0.462,
-      "rationale": "Strong link to fire safety; flight or ground is not stated.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2354,7 +2354,7 @@
       "dimsUsed": 2,
       "siRelevance": 0.658,
       "score": 0.498,
-      "rationale": "Strong link to fire safety; flight or ground is not stated.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2446,7 +2446,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.93,
       "score": 0.386,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2492,7 +2492,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.915,
       "score": 0.383,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2538,7 +2538,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.85,
       "score": 0.37,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2630,7 +2630,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.935,
       "score": 0.387,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2676,7 +2676,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.875,
       "score": 0.375,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2722,7 +2722,7 @@
       "dimsUsed": 1,
       "siRelevance": 0.773,
       "score": 0.355,
-      "rationale": "Strong link to fire safety; pressure is not on record.",
+      "rationale": "Strong link to fire safety; weak oxygen match.",
       "claimIds": [],
       "provenance": "measured",
       "factors": [
@@ -2768,7 +2768,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.925,
       "score": 0.385,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -2814,7 +2814,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.93,
       "score": 0.386,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -2860,7 +2860,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.915,
       "score": 0.383,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -2906,7 +2906,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.85,
       "score": 0.37,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -2952,7 +2952,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.545,
       "score": 0.309,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -2998,7 +2998,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.525,
       "score": 0.305,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3044,7 +3044,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.613,
       "score": 0.323,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3090,7 +3090,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.338,
       "score": 0.268,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3136,7 +3136,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.538,
       "score": 0.308,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3182,7 +3182,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.515,
       "score": 0.303,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3228,7 +3228,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.578,
       "score": 0.316,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3274,7 +3274,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.39,
       "score": 0.278,
-      "rationale": "Strong link to fire safety; oxygen is not on record.",
+      "rationale": "Strong link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3320,7 +3320,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.568,
       "score": 0.214,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3366,7 +3366,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.575,
       "score": 0.215,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3412,7 +3412,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.575,
       "score": 0.215,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3458,7 +3458,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.398,
       "score": 0.18,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3504,7 +3504,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.583,
       "score": 0.217,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3550,7 +3550,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.585,
       "score": 0.217,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3596,7 +3596,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.558,
       "score": 0.212,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3642,7 +3642,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.48,
       "score": 0.196,
-      "rationale": "Partial link to fire safety; oxygen is not on record.",
+      "rationale": "Partial link to fire safety; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3688,7 +3688,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.173,
       "score": 0.035,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3734,7 +3734,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.125,
       "score": 0.025,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3780,7 +3780,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.15,
       "score": 0.03,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3826,7 +3826,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.11,
       "score": 0.022,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3872,7 +3872,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.723,
       "score": 0.245,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3918,7 +3918,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.7,
       "score": 0.24,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -3964,7 +3964,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.673,
       "score": 0.235,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4010,7 +4010,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.633,
       "score": 0.227,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4056,7 +4056,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.838,
       "score": 0.268,
-      "rationale": "Strong goal fit; oxygen is not on record.",
+      "rationale": "Strong goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4102,7 +4102,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.705,
       "score": 0.241,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4148,7 +4148,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.823,
       "score": 0.265,
-      "rationale": "Strong goal fit; oxygen is not on record.",
+      "rationale": "Strong goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4194,7 +4194,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.778,
       "score": 0.256,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4240,7 +4240,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.575,
       "score": 0.215,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4286,7 +4286,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.695,
       "score": 0.239,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4332,7 +4332,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.75,
       "score": 0.25,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4378,7 +4378,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.635,
       "score": 0.227,
-      "rationale": "Partial goal fit; oxygen is not on record.",
+      "rationale": "Partial goal fit; oxygen and pressure are not on record.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4608,7 +4608,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.143,
       "score": 0.029,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4654,7 +4654,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.155,
       "score": 0.031,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4700,7 +4700,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.123,
       "score": 0.025,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [
@@ -4746,7 +4746,7 @@
       "dimsUsed": 0,
       "siRelevance": 0.048,
       "score": 0.01,
-      "rationale": "Weak goal fit; oxygen is not on record.",
+      "rationale": "Weak goal fit; weak link to fire safety.",
       "claimIds": [],
       "provenance": "illustrative",
       "factors": [

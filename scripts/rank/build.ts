@@ -20,8 +20,8 @@ export const FACTOR_ORDER: FactorKey[] = ["o2", "pressure", "directness", "evide
 /** Shown verbatim in the UI. Keep it at four plain sentences. */
 export const HOW_RANKING_WORKS =
   "Each investigation gets five checks for the habitat you pick: oxygen match, pressure match, how directly it studies fire safety, whether it flew in space, and how well its stated goal fits. " +
-  "Each check is worth 0 to 1, and the score is the plain average of the five. " +
-  "If a check cannot be answered from the record, it counts as 0, so missing data never lifts a rank. " +
+  "Each check is worth 0 to 1; oxygen or pressure inside the tested range scores 1, and outside it falls in a straight line to 0 at a gap equal to the tested span (at least 5 points of oxygen or 10 kPa). " +
+  "The score is the plain average of the five, and a check the record cannot answer counts as 0, so missing data never lifts a rank. " +
   "The goal-fit check is the only one an SI rates; the other four come straight from the record.";
 
 /** Distance floor (same units as the dimension) when a tested range is a single value. Matches Lane A. */
@@ -151,17 +151,29 @@ export function computeScore(factors: Pick<RankFactor, "key" | "value">[]): numb
 const NOUN: Record<FactorKey, string> = { o2: "oxygen match", pressure: "pressure match", directness: "link to fire safety", evidence: "evidence type", goalFit: "goal fit" };
 const UNKNOWN: Record<FactorKey, string> = { o2: "oxygen is not on record", pressure: "pressure is not on record", directness: "link to fire safety is unknown", evidence: "flight or ground is not stated", goalFit: "the SI rating is unavailable" };
 const strength = (v: number) => (v >= 0.8 ? "strong" : v >= 0.4 ? "partial" : "weak");
-const phrase = (f: RankFactor) => (f.value === null ? UNKNOWN[f.key] : `${strength(f.value)} ${NOUN[f.key]}`);
+const isCond = (f: RankFactor) => f.key === "o2" || f.key === "pressure";
+const phrase = (f: RankFactor, all: RankFactor[]) => {
+  if (f.value !== null) return `${strength(f.value)} ${NOUN[f.key]}`;
+  const bothCond = isCond(f) && all.filter(isCond).length === 2 && all.filter(isCond).every((c) => c.value === null);
+  return bothCond ? "oxygen and pressure are not on record" : UNKNOWN[f.key];
+};
 
-/** One plain sentence naming the strongest and the weakest factor. */
+/**
+ * One plain sentence naming the strongest and the weakest factor. Weakest is by what the factor adds to the
+ * score (null counts as 0); on a tie a known value wins, so a measured mismatch is named before a gap.
+ */
 export function rationale(factors: RankFactor[]): string {
   const known = factors.filter((f) => f.value !== null);
-  const best = known.length ? known.reduce((a, b) => (b.value! > a.value! ? b : a)) : null;
-  const worst = factors.reduce((a, b) => ((b.value ?? -1) < (a.value ?? -1) ? b : a));
-  if (!best || best.value === worst.value) {
-    return best ? `All five checks are about equal: ${phrase(best)}.` : "Nothing is known for any of the five checks.";
+  if (!known.length) return "Nothing is known for any of the five checks.";
+  const v = (f: RankFactor) => f.value ?? 0;
+  const best = known.reduce((a, b) => (b.value! > a.value! ? b : a));
+  let worst = factors.reduce((a, b) => (v(b) < v(a) || (v(b) === v(a) && a.value === null && b.value !== null) ? b : a));
+  if (v(best) === v(worst)) {
+    const gap = factors.find((f) => f.value === null);
+    if (!gap) return `All five checks are about equal: ${phrase(best, factors)}.`;
+    worst = gap;
   }
-  return `${cap(phrase(best))}; ${phrase(worst)}.`;
+  return `${cap(phrase(best, factors))}; ${phrase(worst, factors)}.`;
 }
 
 // ---------- items ----------
@@ -226,7 +238,10 @@ export function typesafeGoal(key: string | undefined, fetchImpl: typeof fetch = 
       if (!res.ok) throw new Error(String(res.status));
       const j = (await res.json()) as { answers: { goalFit: { score: number } }; usage: { input_tokens: number; output_tokens: number } };
       usage.calls++; usage.input_tokens += j.usage.input_tokens; usage.output_tokens += j.usage.output_tokens;
-      const value = r3(j.answers.goalFit.score / (GOAL_LEVELS.length - 1));
+      // TypeSafe Score is on the level line 0..(levels-1); anything else is a failure, never a guessed number.
+      const raw = j.answers?.goalFit?.score;
+      if (typeof raw !== "number" || !Number.isFinite(raw) || raw < 0 || raw > GOAL_LEVELS.length - 1) throw new Error("bad score");
+      const value = r3(raw / (GOAL_LEVELS.length - 1));
       mkdirSync(cacheDir, { recursive: true });
       writeFileSync(file, JSON.stringify({ value }));
       return value;
