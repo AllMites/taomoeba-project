@@ -1,0 +1,214 @@
+{
+  "items": [
+    {
+      "id": "psi:PSI-10",
+      "title": "Advanced Combustion via Microgravity Experiments / Flame Design (ACME/Flame Design)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-10&source=psi&type=investigation",
+      "excerpt": "The primary objectives of this flight experiment are: A.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-20",
+      "title": "Advanced Combustion via Microgravity Experiments - Burning Rate Emulator (ACME BRE)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-20&source=psi&type=investigation",
+      "excerpt": "The BRE flight program seeks to establish the burning conditions in a quiescent microgravity ambient in terms of material properties.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-21",
+      "title": "Advanced Combustion via Microgravity Experiments / Coflow Laminar Diffusion Flame (ACME CLD Flame)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-21&source=psi&type=investigation",
+      "excerpt": "In order to provide the experimental data needed to allow rigorous testing of computational models at the extremes of the fuel dilution spectrum, we have the following objectives: A) Characterize the behavior of weak coflow diffusion flames of methane and ethylene, as a function of velocity and fuel dilution, through measurement of flame shape, lift-off heights, temperatures and extinction limits.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-22",
+      "title": "Advanced Combustion via Microgravity Experiments Electric-Field Effects on Laminar Diffusion Flames (ACME E-FIELD Flames)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-22&source=psi&type=investigation",
+      "excerpt": "The objective of this investigation is to better understand the relationship between electric field voltage and chemi-ion current, analyze the dynamic response of flames to electric field changes, evaluate soot formation, and characterize stabilized near-limit lifted flames.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-23",
+      "title": "Advanced Combustion via Microgravity Experiments-Structure and Response of Spherical Diffusion Flames (ACME s-Flame)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-23&source=psi&type=investigation",
+      "excerpt": "A series of experiments is proposed with the following specific objectives, in both soot-free and sooty flames, to compare with detailed computational simulation to assess transport properties and detailed chemical kinetics (including chemiluminescence): Objective A.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-25",
+      "title": "Burning and Suppression of Solids - II (BASS-II)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-25&source=psi&type=investigation",
+      "excerpt": "BASS-II results contribute to the combustion computational models used in the design of fire detection and suppression systems in microgravity and on Earth.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-26",
+      "title": "Burning and Suppression of Solids (BASS)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-26&source=psi&type=investigation",
+      "excerpt": "The two main objectives for BASS are to: 1.) Begin to bridge the gap between the normal gravity NASA-STD-6001 Test#1 method, ground-based microgravity tests, and actual material flammability in microgravity.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-39",
+      "title": "Cool Flames Investigation (CFI)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-39&source=psi&type=investigation",
+      "excerpt": "The objectives of this investigation are to: 1) Examine the combustion behavior of n-dodecane and mixtures of n-dodecane/iso-dodecane at pressures ranging from 0.25 atm to 5 atm.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-47",
+      "title": "Dust and Aerosol Measurement Feasibility Test / Dust and Aerosol Measurement Feasibility Test-2 (DAFT / DAFT-2)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-47&source=psi&type=investigation",
+      "excerpt": "The focus of DAFT / DAFT-2 was to mitigate the risk for the Smoke Aerosol Measurement Experiment (SAME).",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-60",
+      "title": "Computational and Experimental Analysis of SPICE Data Sets",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-60&source=psi&type=investigation",
+      "excerpt": "This ground investigation sought to increase understanding of the issues that control the large discrepancy between soot formation in 1g and in 0g flames.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-62",
+      "title": "Concurrent Flame Spread Modeling using Flamelet Generated Manifolds in Microgravity with Comparison to BASS Experiments using Two-Color Tomography",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-62&source=psi&type=investigation",
+      "excerpt": "The objective of this research was to develop and validate new flamelet generated manifold (FGM) modeling techniques for concurrent flame spread in microgravity.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-68",
+      "title": "Flame Extinguishment Experiment - 2 (FLEX-2)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-68&source=psi&type=investigation",
+      "excerpt": "The primary goal of the FLEX-2 flight experiments is to extend the results of FLEX-1 to fuels and environmental conditions that mimic real combustor conditions, as well as, provide benchmark experimental data on bi-component droplet combustion over a wide range of initial conditions in order to validate numerical simulations and to develop new theoretical models.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-69",
+      "title": "Flame Extinguishment Experiment (FLEX)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-69&source=psi&type=investigation",
+      "excerpt": "The FLEX (Flame Extinguishment Experiment) investigation aims to map the flammability limits of liquid fuels in microgravity environments, measure the effectiveness of various gaseous fire suppressants such as CO2, He, and SF6, and develop reliable predictive models for combustion limits under reduced gravity conditions.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-98",
+      "title": "Spacecraft Fire Safety Experiment-I (SAFFIRE-I)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-98&source=psi&type=investigation",
+      "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA's normal gravity material flammability screening test.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-99",
+      "title": "Spacecraft Fire Experiment-II (SAFFIRE-II)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-99&source=psi&type=investigation",
+      "excerpt": "The objectives of SAFFIRE-II are to determine how rapidly a large scale fire grows in low-gravity and to investigate the low-g flammability limits compared to those obtained in NASA's normal gravity material flammability screening test.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-100",
+      "title": "Spacecraft Fire Experiment-III (SAFFIRE-III)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-100&source=psi&type=investigation",
+      "excerpt": "The objectives of this investigation were to: (1) determine how rapidly a large scale fire grows in low-gravity and (2) investigate the low-g flammability limits compared to those obtained in NASA's normal gravity material flammability screening test.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-101",
+      "title": "Smoke Aerosol Measurement Experiment-Reflight (SAME-R)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-101&source=psi&type=investigation",
+      "excerpt": "Similar to the original SAME investigation, the primary objective of the SAME-R investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-102",
+      "title": "Smoke and Aerosol Measurement Experiment (SAME)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-102&source=psi&type=investigation",
+      "excerpt": "One of the major goals of this investigation was to quantify the sizes that the liquid smoke particulate achieves in low gravity and to relate the droplet size distribution to the smoke generation and smoke transport conditions in the experiment.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-106",
+      "title": "Structure and Liftoff In Combustion Experiment (SLICE)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-106&source=psi&type=investigation",
+      "excerpt": "Objective: The objective of this investigation is to better understand the structure and stability of laminar diffusion flames in microgravity.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-107",
+      "title": "Smoke Point In Co-flow Experiment (SPICE)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-107&source=psi&type=investigation",
+      "excerpt": "The objective of SPICE is to better understand the complex process of combustion by observing flames in a microgravity environment aboard the International Space Station (ISS) and analogous ground experiments.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-108",
+      "title": "Surface Tension Driven Convection Experiment-1 (STDCE-1)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-108&source=psi&type=investigation",
+      "excerpt": "The main objectives of STDCE-1 are to investigate: -The extent and nature of thermocapillary flows in transient periods as well as under steady conditions. -Temperature distributions along the free surface and in the bulk fluid. -The effect of the heating mode and the heating level on the flows. -The effect of the liquid free surface on the flows -The onset conditions and nature of oscillatory flows",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-115",
+      "title": "Utilization of the Smoke Aerosol Measurement Experiment Data for Advanced Modeling and Simulation of Smoke Generation in Micro-Gravity",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-115&source=psi&type=investigation",
+      "excerpt": "The objective of this investigation was to use numerical simulation to explore the influence of gravity on pyrolysis smoke growth from a fundamental perspective.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-117",
+      "title": "Effect of External Thermo-Convective Perturbation on Cool Flame Dynamics: A Multidimensional Multi-Physics CFD Analysis",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-117&source=psi&type=investigation",
+      "excerpt": "The objective of this ground investigation was to use flight data obtained from PSI through NASA's Flame Extinguishment Experiment (FLEX) to quantify how externally imposed thermal and convective perturbations regulated the dynamics and ultimate fate of already established droplet cool flames, and to explain run-to-run variability by isolating the roles of deliberate heating and unintentional drift-induced convection.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-142",
+      "title": "Quantitative Studies of Cool Flame Transitions at Radiation / Stretch Extinction Using Counterflow Flames",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-142&source=psi&type=investigation",
+      "excerpt": "By using the Flame Extinguishment (FLEX) experimental data from the Physical Sciences Informatics (PSI) system of combustion science, the purpose of this grant was to conduct new simulations and ground-based experiments using ozone-sensitized counterflow flames to: 1) Develop a new diagram of the flammability limits of diffusional cool flames affected by radiation, diffusion, and convection.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-159",
+      "title": "Advanced Combustion via Microgravity Experiments / Cool Flames Investigation with Gases (ACME CFI-G)",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-159&source=psi&type=investigation",
+      "excerpt": "1.",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "psi:PSI-181",
+      "title": "Structure and Properties of Pb-Sn and Pb-free Sn-Ag-Cu Solders Produced in Terrestrial vs. Microgravity Environments under Extremes of Elevated and Cryo Temperatures",
+      "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-181&source=psi&type=investigation",
+      "excerpt": "This study addresses the reliability of solder joints in space by pursuing two principal objectives: (1) Characterization of solder-joint formation under microgravity conditions aboard the International Space Station, specifically examining the impact of suppressed convective flow and buoyancy on 40Pb-60Sn alloys utilized in the In-Space Soldering Investigation (ISSI).",
+      "license": "CC0 1.0 (PSI investigation data; public domain dedication stated by NASA PSI)"
+    },
+    {
+      "id": "ntrs:20010074094",
+      "title": "SMOKE: Characterization of Smoke Particulate for Spacecraft Fire Detection",
+      "url": "https://ntrs.nasa.gov/citations/20010074094",
+      "excerpt": "'Smoke' is a flight definition investigation whose purpose is to characterize the smoke particulate from microgravity smoke sources to enable improved design of future space-craft smoke detectors.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20170007283",
+      "title": "Spacecraft Fire Safety Research at NASA Glenn Research Center",
+      "url": "https://ntrs.nasa.gov/citations/20170007283",
+      "excerpt": "Appropriate design of fire detection systems requires knowledge of both the expected fire signature and the background aerosol levels.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:19960008413",
+      "title": "Smoke detection in low-G fires",
+      "url": "https://ntrs.nasa.gov/citations/19960008413",
+      "excerpt": "Fires in spacecraft are considered a credible risk.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    },
+    {
+      "id": "ntrs:20040053582",
+      "title": "The Water-Mist Fire Suppression Experiment (Mist): Preliminary Results From The STS-107 Mission",
+      "url": "https://ntrs.nasa.gov/citations/20040053582",
+      "excerpt": "An investigation of the effect of water mists on premixed flame propagation has been conducted onboard the Space Shuttle to take advantage of the prolonged microgravity environment to study the effect of uniformly distributed clouds of polydisperse water mists on the speed and shape of propagating propane-air premixed flames.",
+      "license": "Public domain (NTRS: government work, public use permitted)"
+    }
+  ]
+}

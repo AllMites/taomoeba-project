@@ -1,0 +1,20 @@
+{
+  "mode": "live",
+  "model": "claude-haiku-5-5",
+  "date": "2026-11-14",
+  "claims": 42,
+  "byKind": {
+    "summary": 24,
+    "finding": 5,
+    "rationale": 10,
+    "takeaway": 3
+  },
+  "over25": 0,
+  "tokens": {
+    "in": 383498,
+    "out": 225600,
+    "calls": 147
+  },
+  "usd": 0.1511,
+  "rerun": "python scripts/rag/precompute.py"
+}
