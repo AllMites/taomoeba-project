@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import factsJson from "../public/data/facts.json";
-import { createApp, fixtureIndex, restrictedChunks, sourceInfoFrom } from "./app.ts";
+import { createApp, fixtureIndex, restrictedChunks, savedFrom, sourceInfoFrom } from "./app.ts";
 import { DATA_ONLY, extractive, NO_COVER } from "./ask.ts";
 import { buildIndex } from "./bm25.ts";
 import { addsFacts, coverage, expandQuery, inScope, quotesTooMuch } from "./checks.ts";
@@ -199,5 +199,31 @@ describe("short-quotes-only papers (private library)", () => {
   it("source titles and links come from public metadata only", () => {
     const info = sourceInfoFrom({ items: [{ id: "a", title: "T", url: "u", license: "CC0" }] }, [{ id: "b", title: "U" }]);
     expect(info).toEqual({ a: { title: "T", url: "u", license: "CC0" }, b: { title: "U", url: "", license: "" } });
+  });
+});
+
+describe("saved answers for demo questions", () => {
+  const savedResult = { answer: "Saved claim. [SRC-05]", claims: [], investigationIds: [], mode: "live" as const };
+  const saved = savedFrom({ made: "2026-11-14", items: [{ question: "What is a cool flame?", result: savedResult }, { question: "Broken", result: { answer: 3 } }] });
+
+  it("only well-formed answers load, keyed by the normalized question, with the day they were made", () => {
+    expect(Object.keys(saved)).toEqual(["what is a cool flame"]);
+    expect(saved["what is a cool flame"].savedAt).toBe("2026-11-14");
+  });
+  it("the same question (any case, spacing, final ?) is answered from the save, with no model call", async () => {
+    const api = fakeApi({});
+    const j = await ask("  what is a COOL flame  ", api, { index, saved });
+    expect(j.mode).toBe("saved");
+    expect(j.answer).toBe("Saved claim. [SRC-05]");
+    expect(api.calls).toEqual([]);
+  });
+  it("fresh: true skips the save (how new saves are recorded)", async () => {
+    const api = fakeApi({ rerank: '{"ranking": [], "none_relevant": true}' });
+    const r = await createApp({ index, saved }).request(
+      "/ask",
+      { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ question: "What is a cool flame?", fresh: true }) },
+      { ANTHROPIC_API_KEY: "k", fetchImpl: api.fetchImpl },
+    );
+    expect((await r.json()).mode).toBe("live");
   });
 });

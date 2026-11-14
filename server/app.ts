@@ -4,7 +4,7 @@ import { z } from "zod";
 import claimsFixture from "../public/data/fixtures/claims.fixture.json";
 import sourcesFixture from "../public/data/fixtures/sources.fixture.json";
 import { HabitatId } from "../src/contracts/habitat.ts";
-import { ask, type AskEnv, type AskExtras, type SourceInfo } from "./ask.ts";
+import { ask, normQuestion, type AskEnv, type AskExtras, type AskResult, type SourceInfo } from "./ask.ts";
 import type { DataFact } from "./facts.ts";
 import { buildIndex, type Bm25Index, type Chunk } from "./bm25.ts";
 import { verify } from "./verify.ts";
@@ -71,7 +71,10 @@ async function sha256(s: string) {
 }
 
 const Turn = z.object({ question: z.string().max(MAX_QUESTION), answer: z.string().max(MAX_ANSWER) });
-const AskBody = z.object({ question: z.string(), habitat: HabitatId.optional(), history: z.array(Turn).max(MAX_HISTORY).optional() });
+const AskBody = z.object({ question: z.string(), habitat: HabitatId.optional(), history: z.array(Turn).max(MAX_HISTORY).optional(),
+  // fresh: skip saved answers and the cache (used by scripts/rag/save_answers.mjs to record new answers).
+  fresh: z.boolean().optional(),
+});
 const VerifyBody = z.object({ text: z.string().max(2000), excerpt: z.string().max(4000), sourceText: z.string().max(200_000).optional() });
 
 /** Licenses by source id from sources.json, so copyrighted sources are paraphrased only. */
@@ -90,6 +93,18 @@ export function sourceInfoFrom(...lists: unknown[]): Record<string, SourceInfo> 
   return out;
 }
 
+/** Saved demo answers by normalized question. Only well-formed live answers are used; anything else is ignored. */
+export function savedFrom(raw: unknown): Record<string, AskResult> {
+  const doc = raw as { made?: string; items?: { question?: unknown; result?: Partial<AskResult> }[] } | null;
+  const out: Record<string, AskResult> = {};
+  for (const it of doc?.items ?? []) {
+    const r = it?.result;
+    if (typeof it?.question !== "string" || typeof r?.answer !== "string" || !Array.isArray(r.claims) || !Array.isArray(r.investigationIds)) continue;
+    out[normQuestion(it.question)] = { ...(r as AskResult), savedAt: doc?.made };
+  }
+  return out;
+}
+
 /** Private library chunks from KV, marked restricted. Anything unexpected = no private papers, never an error. */
 export function restrictedChunks(raw: unknown): Chunk[] {
   const rows = ((raw as { chunks?: unknown[] })?.chunks ?? []) as Partial<Chunk>[];
@@ -99,7 +114,13 @@ export function restrictedChunks(raw: unknown): Chunk[] {
 }
 
 export function createApp(
-  opts: { index?: Bm25Index; facts?: DataFact[]; licenses?: Record<string, string>; sources?: Record<string, SourceInfo> } = {},
+  opts: {
+    index?: Bm25Index;
+    facts?: DataFact[];
+    licenses?: Record<string, string>;
+    sources?: Record<string, SourceInfo>;
+    saved?: Record<string, AskResult>;
+  } = {},
 ) {
   // ponytail: rate limit and cache are per-isolate memory only. Ceiling: each Worker isolate has its own
   // bucket, so abuse across isolates is not capped. Move to a Durable Object or KV if abused.
@@ -110,7 +131,7 @@ export function createApp(
 
   /** Data facts (public/data/facts.json) and source licenses (sources.json); missing files mean none, never an error. */
   const getExtras = (env: Env, origin: string): Promise<AskExtras> => {
-    if (opts.index) return Promise.resolve({ facts: opts.facts ?? [], licenses: opts.licenses ?? {}, sources: opts.sources ?? {} });
+    if (opts.index) return Promise.resolve({ facts: opts.facts ?? [], licenses: opts.licenses ?? {}, sources: opts.sources ?? {}, saved: opts.saved ?? {} });
     extrasLoaded ??= (async () => {
       const get = async (path: string) => {
         try {
@@ -120,8 +141,14 @@ export function createApp(
           return null;
         }
       };
-      const [facts, sources, library] = await Promise.all([get("/data/facts.json"), get("/data/sources.json"), get("/data/library.json")]);
+      const [facts, sources, library, saved] = await Promise.all([
+        get("/data/facts.json"),
+        get("/data/sources.json"),
+        get("/data/library.json"),
+        get("/data/saved-answers.json"),
+      ]);
       return {
+        saved: savedFrom(saved),
         facts: Array.isArray(facts) ? (facts as DataFact[]) : [],
         licenses: { ...licensesFrom(sources), ...licensesFrom(library) },
         sources: sourceInfoFrom(sources, library),
@@ -184,10 +211,11 @@ export function createApp(
 
     const history = body.data.history ?? [];
     const key = await sha256(`${question.toLowerCase().replace(/\s+/g, " ")}|${body.data.habitat ?? ""}|${JSON.stringify(history)}`);
-    if (cache.has(key)) return c.json(cache.get(key));
+    const fresh = body.data.fresh === true;
+    if (!fresh && cache.has(key)) return c.json(cache.get(key));
     const origin = new URL(c.req.url).origin;
     const [index, extras] = await Promise.all([getIndex(c.env ?? {}, origin), getExtras(c.env ?? {}, origin)]);
-    const result = await ask(index, question, body.data.habitat, c.env ?? {}, extras, history);
+    const result = await ask(index, question, body.data.habitat, c.env ?? {}, extras, history, fresh);
     if (!result.degraded) { // a fallback is not cached: the next try may reach the writer
       if (cache.size >= CACHE_MAX) cache.delete(cache.keys().next().value!);
       cache.set(key, result);

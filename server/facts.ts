@@ -97,5 +97,7 @@ export function findFacts(facts: DataFact[], question: string, k = 2): DataFact[
     const cov = q.filter((w) => m.has(w)).length / q.length;
     if (s > 0 && cov >= MIN_COVERAGE) scored.push({ s, f: ix.facts[i] });
   });
-  return scored.sort((a, b) => b.s - a.s).slice(0, k).map((x) => x.f);
+  const best = scored.sort((a, b) => b.s - a.s).slice(0, k).map((x) => x.f);
+  // A ranking question answered by the dashboard gets ranking facts only, not a table fact that shares a word.
+  return best.length && isDashboard(best[0]) ? best.filter(isDashboard) : best;
 }

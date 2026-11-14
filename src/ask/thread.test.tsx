@@ -166,7 +166,7 @@ it("the empty panel explains the steps and offers the examples; the composer is 
   const html = panel([]);
   expect(html).toContain("How an answer is made");
   for (const s of IDLE_STEPS) expect(html).toContain(s.small!.replace(/'/g, "&#x27;"));
-  expect(html).toContain("Which experiments tested 30% oxygen?");
+  expect(html).toContain("What caused the Apollo 1 fire?");
   expect(html).toContain('<label for="ask-compose" class="ask-compose-label">Your question</label>');
   expect(html).toContain("Answering for: Moon Base");
   expect(html).toContain('aria-labelledby="ask-panel-h"');
@@ -285,4 +285,13 @@ it("a reply never scrolls the page: the only page scroll is the Show control; th
   expect(show).toContain("scrollIntoView");
   expect(src).toMatch(/const LIGHT_ON_ANSWER = false/);
   expect(src).toContain("el.scrollTo("); // the panel's own list, not the page
+});
+
+it("a saved answer says it is saved: no search, writer or check is claimed for now", () => {
+  const r = result({ mode: "saved", savedAt: "2026-11-14", model: null, steps: { ...NO_STEPS } });
+  const t = text(filledSteps(r));
+  expect(t[0]).toBe("No new search: this question has a saved answer");
+  expect(t.join(" ")).not.toContain("Searched 0");
+  expect(summaryLine(r)).toContain("no new search");
+  expect(writerLine(r)).toContain("Saved SI answer");
 });

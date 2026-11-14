@@ -11,9 +11,11 @@ import {
 } from "./respond.ts";
 import { composerKey, filledSteps, FOLLOW_UPS, IDLE_STEPS, isRankingOnly, summaryLine, WORKING_STEPS, writerLine, type StepView, type TurnState } from "./thread.ts";
 
+// These four have saved answers (public/data/saved-answers.json), so a first tap answers at once.
 export const EXAMPLES = [
-  "Which experiments tested 30% oxygen?",
-  "What happened to silicone in microgravity?",
+  "Do bigger droplets go out at a bigger diameter?",
+  "Which experiment ranks highest for ISS?",
+  "What caused the Apollo 1 fire?",
   "What is a cool flame?",
 ];
 const SHOW_COUNT_FROM = MAX_QUESTION - 50;

@@ -8,7 +8,7 @@ import { POOL, rerank } from "./rerank.ts";
 import { checkSupport } from "./support.ts";
 import { containsVerbatim } from "./verify.ts";
 
-export type AskMode = "live" | "extractive" | "mock";
+export type AskMode = "live" | "extractive" | "mock" | "saved";
 /** A number-bearing statement computed by code from the team's data; shown before any paper claim. */
 export type FactView = { id: string; statement: string; dataset: string; caveat: string; source: string };
 /** How a paper claim relates to the data fact the question was about. */
@@ -50,11 +50,27 @@ export type AskResult = {
   relations?: Record<string, Relation>;
   /** Title, link and licence of each cited source, so the page can name papers that have no public file. */
   sources?: Record<string, SourceInfo>;
+  /** For a saved answer: the day it was made (ISO date). */
+  savedAt?: string;
 };
 export type AskEnv = { ANTHROPIC_API_KEY?: string; TYPESAFE_API_KEY?: string; SPEND_MODE?: string; fetchImpl?: typeof fetch };
 /** Data the Worker loads beside the index: facts (public/data/facts.json) and source licenses (sources.json). */
 export type SourceInfo = { title: string; url: string; license: string };
-export type AskExtras = { facts?: DataFact[]; licenses?: Record<string, string>; sources?: Record<string, SourceInfo> };
+export type AskExtras = {
+  facts?: DataFact[];
+  licenses?: Record<string, string>;
+  sources?: Record<string, SourceInfo>;
+  /** Live answers saved earlier for the demo questions (public/data/saved-answers.json), by normQuestion(). */
+  saved?: Record<string, AskResult>;
+};
+
+/** Same question, whatever the case, spacing or final punctuation. */
+export const normQuestion = (q: string) =>
+  q
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .replace(/[\s?.!]+$/, "")
+    .trim();
 
 /** Open = public domain or CC0 (same rule as Lane B's tests). Anything else is quoted briefly and paraphrased. */
 export const isOpenLicense = (license: string | undefined) => !license || /^(CC0|Public domain)/i.test(license);
@@ -449,7 +465,12 @@ export async function ask(
   env: AskEnv,
   extras: AskExtras = {},
   history: AskTurn[] = [],
+  fresh = false,
 ): Promise<AskResult> {
+  // A demo question with a saved live answer: answered at once, no API call, labelled as saved with its date.
+  // Only for a first question: a follow-up depends on the chat before it, so it is always answered fresh.
+  const saved = extras.saved?.[normQuestion(question)];
+  if (saved && !fresh && !history.length) return { ...saved, steps: saved.steps ?? NO_STEPS, model: saved.model ?? null, mode: "saved" };
   const mode = pickMode(env);
   if (mode === "mock") return mockAnswer(index);
   if (mode === "extractive") return withSources(extractive(index, question, habitat, extras, history), extras);
