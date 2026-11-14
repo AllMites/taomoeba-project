@@ -1,0 +1,762 @@
+[
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How do water mist sprays put out fires in space?",
+  "gold": [
+   "ntrs:20040053582",
+   "ntrs:20110012300"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "Does carbon dioxide extinguish plastic flames in low gravity?",
+  "gold": [
+   "ntrs:20040053586"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "methanol droplet burning in oxygen and helium",
+  "gold": [
+   "ntrs:20130014061"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "When do cool flames go out around fuel droplets?",
+  "gold": [
+   "ntrs:20140006750"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How fast does fire spread over thick acrylic rods with airflow?",
+  "gold": [
+   "ntrs:20150008961",
+   "ntrs:20200000557"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What gases did sensors measure after burning materials on the station?",
+  "gold": [
+   "ntrs:20150019858"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "Can a burner imitate a burning solid?",
+  "gold": [
+   "ntrs:20160010073",
+   "ntrs:20170009141"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How big are smoke particles from overheated wires?",
+  "gold": [
+   "ntrs:20120012884",
+   "ntrs:20130000422",
+   "ntrs:20140006585",
+   "ntrs:20040053578",
+   "ntrs:20080012612"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "Effect of lower pressure and higher oxygen on flame spread for exploration habitats",
+  "gold": [
+   "ntrs:20080034883"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What did SAME find about smoke particles?",
+  "gold": [
+   "psi:PSI-102",
+   "psi:PSI-101",
+   "ntrs:20130000422",
+   "ntrs:20120012884",
+   "ntrs:20140006585"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "Do ethane, propane and butane gas flames self-extinguish?",
+  "gold": [
+   "psi:PSI-159"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "large fire test on an uncrewed cargo spacecraft after leaving the station",
+  "gold": [
+   "ntrs:20170001636",
+   "ntrs:20170000230",
+   "ntrs:20180005168",
+   "ntrs:20150000894",
+   "ntrs:20220002714"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "detecting smoke on the Moon",
+  "gold": [
+   "ntrs:20230013826"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "how does a thicker sample change flammability",
+  "gold": [
+   "ntrs:20140011099"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What happened when methanol droplets burned in oxygen mixed with nitrogen or carbon dioxide?",
+  "gold": [
+   "ntrs:20130014061"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What was the FLEX experiment and why was it important?",
+  "gold": [
+   "ntrs:20120015928",
+   "psi:PSI-69",
+   "ntrs:20090014812"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How was the droplet combustion apparatus on the space station designed?",
+  "gold": [
+   "ntrs:20090014812"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What sensors are being considered for next-generation smoke detectors on the ISS?",
+  "gold": [
+   "ntrs:20070031686",
+   "ntrs:20210022143"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What open research questions remain for spacecraft fire detection?",
+  "gold": [
+   "ntrs:20210022143",
+   "ntrs:20040142387"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How does buoyancy change flame spread over thick PMMA?",
+  "gold": [
+   "ntrs:20200000557"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How flammable are the silicone samples planned for Saffire?",
+  "gold": [
+   "ntrs:20150022421"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How were large spacecraft fires modelled for Saffire-IV?",
+  "gold": [
+   "ntrs:20220002714"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "Under what conditions does an opposed-flow flame stop spreading in microgravity?",
+  "gold": [
+   "ntrs:20040053557"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What are the objectives of the Saffire experiments?",
+  "gold": [
+   "ntrs:20170001636",
+   "ntrs:20170000230",
+   "psi:PSI-98"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How was the ISS portable fine water mist extinguisher developed?",
+  "gold": [
+   "ntrs:20110012300"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What did the material ignition and suppression tests find in exploration atmospheres?",
+  "gold": [
+   "ntrs:20150023467"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What did BASS-II show about burning solids in microgravity?",
+  "gold": [
+   "ntrs:20160000593",
+   "psi:PSI-25"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How do smoke properties and smoke transport differ in low gravity?",
+  "gold": [
+   "ntrs:20080012612"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What did early 1990s work find about detecting smoke from low-gravity fires?",
+  "gold": [
+   "ntrs:19960008413"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What is the Burning Rate Emulator?",
+  "gold": [
+   "ntrs:20160010073",
+   "psi:PSI-20",
+   "ntrs:20170009141"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "Cool flame experiments with gaseous fuels",
+  "gold": [
+   "psi:PSI-159",
+   "psi:PSI-39"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "What is the smoke point of co-flow flames?",
+  "gold": [
+   "psi:PSI-107"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "Why do flames lift off from the burner?",
+  "gold": [
+   "psi:PSI-106"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "papers",
+  "q": "How do electric fields affect laminar flames?",
+  "gold": [
+   "psi:PSI-22"
+  ]
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "Which crops grow best in lunar regolith?"
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "How does microgravity affect astronaut bone density?"
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "What is the population of Malaga?"
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "How do rocket engines keep combustion stable?"
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "What radiation shielding materials suit a Mars habitat?"
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "How do wildfires spread through forests on Earth?"
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "What is the best treatment for burn injuries in astronauts?"
+ },
+ {
+  "set": "research",
+  "kind": "offtopic",
+  "q": "How much does a SpaceX Falcon 9 launch cost?"
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "How did the Saffire-I fire grow over the fabric sample?",
+  "gold": [
+   "ntrs:20170001636",
+   "ntrs:20170000230",
+   "psi:PSI-98",
+   "ntrs:20180005168"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Smoke particle size measurements from the SAME-2 reflight",
+  "gold": [
+   "ntrs:20130000422",
+   "psi:PSI-101"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Kapton and Teflon smoke detection in lunar gravity",
+  "gold": [
+   "ntrs:20230013826"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Carbon monoxide sensor readings during the BASS burns",
+  "gold": [
+   "ntrs:20150019858"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Flammability of PMMA rods in concurrent flow",
+  "gold": [
+   "ntrs:20150008961"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Research plan for fire signatures and detection",
+  "gold": [
+   "ntrs:20040142387"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Extinction of n-heptane droplet cool flames",
+  "gold": [
+   "ntrs:20140006750"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "How does the multi-user droplet combustion apparatus work?",
+  "gold": [
+   "ntrs:20090014812"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Flame spread at reduced pressure and elevated oxygen",
+  "gold": [
+   "ntrs:20080034883"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "papers",
+  "q": "Water mist suppression results from the space shuttle",
+  "gold": [
+   "ntrs:20040053582"
+  ]
+ },
+ {
+  "set": "heldout",
+  "kind": "offtopic",
+  "q": "How do solar panels degrade in orbit?"
+ },
+ {
+  "set": "heldout",
+  "kind": "relabelled",
+  "q": "What is the history of the Apollo program?"
+ },
+ {
+  "set": "heldout",
+  "kind": "offtopic",
+  "q": "How do astronauts cook pasta in space?"
+ },
+ {
+  "set": "heldout",
+  "kind": "offtopic",
+  "q": "What causes the northern lights?"
+ },
+ {
+  "set": "heldout",
+  "kind": "offtopic",
+  "q": "Which houseplants clean indoor air best?"
+ },
+ {
+  "set": "heldout",
+  "kind": "offtopic",
+  "q": "How do lithium batteries store energy?"
+ },
+ {
+  "set": "fresh2",
+  "kind": "papers",
+  "q": "Why is a fire in a spaceship more dangerous than on Earth?",
+  "gold": [
+   "ntrs:20150000894",
+   "ntrs:20170001636",
+   "ntrs:20210022143",
+   "ntrs:20180005168"
+  ]
+ },
+ {
+  "set": "fresh2",
+  "kind": "papers",
+  "q": "What makes materials catch fire more easily in a capsule with extra oxygen?",
+  "gold": [
+   "ntrs:20080034883",
+   "ntrs:20150023467"
+  ]
+ },
+ {
+  "set": "fresh2",
+  "kind": "papers",
+  "q": "How do astronauts know there is a fire?",
+  "gold": [
+   "ntrs:20070031686",
+   "ntrs:20210022143",
+   "ntrs:20040142387",
+   "ntrs:19960008413",
+   "ntrs:20080012612"
+  ]
+ },
+ {
+  "set": "fresh2",
+  "kind": "papers",
+  "q": "Is water or CO2 better for putting out a fire on the station?",
+  "gold": [
+   "ntrs:20110012300",
+   "ntrs:20040053586",
+   "ntrs:20040053582"
+  ]
+ },
+ {
+  "set": "fresh2",
+  "kind": "papers",
+  "q": "Why do burning blobs of fuel go out by themselves in orbit?",
+  "gold": [
+   "ntrs:20140006750",
+   "ntrs:20130014061",
+   "ntrs:20120015928",
+   "psi:PSI-69"
+  ]
+ },
+ {
+  "set": "fresh2",
+  "kind": "papers",
+  "q": "What happens if a cable overheats on the ISS?",
+  "gold": [
+   "ntrs:20120012884",
+   "psi:PSI-102",
+   "ntrs:20040053578",
+   "ntrs:20140006585"
+  ]
+ },
+ {
+  "set": "fresh2",
+  "kind": "offtopic",
+  "q": "How long does it take to travel to Mars?"
+ },
+ {
+  "set": "fresh2",
+  "kind": "offtopic",
+  "q": "What is the tallest mountain on the Moon?"
+ },
+ {
+  "set": "fresh2",
+  "kind": "offtopic",
+  "q": "How do spacesuits regulate temperature?"
+ },
+ {
+  "set": "fresh2",
+  "kind": "offtopic",
+  "q": "What is dark matter?"
+ },
+ {
+  "set": "fresh2",
+  "kind": "offtopic",
+  "q": "How is drinking water recycled on the ISS?"
+ },
+ {
+  "set": "fresh2",
+  "kind": "offtopic",
+  "q": "Who was the first woman in space?"
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers-unavailable",
+  "q": "Under what conditions were spherical cool diffusion flames of gaseous fuels observed on the ISS?",
+  "gold": [
+   "doi:10.1016/j.proci.2022.07.015"
+  ]
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers",
+  "q": "What fuels and flame types were tested in the cool flames investigation with gases?",
+  "gold": [
+   "psi:PSI-159"
+  ]
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers",
+  "q": "What were the main results of the BASS-II experiment?",
+  "gold": [
+   "ntrs:20210011385",
+   "ntrs:20160000593",
+   "psi:PSI-25"
+  ]
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers",
+  "q": "How did flow speed affect flame spread over solids in BASS-II?",
+  "gold": [
+   "ntrs:20210011385",
+   "ntrs:20160000593",
+   "ntrs:20140011099"
+  ]
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers",
+  "q": "What did the detailed FLEX results show about heptane droplet extinction?",
+  "gold": [
+   "ntrs:20150023456"
+  ]
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers",
+  "q": "How were FLEX droplet tests run from March 2009 to December 2011?",
+  "gold": [
+   "ntrs:20150023456"
+  ]
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers",
+  "q": "What happened in the Saffire VI experiment?",
+  "gold": [
+   "ntrs:20240002981"
+  ]
+ },
+ {
+  "set": "newpaper",
+  "kind": "papers",
+  "q": "What did the ACME project accomplish on the space station between 2017 and 2022?",
+  "gold": [
+   "ntrs:20220015583",
+   "ntrs:20220015583"
+  ]
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "Which model is recommended for predicting droplet burning rate?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "How accurate is the extinction diameter model?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "Can the models predict fire behaviour at Moon Base conditions?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "What matters most for burning rate according to the model?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "How well can the model predict whether a gas flame self-extinguishes?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "Why is the hot ignition model not recommended?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "How were the models validated?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "What is the unit of the burning rate in the FLEX data?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "How many FLEX runs were used to train the models?"
+ },
+ {
+  "set": "model",
+  "kind": "model",
+  "q": "Does pressure affect extinction diameter in the model?"
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "Why does burning rate rise with oxygen in the FLEX data?",
+  "facts": [
+   "flex-br-o2-methanol",
+   "flex-br-o2-heptane",
+   "model-pd-br-o2-methanol",
+   "model-pd-br-o2-heptane"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "Do bigger droplets go out at a bigger diameter?",
+  "facts": [
+   "flex-dext-d0-methanol",
+   "flex-dext-d0-heptane"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "Why did so many high-oxygen FLEX runs end in disruption?",
+  "facts": [
+   "flex-end-o2"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "How many FLEX runs used helium?",
+  "facts": [
+   "flex-diluent-he"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "Why do gas flames self-extinguish at low oxygen in CFI-G?",
+  "facts": [
+   "cfig-se-o2-normal",
+   "cfig-se-normal"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "Do inverse flames self-extinguish less often than normal flames?",
+  "facts": [
+   "cfig-se-inverse",
+   "cfig-se-normal"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "How accurate is the burning rate model?",
+  "facts": [
+   "model-br-accuracy"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "What matters most for extinction diameter in the model?",
+  "facts": [
+   "model-importance-flex_ext_diameter"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "Can we trust the model predictions for a Moon base?",
+  "facts": [
+   "model-moon-validity"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "data",
+  "q": "Why is the ignition model not used?",
+  "facts": [
+   "model-ignition-weak"
+  ]
+ },
+ {
+  "set": "data",
+  "kind": "nodata",
+  "q": "What did SAME find about smoke particles?"
+ },
+ {
+  "set": "data",
+  "kind": "nodata",
+  "q": "How does water mist put out fires?"
+ }
+]

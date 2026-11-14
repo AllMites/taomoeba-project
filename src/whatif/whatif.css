@@ -122,3 +122,20 @@
 .burn-guide { fill: none; stroke: var(--glass-muted); stroke-width: 1; opacity: 0.55; }
 .burn-guide-end { stroke: var(--sphere-hot); stroke-dasharray: 2 2; opacity: 0.9; }
 .burn-key { font-size: 8.5px; }
+
+/* textbook physics beside the data model */
+.whatif-textbook { display: block; margin-top: var(--space-1); font-size: var(--text-sm); }
+.whatif-differs { font-weight: 600; color: var(--color-badge-text); background: var(--color-badge-bg); }
+.burn-gravity { display: grid; gap: var(--space-2); min-width: 0; }
+.burn-gravity-h { margin: 0; font-size: var(--text-sm); }
+.burn-gravity table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+.burn-gravity th, .burn-gravity td { text-align: left; padding: 2px var(--space-2) 2px 0; font-variant-numeric: tabular-nums; }
+.burn-gravity thead th { font-weight: 600; border-bottom: 1px solid var(--color-border-strong); }
+
+/* take it further: ask about this setting, downloads */
+.whatif-further { display: grid; gap: var(--space-2); min-width: 0; }
+.whatif-askchips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.whatif-chip { font: inherit; font-size: var(--text-sm); text-align: left; padding: var(--space-1) var(--space-3); border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-surface); color: var(--color-text); cursor: pointer; max-width: 100%; }
+.whatif-chip:hover { border-color: var(--color-accent); }
+.whatif-chip:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.whatif-downloads { display: flex; flex-wrap: wrap; gap: var(--space-2); }

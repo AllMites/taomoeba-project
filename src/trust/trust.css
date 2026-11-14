@@ -1,0 +1,20 @@
+/* "How we know": measured accuracy and what each kind of number is. Colours come from tokens only. */
+.trust {
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+}
+.trust-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
+.trust-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
+.trust-card { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-bg); min-width: 0; }
+.trust-h3 { margin: 0; font-size: var(--text-base, 1rem); }
+.trust-scores, .trust-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
+.trust-list li { padding-left: var(--space-3); border-left: 2px solid var(--color-border-strong); }
+.trust-scores li { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: var(--space-2); align-items: baseline; }
+.trust-big { font-size: 1.4rem; font-variant-numeric: tabular-nums; }
+.trust-small { margin: 0; font-size: var(--text-sm); }
+.trust-kinds { margin: 0; display: grid; gap: var(--space-2); }
+.trust-kinds div { display: grid; gap: 2px; }
+.trust-kinds dt { font-weight: 600; }
+.trust-kinds dd { margin: 0; color: var(--color-text-muted); font-size: var(--text-sm); }

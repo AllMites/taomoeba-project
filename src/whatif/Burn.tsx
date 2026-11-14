@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { burnPlan, diameterAt, pct, playbackSpeed, type Burn, type Level, type WhatIfDoc } from "./logic.ts";
+import { burnPlan, diameterAt, gravityFactor, pct, playbackSpeed, type Burn, type Level, type Sel, type WhatIfDoc } from "./logic.ts";
 
 const calm = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 const fmt = (x: number, d = 1) => x.toFixed(d);
@@ -10,6 +10,7 @@ const fmt = (x: number, d = 1) => x.toFixed(d);
  */
 export function WatchBurn(p: {
   doc: WhatIfDoc;
+  sel: Sel;
   fuel: string;
   d0: number;
   burningRate: number;
@@ -34,7 +35,7 @@ export function WatchBurn(p: {
         ) : (
           <p className="muted burn-none">No burn to show for this setting.</p>
         )}
-        <GravityPanel />
+        <GravityPanel doc={p.doc} sel={p.sel} burningRate={p.burningRate} rough={p.level === "far" || p.level === "out"} />
       </div>
       <p className="muted whatif-small">
         The droplet's size and the timing come from the model predictions: by the d²-law, the square of the diameter falls at the
@@ -193,7 +194,47 @@ function D2Chart({ plan, t }: { plan: Burn; t: number }) {
 }
 
 /** Illustration, not data: why a flame is a teardrop on Earth and a sphere in microgravity. */
-export function GravityPanel() {
+/** Same droplet under gravity: the team model's microgravity rate times the textbook buoyancy factor. Theory, not data. */
+export function GravityEstimate({ doc, sel, burningRate, rough }: { doc: WhatIfDoc; sel: Sel; burningRate: number; rough: boolean }) {
+  const moon = gravityFactor(doc, sel, "moon");
+  const earth = gravityFactor(doc, sel, "earth");
+  if (moon === null || earth === null || !(burningRate > 0)) return null;
+  const rows: [string, string, string][] = [
+    ["ISS (microgravity)", "team model", `${fmt(burningRate, 2)} mm²/s`],
+    ["Moon (1/6 g)", `≈ ${fmt(moon, 2)}×`, `≈ ${fmt(burningRate * moon, 2)} mm²/s`],
+    ["Earth (1 g)", `≈ ${fmt(earth, 2)}×`, `≈ ${fmt(burningRate * earth, 2)} mm²/s`],
+  ];
+  return (
+    <div className="burn-gravity">
+      <h4 className="burn-gravity-h">This droplet under gravity: a theory estimate</h4>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Where</th>
+            <th scope="col">Factor</th>
+            <th scope="col">Burning rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([w, f, v]) => (
+            <tr key={w}>
+              <th scope="row">{w}</th>
+              <td>{f}</td>
+              <td>{v}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="muted whatif-small">
+        Rising hot gas brings oxygen in faster, so gravity speeds burning. The factor comes from a textbook convection formula for this
+        droplet size, gas mix and pressure; it is not data, because PSI has no Moon-gravity droplet runs to check it against.
+        {rough && " The microgravity value it starts from is itself a rough guess at this setting."}
+      </p>
+    </div>
+  );
+}
+
+export function GravityPanel(p: { doc: WhatIfDoc; sel: Sel; burningRate: number; rough: boolean }) {
   return (
     <aside className="burn-side" aria-label="Illustration: a flame on Earth and in microgravity">
       <div className="burn-side-pair">
@@ -228,6 +269,7 @@ export function GravityPanel() {
         </figure>
       </div>
       <p className="muted whatif-small">Illustration of textbook physics, not data. This is why FLEX droplets burn inside a spherical flame.</p>
+      <GravityEstimate {...p} />
     </aside>
   );
 }
