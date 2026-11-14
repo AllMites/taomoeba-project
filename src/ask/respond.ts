@@ -17,6 +17,11 @@ const AskResult = z.object({
   // Optional, so older servers still parse; a bad relation label is dropped rather than failing the answer.
   facts: z.array(DataFact).optional().catch(undefined),
   relations: z.record(z.string(), Relation.catch("related")).optional().catch(undefined),
+  // Title, link and licence of cited sources (some papers have no public file the page could look them up in).
+  sources: z
+    .record(z.string(), z.object({ title: z.string(), url: z.string().catch(""), license: z.string().catch("") }))
+    .optional()
+    .catch(undefined),
 });
 export type AskResult = z.infer<typeof AskResult>;
 
@@ -44,6 +49,9 @@ export const RELATION_LABEL: Record<Relation, string> = {
 /** What kind of source an id points to: a PSI record, a NASA report, or the team's own analysis. */
 export const sourceKind = (id: string) =>
   id.startsWith("psi:") ? "PSI record" : id.startsWith("ntrs:") ? "NASA report" : id.startsWith("team:") ? "Team analysis" : "Source";
+
+/** Papers NASA marks "short quotes only": the page shows a short quote and says so. */
+export const isShortQuotesOnly = (license: string | undefined) => !!license && !/^(CC0|Public domain)/i.test(license);
 
 /** What kind of data a computed finding comes from. */
 export const factKind = (f: { dataset: string; source: string }) =>

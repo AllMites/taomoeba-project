@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import factsJson from "../public/data/facts.json";
-import { createApp, fixtureIndex } from "./app.ts";
+import { createApp, fixtureIndex, restrictedChunks, sourceInfoFrom } from "./app.ts";
 import { DATA_ONLY, extractive, NO_COVER } from "./ask.ts";
-import { addsFacts, inScope, quotesTooMuch } from "./checks.ts";
+import { buildIndex } from "./bm25.ts";
+import { addsFacts, coverage, expandQuery, inScope, quotesTooMuch } from "./checks.ts";
 import type { DataFact } from "./facts.ts";
 
 const index = fixtureIndex();
@@ -51,6 +52,19 @@ describe("deterministic claim checks", () => {
   it("scope: fire-science questions are in scope, others are not", () => {
     expect(inScope("Why do droplets go out?")).toBe(true);
     expect(inScope("What is the population of Malaga?")).toBe(false);
+  });
+  it("scope: experiment names match whole words only, incidents count", () => {
+    expect(inScope("How do I bake bread?")).toBe(false); // "bre" (Burning Rate Emulator) is not a prefix match
+    expect(inScope("What does the BRE emulate?")).toBe(true);
+    expect(inScope("What happened on Apollo 13?")).toBe(true);
+    expect(inScope("What happened during the Mir fire?")).toBe(true);
+  });
+  it("Apollo 1 is searched as Apollo 204 (the review board's name for it); Apollo 13 is not", () => {
+    expect(expandQuery("What caused the Apollo 1 fire?")).toContain("apollo 204");
+    expect(expandQuery("Why did Apollo 13 fail?")).not.toContain("204");
+  });
+  it("bare numbers are no evidence of coverage", () => {
+    expect(coverage("Who won the 2022 World Cup?", ["ICES-2022 conference, 10-14 July 2022"], { "2022": 1 })).toBe(0);
   });
 });
 
@@ -146,5 +160,44 @@ describe("ranking questions", () => {
     expect(j.answer).toBe("");
     expect(j.facts.map((f: { id: string }) => f.id)).toEqual(["dash-rank-PSI-69-iss"]);
     expect(api.calls).toEqual([]);
+  });
+});
+
+describe("short-quotes-only papers (private library)", () => {
+  const RSENT =
+    "In these tests the methanol droplet flames went out at larger droplet diameters when the oxygen level in the chamber was lowered further.";
+  const priv = restrictedChunks({
+    chunks: [{ id: "ntrs:1#0", sourceId: "ntrs:1", investigationId: "PSI-69", text: `${RSENT} Other text about droplet tests follows here.` }],
+  });
+  const index2 = buildIndex([...index.chunks, ...priv]);
+  const sources = { "ntrs:1": { title: "A FLEX paper", url: "https://ntrs.nasa.gov/citations/1", license: "NTRS: public use permitted (short quotes only)" } };
+  const opts = { index: index2, licenses: { "ntrs:1": sources["ntrs:1"].license }, sources };
+
+  it("KV text loads as restricted; junk loads as nothing", () => {
+    expect(priv[0].restricted).toBe(true);
+    expect(restrictedChunks(null)).toEqual([]);
+    expect(restrictedChunks({ chunks: [{ id: 1 }] })).toEqual([]);
+  });
+  it("quote-only mode never quotes them", () => {
+    const r = extractive(index2, "methanol droplet flames oxygen level larger droplet diameters", undefined, { licenses: opts.licenses });
+    expect(r.claims.every((c) => c.sourceIds[0] !== "ntrs:1")).toBe(true);
+  });
+  it("live: a paraphrase is kept, its quote is cut to 15 words, and the paper's title and link come along", async () => {
+    const api = fakeApi({ claims: claimsReply([{ text: "Methanol droplet flames went out at bigger sizes when oxygen was lowered.", source: "ntrs:1", excerpt: RSENT }]) });
+    const j = await ask("Do methanol droplet flames go out at larger diameters with less oxygen?", api, opts);
+    expect(j.mode).toBe("live");
+    expect(j.claims[0].excerpt.split(" ").length).toBeLessThanOrEqual(16);
+    expect(j.claims[0].excerpt.endsWith("…")).toBe(true);
+    expect(j.sources["ntrs:1"].title).toBe("A FLEX paper");
+  });
+  it("live: a claim copying more than 15 words of it is dropped", async () => {
+    const copied = RSENT.split(" ").slice(0, 18).join(" ") + ".";
+    const api = fakeApi({ claims: claimsReply([{ text: copied, source: "ntrs:1", excerpt: RSENT }]) });
+    const j = await ask("Do methanol droplet flames go out at larger diameters with less oxygen?", api, opts);
+    expect(j.claims.every((c: { sourceIds: string[] }) => c.sourceIds[0] !== "ntrs:1")).toBe(true);
+  });
+  it("source titles and links come from public metadata only", () => {
+    const info = sourceInfoFrom({ items: [{ id: "a", title: "T", url: "u", license: "CC0" }] }, [{ id: "b", title: "U" }]);
+    expect(info).toEqual({ a: { title: "T", url: "u", license: "CC0" }, b: { title: "U", url: "", license: "" } });
   });
 });

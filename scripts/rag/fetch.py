@@ -27,6 +27,16 @@ NTRS = {  # open licences only (NTRS GOV_PUBLIC_USE_PERMITTED); "short quotes on
     "20170007283": "detection",
     "19960008413": "detection",
     "20040053582": "suppression",
+    # Added from the team's downloaded papers (scripts/rag/add_papers.py writes their full text):
+    "20040053557": "fire-growth",
+    "20040053578": "detection",
+    "20040053586": "suppression",
+    "20040142387": "detection",
+    "20110012300": "suppression",
+    "20170000230": "fire-growth",
+    "20170001636": "fire-growth",
+    "20220002714": "fire-growth",
+    "20220015583": "other",
 }
 NTRS_LICENSE = {
     "GOV_PUBLIC_USE_PERMITTED": "Public domain (NTRS: government work, public use permitted)",
@@ -100,7 +110,12 @@ def main() -> None:
         abstract = fix(r.get("abstract", ""))
         meta = {"id": sid, "title": title, "url": url, "doi": doi or "none given by NTRS", "license": lic,
                 "retrieved": today, "type": "ntrs", "topic": topic}
-        write_text(sid, meta, f"## Abstract\n\n{abstract}")
+        body = f"## Abstract\n\n{abstract}"
+        prev = TEXT / (sid.replace(":", "_") + ".md")
+        if prev.exists() and "## Full text" in prev.read_text(encoding="utf-8"):
+            # keep the full text that add_papers.py wrote (this API only gives the abstract)
+            body += "\n\n## Full text" + prev.read_text(encoding="utf-8").split("## Full text", 1)[1].rstrip("\n")
+        write_text(sid, meta, body)
         src = {"id": sid, "title": title, "url": url, "excerpt": first_sentences(abstract), "license": lic}
         if doi:
             src["doi"] = doi

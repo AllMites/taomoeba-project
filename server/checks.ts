@@ -61,18 +61,45 @@ export const SCOPE_STEMS = [
   "oxid", "oxygen", "spread", "detect", "particl", "aerosol", "mist", "co2", "carbon", "pmma", "plexiglas", "acrylic",
   "cotton", "fabric", "silicone", "nomex", "kapton", "teflon", "wire", "heat", "thermal", "temperatur", "radiat", "extinct",
   "blowoff", "liftoff", "lift", "quench", "cool", "methanol", "heptane", "decane", "ethane", "propane", "butane", "ethylene",
-  "methane", "hydrogen", "saffire", "flex", "bass", "same", "acme", "cfi", "bre", "spice", "slice", "daft", "melts", "psi",
-  "cir", "ntrs", "emulator", "inert", "nitrogen", "helium", "diluent", "sensor", "alarm", "overheat", "insulat",
+  "methane", "hydrogen", "saffire", "emulator", "inert", "nitrogen", "helium", "diluent", "sensor", "alarm", "overheat",
+  "insulat",
 ];
+// Experiment and archive names match whole words only: as prefixes "bre" would match "bread" and "same" every "same".
+export const SCOPE_EXACT = new Set([
+  "flex", "bass", "acme", "cfi", "bre", "spice", "slice", "daft", "melts", "psi", "cir", "ntrs", "sofie", "fm2", "flare",
+  "mdca", "mir", "smoke",
+]);
+// Spacecraft-fire incidents and their setting (Apollo 1 = Apollo 204, Apollo 13, Mir): in scope, but not fire-science
+// terms, so they do not veto data facts (server/facts.ts).
+const CONTEXT_STEMS = ["apollo", "spacecraft", "cabin", "astronaut", "cosmonaut", "explos", "accident", "incident", "microgravit", "gravit"];
 const STOP = new Set(["a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "has", "have", "in", "is", "it", "its", "of", "on", "or", "that", "the", "this", "to", "was", "were", "which", "with"]);
 export const terms = (t: string) => (t.normalize("NFKC").toLowerCase().match(/[a-z0-9]+/g) ?? []).filter((w) => !STOP.has(w));
-export const inScope = (q: string) => terms(q).some((w) => SCOPE_STEMS.some((s) => w.startsWith(s)));
+/** A fire-science word or an experiment name. */
+export const isScopeWord = (w: string) => SCOPE_EXACT.has(w) || SCOPE_STEMS.some((s) => w.startsWith(s));
+export const inScope = (q: string) => terms(q).some((w) => isScopeWord(w) || CONTEXT_STEMS.some((s) => w.startsWith(s)));
 
-/** Share of the question's meaning (idf-weighted) found in the best of the given texts; unknown words count as rarest. */
+/**
+ * Words people use vs words the records use. Added to the search query only (the index is unchanged); mirrors
+ * SYNONYMS in scripts/rag/retrieve.py, plus Apollo 1, which NASA's review board report calls Apollo 204.
+ */
+const QUERY_SYNONYMS: [RegExp, string][] = [
+  [/\bapollo\s*(?:1|i|one)\b(?!\d)/i, "apollo 204 review board command module"],
+  [/\bapollo\s*204\b/i, "apollo 1"],
+  [/\bcarbon dioxide\b/i, "co2"],
+  [/\bco2\b/i, "carbon dioxide"],
+  [/\b(?:put|puts|putting) out\b/i, "extinguish extinguishment extinction"],
+];
+export const expandQuery = (q: string) => [q, ...QUERY_SYNONYMS.filter(([re]) => re.test(q)).map(([, add]) => add)].join(" ");
+
+/**
+ * Share of the question's meaning (idf-weighted) found in the best of the given texts; unknown words count as rarest.
+ * Bare numbers are left out: "2022" in a paper's header is no sign that a World Cup question is covered.
+ */
 export function coverage(question: string, texts: string[], idf: Record<string, number>): number {
   const vals = Object.values(idf);
-  const rare = vals.length ? Math.max(...vals) : 1;
-  const q = [...new Set(terms(question))];
+  const rare = vals.length ? vals.reduce((a, b) => (b > a ? b : a), 0) : 1;
+  const q = [...new Set(terms(question))].filter((t) => !/^\d+$/.test(t));
+  if (!q.length) return 0;
   const w = (t: string) => idf[t] ?? rare;
   const total = q.reduce((a, t) => a + w(t), 0) || 1;
   let best = 0;

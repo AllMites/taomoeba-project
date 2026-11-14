@@ -5,6 +5,7 @@ import {
   askForHabitat,
   factKind,
   isDataOnly,
+  isShortQuotesOnly,
   MAX_QUESTION,
   MODE_LABEL,
   readable,
@@ -205,11 +206,21 @@ function Answer({ result, titleOf, onOpen }: { result: AskResult; titleOf: (id: 
               {result.relations?.[c.id] && <p className={`ask-rel ask-rel-${result.relations[c.id]}`}>{RELATION_LABEL[result.relations[c.id]]}</p>}
               <details>
                 <summary>
-                  {sourceKind(c.sourceIds[0] ?? "")}: {titleOf(c.sourceIds[0] ?? "")}
+                  {sourceKind(c.sourceIds[0] ?? "")}: {result.sources?.[c.sourceIds[0] ?? ""]?.title ?? titleOf(c.sourceIds[0] ?? "")}
                   {c.flagged ? " (not double-checked)" : ""}
                 </summary>
                 <p className="ask-claim">{c.text}</p>
                 <p className="ask-excerpt">{c.excerpt}</p>
+                {isShortQuotesOnly(result.sources?.[c.sourceIds[0] ?? ""]?.license) && (
+                  <p className="muted ask-quote-note">Short quote: NASA lists this report as short quotes only.</p>
+                )}
+                {result.sources?.[c.sourceIds[0] ?? ""]?.url && (
+                  <p className="ask-link">
+                    <a href={result.sources[c.sourceIds[0] ?? ""].url} target="_blank" rel="noreferrer">
+                      Read the full source
+                    </a>
+                  </p>
+                )}
               </details>
               {c.investigationId && (
                 <button type="button" className="quiet" onClick={() => onOpen(c.investigationId)}>
