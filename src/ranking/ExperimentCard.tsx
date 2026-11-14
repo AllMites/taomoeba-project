@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { useStore } from "../app/store.ts";
+import { displayClass } from "../app/type.ts";
 import FactorDots from "./FactorDots.tsx";
 import type { Row } from "./logic.ts";
 import OxygenBar from "./OxygenBar.tsx";
@@ -27,10 +28,10 @@ export default function ExperimentCard({ row, habitatO2, lit }: { row: Row; habi
         onClick={() => select(inv.id)}
       >
         <span className="rk-head">
-          <span className="rk-num" id={`${uid}-n`} aria-label={`Rank ${row.position}`}>
+          <span className="rk-num t-display" id={`${uid}-n`} aria-label={`Rank ${row.position}`}>
             {row.position}
           </span>
-          <span className="rk-title" id={`${uid}-t`}>
+          <span className={`rk-title ${displayClass(inv.title)}`} id={`${uid}-t`}>
             {inv.title}
           </span>
           {lit && (
@@ -40,7 +41,7 @@ export default function ExperimentCard({ row, habitatO2, lit }: { row: Row; habi
           )}
         </span>
         <span className="rk-meta" id={`${uid}-m`}>
-          <span className="rk-id">{inv.id}</span>
+          <span className="rk-id t-readout">{inv.id}</span>
           <PdsTag pds={inv.pds} />
         </span>
         {row.summary && (

@@ -44,7 +44,7 @@ function Picker({ habitats }: { habitats: HabitatPreset[] }) {
         <label key={h.id} className="choice">
           <input type="radio" name="habitat" value={h.id} checked={habitat === h.id} onChange={() => setHabitat(h.id)} />
           <span className="choice-top">
-            <span className="choice-name">{h.label}</span>
+            <span className="choice-name t-display t-upper">{h.label}</span>
             {/* Always rendered so its width is reserved; CSS shows it on the checked card only. */}
             <span className="choice-check" aria-hidden="true">
               ✓ Picked
@@ -117,8 +117,8 @@ export default function App() {
       {habitats.status === "ready" && pastHero && !drawerOpen && <StickyBar habitats={habitats.data} />}
       <header className="hero" ref={heroRef}>
         <div className="glow" aria-hidden="true" />
-        <h1 className="brand">Flame in Freefall</h1>
-        <p className="lede">Pick where your crew will live, and see which NASA fire experiments match its air.</p>
+        <h1 className="brand t-display t-upper">Flame in Freefall</h1>
+        <p className="lede t-statement">Pick where your crew will live, and see which NASA fire experiments match its air.</p>
         {habitats.status === "ready" ? <Picker habitats={habitats.data} /> : <div className="picker-wait" aria-hidden="true" />}
       </header>
       <main id="main" tabIndex={-1}>

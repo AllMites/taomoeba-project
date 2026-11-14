@@ -31,7 +31,7 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
   const cited = claim.sourceIds.flatMap((id) => sources.filter((s) => s.id === id));
   return (
     <li className="brief-card">
-      <p className="brief-text">{claim.text}</p>
+      <p className="brief-text t-statement">{claim.text}</p>
       {count && <Marks {...count} />}
       <div className="brief-actions">
         {one && (
