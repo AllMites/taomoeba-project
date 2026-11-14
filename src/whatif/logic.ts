@@ -22,6 +22,8 @@ export const WhatIfDoc = z.object({
     ext_diameter: z.object({ name: z.string(), rmse_mm: z.number(), band_mm: z.number(), band_coverage: z.number() }),
     disruption: z.object({ name: z.string(), auc: z.number(), typical_rate: z.number() }),
     burning_rate: z.object({ name: z.string(), rmse: z.number(), unit: z.string() }),
+    // d^2-law check: burn time from the table's own numbers vs measured burn time (FLEX runs that ended in flame-out)
+    d2law: z.object({ runs: z.number(), corr: z.number(), median_rel_err: z.number() }).optional(),
   }),
   tested: z.object({ runs: z.number(), test_dates: z.number() }),
 });
@@ -224,3 +226,32 @@ export function signed(x: number | undefined, unit: string, digits = 0): string 
   if (v === 0) return "no change";
   return `${v > 0 ? "+" : "−"}${Math.abs(v).toFixed(digits)} ${unit}`;
 }
+
+// ---- the predicted burn (d^2-law): diameter^2 falls at the burning rate until the flame goes out ---------------
+
+export type Burn = {
+  d0: number; // mm
+  k: number; // burning rate, mm2/s
+  dEnd: number; // mm: predicted extinction diameter, or 0 when the droplet burns away
+  tEnd: number; // s
+  ends: "flame-out" | "burns-away";
+};
+
+/** Smallest extinction diameter drawn as a flame-out; below it the droplet is shown burning away completely. */
+const MIN_EXT_MM = 0.05;
+
+export function burnPlan(d0: number, k: number, extMm: number): Burn | null {
+  if (!(k > 0.01) || !(d0 > 0)) return null; // no meaningful burning rate: nothing to animate
+  const out = extMm >= MIN_EXT_MM && extMm < d0;
+  const dEnd = out ? extMm : 0;
+  return { d0, k, dEnd, tEnd: (d0 * d0 - dEnd * dEnd) / k, ends: out ? "flame-out" : "burns-away" };
+}
+
+/** Droplet diameter (mm) after t seconds, by the d^2-law, never below the end diameter. */
+export function diameterAt(b: Burn, t: number): number {
+  const tt = Math.min(Math.max(t, 0), b.tEnd);
+  return Math.sqrt(Math.max(b.d0 * b.d0 - b.k * tt, b.dEnd * b.dEnd));
+}
+
+/** Playback speed so a burn never takes more than `maxSeconds` on screen (1 = real time). */
+export const playbackSpeed = (b: Burn, maxSeconds = 12) => Math.max(1, Math.ceil(b.tEnd / maxSeconds));
