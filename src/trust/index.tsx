@@ -53,7 +53,7 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
                 ))}
               </ul>
               <p className="muted trust-small">
-                {ev.questions} questions labelled by the team before the test, asked fresh on the live site on {ev.date.slice(0, 10)}. Median
+                {ev.questions} questions labelled by the team before the test, asked fresh, one at a time, with the same code and library as this site, on {ev.date.slice(0, 10)}. Median
                 answer time {(ev.latency_ms.median / 1000).toFixed(1)} s.
               </p>
             </>
