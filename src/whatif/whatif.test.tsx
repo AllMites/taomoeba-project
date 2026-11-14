@@ -213,6 +213,7 @@ describe("textbook physics beside the data model", () => {
     expect(theoryRate(doc, { ...air, fuel: 1 })).toBeCloseTo(1.476, 3);
     expect(gravityFactor(doc, air, "earth")).toBeCloseTo(1.52, 2);
     expect(gravityFactor(doc, air, "moon")).toBeCloseTo(1.33, 2);
+    expect(gravityFactor(doc, air, "mars")).toBeCloseTo(1.41, 2);
     expect(measuredShare(doc, air)).toBeCloseTo(0.665, 3);
   });
   it("the textbook rate has no pressure or size term; gravity matters more for bigger droplets", () => {
@@ -252,5 +253,7 @@ describe("textbook physics beside the data model", () => {
     expect(html).toContain("a theory estimate");
     expect(html).toContain("it is not data");
     expect(html).toMatch(/Moon \(1\/6 g\)/);
+    expect(html).toMatch(/Mars \(3\/8 g\)/);
+    expect(html).toContain("Open E-FIELD Flames");
   });
 });

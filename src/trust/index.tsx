@@ -123,7 +123,11 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
         <article className="trust-card">
           <h3 className="trust-h3">Not covered</h3>
           <ul className="trust-list">
-            <li>No experiment here ran in Moon or Mars gravity; gravity effects are a labelled theory estimate only.</li>
+            <li>
+              No experiment here ran in Moon or Mars gravity; gravity effects are a labelled theory estimate only. ACME&apos;s E-FIELD Flames
+              imitated partial gravity on the ISS with an electric field, which is the closest stand-in on record.
+            </li>
+            <li>No Mars-base atmosphere is on record, so Mars appears only in the gravity estimate.</li>
             <li>The team models cover FLEX fuel droplets (methanol, heptane), not solid materials or other fuels.</li>
             <li>Some NASA reports allow short quotes only: the page shows at most 15 words from them and links the full report.</li>
             <li>The Ask box answers from the library it has; a question outside it is refused, not guessed.</li>

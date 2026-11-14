@@ -18,6 +18,7 @@ export const CSV_COLUMNS = [
   "burning_rate_mm2_s",
   "textbook_burning_rate_mm2_s",
   "theory_gravity_factor_moon",
+  "theory_gravity_factor_mars",
   "theory_gravity_factor_earth",
   "data_support",
   "similar_flex_runs",
@@ -35,7 +36,7 @@ export function csvRow(doc: WhatIfDoc, s: Sel, label: string): (string | number 
   const m = a.mix[s.mix];
   const base = [label, a.fuel[s.fuel], a.o2[s.o2], m.gas === "n2" ? "none" : m.gas, m.amount, a.p_mmHg[s.p], a.d0[s.d0]];
   const p = predict(doc, s);
-  if (!p.possible) return [...base, null, null, null, null, null, null, null, null, LEVEL_LABEL.impossible, null, null];
+  if (!p.possible) return [...base, null, null, null, null, null, null, null, null, null, LEVEL_LABEL.impossible, null, null];
   return [
     ...base,
     p.extDiameterMm,
@@ -45,6 +46,7 @@ export function csvRow(doc: WhatIfDoc, s: Sel, label: string): (string | number 
     p.burningRate,
     theoryRate(doc, s),
     gravityFactor(doc, s, "moon"),
+    gravityFactor(doc, s, "mars"),
     gravityFactor(doc, s, "earth"),
     LEVEL_LABEL[support(p).level],
     p.similarRuns,

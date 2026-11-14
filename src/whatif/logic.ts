@@ -30,7 +30,8 @@ export const WhatIfDoc = z.object({
   theory: z
     .object({
       k: z.array(z.number().int()), // theory burning rate *1000, row-major fuel, mix, o2
-      gravity: z.object({ earth: z.array(z.number().int()), moon: z.array(z.number().int()) }), // factor *1000, mix, o2, p, d0
+      // factor *1000, row-major mix, o2, p, d0 (mars added later: optional so older grids still load)
+      gravity: z.object({ earth: z.array(z.number().int()), moon: z.array(z.number().int()), mars: z.array(z.number().int()).optional() }),
       measured_over_theory: z.record(z.string(), z.number()),
       direction_agreement: z.record(z.string(), z.number()),
       rmse: z.object({ ridge: z.number(), ridge_plus_theory: z.number(), theory_scaled: z.number() }),
@@ -67,6 +68,7 @@ export function parseDoc(raw: unknown): WhatIfDoc | null {
   const nk = a.fuel.length * a.mix.length * a.o2.length;
   const ng = a.mix.length * a.o2.length * a.p_mmHg.length * a.d0.length;
   if (t && (t.k.length !== nk || t.gravity.earth.length !== ng || t.gravity.moon.length !== ng)) return { ...r.data, theory: undefined };
+  if (t?.gravity.mars && t.gravity.mars.length !== ng) return { ...r.data, theory: { ...t, gravity: { earth: t.gravity.earth, moon: t.gravity.moon } } };
   return r.data;
 }
 
@@ -151,14 +153,16 @@ export function theoryRate(doc: WhatIfDoc, s: Sel): number | null {
   return v < 0 ? null : v / 1000;
 }
 
-export type World = "earth" | "moon";
+export type World = "earth" | "moon" | "mars";
 
 /** Textbook buoyancy factor: how many times faster than with no gravity. A scaling estimate, not data. */
 export function gravityFactor(doc: WhatIfDoc, s: Sel, world: World): number | null {
   const t = doc.theory;
   if (!t) return null;
   const a = doc.axes;
-  const v = t.gravity[world][((s.mix * a.o2.length + s.o2) * a.p_mmHg.length + s.p) * a.d0.length + s.d0];
+  const arr = t.gravity[world];
+  if (!arr) return null;
+  const v = arr[((s.mix * a.o2.length + s.o2) * a.p_mmHg.length + s.p) * a.d0.length + s.d0];
   return v < 0 ? null : v / 1000;
 }
 

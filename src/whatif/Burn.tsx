@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useStore } from "../app/store.ts";
 import { burnPlan, diameterAt, gravityFactor, pct, playbackSpeed, type Burn, type Level, type Sel, type WhatIfDoc } from "./logic.ts";
 
 const calm = () => typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -197,12 +198,15 @@ function D2Chart({ plan, t }: { plan: Burn; t: number }) {
 /** Same droplet under gravity: the team model's microgravity rate times the textbook buoyancy factor. Theory, not data. */
 export function GravityEstimate({ doc, sel, burningRate, rough }: { doc: WhatIfDoc; sel: Sel; burningRate: number; rough: boolean }) {
   const moon = gravityFactor(doc, sel, "moon");
+  const mars = gravityFactor(doc, sel, "mars");
   const earth = gravityFactor(doc, sel, "earth");
   if (moon === null || earth === null || !(burningRate > 0)) return null;
+  const row = (where: string, f: number): [string, string, string] => [where, `≈ ${fmt(f, 2)}×`, `≈ ${fmt(burningRate * f, 2)} mm²/s`];
   const rows: [string, string, string][] = [
     ["ISS (microgravity)", "team model", `${fmt(burningRate, 2)} mm²/s`],
-    ["Moon (1/6 g)", `≈ ${fmt(moon, 2)}×`, `≈ ${fmt(burningRate * moon, 2)} mm²/s`],
-    ["Earth (1 g)", `≈ ${fmt(earth, 2)}×`, `≈ ${fmt(burningRate * earth, 2)} mm²/s`],
+    row("Moon (1/6 g)", moon),
+    ...(mars !== null ? [row("Mars (3/8 g)", mars)] : []),
+    row("Earth (1 g)", earth),
   ];
   return (
     <div className="burn-gravity">
@@ -229,6 +233,14 @@ export function GravityEstimate({ doc, sel, burningRate, rough }: { doc: WhatIfD
         Rising hot gas brings oxygen in faster, so gravity speeds burning. The factor comes from a textbook convection formula for this
         droplet size, gas mix and pressure; it is not data, because PSI has no Moon-gravity droplet runs to check it against.
         {rough && " The microgravity value it starts from is itself a rough guess at this setting."}
+        {mars !== null && " No Mars-base air is on record, so the Mars row uses the air chosen above."}
+      </p>
+      <p className="muted whatif-small">
+        Closest stand-in on record: ACME&apos;s E-FIELD Flames experiment imitated partial gravity on the ISS by pushing on the ions in
+        a flame with an electric field.{" "}
+        <button type="button" className="burn-link" onClick={() => useStore.getState().setSelectedInvestigationId("PSI-22")}>
+          Open E-FIELD Flames
+        </button>
       </p>
     </div>
   );
