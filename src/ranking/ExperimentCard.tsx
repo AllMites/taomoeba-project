@@ -33,6 +33,11 @@ export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { 
             {rankNumeral(row.position)}
           </span>
           <span className="rk-headtext">
+            {lit && (
+              <span className="rk-lit t-readout" id={`${uid}-l`}>
+                In the answer
+              </span>
+            )}
             <span className={`rk-title ${displayClass(inv.title)}`} id={`${uid}-t`}>
               {inv.title}
             </span>
@@ -41,11 +46,6 @@ export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { 
               <span className="rk-id t-readout">{inv.id}</span>
             </span>
           </span>
-          {lit && (
-            <span className="rk-lit t-readout" id={`${uid}-l`}>
-              In the answer
-            </span>
-          )}
         </span>
         {row.summary && (
           <span className="rk-sum" id={`${uid}-s`}>
