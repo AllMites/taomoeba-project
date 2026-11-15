@@ -66,6 +66,10 @@ it("one control strip at the bottom, above the bottom bar; the caption alone at 
   expect(html).toMatch(/class="stage-strip"><details class="stage-pick"[\s\S]*<div class="stage-strip-slot"><\/div>/);
   const src = readFileSync(new URL("./Stage.tsx", import.meta.url), "utf8");
   expect(src).toMatch(/<ScenePicker \/>\s*<div className="stage-strip-slot" \/>\s*<PlayBar \/>/);
+  // "Reset view" ends the strip; on a short stage the caption folds and menus take the screen above the bottom bars.
+  expect(src).toMatch(/<PlayBar \/>\s*\{steered && \(\s*<button type="button" className="stage-reset glass" aria-label="Reset view"/);
+  expect(css).toMatch(/@container stage \(max-height: 18rem\) \{[^@]*\.stage-caption:not\(\[data-open\]\) \.stage-caption-words \{ display: none; \}/);
+  expect(css).toMatch(/\.stage button, \.stage select, \.stage summary, \.stage \.spread-resp \{ min-height: 2\.75rem; \}/);
 });
 
 it("a scene's side panel starts below the caption's real height, never under a long caption", async () => {
