@@ -34,7 +34,8 @@ export function historyFrom(turns: TurnState[]): HistoryTurn[] {
   return turns
     .flatMap((t): HistoryTurn[] => {
       const o = t.outcome;
-      if (o?.kind !== "answer") return [];
+      // The fixed about text is not an answer from the records: the next question starts fresh.
+      if (o?.kind !== "answer" || o.result.mode === "about") return [];
       const text = [o.result.summary ?? "", ...(o.result.facts ?? []).map((f) => f.statement), readable(o.result.answer)].filter(Boolean).join(" ");
       return [{ question: t.question.slice(0, MAX_QUESTION), answer: text.slice(0, MAX_ANSWER) }];
     })
@@ -75,6 +76,8 @@ export function filledSteps(result: AskResult, noCover = false): StepView[] {
   // A sample answer: nothing was searched, written or checked, so no step claims it was.
   if (result.mode === "mock")
     return [done(1, "No search ran, this is a sample record"), done(2, "Sample text, no SI writer ran"), done(3, "Not checked, this is a sample")];
+  // The fixed about-this-site text: nothing was searched, written or checked.
+  if (result.mode === "about") return [done(1, "No search ran"), done(2, "A fixed text written by the team"), done(3, "Not from the records, so nothing to check")];
   // A saved answer: written and checked earlier by the same pipeline, replayed now with no new call.
   if (result.mode === "saved")
     return [done(1, "No new search: this question has a saved answer"), done(2, modeLabel(result)), done(3, `${plural(result.claims.length, "sentence")} kept when it was made, each with its source`)];
@@ -112,6 +115,7 @@ export function filledSteps(result: AskResult, noCover = false): StepView[] {
 export function summaryLine(result: AskResult, noCover = false): string {
   const { searched, matched, kept, dropped } = result.steps;
   if (result.mode === "mock") return "Sample answer · nothing searched or checked";
+  if (result.mode === "about") return "Written by the team · no search, no SI writer";
   if (result.mode === "saved") return `${modeLabel(result)} · no new search`;
   if (isRankingOnly(result)) return "Computed from the team's tables · no paper search";
   if (noCover) return searched > 0 ? `Searched ${plural(searched, "source")} · nothing matched` : "Nothing matched";
@@ -130,6 +134,7 @@ export function writerLine(last: AskResult | null): string {
   if (last.mode === "mock") return `Sample answers, the live service is off · ${from}`;
   // A fallback whose sentences the checks refused: the writer did answer, so the line must not say it did not.
   if (last.degraded) return last.steps.dropped > 0 ? `SI's sentences failed the checks, so this is quoting · ${from}` : `The SI writer did not answer, so this is quoting · ${from}`;
+  if (last.mode === "about") return "Every answer from the records shows its sources · the about text is written by the team";
   if (last.mode === "saved") return `${modeLabel(last)} · ${from}`;
   if (last.mode === "extractive") return `Quoting mode, the SI writer is off · ${from}`;
   return last.model ? `${modelLabel(last.model)} · ${from}` : `Every answer shows its sources · ${from}`;

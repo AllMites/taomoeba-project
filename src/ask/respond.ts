@@ -35,7 +35,7 @@ const AskResult = z.object({
   answer: z.string(),
   claims: z.array(Claim),
   investigationIds: z.array(z.string()),
-  mode: z.enum(["live", "extractive", "mock", "saved"]),
+  mode: z.enum(["live", "extractive", "mock", "saved", "about"]),
   steps: StepsShape.catch(NO_STEPS).default(NO_STEPS),
   /** The model that wrote the answer; null when none did. */
   model: z.string().nullable().catch(null).default(null),
@@ -93,6 +93,7 @@ export const MODE_LABEL: Record<AskResult["mode"], string> = {
   mock: "Sample answer, the live service is off",
   live: "SI answer, built only from the quoted sources",
   saved: "Saved SI answer, made earlier with the same checks",
+  about: "About this site · written by the team, not from the records",
 };
 
 /** "Saved SI answer from 14 Nov 2026, …" when the date is known. */

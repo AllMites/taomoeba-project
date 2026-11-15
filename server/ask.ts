@@ -1,6 +1,7 @@
 import type { Claim } from "../src/contracts/claim.ts";
 import type { HabitatId } from "../src/contracts/habitat.ts";
 import { preferReports, score, scoreCapped, type Bm25Index, type Chunk } from "./bm25.ts";
+import { aboutAnswer, isAboutQuestion } from "./about.ts";
 import { addsFacts, coverage, expandQuery, inScope, MIN_COVERAGE, nums, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
 import { findFacts, onlyDashboard, type DataFact } from "./facts.ts";
 import { pickFacts } from "./factpick.ts";
@@ -9,7 +10,7 @@ import { POOL, rerank } from "./rerank.ts";
 import { checkSupport } from "./support.ts";
 import { containsVerbatim } from "./verify.ts";
 
-export type AskMode = "live" | "extractive" | "mock" | "saved";
+export type AskMode = "live" | "extractive" | "mock" | "saved" | "about";
 /** A number-bearing statement computed by code from the team's data; shown before any paper claim. */
 export type FactView = { id: string; statement: string; dataset: string; caveat: string; source: string };
 /** How a paper claim relates to the data fact the question was about. */
@@ -570,6 +571,14 @@ export async function ask(
   about: string[] = [],
 ): Promise<AskResult> {
   const scope = knownAbout(index, about);
+  // A question about the site itself: a fixed text written by the team, no search and no model.
+  // Only a first question with no experiment scope: a follow-up depends on the chat before it.
+  if (!history.length && !about.length && isAboutQuestion(question)) {
+    const sourceIds = new Set(index.chunks.map((c) => c.sourceId));
+    const experiments = new Set(index.chunks.map((c) => c.investigationId).filter(Boolean)).size;
+    const sources = Object.keys(extras.sources ?? {}).length || sourceIds.size;
+    return { answer: aboutAnswer({ experiments, sources }).join("\n\n"), claims: [], investigationIds: [], mode: "about", steps: NO_STEPS, model: null };
+  }
   // A demo question with a saved live answer: answered at once, no API call, labelled as saved with its date.
   // Only for a first question: a follow-up depends on the chat before it, so it is always answered fresh.
   const saved = extras.saved?.[normQuestion(question)];
