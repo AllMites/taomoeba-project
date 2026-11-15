@@ -160,3 +160,31 @@
   cursor: pointer;
 }
 .spread-btn:hover { background: var(--glass-hi); }
+
+/* Fire in this base: the scenario (start point, response) and what the records say the response does. */
+.spread-set { display: grid; gap: 2px; margin: 0; padding: 0; border: 0; min-width: 0; }
+.spread-legend { padding: 0; margin-bottom: var(--space-1); font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.spread-resp { min-height: 2.25rem; }
+.spread-outcome { display: grid; gap: var(--space-1); padding: var(--space-2); border: 1px solid var(--line-strong); border-radius: var(--radius-1); }
+.spread-outcome-h { margin: 0; font-size: var(--text-sm); font-weight: 600; }
+.spread-outcome .brief-how summary { min-height: 2.75rem; display: flex; align-items: center; font-size: var(--text-xs); color: var(--color-text-muted); cursor: pointer; }
+.spread-outcome .brief-how summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.spread-outcome .brief-summary, .spread-outcome .brief-excerpt, .spread-outcome .brief-sources { font-size: var(--text-xs); line-height: 1.45; overflow-wrap: anywhere; }
+.spread-outcome .brief-excerpt { margin: var(--space-1) 0; padding-left: var(--space-2); border-left: 1px solid var(--line-strong); }
+.spread-outcome .brief-sources { margin: 0; padding-left: var(--space-4); }
+.spread-outcome .brief-sources a { color: var(--color-text); }
+.spread-objs summary { display: flex; align-items: center; min-height: 2.75rem; cursor: pointer; }
+.spread-objs summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.spread-btn-main { border-color: var(--color-text); }
+.spread-field { display: grid; font-size: var(--text-sm); }
+.spread-field select {
+  min-height: 2.75rem;
+  min-width: 0;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-1);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+.spread-field select:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }

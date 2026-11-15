@@ -221,7 +221,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
-      {mode === "spread" && <SpreadPanel air={air.name} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} />}
+      {mode === "spread" && <SpreadPanel air={air.name} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} st={st} />}
       {mode !== "spread" && doc && pick && <BurnPanel doc={doc} pick={pick} c={c} air={air.name} compare={base === "iss" ? null : compare} />}
       <p className="sr-only">
         {mode === "spread"
