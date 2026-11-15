@@ -14,17 +14,31 @@ const V = new Vector3();
  * at `home` with a slow drift that stops for good on the first interaction; "Reset view" returns to `home`. Arrow keys
  * and plus/minus on the focused stage arrive as nudges through the playback store.
  */
-export function Navigate({ home, calm, minDistance = 0.12, maxDistance = 3.5, rig }: { home: Pose; calm: boolean; minDistance?: number; maxDistance?: number; rig?: boolean }) {
+export function Navigate({
+  home,
+  calm,
+  minDistance = 0.12,
+  maxDistance = 3.5,
+  follow,
+}: {
+  home?: Pose;
+  calm: boolean;
+  minDistance?: number;
+  maxDistance?: number;
+  /** A scene with its own camera rig: the rig moves the camera until the viewer does; orbit then pivots on this point. */
+  follow?: Vector3;
+}) {
+  const rig = !!follow;
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
   const invalidate = useThree((s) => s.invalidate);
   const controls = useRef<Controls>(null);
   const resetN = usePlayback((s) => s.resetN);
   const nudge = usePlayback((s) => s.nudge);
-  const homeKey = home.pos.join() + home.target.join() + home.fov;
+  const homeKey = home ? home.pos.join() + home.target.join() + home.fov : "";
 
   // Home: on mount, on "Reset view" and when the home itself changes (another base or scene).
   useEffect(() => {
-    if (rig) return;
+    if (!home) return;
     camera.position.set(...home.pos);
     camera.fov = home.fov;
     camera.near = 0.01;
@@ -39,7 +53,8 @@ export function Navigate({ home, calm, minDistance = 0.12, maxDistance = 3.5, ri
   // Slow drift until the viewer moves the camera. Off under reduced motion.
   useFrame(({ clock }) => {
     const st = usePlayback.getState();
-    if (rig || calm || st.drifted || st.steered || !controls.current) return;
+    if (follow && !st.steered) controls.current?.target.copy(follow);
+    if (!home || rig || calm || st.drifted || st.steered || !controls.current) return;
     const t = clock.elapsedTime;
     camera.position.set(home.pos[0] + Math.sin(t / 9) * 0.04, home.pos[1] + Math.sin(t / 13) * 0.015, home.pos[2]);
     controls.current.target.set(...home.target);

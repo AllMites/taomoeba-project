@@ -5,6 +5,7 @@ import type { SceneId, SceneModule } from "../contracts/index.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { scenes } from "./registry.ts";
 import { replayFor, type When } from "./replay.ts";
+import { usePlayback } from "./playback.ts";
 import { freeZone, type FlameLayout, type Rect } from "./zone.ts";
 import "./stage.css";
 
@@ -12,6 +13,18 @@ const WHEN: { id: When; label: string; hint: string }[] = [
   { id: "past", label: "Past", hint: "A real fire in a cargo ship" },
   { id: "now", label: "Now", hint: "A flame in this base's air" },
 ];
+
+/** Keyboard navigation on the focused stage: [orbit, tilt, zoom factor]. */
+const NAV_KEYS: Record<string, [number, number, number]> = {
+  ArrowLeft: [0.2, 0, 1],
+  ArrowRight: [-0.2, 0, 1],
+  ArrowUp: [0, -0.12, 1],
+  ArrowDown: [0, 0.12, 1],
+  "+": [0, 0, 0.85],
+  "=": [0, 0, 0.85],
+  "-": [0, 0, 1.18],
+  _: [0, 0, 1.18],
+};
 
 /** The old scene fades out for this long before the new one is handed its base (stage.css uses the same time). */
 const FADE_OUT_MS = 160;
@@ -141,8 +154,19 @@ export default function Stage() {
     };
   }, [wanted, loaded]);
 
+  const drifted = usePlayback((s) => s.drifted);
+  const steered = usePlayback((s) => s.steered);
+  // Arrow keys orbit and plus / minus zoom while the stage itself has focus (not a control inside it).
+  const onKey = (e: React.KeyboardEvent) => {
+    if (e.target !== e.currentTarget) return;
+    const k = NAV_KEYS[e.key];
+    if (!k) return;
+    e.preventDefault();
+    usePlayback.getState().push(...k);
+  };
+
   return (
-    <section className="stage" aria-label="Replay" data-when={when} ref={section}>
+    <section className="stage" aria-label="Replay. Arrow keys look around, plus and minus zoom." data-when={when} ref={section} tabIndex={0} onKeyDown={onKey}>
       <picture>
         {target.posterNarrow && <source media="(max-width: 600px)" srcSet={target.posterNarrow} />}
         <img className="stage-poster" src={target.poster} alt="" />
@@ -171,6 +195,19 @@ export default function Stage() {
             </details>
           )}
         </div>
+      </div>
+      <div className="stage-nav">
+        {!drifted && (
+          <p className="stage-hint glass" role="note">
+            <span className="stage-hint-fine">Drag to look around, scroll to zoom</span>
+            <span className="stage-hint-touch">Drag to look around, pinch to zoom</span>
+          </p>
+        )}
+        {steered && (
+          <button type="button" className="stage-reset glass" onClick={() => usePlayback.getState().resetView()}>
+            Reset view
+          </button>
+        )}
       </div>
       <fieldset className="stage-when glass">
         <legend className="sr-only">Which fire</legend>

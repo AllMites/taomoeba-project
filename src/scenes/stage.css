@@ -149,10 +149,50 @@
 .stage-when-opt:has(input:checked) { background: var(--color-pill); color: var(--color-pill-text); }
 .stage-when-opt:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
+/* Navigation: the hint until the first drag, then "Reset view" once the camera is the viewer's. */
+.stage:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.stage-scene canvas { touch-action: none; overscroll-behavior: contain; }
+.stage-nav {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-5) + 3.25rem + var(--space-2));
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.stage-hint {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+.stage-hint-touch { display: none; }
+@media (pointer: coarse) {
+  .stage-hint-fine { display: none; }
+  .stage-hint-touch { display: inline; }
+}
+.stage-reset {
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  font: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  cursor: pointer;
+  pointer-events: auto;
+}
+.stage-reset:hover { background: var(--glass-hi); }
+.stage-reset:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
 /* The brief and the top-3 card fill the bottom edge: the switch joins the caption's row, on the right. */
 @container stage (max-width: 64rem) {
   .stage-when { left: auto; right: var(--space-4); bottom: auto; top: var(--stage-top); transform: none; }
   .stage-caption { right: calc(var(--space-4) + var(--stage-when-w, 10rem) + var(--space-2)); }
+  .stage-nav { left: auto; right: var(--space-4); transform: none; bottom: auto; top: calc(var(--stage-top) + 3.25rem + var(--space-2)); }
   .stage-scene { --replay-top: calc(var(--stage-top) + 3.25rem + var(--space-4)); --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4)); }
 }
 /* A phone: a compact switch and smaller caption type, so the row stays one chip tall where it can. */
@@ -161,6 +201,8 @@
   .stage-caption, .stage-when { --space-4: var(--space-2); }
   .stage-when-opt { min-width: 3.5rem; padding: 0 var(--space-2); }
   .stage-caption-text > p { font-size: var(--text-xs); }
+  .stage-nav { --space-4: var(--space-2); }
+  .stage-hint { font-size: var(--text-xs); }
 }
 
 @media (prefers-reduced-motion: reduce) {
