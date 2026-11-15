@@ -148,6 +148,9 @@
 .ask-excerpt { margin: 0 0 var(--space-2); padding-left: var(--space-4); border-left: 1px solid var(--line-strong); font-size: var(--text-sm); color: var(--color-text-muted); overflow-wrap: anywhere; }
 .ask-quote-note { margin: 0 0 var(--space-2); padding-left: var(--space-4); }
 .ask-link { margin: 0 0 var(--space-2); padding-left: var(--space-4); }
+/* A standalone link: 44px tall target, no underline until hover (it was 17px and underlined). */
+.ask-link a { display: inline-block; line-height: 2.75rem; color: var(--color-text); text-decoration: none; }
+.ask-link a:hover { text-decoration: underline; }
 .ask-show { justify-self: start; text-align: left; }
 
 /* ---- Suggested questions and follow-ups: plain buttons, one per row ---- */

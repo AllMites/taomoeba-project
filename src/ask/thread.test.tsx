@@ -327,6 +327,12 @@ it("the panel fills the box the shell gives it: never fixed to the window, and i
   expect(css).toMatch(/\.ask-body \{[^}]*overflow-y: auto;[^}]*overscroll-behavior: contain;/);
 });
 
+it("Read the full source is a 44px target with no underline until hover, like every standalone link", () => {
+  // Measured in headless Chrome: 140x17 and underlined.
+  const css = readFileSync(new URL("./ask.css", import.meta.url), "utf8");
+  expect(css).toMatch(/\.ask-link a \{[^}]*display: inline-block;[^}]*line-height: 2\.75rem;[^}]*text-decoration: none;/);
+});
+
 // ---- the page never moves uninvited ----
 it("nothing in the panel scrolls the console: the chat list and the Rank sheet's list scroll themselves", () => {
   // In the one-screen console scrollIntoView also scrolled the document: Show moved the whole console up 88px (headless Chrome, 1440x900).
