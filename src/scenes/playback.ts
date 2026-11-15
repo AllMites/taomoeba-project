@@ -35,6 +35,8 @@ export type PlaybackState = {
   picked: string | null;
   /** Fire spread: the cabin's airflow along the bench, cm/s. */
   flow: number;
+  /** The scene's canvas has drawn its first frame (set by the scene itself, never by an input event). */
+  live: boolean;
   setMode: (m: Mode) => void;
   setTimeline: (tl: Timeline | null) => void;
   seek: (t: number) => void;
@@ -46,6 +48,7 @@ export type PlaybackState = {
   setCompare: (c: boolean) => void;
   pick: (id: string | null) => void;
   setFlow: (cmS: number) => void;
+  setLive: (live: boolean) => void;
 };
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
@@ -63,6 +66,7 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   compare: false,
   picked: null,
   flow: 10,
+  live: false,
   setMode: (mode) => set({ mode, picked: null }),
   // A new timeline (another scene, base or setting) starts from its beginning; the same one keeps its place.
   setTimeline: (tl) => {
@@ -82,7 +86,17 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   setCompare: (compare) => set({ compare }),
   pick: (picked) => set({ picked }),
   setFlow: (flow) => set({ flow }),
+  setLive: (live) => set((s) => (s.live === live ? s : { live })),
 }));
+
+/**
+ * What the stage shows: the 3D scene once its canvas has drawn a frame; until then the scene's still picture, or a
+ * plain loading card where the scene has none. Only these three facts decide it: no pointer, wheel or key event.
+ */
+export function stageView(o: { loaded: boolean; live: boolean; poster?: string }): "scene" | "poster" | "loading" {
+  if (o.loaded && o.live) return "scene";
+  return o.poster ? "poster" : "loading";
+}
 
 /** The phase showing at time t: the last one that has started. */
 export function phaseAt(tl: Timeline, t: number): string {

@@ -19,6 +19,7 @@ import { airOf, type Air } from "./air.ts";
 import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose, type V3 } from "./layout.ts";
 import { BurnPanel } from "./BurnPanel.tsx";
 import { Navigate } from "./Navigate.tsx";
+import { FirstFrame } from "../FirstFrame.tsx";
 import { SpreadSet, spreadChips } from "./Spread.tsx";
 import { SpreadPanel } from "./SpreadPanel.tsx";
 import "./cabin.css";
@@ -210,6 +211,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         gl={{ antialias: true, powerPreference: "high-performance" }}
         onCreated={({ gl }) => gl.setClearColor(CABIN_PAINT.outsideSky)}
       >
+        <FirstFrame />
         <Cabin base={base} />
         <Navigate home={home} calm={calm} />
         <LensShift home={home} focus={mode === "spread" ? home.target : DROPLET.at} />

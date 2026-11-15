@@ -14,6 +14,18 @@
   container-name: stage;
 }
 .stage-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* No still picture for this scene yet: a plain card on glass while the 3D loads. */
+.stage-loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-2);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
 
 /* A new scene fades in over the still picture; a pick fades the old scene out first (Stage.tsx, FADE_OUT_MS). */
 .stage-scene {
@@ -21,12 +33,10 @@
   inset: 0;
   opacity: 1;
   transition: opacity var(--motion-mid) var(--ease);
-  animation: stage-in var(--motion-mid) var(--ease);
   --replay-top: calc(var(--stage-top) + 2.75rem + var(--space-4));
   --replay-bottom: calc(var(--console-safe-bottom, 0rem) + 2.75rem + var(--space-6));
 }
 .stage-scene[data-fading] { opacity: 0; transition-duration: 160ms; }
-@keyframes stage-in { from { opacity: 0; } }
 
 /* Corner ticks: the one framed thing on the screen. Decorative. */
 .stage-ticks {
@@ -286,5 +296,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stage-scene { transition: none; animation: none; }
+  .stage-scene { transition: none; }
 }

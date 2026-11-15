@@ -4,7 +4,7 @@ import { prefersCalm } from "../app/motion.ts";
 import type { SceneId, SceneModule } from "../contracts/index.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { scenes } from "./registry.ts";
-import { advance, clock, phaseAt, usePlayback } from "./playback.ts";
+import { advance, clock, phaseAt, stageView, usePlayback } from "./playback.ts";
 import { replayFor } from "./replay.ts";
 import { MODES } from "./timelines.ts";
 import { freeZone, type FlameLayout, type Rect } from "./zone.ts";
@@ -53,6 +53,16 @@ function useCrossfade<T>(value: T, calm: boolean) {
     return () => clearTimeout(t);
   }, [value, shown, calm]);
   return { shown, fading: shown !== value };
+}
+
+/** WebGL available at all (a cheap probe, without loading three.js). */
+function canWebGL() {
+  try {
+    const c = document.createElement("canvas");
+    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch {
+    return false;
+  }
 }
 
 const idle = (run: () => void) => {
@@ -261,9 +271,11 @@ export default function Stage() {
   useTicker();
   // A new timeline (another scene, base or setting) plays from its start, except under reduced motion.
   const tlKey = usePlayback((s) => s.timeline?.key);
+  // The clock starts when the scene is on screen (its first frame drawn), never waiting for an input event.
+  const live = usePlayback((s) => s.live);
   useEffect(() => {
-    if (tlKey) usePlayback.getState().setPlaying(!calm);
-  }, [tlKey, calm]);
+    if (tlKey && live) usePlayback.getState().setPlaying(!calm);
+  }, [tlKey, calm, live]);
 
   // After first paint, and again when the other view is first asked for. A failed load keeps the still picture.
   const wanted = target.scene;
@@ -282,6 +294,8 @@ export default function Stage() {
     };
   }, [wanted, loaded]);
 
+  const [webgl] = useState(canWebGL);
+  const view = stageView({ loaded: !!mod, live, poster: target.poster });
   const drifted = usePlayback((s) => s.drifted);
   const steered = usePlayback((s) => s.steered);
   // Arrow keys orbit and plus / minus zoom while the stage itself has focus (not a control inside it).
@@ -295,10 +309,17 @@ export default function Stage() {
 
   return (
     <section className="stage" aria-label="Replay. Arrow keys look around, plus and minus zoom." data-mode={mode} ref={section} tabIndex={0} onKeyDown={onKey}>
-      <picture>
-        {target.posterNarrow && <source media="(max-width: 600px)" srcSet={target.posterNarrow} />}
-        <img className="stage-poster" src={target.poster} alt="" />
-      </picture>
+      {view === "poster" && (
+        <picture>
+          {target.posterNarrow && <source media="(max-width: 600px)" srcSet={target.posterNarrow} />}
+          <img className="stage-poster" src={target.poster} alt="" />
+        </picture>
+      )}
+      {view === "loading" && (
+        <p className="stage-loading glass" role="status">
+          {webgl ? "Loading the 3D cabin" : "3D is off in this browser: the replay cannot be drawn here"}
+        </p>
+      )}
       {mod && (
         <SceneGuard key={current.scene}>
           <div className="stage-scene" data-fading={fading || undefined} style={zoneStyle(zone)}>
