@@ -237,54 +237,58 @@ export function WhatIfView(p: {
         <div className="whatif-results" aria-live="polite">
           <p className={`whatif-support whatif-support-${sup.level}`}>{sup.text}</p>
           {pr.possible && (
-            <>
-              <ul className="whatif-cards">
-                <li className="whatif-card">
-                  <span className="whatif-label">Flame goes out when the droplet is</span>
-                  <span className={moon ? "whatif-value t-display whatif-dim" : "whatif-value t-display"}>{pr.extDiameterMm.toFixed(2)} mm</span>
-                  <span className="muted">
-                    likely between {pr.bandMm[0].toFixed(2)} and {pr.bandMm[1].toFixed(2)} mm. A range this wide covered{" "}
-                    {pct(m.ext_diameter.band_coverage)} of real runs on test days the model never saw.
-                  </span>
-                  {moon && <span className="whatif-warn">Moon-Base-like air: the team's report says this prediction is not valid here.</span>}
-                </li>
-                <li className="whatif-card">
-                  <span className="whatif-label">Chance the droplet breaks apart</span>
-                  <span className="whatif-value t-display">{pct(pr.pDisruption)}</span>
-                  <span className="muted">Across all FLEX runs, {pct(m.disruption.typical_rate)} broke apart.</span>
-                  <Trend doc={doc} sel={sel} />
-                </li>
-                <li className="whatif-card">
-                  <span className="whatif-label">Burning rate</span>
-                  <span className="whatif-value t-display">
-                    {pr.burningRate.toFixed(2)} <small>mm²/s</small>
-                  </span>
-                  <span className="muted">How fast the square of the droplet's diameter shrinks. Typical model error {m.burning_rate.rmse} mm²/s.</span>
-                  <TextbookLine doc={doc} sel={sel} />
-                </li>
-              </ul>
-              <WatchBurn
-                doc={doc}
-                sel={sel}
-                fuel={a.fuel[sel.fuel]}
-                d0={a.d0[sel.d0]}
-                burningRate={pr.burningRate}
-                extMm={pr.extDiameterMm}
-                pDisruption={pr.pDisruption}
-                moon={moon}
-                level={sup.level}
-              />
-              <Effects doc={doc} sel={sel} onGo={onChange} />
-              <TakeFurther doc={doc} sel={sel} pinned={p.pinned ?? null} onAsk={p.onAsk} />
-            </>
+            <ul className="whatif-cards">
+              <li className="whatif-card">
+                <span className="whatif-label">Flame goes out when the droplet is</span>
+                <span className={moon ? "whatif-value t-display whatif-dim" : "whatif-value t-display"}>{pr.extDiameterMm.toFixed(2)} mm</span>
+                <span className="muted">
+                  likely between {pr.bandMm[0].toFixed(2)} and {pr.bandMm[1].toFixed(2)} mm. A range this wide covered{" "}
+                  {pct(m.ext_diameter.band_coverage)} of real runs on test days the model never saw.
+                </span>
+                {moon && <span className="whatif-warn">Moon-Base-like air: the team's report says this prediction is not valid here.</span>}
+              </li>
+              <li className="whatif-card">
+                <span className="whatif-label">Chance the droplet breaks apart</span>
+                <span className="whatif-value t-display">{pct(pr.pDisruption)}</span>
+                <span className="muted">Across all FLEX runs, {pct(m.disruption.typical_rate)} broke apart.</span>
+                <Trend doc={doc} sel={sel} />
+              </li>
+              <li className="whatif-card">
+                <span className="whatif-label">Burning rate</span>
+                <span className="whatif-value t-display">
+                  {pr.burningRate.toFixed(2)} <small>mm²/s</small>
+                </span>
+                <span className="muted">How fast the square of the droplet's diameter shrinks. Typical model error {m.burning_rate.rmse} mm²/s.</span>
+                <TextbookLine doc={doc} sel={sel} />
+              </li>
+            </ul>
           )}
-          {p.pinned && <Compare doc={doc} a={p.pinned} b={sel} />}
-          <p className="whatif-foot muted">
-            How these were tested: every score comes from test days held out of training. Models: {m.ext_diameter.name};{" "}
-            {m.disruption.name}; {m.burning_rate.name}. Nothing here covers solid materials or other fuels, and Moon gravity appears only as the labelled theory estimate.
-          </p>
         </div>
       </div>
+
+      {/* Below the controls and the headline numbers, each part gets the full width of the sheet. */}
+      {pr.possible && (
+        <>
+          <WatchBurn
+            doc={doc}
+            sel={sel}
+            fuel={a.fuel[sel.fuel]}
+            d0={a.d0[sel.d0]}
+            burningRate={pr.burningRate}
+            extMm={pr.extDiameterMm}
+            pDisruption={pr.pDisruption}
+            moon={moon}
+            level={sup.level}
+          />
+          <Effects doc={doc} sel={sel} onGo={onChange} />
+        </>
+      )}
+      {p.pinned && <Compare doc={doc} a={p.pinned} b={sel} />}
+      {pr.possible && <TakeFurther doc={doc} sel={sel} pinned={p.pinned ?? null} onAsk={p.onAsk} />}
+      <p className="whatif-foot muted">
+        How these were tested: every score comes from test days held out of training. Models: {m.ext_diameter.name};{" "}
+        {m.disruption.name}; {m.burning_rate.name}. Nothing here covers solid materials or other fuels, and Moon gravity appears only as the labelled theory estimate.
+      </p>
     </section>
   );
 }

@@ -2,10 +2,19 @@
 /* No box of its own: the section sits inside a glass sheet, which is the surface. */
 .whatif { min-width: 0; }
 .whatif-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
-.whatif-grid { display: grid; gap: var(--space-6); grid-template-columns: minmax(15rem, 1fr) minmax(0, 2fr); align-items: start; }
-@media (max-width: 52rem) { .whatif-grid { grid-template-columns: minmax(0, 1fr); } }
+/* Controls across the full width as a compact panel, then the three headline numbers in one row under them, then
+   everything else full width. Nothing sits beside a taller neighbour, so no column is left half empty. */
+.whatif-grid { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr); margin-bottom: var(--space-2); }
 
-.whatif-controls { display: grid; gap: var(--space-4); }
+.whatif-controls {
+  display: grid;
+  gap: var(--space-4) var(--space-5);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  align-items: start;
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-1);
+}
 .whatif-seg { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .whatif-seg legend { font-weight: 600; margin-bottom: var(--space-2); padding: 0; }
 .whatif-seg label { position: relative; }
@@ -43,7 +52,7 @@
 .whatif-support-sparse { border-left-style: dashed; border-color: var(--color-text-muted); }
 .whatif-support-out, .whatif-support-far, .whatif-support-impossible { border: 1px dashed var(--label); }
 
-.whatif-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+.whatif-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); }
 .whatif-card {
   display: flex;
   flex-direction: column;
@@ -88,8 +97,10 @@
 /* Watch the predicted burn. Fire is the only colour: one flame hue for both fuels. They differ by form:
    methanol is a thin faint shell, heptane a thick bright one (the gradient stops in Burn.tsx). */
 .whatif-burn { --burn-flame-m: var(--flame); --burn-flame-inner-m: var(--flame); --burn-flame-h: var(--flame); --burn-flame-inner-h: var(--flame); }
-.burn-grid { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
-@media (max-width: 52rem) { .burn-grid { grid-template-columns: minmax(0, 1fr); } }
+/* The burn, the Earth/microgravity picture and the gravity estimate side by side; they stack on narrow sheets. */
+.burn-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); align-items: stretch; }
+/* Same height boxes, content from the top: the row ends on one line instead of three ragged bottoms. */
+.burn-grid > * { align-content: start; }
 .burn-stage { margin: 0; display: grid; gap: var(--space-2); min-width: 0; }
 .burn-stage > svg:first-child { width: 100%; max-width: 22rem; height: auto; justify-self: center; }
 .burn-glass { fill: var(--color-bg); stroke: var(--line); }
@@ -125,7 +136,7 @@
 /* textbook physics beside the data model */
 .whatif-textbook { display: block; margin-top: var(--space-1); font-size: var(--text-sm); }
 .whatif-differs { font-weight: 600; color: var(--color-text); text-decoration: underline dashed var(--label); text-underline-offset: 3px; }
-.burn-gravity { display: grid; gap: var(--space-2); min-width: 0; }
+.burn-gravity { display: grid; gap: var(--space-2); min-width: 0; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-1); }
 .burn-gravity-h { margin: 0; font-size: var(--text-sm); }
 .burn-gravity table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
 .burn-gravity th, .burn-gravity td { text-align: left; padding: 2px var(--space-2) 2px 0; font-variant-numeric: tabular-nums; }
@@ -140,3 +151,13 @@
 .whatif-downloads { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .burn-link { font: inherit; padding: 0; border: 0; background: none; color: var(--color-text); text-decoration: underline; text-decoration-color: var(--color-border-strong); text-underline-offset: 3px; cursor: pointer; }
 .burn-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* When panels squeeze the sheet, the three cards go 2 + 1: the last one takes the whole row, so no hole is left. */
+.whatif-results { container-type: inline-size; }
+@container (max-width: 30rem) {
+  .whatif-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .whatif-cards > .whatif-card:last-child { grid-column: 1 / -1; }
+}
+@container (max-width: 22rem) {
+  .whatif-cards { grid-template-columns: minmax(0, 1fr); }
+}
