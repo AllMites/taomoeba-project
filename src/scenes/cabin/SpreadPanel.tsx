@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { askAbout, useConsole } from "../../app/console.ts";
 import { useStore } from "../../app/store.ts";
 import { useDataset } from "../../data/useDataset.ts";
@@ -156,13 +157,29 @@ export function SpreadPanel({ air, kPa, g, doc, fabric, st, where = "" }: { air:
   const picked = usePlayback((s) => s.picked);
   const o = OBJECTS.find((x) => x.id === picked);
   const form = useRef<HTMLFormElement>(null);
-  // Escape closes the open panel.
+  const btn = useRef<HTMLButtonElement>(null);
+  const box = useRef<HTMLDivElement>(null);
+  // Escape or a press outside closes the open panel and returns focus to its button.
   useEffect(() => {
     if (!open) return;
-    const key = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const close = () => {
+      setOpen(false);
+      btn.current?.focus();
+    };
+    const key = (e: KeyboardEvent) => e.key === "Escape" && close();
+    const press = (e: PointerEvent) => !box.current?.contains(e.target as Node) && close();
     document.addEventListener("keydown", key);
-    return () => document.removeEventListener("keydown", key);
+    document.addEventListener("pointerdown", press);
+    return () => {
+      document.removeEventListener("keydown", key);
+      document.removeEventListener("pointerdown", press);
+    };
   }, [open]);
+  // The button lives in the stage's control strip, after the scene picker (Stage.tsx), when the stage is there.
+  const [slot, setSlot] = useState<Element | null>(null);
+  useEffect(() => setSlot(document.querySelector(".stage-strip-slot")), []);
+  const startName = STARTS.find((x) => x.id === st.input.start)?.name ?? "";
+  const respName = RESPONSES.find((x) => x.id === st.input.response)?.name ?? "";
   // While more is below, the panel's bottom edge fades (the "On Earth" card's cue), so the last line is not missed.
   const [more, setMore] = useState(false);
   useEffect(() => {
@@ -181,10 +198,14 @@ export function SpreadPanel({ air, kPa, g, doc, fabric, st, where = "" }: { air:
       ro?.disconnect();
     };
   });
-  return (
-    <div className="burn" data-open={open || undefined}>
-      <button type="button" className="burn-toggle glass" aria-expanded={open} aria-controls={`${id}-panel`} onClick={() => setOpen((v) => !v)}>
-        Scenario
+  const node = (
+    <div className="burn" data-open={open || undefined} ref={box}>
+      <button type="button" ref={btn} className="burn-toggle stage-pick-btn glass" aria-expanded={open} aria-controls={`${id}-panel`} onClick={() => setOpen((v) => !v)}>
+        <span className="stage-pick-label t-readout">Scenario</span>
+        <span className="stage-pick-name">{[startName.split(" ")[0], respName].filter(Boolean).join(" · ")}</span>
+        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+          <path d="M3.5 6l4.5 4.5L12.5 6" fill="none" stroke="currentColor" strokeWidth="1.6" />
+        </svg>
       </button>
       <form ref={form} id={`${id}-panel`} className="burn-panel glass" data-more={more || undefined} aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
         <p className="burn-h">Fire in this base, {air}</p>
@@ -215,4 +236,5 @@ export function SpreadPanel({ air, kPa, g, doc, fabric, st, where = "" }: { air:
       </form>
     </div>
   );
+  return slot ? createPortal(node, slot) : node;
 }

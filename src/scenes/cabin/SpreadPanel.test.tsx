@@ -101,5 +101,6 @@ describe("the gravity switch (15.10)", () => {
 
 it("is closed at rest behind one Scenario button, and carries the aftermath inside it (18.2)", () => {
   const html = panel();
-  expect(html).toMatch(/<div class="burn"><button type="button" class="burn-toggle glass" aria-expanded="false"[^>]*>Scenario<\/button>/);
+  // A dropdown like the scene picker: a label, the current start and response, a chevron; closed at rest.
+  expect(html).toMatch(/<div class="burn"><button type="button" class="burn-toggle stage-pick-btn glass" aria-expanded="false" aria-controls="[^"]+-panel"><span class="stage-pick-label t-readout">Scenario<\/span><span class="stage-pick-name">[^<]+ · [^<]+<\/span><svg/);
 });
