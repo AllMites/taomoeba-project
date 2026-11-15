@@ -1,10 +1,6 @@
 /* What-if tool: team model predictions. Colours come from tokens only. */
-.whatif {
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2);
-}
+/* No box of its own: the section sits inside a glass sheet, which is the surface. */
+.whatif { min-width: 0; }
 .whatif-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
 .whatif-grid { display: grid; gap: var(--space-6); grid-template-columns: minmax(15rem, 1fr) minmax(0, 2fr); align-items: start; }
 @media (max-width: 52rem) { .whatif-grid { grid-template-columns: minmax(0, 1fr); } }
@@ -18,7 +14,7 @@
   display: inline-block;
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-full, 999px);
+  border-radius: var(--radius-full);
   min-height: 2.75rem;
   line-height: 1.6;
 }
@@ -31,7 +27,7 @@
 .whatif-field select {
   font: inherit;
   color: var(--color-text);
-  background: var(--color-bg);
+  background: var(--color-surface);
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-1);
   padding: var(--space-2) var(--space-3);
@@ -41,9 +37,11 @@
 .whatif-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
 
 .whatif-support { margin: 0 0 var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-1); font-weight: 600; border-left: 3px solid; }
-.whatif-support-good { border-color: var(--color-match); background: var(--color-bg); }
-.whatif-support-sparse { border-color: var(--color-accent); background: var(--color-highlight-bg); }
-.whatif-support-out, .whatif-support-far, .whatif-support-impossible { border-color: var(--color-flame); background: var(--color-badge-bg); color: var(--color-badge-text); }
+/* How well the tests support this setting, by form (no hue): solid rule = inside the tested range, dashed rule = few tests nearby,
+   dashed outline = outside the tested range. The sentence itself says which. */
+.whatif-support-good { border-left-style: solid; border-color: var(--color-text); }
+.whatif-support-sparse { border-left-style: dashed; border-color: var(--color-text-muted); }
+.whatif-support-out, .whatif-support-far, .whatif-support-impossible { border: 1px dashed var(--label); }
 
 .whatif-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
 .whatif-card {
@@ -51,8 +49,8 @@
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background: transparent;
+  border: 1px solid var(--line);
   border-radius: var(--radius-1);
   min-width: 0;
 }
@@ -60,12 +58,12 @@
 .whatif-value { font-size: var(--text-xl); line-height: 1.1; }
 .whatif-value small { font-size: var(--text-sm); color: var(--color-text-muted); }
 .whatif-card .muted { font-size: var(--text-sm); }
-.whatif-warn { font-size: var(--text-sm); font-weight: 600; color: var(--color-badge-text); background: var(--color-badge-bg); padding: var(--space-2) var(--space-3); border-radius: var(--radius-1); }
+.whatif-warn { font-size: var(--text-sm); font-weight: 600; color: var(--color-text); border: 1px dashed var(--label); padding: var(--space-2) var(--space-3); border-radius: var(--radius-1); }
 
 .whatif-trend { width: 100%; height: auto; margin-top: var(--space-1); }
 .whatif-trend-line { fill: none; stroke: var(--color-accent); stroke-width: 2; }
 .whatif-trend-typical { stroke: var(--color-border-strong); stroke-width: 1; stroke-dasharray: 3 3; }
-.whatif-trend-dot { fill: var(--color-flame); }
+.whatif-trend-dot { fill: var(--color-text); }
 .whatif-trend-axis { fill: var(--color-text-muted); font-size: 9px; font-family: var(--font-mono); }
 
 .whatif-foot { margin: var(--space-4) 0 0; font-size: var(--text-sm); max-width: 70ch; }
@@ -87,13 +85,14 @@
 .whatif-note { display: block; font-weight: 400; font-size: var(--text-xs); color: var(--color-text-muted); }
 .whatif-small { font-size: var(--text-sm); margin: var(--space-2) 0 0; }
 
-/* Watch the predicted burn. Flame colours are illustrative (methanol burns faint blue, heptane yellow and sooty). */
-.whatif-burn { --burn-flame-m: var(--sphere-core); --burn-flame-inner-m: var(--sphere-core); --burn-flame-h: var(--sphere-hot); --burn-flame-inner-h: var(--color-flame); }
+/* Watch the predicted burn. Fire is the only colour: one flame hue for both fuels. They differ by form:
+   methanol is a thin faint shell, heptane a thick bright one (the gradient stops in Burn.tsx). */
+.whatif-burn { --burn-flame-m: var(--flame); --burn-flame-inner-m: var(--flame); --burn-flame-h: var(--flame); --burn-flame-inner-h: var(--flame); }
 .burn-grid { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
 @media (max-width: 52rem) { .burn-grid { grid-template-columns: minmax(0, 1fr); } }
 .burn-stage { margin: 0; display: grid; gap: var(--space-2); min-width: 0; }
 .burn-stage > svg:first-child { width: 100%; max-width: 22rem; height: auto; justify-self: center; }
-.burn-glass { fill: #061a30; }
+.burn-glass { fill: var(--color-bg); stroke: var(--line); }
 .burn-drop { fill: var(--glass-text); }
 .burn-read { fill: var(--glass-muted); font-family: var(--font-mono); font-size: 10px; }
 .burn-controls { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
@@ -104,28 +103,28 @@
 .burn-axis { stroke: var(--color-border-strong); stroke-width: 1; }
 .burn-line { stroke: var(--color-accent); stroke-width: 2; }
 .burn-rest { stroke: var(--color-border-strong); stroke-width: 1.5; stroke-dasharray: 3 3; }
-.burn-dot { fill: var(--color-flame); }
+.burn-dot { fill: var(--color-text); }
 .burn-tick { fill: var(--color-text-muted); font-family: var(--font-mono); font-size: 9px; }
 .burn-none { margin: 0; }
 .burn-side { display: grid; gap: var(--space-2); padding: var(--space-3); border: 1px dashed var(--color-border-strong); border-radius: var(--radius-1); min-width: 0; }
 .burn-side-pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
 .burn-side figure { margin: 0; display: grid; gap: var(--space-2); }
-.burn-side svg { width: 100%; max-width: 9rem; height: auto; justify-self: center; background: #061a30; border-radius: var(--radius-1); }
+.burn-side svg { width: 100%; max-width: 9rem; height: auto; justify-self: center; background: var(--color-bg); border: 1px solid var(--line); border-radius: var(--radius-1); }
 .burn-side figcaption { font-size: var(--text-sm); }
-.burn-earth-flame { fill: var(--sphere-hot); opacity: 0.85; transform-origin: 55px 88px; animation: burn-flicker 1.6s ease-in-out infinite; }
-.burn-ug-flame { fill: none; stroke: var(--sphere-core); stroke-width: 5; opacity: 0.85; }
+.burn-earth-flame { fill: var(--flame); opacity: 0.85; transform-origin: 55px 88px; animation: burn-flicker 1.6s ease-in-out infinite; }
+.burn-ug-flame { fill: none; stroke: var(--flame); stroke-width: 5; opacity: 0.85; }
 .burn-arrow { stroke: var(--glass-muted); stroke-width: 1.5; fill: none; }
 .burn-diffuse { stroke-dasharray: 2 3; }
 @keyframes burn-flicker { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(1.06); } }
 @media (prefers-reduced-motion: reduce) { .burn-earth-flame { animation: none; } }
 .whatif-controls, .whatif-results, .whatif-effects, .whatif-compare, .whatif-burn { min-width: 0; }
 .burn-guide { fill: none; stroke: var(--glass-muted); stroke-width: 1; opacity: 0.55; }
-.burn-guide-end { stroke: var(--sphere-hot); stroke-dasharray: 2 2; opacity: 0.9; }
+.burn-guide-end { stroke: var(--color-text); stroke-dasharray: 2 2; opacity: 0.9; }
 .burn-key { font-size: 8.5px; }
 
 /* textbook physics beside the data model */
 .whatif-textbook { display: block; margin-top: var(--space-1); font-size: var(--text-sm); }
-.whatif-differs { font-weight: 600; color: var(--color-badge-text); background: var(--color-badge-bg); }
+.whatif-differs { font-weight: 600; color: var(--color-text); text-decoration: underline dashed var(--label); text-underline-offset: 3px; }
 .burn-gravity { display: grid; gap: var(--space-2); min-width: 0; }
 .burn-gravity-h { margin: 0; font-size: var(--text-sm); }
 .burn-gravity table { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
@@ -135,9 +134,9 @@
 /* take it further: ask about this setting, downloads */
 .whatif-further { display: grid; gap: var(--space-2); min-width: 0; }
 .whatif-askchips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.whatif-chip { font: inherit; font-size: var(--text-sm); text-align: left; padding: var(--space-1) var(--space-3); border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-surface); color: var(--color-text); cursor: pointer; max-width: 100%; }
+.whatif-chip { font: inherit; font-size: var(--text-sm); text-align: left; padding: var(--space-1) var(--space-3); border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); background: transparent; color: var(--color-text); cursor: pointer; max-width: 100%; min-height: 2.75rem; }
 .whatif-chip:hover { border-color: var(--color-accent); }
 .whatif-chip:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .whatif-downloads { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.burn-link { font: inherit; padding: 0; border: 0; background: none; color: var(--color-accent); text-decoration: underline; cursor: pointer; }
+.burn-link { font: inherit; padding: 0; border: 0; background: none; color: var(--color-text); text-decoration: underline; text-decoration-color: var(--color-border-strong); text-underline-offset: 3px; cursor: pointer; }
 .burn-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }

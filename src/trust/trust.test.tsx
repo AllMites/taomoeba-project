@@ -28,7 +28,7 @@ describe("how we know", () => {
   });
   it("shows the measured scores, the model scores from the grid, the physics check and the kinds of number", () => {
     const html = renderToStaticMarkup(<TrustView ev={parseEval(sample)} doc={doc} />);
-    expect(html).toContain("How we know");
+    expect(html).toContain("How answers are checked");
     expect(html).toContain("69%");
     expect(html).toContain(`AUC ${doc.models.disruption.auc.toFixed(2)}`);
     expect(html).toContain("moves the same way as textbook theory");

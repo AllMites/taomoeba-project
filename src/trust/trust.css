@@ -1,20 +1,23 @@
-/* "How we know": measured accuracy and what each kind of number is. Colours come from tokens only. */
-.trust {
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2);
-}
-.trust-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
-.trust-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
-.trust-card { display: grid; gap: var(--space-3); padding: var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-bg); min-width: 0; }
-.trust-h3 { margin: 0; font-size: var(--text-base, 1rem); }
-.trust-scores, .trust-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); }
-.trust-list li { padding-left: var(--space-3); border-left: 2px solid var(--color-border-strong); }
-.trust-scores li { display: grid; grid-template-columns: 4.2rem minmax(0, 1fr); gap: var(--space-2); align-items: baseline; }
-.trust-big { font-size: 1.4rem; font-variant-numeric: tabular-nums; }
-.trust-small { margin: 0; font-size: var(--text-sm); }
-.trust-kinds { margin: 0; display: grid; gap: var(--space-2); }
+/* "How answers are checked": measured accuracy and what each kind of number is. One column, for the 320px left panel. */
+.trust { display: grid; gap: var(--space-3); padding: var(--space-4); min-width: 0; }
+.trust-h { margin: 0; color: var(--color-text); }
+.trust-intro { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); }
+.trust-grid { display: grid; min-width: 0; }
+.trust-card { border-top: 1px solid var(--line); min-width: 0; }
+.trust-card > summary { cursor: pointer; min-height: 2.75rem; display: flex; align-items: center; gap: var(--space-2); list-style: none; }
+.trust-card > summary::-webkit-details-marker { display: none; }
+/* Grey chevron, as on a row that opens. */
+.trust-card > summary::after { content: ""; flex: none; margin-left: auto; width: 0.45rem; height: 0.45rem; border-right: 1.5px solid var(--label); border-bottom: 1.5px solid var(--label); rotate: 45deg; transition: rotate var(--motion-fast) var(--ease); }
+.trust-card[open] > summary::after { rotate: -135deg; }
+.trust-card > summary:hover { background: var(--glass-hi); }
+.trust-card > :not(summary) { margin-bottom: var(--space-4); }
+.trust-h3 { margin: 0; font-family: var(--font-sans); font-size: var(--text-sm); font-weight: 600; }
+.trust-scores, .trust-list { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--space-2); font-size: var(--text-sm); }
+.trust-list li { padding-left: var(--space-3); border-left: 1px solid var(--line-strong); }
+.trust-scores li { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: var(--space-2); align-items: baseline; }
+.trust-big { font-size: var(--text-lg); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.trust-small { margin: var(--space-2) 0 0; font-size: var(--text-xs); }
+.trust-kinds { margin: 0; display: grid; gap: var(--space-2); font-size: var(--text-sm); }
 .trust-kinds div { display: grid; gap: 2px; }
 .trust-kinds dt { font-weight: 600; }
-.trust-kinds dd { margin: 0; color: var(--color-text-muted); font-size: var(--text-sm); }
+.trust-kinds dd { margin: 0; color: var(--color-text-muted); }

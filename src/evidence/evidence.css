@@ -1,4 +1,4 @@
-/* Lane H: detail drawer. Right panel in the blurred material, porthole radius on its left corners. */
+/* Lane H: detail drawer. Right panel in the blurred glass, over everything. A hairline edge, no drop shadow. */
 .ev-dialog {
   margin: 0 0 0 auto;
   padding: 0;
@@ -7,18 +7,21 @@
   height: 100dvh;
   max-height: 100dvh;
   border: 0;
-  border-radius: var(--radius-3) 0 0 var(--radius-3);
-  background: var(--color-surface-2);
+  border-left: 1px solid var(--line-strong);
+  border-radius: var(--radius-2) 0 0 var(--radius-2);
+  background: var(--color-surface);
   color: var(--color-text);
-  box-shadow: var(--shadow-2), inset 1px 0 0 var(--porthole-edge);
   overflow: hidden;
 }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .ev-dialog {
-    background: var(--material-bg);
-    -webkit-backdrop-filter: blur(var(--material-blur)) saturate(1.2);
-    backdrop-filter: blur(var(--material-blur)) saturate(1.2);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(20px) saturate(120%);
+    backdrop-filter: blur(20px) saturate(120%);
   }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .ev-dialog { background: var(--color-surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
 .ev-dialog::backdrop { background: color-mix(in srgb, var(--color-bg) 55%, transparent); }
 body:has(.ev-dialog[open]) { overflow: hidden; }
@@ -76,14 +79,14 @@ body:has(.ev-dialog[open]) { overflow: hidden; }
 }
 
 .ev-claims > li { margin-bottom: var(--space-4); }
-/* Source disclosure: quiet text button; the quote sits under a flame-coloured rule. */
+/* Source disclosure: quiet text button; the quote sits beside a hairline rule. */
 .ev-source { font-size: 0.875rem; }
 .ev-source summary, .ev-preview summary { cursor: pointer; color: var(--color-text-muted); min-height: 1.75rem; width: fit-content; }
 .ev-source summary:hover, .ev-preview summary:hover { color: var(--color-text); }
 .ev-source blockquote {
   margin: var(--space-2) 0;
   padding: var(--space-1) var(--space-3);
-  border-left: 1px solid var(--color-flame);
+  border-left: 1px solid var(--line-strong);
   color: var(--color-text-muted);
 }
 .ev-source ul { padding-left: var(--space-3); }
@@ -95,7 +98,8 @@ body:has(.ev-dialog[open]) { overflow: hidden; }
   height: 0.5rem;
   margin: var(--space-2) 0;
   border-radius: var(--radius-full);
-  background: var(--color-meter-track);
+  background: var(--glass-hi);
+  border: 1px solid var(--line);
   overflow: hidden;
 }
 .ev-meter > span { display: block; height: 100%; background: var(--color-meter-fill); border-radius: var(--radius-full); }
