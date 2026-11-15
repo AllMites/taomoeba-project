@@ -70,7 +70,7 @@ export function CalloutTracker({ els }: { els: React.RefObject<Els> }) {
       e.line.style.visibility = hide ? "hidden" : "visible";
       e.dot.style.visibility = hide || !onStage ? "hidden" : "visible";
       if (hide) continue;
-      const placed = placeCard(at, { w: e.card.offsetWidth, h: e.card.offsetHeight }, { w: box.width, h: box.height }, ko);
+      const placed = placeCard(at, { w: e.card.offsetWidth, h: e.card.offsetHeight }, { w: box.width, h: box.height }, ko, box.width < 600 ? 48 : 56);
       e.card.style.transform = `translate(${Math.round(placed.x)}px, ${Math.round(placed.y)}px)`;
       ko.push({ x: placed.x, y: placed.y, w: e.card.offsetWidth, h: e.card.offsetHeight });
       const [x1, y1, x2, y2] = placed.line;
