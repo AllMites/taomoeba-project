@@ -59,7 +59,7 @@ it("lists Moon Base best first, top 8, with Show all", () => {
 
 it("counts matches as N of M experiments while filtering", () => {
   useStore.setState({ pds: "Detection" });
-  expect(html()).toMatch(/\d+ of 26 experiments/);
+  expect(html()).toMatch(/\d+ of 26 records \(24 fire experiments, 2 other\)/);
 });
 
 it("lets the ask box's link move focus to the ranking heading", () => {
