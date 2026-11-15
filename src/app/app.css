@@ -4,9 +4,13 @@
 html, body, #root { height: 100%; }
 body { overflow: hidden; }
 
+/* The console never scrolls, not even from code: `clip` is not a scroll container, so scrollIntoView (a lit card in
+   the Rank sheet, the picked base) scrolls only the real scrollers inside. Positioned, so a stray absolute element
+   (a visually hidden heading in a panel) is held here instead of growing the page. */
 .console {
   --top-h: 3.75rem;
   --carousel-h: 6.5rem;
+  position: relative;
   display: grid;
   height: 100dvh;
   grid-template:
@@ -14,7 +18,7 @@ body { overflow: hidden; }
     "rail left center right" minmax(0, 1fr)
     "status status status status" auto
     / auto auto minmax(0, 1fr) auto;
-  overflow: hidden;
+  overflow: clip;
 }
 
 /* ---- Shared controls ---- */
@@ -120,7 +124,7 @@ body { overflow: hidden; }
 }
 
 /* ---- Side panels ---- */
-.console-left, .console-right { min-height: 0; background: var(--color-bg); }
+.console-left, .console-right { position: relative; min-height: 0; background: var(--color-bg); }
 .console-left[hidden], .console-right[hidden] { display: none; }
 .console-left {
   grid-area: left;
@@ -156,7 +160,7 @@ body { overflow: hidden; }
   grid-area: center;
   position: relative;
   min-width: 0;
-  overflow: hidden;
+  overflow: clip;
 }
 .console-center:focus { outline: none; }
 /* The replay fills the center (lane K owns everything inside it). */
@@ -268,7 +272,7 @@ body { overflow: hidden; }
   display: flex;
   flex-direction: column;
   border-radius: var(--radius-2);
-  overflow: hidden;
+  overflow: clip;
 }
 .sheet:focus { outline: none; }
 .sheet-head {
