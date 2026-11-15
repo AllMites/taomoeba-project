@@ -83,7 +83,7 @@ describe("the HUD collapses on the center's width", () => {
   const collapsed = atRule(appCss, "@container center");
   it("the center is a size container the query is keyed on", () => {
     expect(decls(appCss, ".console-center").container).toBe("center / inline-size");
-    expect(appCss).toContain("@container center (max-width: 60rem)");
+    expect(appCss).toContain("@container center (min-width: 0)");
     expect(collapsed).toContain(".hud-bar");
   });
   it("while collapsed, the stage ends above the bar, so nothing in the replay sits under it", () => {
@@ -92,9 +92,9 @@ describe("the HUD collapses on the center's width", () => {
     expect(decls(appCss, ".console-center")["--hud-bar-h"]).toBe("3rem");
     expect(decls(collapsed, ".hud-bar").height).toBe("var(--hud-bar-h)");
   });
-  it("the bar is hidden on a wide center, which keeps today's layout", () => {
-    const wide = appCss.replace(collapsed, "");
-    expect(decls(wide, ".hud-bar").display).toBe("none");
-    expect(decls(wide, ".hud-close").display).toBe("none");
+  it("the bar is the layout at every center width: the cards never sit open over the replay at rest", () => {
+    expect(appCss).not.toMatch(/@container center \(max-width/);
+    expect(collapsed).toMatch(/\.console-brief, \.console-overlay \{\s*display: none;/);
+    expect(collapsed).toContain('.console-hud[data-open="brief"] .console-brief');
   });
 });

@@ -532,11 +532,11 @@ body { overflow: hidden; }
   .about-body { right: var(--space-3); }
 }
 
-/* ---- Collapsed HUD: a center narrower than 60rem ----
- * Side panels pinned, or a phone: the brief line and the top 3 no longer fit beside each other without covering the
- * replay, so they become one 48px bar at the foot of the center. The stage ends above it. A bar button opens one
- * card as an overlay above the bar. Keyed on the center's width (container query), not the window's. */
-@container center (max-width: 60rem) {
+/* ---- Collapsed HUD: at every center width (docs/RESKIN_PRD.md 18.1) ----
+ * The brief line and the top 3 never sit open over the replay at rest: they are one 48px bar at the foot of the
+ * center. The stage ends above it. A bar button opens one card as an overlay above the bar.
+ * The query has no upper bound on purpose; it stays a container query so the rules below keep one home. */
+@container center (min-width: 0) {
   .console-center > .stage { inset: 0 0 var(--hud-bar-h) 0; }
   .console-ticks { inset: var(--space-3) var(--space-3) calc(var(--hud-bar-h) + var(--space-3)); }
   .console-hud { display: block; top: calc(var(--carousel-h) + var(--space-5)); left: 0; right: 0; bottom: 0; }
