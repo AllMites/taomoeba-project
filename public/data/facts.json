@@ -2254,5 +2254,61 @@
   "keywords": "dashboard ranking rank ranked score position habitat Suit reference suit-ref ACME s-Flame PSI-23 applies relevant why lowest last least relevant bottom",
   "method": "rank.json score and factors, sorted per habitat",
   "caveat": ""
+ },
+ {
+  "id": "solids-o2-range",
+  "dataset": "BASS-II Summary Report, Table 7.1",
+  "source": "ntrs:20210011385",
+  "statement": "In the BASS and BASS-II space tests (23 usable tests in Table 7.1 of NASA/TM-20210011385), cotton-fiberglass fabric was tested in microgravity at 16.4 to 21% oxygen, and flames burned from 16.9% up. No fabric test went above 21%, so Moon Base air (30% oxygen) is 9 percentage points above every test.",
+  "numbers": [
+   "16.4",
+   "16.9",
+   "20210011385",
+   "21",
+   "23",
+   "30",
+   "7.1",
+   "9"
+  ],
+  "keywords": "solid material fabric cloth textile cotton fiberglass SIBAL BASS BASS-II oxygen levels tested range highest burned microgravity Moon Base lunar habitat flammability limit gap",
+  "method": "min and max oxygen over the Table 7.1 rows, reused samples left out as in the report (scripts/solids/build.py)",
+  "caveat": "Only one fabric and one flow direction (concurrent) are in this table."
+ },
+ {
+  "id": "solids-quench-flow",
+  "dataset": "BASS-II Summary Report, Table 7.1",
+  "source": "ntrs:20210011385",
+  "statement": "In BASS-II, fabric flames went out when the crew turned the airflow down to 2.2 to 5 cm/s (6 tests, 16.9 to 18.7% oxygen); 3 tests at 16.4 to 16.8% oxygen would not light at all.",
+  "numbers": [
+   "16.4",
+   "16.8",
+   "16.9",
+   "18.7",
+   "2.2",
+   "3",
+   "5",
+   "6"
+  ],
+  "keywords": "fabric flame went out quench quenched extinguish extinction low airflow ventilation flow speed fan BASS BASS-II would not ignite ignition limit solid material microgravity",
+  "method": "final airflow of the tests marked Quenched, and oxygen of the tests marked No ignition, in Table 7.1",
+  "caveat": ""
+ },
+ {
+  "id": "saffire2-gravity",
+  "dataset": "SAFFIRE-II run table (PSI-99)",
+  "source": "psi:PSI-99",
+  "statement": "In SAFFIRE-II (21.5 to 22.1% oxygen, 20 cm/s airflow), none of the 4 silicone samples spread a flame in orbit, but on Earth 3 of them burned (2 completely). Across 6 comparable samples, more material burned on Earth than in orbit in 4, and never more in orbit.",
+  "numbers": [
+   "2",
+   "20",
+   "21.5",
+   "22.1",
+   "3",
+   "4",
+   "6"
+  ],
+  "keywords": "SAFFIRE SAFFIRE-II silicone fabric PMMA solid material space Earth normal gravity 1-g microgravity orbit compare burned spread why burn more flammability screening",
+  "method": "microgravity and 1-g burn-length columns of the PSI-99 run table, per sample (scripts/solids/build.py)",
+  "caveat": "The Earth result is from NASA's normal-gravity tests of the same sample types, recorded in the same table."
  }
 ]

@@ -9,6 +9,7 @@ export const NAV: { view: SheetView; label: string; tip: string }[] = [
   { view: "interpret", label: "Interpret", tip: "What the records mean for this base, in plain words." },
   { view: "rank", label: "Rank", tip: "Every experiment, ranked for this base's air." },
   { view: "compare", label: "Compare", tip: "Two experiments side by side." },
+  { view: "materials", label: "Materials", tip: "Where fabric flames lived or died in orbit, and the same samples in space and on Earth." },
   { view: "models", label: "Team models", tip: "What-if estimates from the team's trained model." },
   { view: "graph", label: "Research map", tip: "How experiments, reports and pages connect." },
 ];

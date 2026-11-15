@@ -1,6 +1,27 @@
-import { useEffect, useMemo, useRef, useState, type PointerEvent as RPointerEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent as RKeyboardEvent, type PointerEvent as RPointerEvent } from "react";
 import { useStore } from "../app/store.ts";
-import { find, KIND_LABEL, LINKS, neighbours, PAGE_LABEL, parseGraph, radius, shortTitle, visibleEdges, visibleNodes, type GNode, type GraphDoc } from "./logic.ts";
+import { useDataset } from "../data/useDataset.ts";
+import { coverage } from "../gaps/logic.ts";
+import { revealInList } from "../ranking/scroll.ts";
+import {
+  find,
+  focusIn,
+  KIND_LABEL,
+  linkGroups,
+  LINKS,
+  LIST_KINDS,
+  neighbours,
+  PAGE_LABEL,
+  parseGraph,
+  radius,
+  shortTitle,
+  timeline,
+  visibleEdges,
+  visibleNodes,
+  type GNode,
+  type GraphDoc,
+  type Tone,
+} from "./logic.ts";
 import { createSim, drift, placeLabels, reheat, step, type Sim } from "./sim.ts";
 import "./graph.css";
 
@@ -17,20 +38,66 @@ export default function Graph() {
       live = false;
     };
   }, []);
+  const graphFocus = useStore((s) => s.graphFocus);
+  const habitatId = useStore((s) => s.habitat);
+  const habitats = useDataset("habitats");
+  const investigations = useDataset("investigations");
+  const h = habitats.status === "ready" ? habitats.data.find((x) => x.id === habitatId) : undefined;
+  const habitat = useMemo(() => {
+    if (!h || investigations.status !== "ready") return undefined;
+    const c = coverage(h, investigations.data);
+    const tones = new Map<string, Tone>(investigations.data.map((i) => [i.id, "none"]));
+    for (const i of c.o2Only) tones.set(i.id, "o2");
+    for (const i of c.both) tones.set(i.id, "both");
+    return { label: h.label, o2: h.o2Percent, kPa: h.pressureKPa, tones, both: c.both.length, o2Only: c.o2Only.length };
+  }, [h, investigations]);
   return (
     <GraphView
       doc={doc}
+      focus={graphFocus ?? null}
+      habitat={habitat}
+      onClearFocus={() => useStore.getState().setGraphFocus?.([])}
       onOpen={(id) => useStore.getState().setSelectedInvestigationId(id)}
       onAsk={(q) => useStore.getState().requestAsk?.(q)}
     />
   );
 }
 
+/** The habitat at the top of the page, as the graph uses it: how each experiment's tested air relates to it. */
+export type GraphHabitat = { label: string; o2: number; kPa: number; tones: Map<string, Tone>; both: number; o2Only: number };
+type Mode = "map" | "timeline" | "list";
+const MODES: { id: Mode; label: string }[] = [
+  { id: "map", label: "Network" },
+  { id: "timeline", label: "Timeline" },
+  { id: "list", label: "List" },
+];
+const TONE_TEXT: Record<Tone, string> = { both: "tested this oxygen and pressure", o2: "tested this oxygen only", none: "not tested in this air" };
+
 const SIZE = 1040;
 const START_ON = Object.fromEntries(Object.entries(LINKS).map(([k, v]) => [k, v.on]));
 
-export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc: GraphDoc | null | "error"; onOpen?: (id: string) => void; onAsk?: (q: string) => void; initialSelected?: string | null }) {
+export function GraphView({
+  doc,
+  onOpen,
+  onAsk,
+  initialSelected = null,
+  initialMode = "map",
+  focus: askFocus = null,
+  habitat,
+  onClearFocus,
+}: {
+  doc: GraphDoc | null | "error";
+  onOpen?: (id: string) => void;
+  onAsk?: (q: string) => void;
+  initialSelected?: string | null;
+  initialMode?: Mode;
+  focus?: { ids: string[]; n: number } | null;
+  habitat?: GraphHabitat;
+  onClearFocus?: () => void;
+}) {
   const [on, setOn] = useState<Record<string, boolean>>(START_ON);
+  const [mode, setMode] = useState<Mode>(initialMode);
+  const [fadeOn, setFadeOn] = useState(true);
   const [hover, setHover] = useState<string | null>(null);
   const [selected, setSelected] = useState<string | null>(initialSelected);
   const [view, setView] = useState({ k: 1, x: 0, y: 0 });
@@ -55,6 +122,9 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
   const nodes = useMemo(() => (ready ? visibleNodes(ready, on) : []), [ready, on]);
   const byId = useMemo(() => new Map((ready?.nodes ?? []).map((n) => [n.id, n])), [ready]);
   const focus = hover ?? selected;
+  const ask = useMemo(() => (ready && askFocus ? focusIn(ready, askFocus.ids) : { lit: new Set<string>(), missing: 0 }), [ready, askFocus]);
+  const askLit = ask.lit.size > 0;
+  const toneOf = (n: GNode): Tone | undefined => (fadeOn && habitat && n.kind === "experiment" ? (habitat.tones.get(n.id) ?? "none") : undefined);
   const near = useMemo(() => (focus ? neighbours(edges, focus) : null), [edges, focus]);
   const sel = selected ? byId.get(selected) : undefined;
   const selLinks = useMemo(() => (selected ? neighbours(edges, selected) : new Map()), [edges, selected]);
@@ -76,7 +146,24 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
     };
     svg.addEventListener("wheel", onWheel, { passive: false });
     return () => svg.removeEventListener("wheel", onWheel);
-  }, [ready]);
+  }, [ready, mode]);
+
+  // A new "Show in the research graph" from Ask: frame the lit dots and drop any old selection.
+  useEffect(() => {
+    const sim = simRef.current;
+    if (!askFocus || !sim || !ask.lit.size) return;
+    const pts = [...ask.lit].map((id) => sim.bodies[sim.index.get(id)!]).filter(Boolean);
+    const xs = pts.map((b) => b.x);
+    const ys = pts.map((b) => b.y);
+    const w = Math.max(...xs) - Math.min(...xs);
+    const hgt = Math.max(...ys) - Math.min(...ys);
+    const k = Math.min(2.4, Math.max(0.8, (SIZE * 0.7) / Math.max(w, hgt, 160)));
+    const cx = (Math.max(...xs) + Math.min(...xs)) / 2;
+    const cy = (Math.max(...ys) + Math.min(...ys)) / 2;
+    setSelected(null);
+    setView({ k, x: -cx * k, y: -cy * k });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [askFocus?.n, ready]);
 
   // Animation: runs only while the graph is on screen; with reduced motion, dots move only while dragged.
   useEffect(() => {
@@ -100,7 +187,7 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
       io.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [ready, still]);
+  }, [ready, still, mode]);
 
   if (!ready)
     return (
@@ -168,8 +255,15 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
     const [x, y] = pos(n);
     setView((v) => ({ k: Math.max(v.k, 1.6), x: -x * Math.max(v.k, 1.6), y: -y * Math.max(v.k, 1.6) }));
   };
-  const showLabel = (n: GNode) => n.kind === "experiment" || n.kind === "area" || n.id === focus || !!near?.has(n.id) || view.k >= 2.2;
-  const dim = (id: string) => !!focus && id !== focus && !near?.has(id);
+  const showLabel = (n: GNode) =>
+    n.kind === "experiment" || n.kind === "area" || n.id === focus || !!near?.has(n.id) || ask.lit.has(n.id) || view.k >= 2.2;
+  // Hover or a selection wins; otherwise an Ask answer's sources stay lit and the rest steps back.
+  const dim = (id: string) => (focus ? id !== focus && !near?.has(id) : askLit && !ask.lit.has(id));
+  const toneClass = (n: GNode) => {
+    if (focus || askLit) return "";
+    const t = toneOf(n);
+    return t === "none" ? " g-fade" : t === "o2" ? " g-half" : "";
+  };
   const font = 11 / view.k;
   const dots = nodes.map((n) => {
     const [x, y] = pos(n);
@@ -183,7 +277,7 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
               ...dots[i],
               text: shortTitle(n, 28),
               force: n.id === focus,
-              priority: near?.has(n.id) ? 60 : n.kind === "area" ? 40 : n.kind === "experiment" ? 10 + n.degree : 1,
+              priority: near?.has(n.id) ? 60 : ask.lit.has(n.id) ? 50 : n.kind === "area" ? 40 : n.kind === "experiment" ? 10 + n.degree : 1,
             },
           ]
         : [],
@@ -195,6 +289,38 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
   return (
     <section className="graph" aria-labelledby="graph-h">
       <Header />
+      <div className="graph-modes" role="group" aria-label="How to show the graph">
+        {MODES.map((m) => (
+          <button key={m.id} type="button" className="quiet" aria-pressed={mode === m.id} onClick={() => setMode(m.id)}>
+            {m.label}
+          </button>
+        ))}
+      </div>
+      {askFocus && (
+        <p className="graph-banner" role="status">
+          {askLit
+            ? `Lit: the ${ask.lit.size} ${ask.lit.size === 1 ? "source or experiment" : "sources and experiments"} your Ask answer used.`
+            : "None of the sources your Ask answer used are in the graph."}
+          {ask.missing > 0 && ` ${ask.missing} more ${ask.missing === 1 ? "is" : "are"} the team's own data, which has no dot.`}{" "}
+          {onClearFocus && (
+            <button type="button" className="quiet" onClick={onClearFocus}>
+              Clear
+            </button>
+          )}
+        </p>
+      )}
+      {habitat && (
+        <label className="graph-habitat">
+          <input type="checkbox" checked={fadeOn} onChange={() => setFadeOn((v) => !v)} />
+          <span>
+            Fade experiments not tested in <b>{habitat.label}</b> air ({habitat.o2}% oxygen, {habitat.kPa} kPa).{" "}
+            <span className="muted">
+              {habitat.both} tested this oxygen and pressure, {habitat.o2Only} this oxygen only. Change the habitat at the top of the page.
+            </span>
+          </span>
+        </label>
+      )}
+      {mode === "map" && (
       <div className="graph-tools">
         <form
           className="graph-search"
@@ -236,7 +362,14 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
           </button>
         </div>
       </div>
+      )}
+      {mode === "list" ? (
+        <ListView doc={ready} edges={edges} on={on} byId={byId} lit={ask.lit} toneOf={toneOf} habitat={habitat} onOpen={onOpen} onAsk={onAsk} />
+      ) : (
       <div className="graph-body">
+        {mode === "timeline" ? (
+          <TimelineView doc={ready} lit={ask.lit} toneOf={toneOf} selected={selected} onPick={(n) => setSelected(n.id === selected ? null : n.id)} />
+        ) : (
         <div className="graph-canvas">
           <svg
             ref={svgRef}
@@ -254,15 +387,16 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
                 const b = byId.get(e.t)!;
                 const [x1, y1] = pos(a);
                 const [x2, y2] = pos(b);
-                const lit = !!focus && (e.s === focus || e.t === focus);
-                return <line key={`${e.s}|${e.t}|${e.type}`} x1={x1} y1={y1} x2={x2} y2={y2} className={`g-edge g-${e.type}${lit ? " g-lit" : ""}${focus && !lit ? " g-dim" : ""}`} strokeWidth={(lit ? 1.6 : 0.8) / view.k} />;
+                const lit = focus ? e.s === focus || e.t === focus : askLit && ask.lit.has(e.s) && ask.lit.has(e.t);
+                const off = (focus || askLit) && !lit;
+                return <line key={`${e.s}|${e.t}|${e.type}`} x1={x1} y1={y1} x2={x2} y2={y2} className={`g-edge g-${e.type}${lit ? " g-lit" : ""}${off ? " g-dim" : ""}`} strokeWidth={(lit ? 1.6 : 0.8) / view.k} />;
               })}
               {nodes.map((n, i) => {
                 const { x, y, r } = dots[i];
                 return (
                   <g
                     key={n.id}
-                    className={`g-node g-${n.kind}${n.kind === "area" ? ` g-area-${n.id.split(":")[1]}` : ""}${n.restricted ? " g-restricted" : ""}${n.id === selected ? " g-sel" : ""}${dim(n.id) ? " g-dim" : ""}`}
+                    className={`g-node g-${n.kind}${n.kind === "area" ? ` g-area-${n.id.split(":")[1]}` : ""}${n.restricted ? " g-restricted" : ""}${n.id === selected ? " g-sel" : ""}${ask.lit.has(n.id) ? " g-hit" : ""}${dim(n.id) ? " g-dim" : ""}${toneClass(n)}`}
                     transform={`translate(${x} ${y})`}
                     onPointerDown={(e) => down(e, n.id)}
                     onPointerEnter={() => setHover(n.id)}
@@ -274,23 +408,28 @@ export function GraphView({ doc, onOpen, onAsk, initialSelected = null }: { doc:
               })}
               <g className="g-labels" aria-hidden="true">
                 {labels.map((l) => (
-                  <text key={l.id} x={l.x} y={l.y} fontSize={font} textAnchor={l.anchor} className={dim(l.id) ? "g-dim" : undefined}>
+                  <text key={l.id} x={l.x} y={l.y} fontSize={font} textAnchor={l.anchor} className={dim(l.id) ? "g-dim" : toneClass(byId.get(l.id)!).trim() || undefined}>
                     {l.text}
                   </text>
                 ))}
               </g>
             </g>
           </svg>
-          <p className="muted graph-small">Drag to move around, drag a dot to pull it and its neighbours, Ctrl + scroll (or the buttons) to zoom, click a dot for details.</p>
+          <p className="muted graph-small">
+            Drag to move around, drag a dot to pull it and its neighbours, Ctrl + scroll (or the buttons) to zoom, click a dot for details. The List
+            view has the same links for keyboards and screen readers.
+          </p>
         </div>
+        )}
         <aside className="graph-panel" aria-live="polite">
           {sel ? (
-            <Details node={sel} links={selLinks} byId={byId} onPick={goTo} onOpen={onOpen} onAsk={onAsk} />
+            <Details node={sel} links={selLinks} byId={byId} onPick={mode === "map" ? goTo : (n) => setSelected(n.id)} onOpen={onOpen} onAsk={onAsk} />
           ) : (
             <Legend on={on} setOn={setOn} counts={countTypes(ready)} />
           )}
         </aside>
       </div>
+      )}
     </section>
   );
 }
@@ -423,6 +562,211 @@ function Details({
             </div>
           ))
       )}
+    </div>
+  );
+}
+
+/** Reports by year: one row per experiment, a dot per dated report about it. Restricted reports keep their dashed ring. */
+function TimelineView({
+  doc,
+  lit,
+  toneOf,
+  selected,
+  onPick,
+}: {
+  doc: GraphDoc;
+  lit: Set<string>;
+  toneOf: (n: GNode) => Tone | undefined;
+  selected: string | null;
+  onPick: (n: GNode) => void;
+}) {
+  const t = useMemo(() => timeline(doc), [doc]);
+  const W = 760;
+  const L = 150;
+  const R = 24;
+  const ROW = 26;
+  const TOP = 30;
+  const H = TOP + t.rows.length * ROW + 10;
+  const from = t.from - 1;
+  const to = t.to + 1;
+  const x = (y: number) => L + ((y - from) / (to - from)) * (W - L - R);
+  const ticks: number[] = [];
+  for (let y = Math.ceil(from / 5) * 5; y <= to; y += 5) ticks.push(y);
+  const askLit = lit.size > 0;
+  const key = (n: GNode) => (e: RKeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onPick(n);
+    }
+  };
+  return (
+    <div className="graph-canvas graph-timeline">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Timeline: ${t.rows.length} experiments and the dated NASA reports about them, ${t.from} to ${t.to}. The List view has the same reports.`}>
+        {ticks.map((y) => (
+          <g key={y}>
+            <line className="gt-grid" x1={x(y)} x2={x(y)} y1={TOP - 8} y2={H - 6} />
+            <text className="gt-year" x={x(y)} y={TOP - 14} textAnchor="middle">
+              {y}
+            </text>
+          </g>
+        ))}
+        {t.rows.map((row, i) => {
+          const cy = TOP + i * ROW + ROW / 2;
+          const tone = toneOf(row.node);
+          const rowDim = askLit ? !lit.has(row.node.id) && !row.reports.some((r) => lit.has(r.id)) : tone === "none";
+          const seen = new Map<number, number>();
+          return (
+            <g key={row.node.id} className={`gt-row${rowDim ? " g-fade" : tone === "o2" && !askLit ? " g-half" : ""}`}>
+              <line className="gt-lane" x1={L} x2={W - R} y1={cy} y2={cy} />
+              <text
+                className={`gt-label${lit.has(row.node.id) ? " gt-hit" : ""}${selected === row.node.id ? " gt-sel" : ""}`}
+                x={L - 10}
+                y={cy + 4}
+                textAnchor="end"
+                tabIndex={0}
+                role="button"
+                aria-label={`${row.node.title}: ${row.reports.length} dated ${row.reports.length === 1 ? "report" : "reports"}`}
+                onClick={() => onPick(row.node)}
+                onKeyDown={key(row.node)}
+              >
+                {shortTitle(row.node, 24)}
+              </text>
+              {row.reports.map((r) => {
+                const k = seen.get(r.year!) ?? 0;
+                seen.set(r.year!, k + 1);
+                const cx = x(r.year!) + (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 9;
+                return (
+                  <g
+                    key={r.id}
+                    className={`g-node g-report${r.restricted ? " g-restricted" : ""}${r.id === selected ? " g-sel" : ""}${lit.has(r.id) ? " g-hit" : ""}${askLit && !lit.has(r.id) ? " g-dim" : ""}`}
+                    transform={`translate(${cx} ${cy})`}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`${r.title} (${r.year})`}
+                    onClick={() => onPick(r)}
+                    onKeyDown={key(r)}
+                  >
+                    <title>{`${r.title} (${r.year})`}</title>
+                    <circle r={5.5} strokeWidth={1} />
+                  </g>
+                );
+              })}
+            </g>
+          );
+        })}
+      </svg>
+      <p className="muted graph-small">
+        Each dot is a NASA report about that experiment, placed at the year its record gives. Click one for its links.{" "}
+        {t.noReports.length > 0 && `${t.noReports.length} experiments have no dated report in the library. `}
+        {t.undated.length > 0 && `${t.undated.length} ${t.undated.length === 1 ? "report has" : "reports have"} no year on record and ${t.undated.length === 1 ? "is" : "are"} left off.`}
+      </p>
+    </div>
+  );
+}
+
+/** The whole graph as headings and lists: the keyboard and screen-reader way in, with the same links and reasons. */
+function ListView({
+  doc,
+  edges,
+  on,
+  byId,
+  lit,
+  toneOf,
+  habitat,
+  onOpen,
+  onAsk,
+}: {
+  doc: GraphDoc;
+  edges: ReturnType<typeof visibleEdges>;
+  on: Record<string, boolean>;
+  byId: Map<string, GNode>;
+  lit: Set<string>;
+  toneOf: (n: GNode) => Tone | undefined;
+  habitat?: GraphHabitat;
+  onOpen?: (id: string) => void;
+  onAsk?: (q: string) => void;
+}) {
+  const jump = (id: string) => {
+    const d = document.getElementById(`gl-${id}`) as HTMLDetailsElement | null;
+    if (!d) return;
+    d.open = true;
+    d.querySelector("summary")?.focus({ preventScroll: true });
+    revealInList(d, !matchMedia("(prefers-reduced-motion: reduce)").matches); // only the sheet's own list scrolls
+  };
+  const nodes = visibleNodes(doc, on);
+  return (
+    <div className="graph-list">
+      <p className="muted graph-small">
+        Every dot in the graph, with its links and why each exists. Open an item to see its links; pick a linked name to go to it.
+        {lit.size > 0 && " Items your Ask answer used are listed first."}
+      </p>
+      {LIST_KINDS.map(({ kind, label }) => {
+        const list = nodes
+          .filter((n) => n.kind === kind)
+          .sort((a, b) => Number(lit.has(b.id)) - Number(lit.has(a.id)) || a.title.localeCompare(b.title));
+        if (!list.length) return null;
+        return (
+          <section key={kind} aria-label={label}>
+            <h3 className="graph-h3">
+              {label} ({list.length})
+            </h3>
+            <ul className="graph-list-items">
+              {list.map((n) => {
+                const tone = toneOf(n);
+                const groups = linkGroups(edges, byId, n.id);
+                return (
+                  <li key={n.id} className={lit.has(n.id) ? "gl-hit" : undefined}>
+                    <details id={`gl-${n.id}`}>
+                      <summary>
+                        {n.title}
+                        {n.year !== undefined && <span className="muted"> ({n.year})</span>}
+                        {n.restricted && <span className="muted"> · short quotes only</span>}
+                        {lit.has(n.id) && <span className="graph-badge">Used in your answer</span>}
+                        {tone && habitat && <span className="muted"> · {TONE_TEXT[tone]}</span>}
+                        <span className="muted"> · {groups.reduce((a, g) => a + g.items.length, 0)} links shown</span>
+                      </summary>
+                      <div className="graph-actions">
+                        {n.kind === "experiment" && onOpen && (
+                          <button type="button" className="quiet" onClick={() => onOpen(n.id)}>
+                            Open experiment details
+                          </button>
+                        )}
+                        {n.kind === "experiment" && onAsk && (
+                          <button type="button" className="quiet" onClick={() => onAsk(`What did ${n.title} find?`)}>
+                            Ask what it found
+                          </button>
+                        )}
+                        {n.url && (
+                          <a href={n.url} target="_blank" rel="noreferrer">
+                            Open the source
+                          </a>
+                        )}
+                      </div>
+                      {groups.map((g) => (
+                        <div key={g.type} className="graph-group">
+                          <h4 className="graph-h4">
+                            {LINKS[g.type].label} ({g.items.length})
+                          </h4>
+                          <ul>
+                            {g.items.map(({ n: m, why }) => (
+                              <li key={m.id}>
+                                <button type="button" className="graph-link" onClick={() => jump(m.id)}>
+                                  {shortTitle(m, 70)}
+                                </button>{" "}
+                                <span className="muted graph-small">{why}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </details>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        );
+      })}
     </div>
   );
 }

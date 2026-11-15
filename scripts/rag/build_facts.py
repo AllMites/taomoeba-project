@@ -5,6 +5,7 @@ Sources:
   2. Team model results: results.json (cross-validation, importance, partial dependence, Moon-Base coverage)
   3. Dashboard rankings: <dashboard>/rank.json + investigations.json when the real files exist (sample *.fixture.json
      files are skipped on purpose: they are made-up placeholders).
+  4. Solid-material tables: <dashboard>/solids.json (BASS-II Table 7.1 and the PSI-99 run table, scripts/solids/build.py).
 Writes data/facts.json: [{id, dataset, source, statement, numbers, keywords, method, caveat}]."""
 import csv, json, math, sys
 from collections import Counter, defaultdict
@@ -309,6 +310,49 @@ if DASH and (DASH / "rank.json").exists():
                 "rank.json score and factors, sorted per habitat")
 else:
     print("dashboard: no real rank.json yet; sample fixtures deliberately not used")
+
+# ---------------- 5. Solid-material tables (public/data/solids.json, scripts/solids/build.py) ----------------
+if DASH and (DASH / "solids.json").exists():
+    sol = json.load(open(DASH / "solids.json", encoding="utf-8"))
+    fl, sf = sol["flammability"], sol["saffire"]
+    tests = fl["tests"]
+    o2s = [t["o2"] for t in tests]
+    hab = json.load(open(DASH / "habitats.json", encoding="utf-8"))
+    moon = next(x for x in (hab.get("items", hab) if isinstance(hab, dict) else hab) if x["id"] == "moon")
+    SRC = fl["source"]["id"]
+    add("solids-o2-range", "BASS-II Summary Report, Table 7.1", SRC,
+        f"In the BASS and BASS-II space tests ({len(tests)} usable tests in Table 7.1 of NASA/TM-20210011385), cotton-fiberglass fabric was "
+        f"tested in microgravity at {min(o2s)} to {max(o2s)}% oxygen, and flames burned from {fl['minBurnO2']}% up. No fabric test went above {max(o2s)}%, so Moon Base air "
+        f"({moon['o2Percent']:g}% oxygen) is {moon['o2Percent'] - max(o2s):g} percentage points above every test.",
+        "solid material fabric cloth textile cotton fiberglass SIBAL BASS BASS-II oxygen levels tested range highest burned microgravity "
+        "Moon Base lunar habitat flammability limit gap",
+        "min and max oxygen over the Table 7.1 rows, reused samples left out as in the report (scripts/solids/build.py)",
+        "Only one fabric and one flow direction (concurrent) are in this table.")
+    q = [t for t in tests if t["outcome"] == "quenched"]
+    ni = [t for t in tests if t["outcome"] == "no-ignition"]
+    add("solids-quench-flow", "BASS-II Summary Report, Table 7.1", SRC,
+        f"In BASS-II, fabric flames went out when the crew turned the airflow down to {min(t['flowTo'] for t in q)} to "
+        f"{max(t['flowTo'] for t in q)} cm/s ({len(q)} tests, {min(t['o2'] for t in q)} to {max(t['o2'] for t in q)}% oxygen); "
+        f"{len(ni)} tests at {min(t['o2'] for t in ni)} to {max(t['o2'] for t in ni)}% oxygen would not light at all.",
+        "fabric flame went out quench quenched extinguish extinction low airflow ventilation flow speed fan BASS BASS-II would not ignite "
+        "ignition limit solid material microgravity",
+        "final airflow of the tests marked Quenched, and oxygen of the tests marked No ignition, in Table 7.1")
+    comp = [x for x in sf["samples"] if x.get("comparable", True)]
+    rank_ = {"none": 0, "part": 1, "all": 2}
+    more_earth = sum(rank_[x["earth"]["level"]] > rank_[x["space"]["level"]] for x in comp)
+    sil = [x for x in comp if x["material"] == "Silicone"]
+    sil_earth = sum(x["earth"]["level"] != "none" for x in sil)
+    sil_all = sum(x["earth"]["level"] == "all" for x in sil)
+    add("saffire2-gravity", "SAFFIRE-II run table (PSI-99)", sf["source"]["id"],
+        f"In SAFFIRE-II ({sf['o2'][0]} to {sf['o2'][1]}% oxygen, {sf['flowCmS'][0]} cm/s airflow), none of the {len(sil)} silicone samples "
+        f"spread a flame in orbit, but on Earth {sil_earth} of them burned ({sil_all} completely). Across {len(comp)} comparable samples, "
+        f"more material burned on Earth than in orbit in {more_earth}, and never more in orbit.",
+        "SAFFIRE SAFFIRE-II silicone fabric PMMA solid material space Earth normal gravity 1-g microgravity orbit compare burned spread "
+        "why burn more flammability screening",
+        "microgravity and 1-g burn-length columns of the PSI-99 run table, per sample (scripts/solids/build.py)",
+        "The Earth result is from NASA's normal-gravity tests of the same sample types, recorded in the same table.")
+else:
+    print("solids: no solids.json yet")
 
 OUT.parent.mkdir(exist_ok=True)
 for f in facts:

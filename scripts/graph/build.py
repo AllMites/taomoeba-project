@@ -16,6 +16,7 @@ Links (every one says why it exists)
   same_event   NASA pages about the same incident (the Apollo 1 fire, the Apollo 13 explosion)
   area         to a hub for the fire-safety area (prevention, detection, suppression) or "On Earth", from the PSI record,
                the NTRS pillar or the library topic
+Years: a report keeps the publication year its NTRS record or the library list gives; others have none (never guessed).
 Layout: a deterministic force layout (fixed seed), so the page only draws; it computes nothing.
 Text of short-quotes-only reports is read only to count mentions (library/restricted-index.json, if present); no text
 goes into graph.json.
@@ -187,6 +188,13 @@ def main() -> None:
             nodes[sid]["page"] = page_kind(sid)
     for s in library:
         nodes[s["id"]] = {"id": s["id"], "kind": "report", "title": s["title"], "url": s.get("url"), "restricted": True}
+    # publication year, where a record gives one (NTRS records via paper_links.json, the library list); none is guessed
+    for s in library:
+        if str(s.get("year", "")).isdigit():
+            nodes[s["id"]]["year"] = int(s["year"])
+    for sid, l in links.items():
+        if sid in nodes and str(l.get("year", "")).isdigit():
+            nodes[sid].setdefault("year", int(l["year"]))
 
     edges: dict[tuple[str, str, str], dict] = {}
 

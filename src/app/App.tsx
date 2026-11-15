@@ -10,6 +10,7 @@ import Gaps from "../gaps/index.tsx";
 import Graph from "../graph/index.tsx";
 import Library from "../library/index.tsx";
 import Ranking from "../ranking/index.tsx";
+import Solids from "../solids/index.tsx";
 import Stage from "../scenes/Stage.tsx";
 import Carousel from "../shell/Carousel.tsx";
 import { Rail, StatusStrip, TopBar } from "../shell/chrome.tsx";
@@ -137,6 +138,11 @@ export default function App() {
           {view === "compare" && (
             <Sheet view="compare">
               <Compare />
+            </Sheet>
+          )}
+          {view === "materials" && (
+            <Sheet view="materials">
+              <Solids />
             </Sheet>
           )}
           {view === "models" && (

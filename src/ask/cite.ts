@@ -26,3 +26,13 @@ export function citationText(question: string, r: AskResult, titleOf: (id: strin
   }
   return lines.join("\n");
 }
+
+/** Every source and experiment an answer used, as research-graph ids (a PSI record "psi:PSI-69" is the experiment "PSI-69"). */
+export function answerSourceIds(result: Pick<AskResult, "claims" | "investigationIds" | "facts">): string[] {
+  const ids = [
+    ...result.claims.flatMap((c) => c.sourceIds),
+    ...result.investigationIds,
+    ...(result.facts ?? []).map((f) => f.source),
+  ].map((id) => id.replace(/^psi:/, ""));
+  return [...new Set(ids.filter(Boolean))];
+}

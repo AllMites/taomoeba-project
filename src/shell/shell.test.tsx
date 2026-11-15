@@ -5,7 +5,7 @@ import { useStore } from "../app/store.ts";
 import type { HabitatPreset } from "../contracts/index.ts";
 import Carousel from "./Carousel.tsx";
 import { StatusStrip, TopBar } from "./chrome.tsx";
-import { baseForKey, openRankOnHighlight, stepBase, toggleView } from "./logic.ts";
+import { baseForKey, NAV, openRankOnHighlight, stepBase, toggleView } from "./logic.ts";
 import Sheet, { inertBehind, Scrim, type InertNode } from "./Sheet.tsx";
 
 const habitats: HabitatPreset[] = [
@@ -61,8 +61,9 @@ describe("nav and sheets", () => {
     const html = renderToStaticMarkup(<TopBar view="rank" leftOpen={false} askOpen={true} />);
     expect(html).toMatch(/id="nav-rank"[^>]*aria-pressed="true"/);
     expect(html).toMatch(/id="nav-compare"[^>]*aria-pressed="false"/);
-    expect(html.match(/role="tooltip"/g)).toHaveLength(5);
+    expect(html.match(/role="tooltip"/g)).toHaveLength(NAV.length); // one description per view
     expect(html).toMatch(/class="ask-pill" aria-pressed="true"/);
+    expect(NAV.map((n) => n.view)).toEqual(["interpret", "rank", "compare", "materials", "models", "graph"]);
   });
   it("the status strip reads out the picked base; Earth reads the ISS air", () => {
     const strip = (base: "rover" | "earth") =>
