@@ -196,7 +196,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tlKey]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
-  const fire = useMemo(() => (mode === "spread" ? spreadChips(g) : null), [mode, g]);
+  const fire = useMemo(() => (mode === "spread" ? spreadChips(g, st.detect) : null), [mode, g, st.detect]);
   const chips: ChipSpec[] = [
     ...(fire ?? [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
     { id: "window", at: windowAt(base), left: true, below: true, text: room.outside === "orbit" ? "Window: Earth from orbit" : room.outside === "moon" ? "Window: the lunar surface" : "Window: daylight on Earth" },

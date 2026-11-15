@@ -2,10 +2,11 @@
 // them, soot where the smoke reached, and the cabin's airflow. Everything comes from ../spread/story.ts (pure, tested).
 import { Edges } from "@react-three/drei";
 import { useState } from "react";
+import { CanvasTexture } from "three";
 import { Flame } from "../../fx/index.tsx";
 import { usePlayback } from "../playback.ts";
 import { OBJECTS, type CabinObject, type Gravity } from "../spread/spread.ts";
-import { storyAt, type Story, type StoryAt } from "../spread/story.ts";
+import { DETECTOR, smokeAt, storyAt, type Puff, type Story, type StoryAt } from "../spread/story.ts";
 import type { Air } from "./air.ts";
 import type { ChipSpec } from "./Cabin.tsx";
 
@@ -73,26 +74,47 @@ function Airflow() {
   );
 }
 
-/**
- * Smoke as a few soft puffs, placed by the seeker's time so scrubbing moves them too. In microgravity it drifts
- * downstream with the airflow, close to the surface; at 1 g it rises.
- */
-function Smoke({ x, y, t, g, flow }: { x: number; y: number; t: number; g: Gravity; flow: number }) {
-  const puffs = 7;
+/** A soft round dot (white centre to clear edge), made once: smoke puffs drawn with it overlap into a volume. */
+let soft: CanvasTexture | null = null;
+function softDot() {
+  if (soft) return soft;
+  const c = document.createElement("canvas");
+  c.width = c.height = 64;
+  const x = c.getContext("2d")!;
+  const g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, "rgba(255,255,255,1)");
+  g.addColorStop(0.5, "rgba(255,255,255,0.45)");
+  g.addColorStop(1, "rgba(255,255,255,0)");
+  x.fillStyle = g;
+  x.fillRect(0, 0, 64, 64);
+  return (soft = new CanvasTexture(c));
+}
+
+/** The smoke volume: soft puffs from smokeAt (story.ts), placed by the seeker's time so scrubbing moves them too. */
+function SmokeCloud({ puffs }: { puffs: Puff[] }) {
   return (
     <group>
-      {Array.from({ length: puffs }, (_, i) => {
-        const age = (t * 0.35 + i / puffs) % 1;
-        const p: [number, number, number] =
-          g === "earth" ? [x + age * 0.06, y + 0.12 + age * 0.7, -0.02] : [x + 0.05 + age * 0.3 * Math.min(2, flow / 10 + 0.3), y + 0.02 + age * 0.05, 0];
-        const s = 0.04 + age * 0.1;
-        return (
-          <mesh key={i} position={p} scale={s}>
-            <sphereGeometry args={[1, 12, 8]} />
-            <meshBasicMaterial color={PAINT.smoke} transparent opacity={(1 - age) * age * 0.32} depthWrite={false} />
-          </mesh>
-        );
-      })}
+      {puffs.map((p, i) => (
+        <sprite key={i} position={[p.x, p.y, p.z]} scale={[p.r * 2.6, p.r * 2.6, 1]}>
+          <spriteMaterial map={softDot()} color={PAINT.smoke} transparent opacity={p.o} depthWrite={false} />
+        </sprite>
+      ))}
+    </group>
+  );
+}
+
+/** The smoke detector on the air return: a disc whose ring lights white when it trips. */
+function Detector({ tripped }: { tripped: boolean }) {
+  return (
+    <group position={[DETECTOR.x, DETECTOR.y, DETECTOR.z]}>
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.05, 0.05, 0.02, 20]} />
+        <meshStandardMaterial color={PAINT.fuel} roughness={0.7} />
+      </mesh>
+      <mesh position={[0, 0, 0.011]}>
+        <ringGeometry args={[0.022, 0.032, 24]} />
+        <meshBasicMaterial color={tripped ? PAINT.outline : PAINT.inert} />
+      </mesh>
     </group>
   );
 }
@@ -189,7 +211,8 @@ export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percen
       {fronts.map((x, i) => (
         <Front key={i} x={x} y={heightAt(x, g)} g={g} o2={o2} kPa={air.pressureKPa} strength={at.strength} calm={calm} flow={flow} />
       ))}
-      {at.alive && <Smoke x={at.hi} y={heightAt(at.hi, g)} t={t} g={g === "earth" ? "earth" : "micro"} flow={flow} />}
+      <SmokeCloud puffs={smokeAt(st, t, 22)} />
+      <Detector tripped={at.tripped} />
       {at.vent && <Airflow />}
       {puff && <Co2Puff from={[st.xs + 0.5, 0.2, -0.18]} to={[at.hi, heightAt(at.hi, g) + 0.03, 0]} k={puff.k} opacity={puff.opacity} />}
     </group>
@@ -197,8 +220,9 @@ export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percen
 }
 
 /** Glass labels on the fire: flame front, burnt zone, unburnt fuel, airflow direction. Placed by placeSpreadChips. */
-export function spreadChips(g: Gravity): ChipSpec[] {
+export function spreadChips(g: Gravity, detect: number): ChipSpec[] {
   return [
+    { id: "detector", at: [DETECTOR.x, DETECTOR.y - 0.05, DETECTOR.z], text: "Smoke detector", sub: `detected at ${Math.round(detect)} s`, below: true, hide: true },
     { id: "front", at: [0, 0.08, 0], text: "Flame front", sub: g === "earth" ? "a rising flame" : g === "partial" ? "estimate for the Moon" : "low, it hugs the surface" },
     { id: "burnt", at: [0, 0.01, 0.1], text: "Burnt zone", below: true, hide: true },
     { id: "unburnt", at: [0, 0.02, 0.12], text: "Unburnt fuel", below: true, hide: true },
@@ -219,6 +243,8 @@ export function placeSpreadChips(chips: ChipSpec[], st: Story, at: StoryAt) {
     } else if (c.id === "unburnt") {
       c.at = [(at.hi + st.run[1]) / 2 + 0.05, 0.02, 0.12];
       c.hide = st.run[1] - at.hi < 0.12;
+    } else if (c.id === "detector") {
+      c.hide = !at.tripped;
     } else if (c.id === "airflow") {
       c.hide = !at.vent;
     }
