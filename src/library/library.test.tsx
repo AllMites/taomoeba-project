@@ -49,3 +49,11 @@ it("renders every experiment as a draggable row with Ask about this, a cut sourc
   expect(h.match(/class="lib-step"/g)).toHaveLength(4);
   for (const tool of ["BM25", "Rerank", "Claude", "TypeSafe"]) expect(h).toContain(tool);
 });
+
+it("a source link's target is its whole row (at least 44px), not just its line of text", () => {
+  // Measured in headless Chrome at 1440 and 390: the link alone was 21 to 42px tall.
+  const css = readFileSync(new URL("./library.css", import.meta.url), "utf8");
+  expect(css).toMatch(/\.lib-row \{[^}]*min-height: 2\.75rem;/);
+  expect(css).toMatch(/\.lib-source \{ position: relative; \}/);
+  expect(css).toMatch(/\.lib-source a::after \{ content: ""; position: absolute; inset: 0; \}/);
+});
