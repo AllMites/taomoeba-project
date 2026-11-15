@@ -47,3 +47,20 @@ describe("the console never scrolls", () => {
     expect(decls(appCss, ".console-right").position).toBe("relative");
   });
 });
+
+describe("phone (390 wide)", () => {
+  const phone = atRule(appCss, "@media (max-width: 47.5rem)");
+  it("Ask SI opens over a full-screen sheet, so Ask about this in the Rank sheet shows the chat", () => {
+    // It opened at z-index 20 under the sheet's 30: the button seemed to do nothing.
+    const ask = Number(decls(phone, ".console-right")["z-index"]);
+    const sheet = Number(decls(phone, ".sheet.glass")["z-index"]);
+    expect(ask).toBeGreaterThan(sheet);
+  });
+  it("the Library and Ask bottom sheets stop under the carousel", () => {
+    // At 80dvh they reached 169px from the top, over the carousel that ends at 220px.
+    const vars = decls(phone, ".console");
+    expect(vars["--bottom-sheet-h"]).toMatch(/100dvh - var\(--top-h\) - var\(--carousel-h\)/);
+    expect(decls(phone, ".console-left")["max-height"]).toBe("var(--bottom-sheet-h)");
+    expect(decls(phone, ".console-right").height).toBe("var(--bottom-sheet-h)");
+  });
+});

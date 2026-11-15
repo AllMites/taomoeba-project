@@ -95,4 +95,16 @@ describe("nav and sheets", () => {
     useStore.getState().setHighlightIds(["PSI-68"]);
     expect(useConsole.getState().view).toBe("stage");
   });
+  it("on a phone, lit cards also close the Ask bottom sheet that sits over the Rank sheet; on a wide screen it stays", () => {
+    useConsole.setState({ askOpen: true });
+    const wide = openRankOnHighlight(() => false);
+    useStore.getState().setHighlightIds(["PSI-69"]);
+    expect(useConsole.getState()).toMatchObject({ view: "rank", askOpen: true });
+    wide();
+    useConsole.setState({ view: "stage" });
+    const phone = openRankOnHighlight(() => true);
+    useStore.getState().setHighlightIds(["PSI-68"]);
+    expect(useConsole.getState()).toMatchObject({ view: "rank", askOpen: false });
+    phone();
+  });
 });
