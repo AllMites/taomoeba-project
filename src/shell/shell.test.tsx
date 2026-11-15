@@ -6,7 +6,7 @@ import type { HabitatPreset } from "../contracts/index.ts";
 import Carousel from "./Carousel.tsx";
 import { StatusStrip, TopBar } from "./chrome.tsx";
 import { baseForKey, openRankOnHighlight, stepBase, toggleView } from "./logic.ts";
-import Sheet from "./Sheet.tsx";
+import Sheet, { inertBehind, Scrim, type InertNode } from "./Sheet.tsx";
 
 const habitats: HabitatPreset[] = [
   { id: "iss", label: "ISS", o2Percent: 21, pressureKPa: 101.3, note: "" },
@@ -106,5 +106,51 @@ describe("nav and sheets", () => {
     useStore.getState().setHighlightIds(["PSI-68"]);
     expect(useConsole.getState()).toMatchObject({ view: "rank", askOpen: false });
     phone();
+  });
+});
+
+/** A stand-in element with only what inertBehind uses. */
+function node(cls: string, kids: InertNode[] = []): InertNode {
+  const attrs = new Set<string>();
+  const n: InertNode = {
+    parentElement: null,
+    children: kids,
+    classList: { contains: (c) => cls.split(" ").includes(c) },
+    hasAttribute: (a) => attrs.has(a),
+    setAttribute: (a) => void attrs.add(a),
+    removeAttribute: (a) => void attrs.delete(a),
+  };
+  for (const k of kids) k.parentElement = n;
+  return n;
+}
+function consoleTree() {
+  const sheet = node("sheet glass");
+  const center = node("console-center", [node("console-carousel"), node("stage"), node("console-ticks"), node("console-hud"), node("sheet-scrim"), sheet]);
+  const root = node("console", [node("console-top"), node("console-rail"), node("console-left"), center, node("console-right"), node("console-status")]);
+  const names = ["console-top", "console-rail", "console-left", "console-right", "console-status", "console-carousel", "stage", "console-ticks", "console-hud"];
+  const inert = () =>
+    [...root.children, ...center.children].filter((el) => el.hasAttribute("inert")).map((el) => names.find((c) => el.classList.contains(c)));
+  return { sheet, inert };
+}
+
+describe("what a sheet covers", () => {
+  it("on a wide screen, Tab cannot reach the replay, brief or top 3 behind a sheet; the carousel and panels stay live", () => {
+    const { sheet, inert } = consoleTree();
+    const undo = inertBehind(sheet, false);
+    expect(inert()).toEqual(["stage", "console-ticks", "console-hud"]);
+    undo();
+    expect(inert()).toEqual([]);
+  });
+  it("on a phone the sheet is full screen: everything but the Ask panel goes inert", () => {
+    const { sheet, inert } = consoleTree();
+    const undo = inertBehind(sheet, true);
+    expect(inert()).toEqual(["console-top", "console-rail", "console-left", "console-status", "console-carousel", "stage", "console-ticks", "console-hud"]);
+    undo();
+    expect(inert()).toEqual([]);
+  });
+  it("a press on the dimming does not take focus, so closing returns focus to the nav button", () => {
+    let prevented = false;
+    Scrim().props.onMouseDown({ preventDefault: () => (prevented = true) });
+    expect(prevented).toBe(true);
   });
 });
