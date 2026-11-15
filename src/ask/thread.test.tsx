@@ -1,9 +1,10 @@
 import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { expect, it, vi } from "vitest";
-import { Answer, Composer, Launcher, Panel, Steps, TurnView } from "./chat.tsx";
+import { DRAG_TYPE } from "../app/console.ts";
+import { Answer, Composer, isCardDrag, Panel, Steps, TurnView } from "./chat.tsx";
 import { askRecords, NO_STEPS, type AskOutcome, type AskResult } from "./respond.ts";
-import { composerKey, filledSteps, FOLLOW_UPS, historyFrom, IDLE_STEPS, launcherHidden, modelLabel, startOver, summaryLine, WORKING_STEPS, writerLine, type TurnState } from "./thread.ts";
+import { composerKey, filledSteps, FOLLOW_UPS, historyFrom, IDLE_STEPS, modelLabel, startOver, suggestionsFor, summaryLine, WORKING_STEPS, writerLine, type TurnState } from "./thread.ts";
 
 const noop = () => {};
 const claim = { id: "ask-1", investigationId: "PSI-20", kind: "finding" as const, text: "Silicone burned.", sourceIds: ["psi:PSI-20"], excerpt: "e" };
@@ -21,7 +22,7 @@ const answered = (id: number, q: string, r = result()): TurnState => ({ id, ques
 const text = (steps: ReturnType<typeof filledSteps>) => steps.map((s) => [s.text, s.small].filter(Boolean).join(" | "));
 const panel = (turns: TurnState[], open = true, over: Record<string, unknown> = {}) =>
   renderToStaticMarkup(
-    <Panel open={open} wide turns={turns} busy={false} draft="" habitatLabel="Moon Base" live="" lastResult={null} titleOf={(s) => s} onDraft={noop} onSend={noop} onPick={noop} onClose={noop} onReset={noop} onOpenExperiment={noop} onShow={noop} {...over} />,
+    <Panel open={open} turns={turns} busy={false} draft="" habitatLabel="Moon Base" live="" lastResult={null} titleOf={(s) => s} onDraft={noop} onSend={noop} onPick={noop} onClose={noop} onReset={noop} onOpenExperiment={noop} onShow={noop} {...over} />,
   );
 
 // ---- history ----
@@ -181,7 +182,7 @@ it("after the first answer the label reads Ask a follow-up, follow-up chips show
   expect(panel([]).includes("New chat")).toBe(false);
 });
 
-it("closing and reopening the panel keeps the conversation (the thread is passed in, open only changes the dialog)", () => {
+it("closing and reopening the panel keeps the conversation (the thread is passed in, open only hides the panel)", () => {
   const turns = [answered(1, "first question"), answered(2, "second question")];
   for (const open of [true, false, true]) {
     const html = panel(turns, open);
@@ -238,15 +239,64 @@ it("steps render a tick and the word Done, so state is not carried by colour alo
   expect(html).toContain("Done: ");
 });
 
-// ---- launcher and composer ----
-it("the launcher says Ask SI in words and is hidden while the panel or the detail drawer is open", () => {
-  expect(renderToStaticMarkup(<Launcher hidden={false} onOpen={noop} />)).toMatch(/class="ask-launch"[^>]*>.*Ask SI/);
-  expect(renderToStaticMarkup(<Launcher hidden onOpen={noop} />)).toContain("hidden");
-  expect(launcherHidden(false, false)).toBe(false);
-  expect(launcherHidden(false, true)).toBe(true);
-  expect(launcherHidden(true, false)).toBe(true);
-  const src = readFileSync(new URL("./index.tsx", import.meta.url), "utf8");
-  expect(src).toContain("s.selectedInvestigationId !== null");
+// ---- the panel in the console, and the composer ----
+it("there is no floating launcher or dialog: the panel is a section, hidden while closed, opened and closed by the console", () => {
+  expect(panel([], true)).toMatch(/^<section class="ask-panel glass" aria-labelledby="ask-panel-h">/);
+  expect(panel([], false)).toMatch(/^<section class="ask-panel glass" hidden="" aria-labelledby="ask-panel-h">/);
+  expect(panel([])).toMatch(/<h2 id="ask-panel-h"[^>]*>Ask SI<\/h2>/);
+  expect(panel([])).toContain(">Close</button>");
+  const src = readFileSync(new URL("./index.tsx", import.meta.url), "utf8") + readFileSync(new URL("./chat.tsx", import.meta.url), "utf8");
+  expect(src).not.toMatch(/<dialog|showModal|ask-launch/);
+  expect(src).toContain("useConsole((s) => s.askOpen)");
+  expect(src).toContain("setAskOpen(false)");
+  // A question sent from another section (the what-if tool) opens the panel before it is sent.
+  const req = src.slice(src.indexOf("const askRequest"), src.indexOf("function reset"));
+  expect(req).toMatch(/setAskOpen\(true\);\s*void submit\(askRequest\.question\)/);
+});
+
+it("the empty panel offers three questions for the picked habitat, as plain buttons", () => {
+  for (const h of ["iss", "moon", "rover"]) expect(suggestionsFor(h)).toHaveLength(3);
+  expect(suggestionsFor("moon")[0]).toContain("Moon Base");
+  expect(suggestionsFor("mars")).toEqual(suggestionsFor("iss"));
+  const html = panel([], true, { suggestions: suggestionsFor("moon") });
+  expect(html).toContain('aria-label="Suggested questions"');
+  for (const q of suggestionsFor("moon")) expect(html).toContain(`<button type="button" class="ask-chip" aria-disabled="false">${q}</button>`);
+  expect(html).not.toContain("What caused the Apollo 1 fire?");
+});
+
+// ---- scope: the experiments a question is about ----
+it("scope chips sit above the composer, each named and removable; a sent question shows what it was about", () => {
+  const html = panel([], true, { about: [{ id: "PSI-25", name: "BASS-II" }, { id: "PSI-69", name: "FLEX-2" }] });
+  expect(html).toContain('aria-label="This question is about"');
+  expect(html).toContain("About: BASS-II");
+  expect(html).toContain('aria-label="Remove FLEX-2"');
+  expect(html.indexOf("About: BASS-II")).toBeLessThan(html.indexOf("<textarea"));
+  expect(panel([])).not.toContain("ask-about");
+  const asked = renderToStaticMarkup(<ol><TurnView turn={{ id: 1, question: "What did it find?", outcome: null, about: ["BASS-II"] }} titleOf={(s) => s} onOpen={noop} onShow={noop} /></ol>);
+  expect(asked).toContain('<p class="ask-q-about muted">About: BASS-II</p>');
+});
+
+it("the scope goes to the server as `about` (the newest 5 ids), and is left out when there is none", async () => {
+  let sent: { about?: string[] } = {};
+  const f = (async (_u: unknown, init?: RequestInit) => {
+    sent = JSON.parse(String(init?.body));
+    return new Response(JSON.stringify({ answer: "A.", claims: [], investigationIds: [], mode: "mock" }), { headers: { "content-type": "application/json" } });
+  }) as typeof fetch;
+  await askRecords("what did it find?", "moon", f, undefined, [], ["PSI-25"]);
+  expect(sent.about).toEqual(["PSI-25"]);
+  await askRecords("q", "moon", f, undefined, [], ["a", "b", "c", "d", "e", "f"]);
+  expect(sent.about).toEqual(["b", "c", "d", "e", "f"]);
+  await askRecords("q", "moon", f);
+  expect("about" in sent).toBe(false);
+});
+
+it("the panel takes a dropped experiment card and nothing else, and says so while one is held over it", () => {
+  expect(isCardDrag([DRAG_TYPE])).toBe(true);
+  expect(isCardDrag(["text/plain", "Files"])).toBe(false);
+  expect(isCardDrag(undefined)).toBe(false);
+  expect(panel([])).toContain("Drop to ask about this");
+  const css = readFileSync(new URL("./ask.css", import.meta.url), "utf8");
+  expect(css).toMatch(/\.ask-panel\[data-drop="true"\] \.ask-drop \{[^}]*outline: 2px dashed var\(--line-strong\)/);
 });
 
 it("Enter sends, Shift+Enter is a new line, and Enter inside an IME composition is left alone", () => {
@@ -270,10 +320,11 @@ it("Start over aborts, clears the thread, the highlights and the input", () => {
   for (const f of Object.values(d)) expect(f).toHaveBeenCalledTimes(1);
 });
 
-it("the page under the phone sheet cannot scroll, and the lock is CSS so every close path releases it", () => {
-  // Checked in headless Chrome at 375 px: without this rule a wheel over the sheet's header moved the page 600 px.
+it("the panel fills the box the shell gives it: never fixed to the window, and its own list is the only thing that scrolls", () => {
   const css = readFileSync(new URL("./ask.css", import.meta.url), "utf8");
-  expect(css).toMatch(/html:has\(\.ask-panel:modal\)\s*\{\s*overflow:\s*hidden;?\s*\}/);
+  expect(css).not.toMatch(/position:\s*fixed|100vh|100dvh|100vw/);
+  expect(css).toMatch(/\.ask-panel \{[^}]*width: 100%;[^}]*height: 100%;[^}]*overflow: hidden;/);
+  expect(css).toMatch(/\.ask-body \{[^}]*overflow-y: auto;[^}]*overscroll-behavior: contain;/);
 });
 
 // ---- the page never moves uninvited ----

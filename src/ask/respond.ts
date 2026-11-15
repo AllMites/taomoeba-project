@@ -4,6 +4,8 @@ import { Claim } from "../contracts/index.ts";
 export const MAX_QUESTION = 300;
 export const MAX_ANSWER = 1200;
 export const MAX_HISTORY = 4;
+/** The server takes at most this many experiment ids as the scope of one question (server/app.ts). */
+export const MAX_ABOUT = 5;
 /** The server refuses a body over 8 KB (server/app.ts). Kept a little under, for the habitat and the JSON around it. */
 export const MAX_BODY_BYTES = 8 * 1024 - 256;
 
@@ -114,11 +116,13 @@ export async function askRecords(
   fetchImpl: typeof fetch = (u, i) => fetch(u, i),
   signal?: AbortSignal,
   history: HistoryTurn[] = [],
+  about: string[] = [],
 ): Promise<AskOutcome> {
   // Characters are not bytes: four long turns in a script like Japanese can pass 8 KB. Drop the oldest turns
   // until the body fits, rather than send one the server refuses on every retry.
   let earlier = history.slice(-MAX_HISTORY);
-  const bodyOf = () => JSON.stringify(earlier.length ? { question, habitat, history: earlier } : { question, habitat });
+  const scope = about.slice(-MAX_ABOUT);
+  const bodyOf = () => JSON.stringify({ question, habitat, ...(earlier.length ? { history: earlier } : {}), ...(scope.length ? { about: scope } : {}) });
   while (earlier.length && new TextEncoder().encode(bodyOf()).length > MAX_BODY_BYTES) earlier = earlier.slice(1);
   let res: Response;
   try {
@@ -156,11 +160,12 @@ export async function askForHabitat(
   fetchImpl?: typeof fetch,
   signal?: AbortSignal,
   history: HistoryTurn[] = [],
+  about: string[] = [],
 ): Promise<AskOutcome> {
   let out: AskOutcome;
   for (let tries = 0; ; tries++) {
     const asked = habitatNow();
-    out = await askRecords(question, asked, fetchImpl, signal, history);
+    out = await askRecords(question, asked, fetchImpl, signal, history, about);
     if (signal?.aborted || habitatNow() === asked || tries >= 2) return out;
   }
 }

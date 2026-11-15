@@ -1,7 +1,24 @@
 import { MAX_ANSWER, MAX_HISTORY, MAX_QUESTION, modeLabel, readable, type AskOutcome, type AskResult, type HistoryTurn } from "./respond.ts";
 
 /** One question in the conversation: waiting for its reply, or answered (or failed). */
-export type TurnState = { id: number; question: string; outcome: AskOutcome | null };
+export type TurnState = {
+  id: number;
+  question: string;
+  outcome: AskOutcome | null;
+  /** Names of the experiments the question was scoped to, shown under it. */
+  about?: string[];
+};
+
+/**
+ * Three first questions for the picked habitat. The ranking one is computed from the team's tables (no SI call);
+ * the others have saved answers (public/data/saved-answers.json), so a first press answers at once.
+ */
+const SUGGESTIONS: Record<string, string[]> = {
+  iss: ["Which experiment ranks highest for ISS?", "How is smoke different in microgravity?", "What is a cool flame?"],
+  moon: ["Which experiment ranks highest for the Moon Base?", "Which experiments tested 30% oxygen?", "Can we trust the model predictions for a Moon base?"],
+  rover: ["Which experiment ranks highest for the rover?", "Which experiments tested 30% oxygen?", "How does fire spread over solid materials in microgravity?"],
+};
+export const suggestionsFor = (habitat: string): string[] => SUGGESTIONS[habitat] ?? SUGGESTIONS.iss;
 
 /** Follow-ups that make sense after any answer. */
 export const FOLLOW_UPS = ["What does that mean for my habitat?", "Which experiment showed this?"];
@@ -138,6 +155,3 @@ export function startOver(d: { abort: () => void; clearTurns: () => void; clearH
 export function composerKey(e: { key: string; shiftKey: boolean; isComposing?: boolean }): "send" | "newline" {
   return e.key === "Enter" && !e.shiftKey && !e.isComposing ? "send" : "newline";
 }
-
-/** The launcher is hidden while the panel is open (it has its own close) and while the detail drawer is open. */
-export const launcherHidden = (panelOpen: boolean, drawerOpen: boolean) => panelOpen || drawerOpen;
