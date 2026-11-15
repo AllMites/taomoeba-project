@@ -13,8 +13,8 @@ The site works but reads as one 16.7-screen page (29 on phone) with no navigatio
 
 ## 2. The idea in one line
 
-One screen. A 3D habitat in the center, the library on the left, SI chat on the right. Pick your base,
-and the whole console (ranking, brief, models, replay) re-tunes to that habitat's air.
+One screen. The replay is the center: the picked base's fire, live in 3D. The required dashboard (summarize, rank,
+interpret) sits on it as glass and is never more than zero clicks away. Library on the left, SI chat on the right.
 
 ## 3. Layout (desktop)
 
@@ -22,15 +22,19 @@ and the whole console (ranking, brief, models, replay) re-tunes to that habitat'
 ┌───────────────────────────────────────────────────────────────────────┐
 │ FLAME IN FREEFALL                        [Interpret Rank Compare Models]│  top bar
 ├──────┬────────────────────────────────────────────────────┬───────────┤
-│ rail │                                                    │           │
-│  ◎   │        CHOOSE YOUR BASE                            │  ASK SI   │
-│  ▤   │   ┌────┐   ┌──────────┐   ┌────┐                   │  (panel,  │
-│  ✦   │   │ISS │   │MOON BASE │   │ROV │  ← 3D carousel    │  closable)│
-│      │   └────┘   └──────────┘   └────┘                   │           │
-│      │   backdrop: live 3D scene of the picked base       │  drop     │
-│ LIB  │                                                    │  cards    │
-│ panel│   [ Enter replay ]   30% O2 · 70.3 kPa             │  here     │
-│(open)│                                                    │           │
+│ rail │  ‹ ISS · [MOON BASE] · ROVER ›   ← base carousel   │           │
+│  ◎   │                                                    │  ASK SI   │
+│  ▤   │        REPLAY (center, always running)             │  (panel,  │
+│  ✦   │   the picked base's flame in 3D, cinematic         │  closable)│
+│      │   Saffire past ⇄ this base now                     │           │
+│      │                                     ┌────────────┐ │  drop     │
+│ LIB  │  brief: 1 line + source             │ TOP FOR    │ │  cards    │
+│ panel│  "At 30% O2 flames spread faster…"  │ MOON BASE  │ │  here     │
+│(open)│                                     │ 1 FLEX-2   │ │           │
+│      │                                     │ 2 BASS-II  │ │           │
+│      │                                     │ 3 SAFFIRE  │ │           │
+│      │                                     │ See all →  │ │           │
+│      │                                     └────────────┘ │           │
 ├──────┴────────────────────────────────────────────────────┴───────────┤
 │ status strip: habitat · O2 · pressure · sources checked · model       │
 └───────────────────────────────────────────────────────────────────────┘
@@ -40,7 +44,8 @@ and the whole console (ranking, brief, models, replay) re-tunes to that habitat'
 |---|---|---|
 | Left rail (icons) | Toggles between center views and opens the left panel. Taken from the IT Empire side icons. | — |
 | Left panel: **Library** | The RAG database made visible: sources and experiments, search, filters Prevention / Detection / Suppression, and per answer the pipeline steps (BM25 search, rerank, TypeSafe check, Haiku write). Cards drag into the chat. | RAG, TypeSafe, Anthropic |
-| Center: **Stage** | 3D carousel "Choose your base" (ISS, Moon Base, Pressurized rover). The picked base's environment is the live backdrop. Cinematic camera, depth fog, light bloom. | 3D lanes |
+| Center: **Replay** | The main attraction. The base carousel (ISS, Moon Base, Pressurized rover) sits on top; the picked base's fire replay runs below it, cinematic: camera drift, depth fog, bloom. Past (Saffire) and now (this base) toggle. | 3D lanes |
+| Over the replay: **Top for this base** | The required part, always visible: top 3 ranked experiments with score and one-line summary, plus a one-line interpretation with its source. "See all" opens the Rank sheet. Updates the moment a base is picked. | Dashboard (summarize, rank, interpret) |
 | Right panel: **Ask SI** | Today's chat panel moved here. Accepts dragged cards as context ("ask about this"). | Anthropic, RAG |
 | Top nav | Center views: Interpret (brief), Rank (list), Compare, Team models (what-if). Each opens as a glass sheet over the stage, the stage dims behind it. Hover or focus shows a one-line description. | Dashboard, CatBoost |
 | Status strip | Habitat, O2 %, pressure kPa, time, sources checked. The IT Empire "Time / Temp / Energy" row, filled with real readouts. | — |
@@ -49,14 +54,15 @@ Phone: stage full screen; Library and Ask SI become bottom sheets; nav becomes a
 
 ## 4. Flow
 
-1. Land on the stage: three base cards rotate on a slow turntable over a dark space backdrop.
-2. Pick a base (click, swipe or arrow keys). The backdrop cross-fades to that base's 3D environment, the
-   status strip updates, the ranking re-runs. The carousel never advances by itself, because every pick
-   re-ranks the page.
+1. Land on the replay. The default base is Moon Base, and its flame is already burning in the center. The
+   top 3 experiments and the brief line are visible in the first frame, from a poster until the 3D loads.
+2. Pick a base (click, swipe or arrow keys). The replay cross-fades to that base's flame, the top 3 and the
+   brief re-run, and the status strip updates. The carousel never advances by itself, because every pick
+   re-ranks.
 3. From there, any of:
-   - **Enter replay**: the cinematic fire scene for this base (Saffire past, the base's flame now).
-   - **Top nav** sheets: Interpret, Rank, Compare, Team models.
+   - **See all / top nav** sheets: Interpret, Rank, Compare, Team models.
    - **Library** (left) to browse sources; drag one to **Ask SI** (right).
+   - **Past ⇄ now** toggle on the replay.
 
 ## 5. Decision: Replay as the main attraction vs the guidelines
 
@@ -76,8 +82,13 @@ in the guidelines. Weighing it:
 | B. Pick → replay → dashboard | A cinematic replay after the pick, then the dashboard | Highest | Risk: the core objective comes after a cutscene; slow on weak laptops |
 | C. Dashboard first, replay as a separate module | Today's dashboard, reorganized; 3D on its own page | Low | Safest |
 
-**Rec A**: it keeps Sav's cool moment (the pick drives the 3D world, the replay is one press away and
-leads the video) without moving the judged objective behind it. Use B's sequence only in the 30 s video.
+**Decided (Daniel): replay central, required first.** A blend of A and B:
+- The replay is the center and always runs. It is not behind a button.
+- The required summarize, rank and interpret results sit over it in the first frame and re-run on every pick, so nothing judged waits behind a cutscene.
+- If the replay and a required element compete for space or load time, the required element wins:
+  - the top 3 and brief render from data before any 3D;
+  - the 3D streams in after them;
+  - without WebGL, the replay falls back to a poster and the top 3 still show.
 
 ## 6. Visual direction
 
@@ -175,18 +186,25 @@ one is reachable from the nav, not that it sits in `App.tsx`.
 
 ## 13. Build plan (draft, lanes by file set)
 
-| Wave | Lane | Owns |
-|---|---|---|
-| 1 | S Shell | `App.tsx`, `app.css`, `styles/` (tokens, glass), layout grid, rail, top nav, status strip, sheets |
-| 1 | K Carousel + backdrop | `src/scenes/stage/` (new), reuses `scenes/lunar`, adds NASA models under `public/models/` |
-| 1 | L Library panel | `src/library/` (new): sources, filters, pipeline steps |
-| 2 | A Ask panel | `src/ask/`: move to the right panel, drop target, scope chip |
-| 2 | M Sheets | Wrap Brief, Ranking, Compare, What-if, Gaps, Earth in sheets (markup only) |
-| 3 | V Review + visual audit | Per lane, against this PRD |
+Required first: wave 1 alone must ship a judgeable site (pick a base, see ranked and interpreted results,
+replay in the center with a poster fallback). Waves 2 and 3 add the cool parts.
+
+| Wave | Lane | Owns | Required? |
+|---|---|---|---|
+| 1 | S Shell | `App.tsx`, `app.css`, `styles/` (tokens, glass), layout grid, top nav, status strip, sheets | Yes |
+| 1 | T Top for this base | `src/top/` (new): top 3 + brief line over the replay, from `rankedFor` / `briefFor` | Yes |
+| 1 | M Sheets | Wrap Brief, Ranking, Compare, What-if, Gaps, Earth in sheets (markup only) | Yes |
+| 2 | K Replay center + carousel | `src/scenes/` (center mount, carousel, cross-fade), reuses saffire + lunar | Central |
+| 2 | A Ask panel | `src/ask/`: move to the right panel, drop target, scope chip | Locked feature |
+| 3 | L Library panel + rail | `src/library/` (new): sources, filters, pipeline steps | Extra |
+| 3 | N NASA models | `public/models/` ISS + rover, `CREDITS.md` | Extra |
+| after each wave | V Review + visual audit | Per lane, against this PRD | — |
+
+Wave 1 lanes touch separate files, so they run side by side. K waits for S's center slot.
 
 ## 14. Open questions for tonight
 
-1. Replay-first (B) or stage-hub (A, Rec)?
+1. ~~Replay-first or stage-hub?~~ Decided: replay central, required first (§5).
 2. Canva hex codes and fonts, or ship the fallbacks?
 3. Earth: Interpret tab or its own sheet?
 4. Which NASA models for the ISS and the rover? Do they pass the size budget?
