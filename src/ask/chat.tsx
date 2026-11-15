@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type RefObject } from "react";
+import { useLayoutEffect, useRef, useState, type DragEvent, type KeyboardEvent, type RefObject } from "react";
+import { DRAG_TYPE } from "../app/console.ts";
 import { citationText } from "./cite.ts";
 import {
   factKind,
@@ -13,6 +14,7 @@ import {
 import { composerKey, filledSteps, FOLLOW_UPS, IDLE_STEPS, isRankingOnly, summaryLine, WORKING_STEPS, writerLine, type StepView, type TurnState } from "./thread.ts";
 
 // These four have saved answers (public/data/saved-answers.json), so a first tap answers at once.
+// The panel shows three for the picked habitat (suggestionsFor in thread.ts); the first three here are the fallback.
 export const EXAMPLES = [
   "Do bigger droplets go out at a bigger diameter?",
   "Which experiment ranks highest for ISS?",
@@ -34,44 +36,6 @@ export function Chips({ chips, label, busy, onPick }: { chips: string[]; label: 
         </li>
       ))}
     </ul>
-  );
-}
-
-/** The small in-page form: one line, an Ask button, and the example chips. Sending opens the panel. */
-export function Controls(p: {
-  question: string;
-  busy: boolean;
-  inputRef?: RefObject<HTMLInputElement | null>;
-  onChange: (q: string) => void;
-  onSubmit: (e: React.FormEvent) => void;
-  onPick: (q: string) => void;
-}) {
-  return (
-    <>
-      <form className="ask-form" onSubmit={p.onSubmit}>
-        <label htmlFor="ask-q">Your question</label>
-        <div className="ask-row">
-          <input
-            id="ask-q"
-            ref={p.inputRef}
-            type="text"
-            value={p.question}
-            maxLength={MAX_QUESTION}
-            autoComplete="off"
-            enterKeyHint="send"
-            aria-describedby="ask-count"
-            onChange={(e) => p.onChange(e.target.value)}
-          />
-          <button type="submit" className="pill ask-go" aria-disabled={p.busy || !p.question.trim()}>
-            Ask
-          </button>
-        </div>
-        <p id="ask-count" className="muted ask-count">
-          {p.question.length >= SHOW_COUNT_FROM ? `${p.question.length} of ${MAX_QUESTION} characters` : ""}
-        </p>
-      </form>
-      <Chips chips={EXAMPLES} label="Example questions" busy={p.busy} onPick={p.onPick} />
-    </>
   );
 }
 
@@ -98,6 +62,8 @@ export function Steps({ steps, label }: { steps: StepView[]; label: string }) {
   );
 }
 
+export type AboutChip = { id: string; name: string };
+
 /** The composer: a textarea that grows to 4 lines. Enter sends, Shift+Enter is a new line. */
 export function Composer(p: {
   value: string;
@@ -107,6 +73,9 @@ export function Composer(p: {
   chips: string[];
   chipsLabel: string;
   habitatLabel?: string;
+  /** Experiments the next question is about ("Ask about this", or a card dropped on the panel). */
+  about?: AboutChip[];
+  onRemoveAbout?: (id: string) => void;
   onChange: (q: string) => void;
   onSend: () => void;
   onPick: (q: string) => void;
@@ -129,6 +98,18 @@ export function Composer(p: {
   return (
     <div className="ask-composer">
       <Chips chips={p.chips} label={p.chipsLabel} busy={p.busy} onPick={p.onPick} />
+      {!!p.about?.length && (
+        <ul className="ask-about" aria-label="This question is about">
+          {p.about.map((a) => (
+            <li key={a.id} className="ask-about-chip">
+              <span className="ask-about-name">About: {a.name}</span>
+              <button type="button" className="ask-about-x" aria-label={`Remove ${a.name}`} onClick={() => p.onRemoveAbout?.(a.id)}>
+                <span aria-hidden="true">×</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
       <form
         className="ask-compose-form"
         onSubmit={(e) => {
@@ -155,7 +136,7 @@ export function Composer(p: {
             onChange={(e) => p.onChange(e.target.value)}
             onKeyDown={onKey}
           />
-          <button type="submit" className="pill ask-go" aria-disabled={p.busy || !p.value.trim()}>
+          <button type="submit" className="ask-btn ask-go" aria-disabled={p.busy || !p.value.trim()}>
             Send
           </button>
         </div>
@@ -167,27 +148,19 @@ export function Composer(p: {
   );
 }
 
-/** The button that opens the panel: text plus a small mark, fixed bottom right. */
-export function Launcher({ hidden, onOpen, buttonRef }: { hidden: boolean; onOpen: () => void; buttonRef?: RefObject<HTMLButtonElement | null> }) {
-  return (
-    <button type="button" ref={buttonRef} className="ask-launch" hidden={hidden} onClick={onOpen}>
-      <span className="ask-mark" aria-hidden="true" />
-      Ask SI
-    </button>
-  );
-}
-
 type PanelProps = {
   open: boolean;
-  wide: boolean;
   turns: TurnState[];
   busy: boolean;
   draft: string;
   habitatLabel?: string;
   live: string;
   lastResult: AskResult | null;
+  /** First questions offered in the empty panel, for the picked habitat. */
+  suggestions?: string[];
+  about?: AboutChip[];
   titleOf: (id: string) => string;
-  dialogRef?: RefObject<HTMLDialogElement | null>;
+  panelRef?: RefObject<HTMLElement | null>;
   bodyRef?: RefObject<HTMLDivElement | null>;
   composerRef?: RefObject<HTMLTextAreaElement | null>;
   onDraft: (q: string) => void;
@@ -197,47 +170,64 @@ type PanelProps = {
   onReset: () => void;
   onOpenExperiment: (id: string) => void;
   onShow: (ids: string[]) => void;
+  onRemoveAbout?: (id: string) => void;
+  /** An experiment card was dropped on the panel. */
+  onDropAbout?: (id: string) => void;
 };
 
+/** True when a drag carries an experiment card (dragProps in src/app/console.ts). */
+export const isCardDrag = (types: readonly string[] | undefined) => !!types && Array.from(types).includes(DRAG_TYPE);
+
 /**
- * The chat panel. It is always in the page (hidden while closed), and the thread is passed in from above it,
- * so closing and reopening keeps the conversation. Wide screens get a side panel that leaves the page usable;
- * narrow ones get a full-height sheet (the caller opens it with showModal).
+ * The chat panel. It fills the box the shell gives it (the right-hand panel; a bottom sheet on a phone) and is
+ * always in the page, hidden while closed. The thread is passed in from above it, so closing and reopening keeps
+ * the conversation. An experiment card dropped anywhere on it scopes the next question to that experiment.
  */
 export function Panel(p: PanelProps) {
   const first = p.turns.length === 0;
-  // The dialog opens non-modal on wide screens (the caller calls show()), so Escape needs a handler of its own.
-  useEffect(() => {
-    const d = p.dialogRef?.current;
-    if (!d) return;
-    const onKey = (e: globalThis.KeyboardEvent) => {
-      if (e.key === "Escape" && d.open) p.onClose();
-    };
-    d.addEventListener("keydown", onKey);
-    return () => d.removeEventListener("keydown", onKey);
-  });
+  // dragenter and dragleave fire for every child the pointer crosses: count them, so the drop state does not flicker.
+  const depth = useRef(0);
+  const [dropping, setDropping] = useState(false);
+  const drag = (e: DragEvent, step: number) => {
+    if (!p.onDropAbout || !isCardDrag(e.dataTransfer.types)) return;
+    e.preventDefault(); // marks the panel as a place that takes this drop
+    depth.current = Math.max(0, depth.current + step);
+    setDropping(depth.current > 0 || step === 0);
+  };
+  const drop = (e: DragEvent) => {
+    if (!p.onDropAbout || !isCardDrag(e.dataTransfer.types)) return;
+    e.preventDefault();
+    depth.current = 0;
+    setDropping(false);
+    const id = e.dataTransfer.getData(DRAG_TYPE);
+    if (id) p.onDropAbout(id);
+  };
   return (
-    <dialog
-      ref={p.dialogRef}
-      className="ask-panel"
-      data-wide={p.wide ? "true" : "false"}
+    <section
+      ref={p.panelRef}
+      className="ask-panel glass"
+      hidden={!p.open}
       aria-labelledby="ask-panel-h"
-      onCancel={(e) => {
-        e.preventDefault(); // keep our own state in step with the dialog
-        p.onClose();
+      data-drop={dropping ? "true" : undefined}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") p.onClose();
       }}
+      onDragEnter={(e) => drag(e, 1)}
+      onDragOver={(e) => drag(e, 0)}
+      onDragLeave={(e) => drag(e, -1)}
+      onDrop={drop}
     >
       <header className="ask-panel-head">
-        <h2 id="ask-panel-h" className="ask-panel-h">
-          Ask the records
+        <h2 id="ask-panel-h" className="ask-panel-h t-readout">
+          Ask SI
         </h2>
         <div className="ask-panel-actions">
           {!first && (
-            <button type="button" className="quiet" onClick={p.onReset}>
+            <button type="button" className="ask-btn" onClick={p.onReset}>
               New chat
             </button>
           )}
-          <button type="button" className="quiet" onClick={p.onClose}>
+          <button type="button" className="ask-btn" onClick={p.onClose}>
             Close
           </button>
         </div>
@@ -247,16 +237,21 @@ export function Panel(p: PanelProps) {
       <div className="ask-body" ref={p.bodyRef}>
         {first ? (
           <div className="ask-empty">
+            <p className="ask-empty-lead">Try a question</p>
+            <Chips chips={p.suggestions ?? EXAMPLES.slice(0, 3)} label="Suggested questions" busy={p.busy} onPick={p.onPick} />
             <p className="ask-empty-lead">How an answer is made</p>
             <Steps steps={IDLE_STEPS} label="How an answer is made" />
-            <Chips chips={EXAMPLES} label="Example questions" busy={p.busy} onPick={p.onPick} />
           </div>
         ) : (
-          <ol className="ask-thread" aria-label="Conversation">
-            {p.turns.map((t) => (
-              <TurnView key={t.id} turn={t} titleOf={p.titleOf} onOpen={p.onOpenExperiment} onShow={p.onShow} />
-            ))}
-          </ol>
+          <>
+            <ol className="ask-thread" aria-label="Conversation">
+              {p.turns.map((t) => (
+                <TurnView key={t.id} turn={t} titleOf={p.titleOf} onOpen={p.onOpenExperiment} onShow={p.onShow} />
+              ))}
+            </ol>
+            {/* Follow-ups end the thread, under the last answer, so the composer stays short in a narrow panel. */}
+            <Chips chips={FOLLOW_UPS} label="Follow-up questions" busy={p.busy} onPick={p.onPick} />
+          </>
         )}
       </div>
 
@@ -269,14 +264,19 @@ export function Panel(p: PanelProps) {
         busy={p.busy}
         inputRef={p.composerRef}
         label={first ? "Your question" : "Ask a follow-up"}
-        chips={first ? [] : FOLLOW_UPS}
-        chipsLabel="Follow-up questions"
+        chips={[]}
+        chipsLabel=""
         habitatLabel={p.habitatLabel}
+        about={p.about}
+        onRemoveAbout={p.onRemoveAbout}
         onChange={p.onDraft}
         onSend={p.onSend}
         onPick={p.onPick}
       />
-    </dialog>
+      <p className="ask-drop" aria-hidden="true">
+        Drop to ask about this
+      </p>
+    </section>
   );
 }
 
@@ -299,6 +299,7 @@ export function TurnView({
         <span className="sr-only">You asked: </span>
         {turn.question}
       </p>
+      {!!turn.about?.length && <p className="ask-q-about muted">About: {turn.about.join(", ")}</p>}
       {o === null && <Steps steps={WORKING_STEPS} label="Steps for this question" />}
       {o?.kind === "error" && (
         <p role="alert" className="ask-error">
@@ -330,7 +331,7 @@ export function CopyCitation({ text }: { text: () => string }) {
   }
   return (
     <p className="ask-cite">
-      <button type="button" className="quiet" onClick={() => void copy()}>
+      <button type="button" className="ask-btn" onClick={() => void copy()}>
         Copy answer with sources
       </button>
       <span role="status" className="muted">
@@ -421,7 +422,7 @@ export function Answer({
                   )}
                 </details>
                 {c.investigationId && (
-                  <button type="button" className="quiet" onClick={() => onOpen(c.investigationId)}>
+                  <button type="button" className="ask-btn" onClick={() => onOpen(c.investigationId)}>
                     See experiment
                   </button>
                 )}
@@ -431,7 +432,7 @@ export function Answer({
         </ul>
       )}
       {n > 0 && (
-        <button type="button" className="quiet ask-show" onClick={() => onShow(result.investigationIds)}>
+        <button type="button" className="ask-btn ask-show" onClick={() => onShow(result.investigationIds)}>
           Show the {n} {n === 1 ? "experiment" : "experiments"} this answer used
         </button>
       )}

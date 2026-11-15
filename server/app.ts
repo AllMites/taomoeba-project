@@ -21,6 +21,8 @@ export type Env = AskEnv & {
 export const MAX_QUESTION = 300;
 export const MAX_ANSWER = 1200;
 export const MAX_HISTORY = 4;
+/** Experiments one question may be scoped to ("Ask about this"). */
+export const MAX_ABOUT = 5;
 const BUCKET_CAPACITY = 10; // requests of burst per IP
 const REFILL_PER_SEC = 1 / 6; // one request every 6 s sustained
 const CACHE_MAX = 200;
@@ -74,6 +76,9 @@ const Turn = z.object({ question: z.string().max(MAX_QUESTION), answer: z.string
 const AskBody = z.object({ question: z.string(), habitat: HabitatId.optional(), history: z.array(Turn).max(MAX_HISTORY).optional(),
   // fresh: skip saved answers and the cache (used by scripts/rag/save_answers.mjs to record new answers).
   fresh: z.boolean().optional(),
+  // about: investigation ids the question is scoped to. Ids only (short, plain characters); they are matched
+  // against the index and never reach a prompt. An id the index does not know is ignored.
+  about: z.array(z.string().regex(/^[A-Za-z0-9._:-]{1,40}$/)).max(MAX_ABOUT).optional(),
 });
 const VerifyBody = z.object({ text: z.string().max(2000), excerpt: z.string().max(4000), sourceText: z.string().max(200_000).optional() });
 
@@ -204,18 +209,19 @@ export function createApp(
   app.post("/ask", tooBig(8 * 1024), async (c) => {
     if (limited("ask", c)) return c.json({ error: "rate_limited", message: "Too many questions. Try again in a few seconds." }, 429);
     const body = AskBody.safeParse(await c.req.json().catch(() => null));
-    if (!body.success) return c.json({ error: "bad_request", message: "Send { question: string, habitat?: HabitatId, history?: up to 4 of { question, answer } }." }, 400);
+    if (!body.success) return c.json({ error: "bad_request", message: "Send { question: string, habitat?: HabitatId, history?: up to 4 of { question, answer }, about?: up to 5 investigation ids }." }, 400);
     const question = body.data.question.trim();
     if (!question) return c.json({ error: "bad_request", message: "Question is empty." }, 400);
     if (question.length > MAX_QUESTION) return c.json({ error: "too_long", message: `Question must be ${MAX_QUESTION} characters or fewer.` }, 400);
 
     const history = body.data.history ?? [];
-    const key = await sha256(`${question.toLowerCase().replace(/\s+/g, " ")}|${body.data.habitat ?? ""}|${JSON.stringify(history)}`);
+    const about = [...new Set(body.data.about ?? [])];
+    const key = await sha256(`${question.toLowerCase().replace(/\s+/g, " ")}|${body.data.habitat ?? ""}|${JSON.stringify(history)}|${about.join(",")}`);
     const fresh = body.data.fresh === true;
     if (!fresh && cache.has(key)) return c.json(cache.get(key));
     const origin = new URL(c.req.url).origin;
     const [index, extras] = await Promise.all([getIndex(c.env ?? {}, origin), getExtras(c.env ?? {}, origin)]);
-    const result = await ask(index, question, body.data.habitat, c.env ?? {}, extras, history, fresh);
+    const result = await ask(index, question, body.data.habitat, c.env ?? {}, extras, history, fresh, about);
     if (!result.degraded) { // a fallback is not cached: the next try may reach the writer
       if (cache.size >= CACHE_MAX) cache.delete(cache.keys().next().value!);
       cache.set(key, result);

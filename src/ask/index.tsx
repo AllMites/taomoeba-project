@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
+import { askAbout, useConsole } from "../app/console.ts";
 import { useStore } from "../app/store.ts";
 import { useDataset } from "../data/useDataset.ts";
-import { Controls, Launcher, Panel } from "./chat.tsx";
-import { askForHabitat, readable, type AskResult } from "./respond.ts";
-import { historyFrom, launcherHidden, startOver, type TurnState } from "./thread.ts";
+import { Panel } from "./chat.tsx";
+import { askForHabitat, MAX_ABOUT, readable, type AskResult } from "./respond.ts";
+import { historyFrom, startOver, suggestionsFor, type TurnState } from "./thread.ts";
 import "./ask.css";
 
-export { Answer, Composer, Controls, Launcher, Panel, Steps, TurnView } from "./chat.tsx";
+export { Answer, Composer, Panel, Steps, TurnView } from "./chat.tsx";
 
 /**
  * Cited experiments light up in the ranked list only when the person presses "Show the N experiments".
@@ -15,38 +16,36 @@ export { Answer, Composer, Controls, Launcher, Panel, Steps, TurnView } from "./
  */
 const LIGHT_ON_ANSWER = false;
 
-const WIDE = "(min-width: 600px)";
+/** On a phone the shell shows this panel as a bottom sheet, which would cover the Rank sheet and the detail drawer. */
+const NARROW = "(max-width: 760px)";
+const narrow = () => typeof window !== "undefined" && !!window.matchMedia?.(NARROW).matches;
 const calmMotion = () => typeof window !== "undefined" && !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-const subscribeWide = (cb: () => void) => {
-  const m = window.matchMedia(WIDE);
-  m.addEventListener("change", cb);
-  return () => m.removeEventListener("change", cb);
-};
-const useWide = () => useSyncExternalStore(subscribeWide, () => window.matchMedia(WIDE).matches, () => true);
 
+/**
+ * Ask SI. It fills its parent box (the shell's right-hand panel) and stays mounted while closed, so the
+ * conversation survives a close and a question sent from another section still arrives.
+ * Open state and the experiments a question is about live in the console store (src/app/console.ts).
+ */
 export default function Ask() {
   const setHighlightIds = useStore((s) => s.setHighlightIds);
   const setSelected = useStore((s) => s.setSelectedInvestigationId);
-  const drawerOpen = useStore((s) => s.selectedInvestigationId !== null);
   const habitatId = useStore((s) => s.habitat);
+  const open = useConsole((s) => s.askOpen);
+  const aboutIds = useConsole((s) => s.askAbout);
   const sources = useDataset("sources");
   const habitats = useDataset("habitats");
-  const wide = useWide();
+  const investigations = useDataset("investigations");
 
-  const [open, setOpen] = useState(false);
-  const [pageQuestion, setPageQuestion] = useState(""); // the small form in the page
-  const [draft, setDraft] = useState(""); // the composer in the panel
+  const [draft, setDraft] = useState("");
   const [turns, setTurns] = useState<TurnState[]>([]);
   const turnsRef = useRef<TurnState[]>([]);
   const abort = useRef<AbortController | null>(null);
   const nextId = useRef(1);
-  const dialog = useRef<HTMLDialogElement>(null);
+  const panel = useRef<HTMLElement>(null);
   const body = useRef<HTMLDivElement>(null);
   const composer = useRef<HTMLTextAreaElement>(null);
-  const pageInput = useRef<HTMLInputElement>(null);
-  const launcher = useRef<HTMLButtonElement>(null);
   const opener = useRef<HTMLElement | null>(null);
-  const wasOpen = useRef(false);
+  const wasOpen = useRef(open);
   useEffect(() => () => abort.current?.abort(), []);
 
   const update = (next: TurnState[]) => {
@@ -54,29 +53,31 @@ export default function Ask() {
     setTurns(next);
   };
   const busy = turns.some((t) => t.outcome === null);
+  const close = () => useConsole.getState().setAskOpen(false);
+  const nameOf = (id: string) => (investigations.status === "ready" ? investigations.data.find((i) => i.id === id)?.title : undefined) ?? id;
 
-  // Open and close the dialog: non-modal beside the page on wide screens, a modal sheet on narrow ones.
+  // Opening moves focus to the composer; closing gives it back to whatever opened the panel.
+  // A panel that is already open when the page loads takes no focus.
   useEffect(() => {
-    const d = dialog.current;
-    if (!d || !open) return;
-    if (!d.open) {
-      if (wide) d.show();
-      else d.showModal();
+    if (open && !wasOpen.current) {
+      opener.current = (document.activeElement as HTMLElement | null) ?? null;
+      composer.current?.focus({ preventScroll: true });
     }
-    composer.current?.focus({ preventScroll: true });
-    return () => {
-      if (d.open) d.close();
-    };
-  }, [open, wide]);
-
-  // Focus goes back to whatever opened the panel.
-  useEffect(() => {
-    if (wasOpen.current && !open) {
-      const el = opener.current && opener.current.isConnected ? opener.current : launcher.current;
-      el?.focus({ preventScroll: true });
+    if (!open && wasOpen.current) {
+      const lost = document.activeElement === document.body || !!panel.current?.contains(document.activeElement);
+      if (lost && opener.current?.isConnected) opener.current.focus({ preventScroll: true });
     }
     wasOpen.current = open;
   }, [open]);
+
+  // The server takes at most MAX_ABOUT experiments: the oldest chip leaves when one more arrives.
+  // A new chip also puts the cursor in the composer, ready for the question.
+  const aboutCount = useRef(aboutIds.length);
+  useEffect(() => {
+    if (aboutIds.length > MAX_ABOUT) useConsole.getState().removeAskAbout(aboutIds[0]);
+    else if (aboutIds.length > aboutCount.current && open) composer.current?.focus({ preventScroll: true });
+    aboutCount.current = aboutIds.length;
+  }, [aboutIds, open]);
 
   // New messages scroll the panel's own list (never the page): to the top of the newest exchange.
   const newest = turns[turns.length - 1];
@@ -89,11 +90,6 @@ export default function Ask() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newestKey]);
 
-  function openPanel() {
-    opener.current = (document.activeElement as HTMLElement | null) ?? null;
-    setOpen(true);
-  }
-
   async function submit(q: string) {
     const text = q.trim();
     // One question at a time: a second Enter or click while waiting does nothing.
@@ -102,9 +98,11 @@ export default function Ask() {
     abort.current = ctl;
     const id = nextId.current++;
     const history = historyFrom(turnsRef.current);
-    update([...turnsRef.current, { id, question: text, outcome: null }]);
+    // The chips stay after sending, so a follow-up keeps the same scope until the person removes them.
+    const about = useConsole.getState().askAbout.slice(-MAX_ABOUT);
+    update([...turnsRef.current, { id, question: text, outcome: null, about: about.map(nameOf) }]);
     if (LIGHT_ON_ANSWER) setHighlightIds([]);
-    const outcome = await askForHabitat(text, () => useStore.getState().habitat, undefined, ctl.signal, history);
+    const outcome = await askForHabitat(text, () => useStore.getState().habitat, undefined, ctl.signal, history, about);
     if (ctl.signal.aborted) return;
     abort.current = null;
     update(turnsRef.current.map((t) => (t.id === id ? { ...t, outcome } : t)));
@@ -112,32 +110,21 @@ export default function Ask() {
     if (LIGHT_ON_ANSWER && outcome.kind === "answer") setHighlightIds(outcome.result.investigationIds);
   }
 
-  /** From the page form or a chip there: open the panel with the question already sent. */
-  function sendFromPage(q: string) {
-    if (!q.trim() || abort.current) return;
-    openPanel();
-    setPageQuestion("");
-    void submit(q);
-  }
-  function sendFromPanel(q: string) {
+  function send(q: string) {
     if (!q.trim() || abort.current) return;
     setDraft("");
     void submit(q);
   }
 
-  // Another section (the what-if tool) asked a question for the person: send it like a chip on the page.
+  // Another section (the what-if tool) asked a question for the person: open the panel and send it.
   const askRequest = useStore((s) => s.askRequest);
   useEffect(() => {
     if (!askRequest) return;
     useStore.getState().clearAskRequest?.();
-    sendFromPage(askRequest.question);
+    useConsole.getState().setAskOpen(true);
+    void submit(askRequest.question);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [askRequest]);
-
-  function onPageSubmit(e: FormEvent) {
-    e.preventDefault();
-    sendFromPage(pageQuestion);
-  }
 
   function reset() {
     startOver({
@@ -149,19 +136,21 @@ export default function Ask() {
       clearHighlights: () => setHighlightIds([]),
       clearInput: () => setDraft(""),
     });
+    useConsole.getState().clearAskAbout();
     composer.current?.focus({ preventScroll: true }); // the New chat button goes away, so focus would otherwise drop
   }
 
-  /** The one control that moves the page: light the cited experiments and scroll to the ranked list. */
+  /** Light the cited experiments and open the ranked list, where the lit cards are. */
   function showExperiments(ids: string[]) {
-    if (!wide) setOpen(false); // a sheet would cover what the person asked to see
+    if (narrow()) close(); // a bottom sheet would cover what the person asked to see
     const same = ids.join("|") === useStore.getState().highlightIds.join("|");
     setHighlightIds(ids);
-    // New ids: the ranking lane scrolls to the first lit card itself. Same ids: nothing would fire, so go there now.
-    if (same) (document.querySelector<HTMLElement>('[data-lit="true"]') ?? document.getElementById("ranking-h"))?.scrollIntoView({ block: "center", behavior: calmMotion() ? "auto" : "smooth" });
+    useConsole.getState().setView("rank");
+    // New ids: the ranking lane scrolls to the first lit card itself. Same ids: nothing would fire, so go there once the list is up.
+    if (same) requestAnimationFrame(() => (document.querySelector<HTMLElement>('[data-lit="true"]') ?? document.getElementById("ranking-h"))?.scrollIntoView({ block: "center", behavior: calmMotion() ? "auto" : "smooth" }));
   }
   function openExperiment(id: string) {
-    if (!wide) setOpen(false); // the drawer would open behind the sheet
+    if (narrow()) close(); // the drawer would open behind the sheet
     setSelected(id);
   }
 
@@ -180,38 +169,29 @@ export default function Ask() {
           : "";
 
   return (
-    <section className="ask" aria-labelledby="ask-h">
-      <div className="sec-label">
-        <p className="sec-word t-readout">SI-powered</p>
-        <h2 id="ask-h" className="sec-h">
-          Ask the records
-        </h2>
-      </div>
-      <p className="ask-intro">Chat with SI about NASA&apos;s fire experiments. Every answer shows its sources.</p>
-      <Controls question={pageQuestion} busy={busy} inputRef={pageInput} onChange={setPageQuestion} onSubmit={onPageSubmit} onPick={sendFromPage} />
-
-      <Launcher hidden={launcherHidden(open, drawerOpen)} onOpen={openPanel} buttonRef={launcher} />
-      <Panel
-        open={open}
-        wide={wide}
-        turns={turns}
-        busy={busy}
-        draft={draft}
-        habitatLabel={habitatLabel}
-        live={live}
-        lastResult={lastResult}
-        titleOf={titleOf}
-        dialogRef={dialog}
-        bodyRef={body}
-        composerRef={composer}
-        onDraft={setDraft}
-        onSend={() => sendFromPanel(draft)}
-        onPick={sendFromPanel}
-        onClose={() => setOpen(false)}
-        onReset={reset}
-        onOpenExperiment={openExperiment}
-        onShow={showExperiments}
-      />
-    </section>
+    <Panel
+      open={open}
+      turns={turns}
+      busy={busy}
+      draft={draft}
+      habitatLabel={habitatLabel}
+      live={live}
+      lastResult={lastResult}
+      suggestions={suggestionsFor(habitatId)}
+      about={aboutIds.map((id) => ({ id, name: nameOf(id) }))}
+      titleOf={titleOf}
+      panelRef={panel}
+      bodyRef={body}
+      composerRef={composer}
+      onDraft={setDraft}
+      onSend={() => send(draft)}
+      onPick={send}
+      onClose={close}
+      onReset={reset}
+      onOpenExperiment={openExperiment}
+      onShow={showExperiments}
+      onRemoveAbout={(id) => useConsole.getState().removeAskAbout(id)}
+      onDropAbout={askAbout}
+    />
   );
 }

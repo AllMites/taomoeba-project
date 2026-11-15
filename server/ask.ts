@@ -1,6 +1,6 @@
 import type { Claim } from "../src/contracts/claim.ts";
 import type { HabitatId } from "../src/contracts/habitat.ts";
-import { preferReports, score, scoreCapped, type Bm25Index } from "./bm25.ts";
+import { preferReports, score, scoreCapped, type Bm25Index, type Chunk } from "./bm25.ts";
 import { addsFacts, coverage, expandQuery, inScope, MIN_COVERAGE, nums, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
 import { findFacts, onlyDashboard, type DataFact } from "./facts.ts";
 import { callHaiku, jsonBlock, MODEL, type ChatMessage } from "./llm.ts";
@@ -140,23 +140,54 @@ const rerankQuestion = (question: string, history: AskTurn[] = []) => {
   return prev ? `${question} (This follows the earlier question: ${prev})` : question;
 };
 
+type Hit = { chunk: Chunk; score: number };
+const inAbout = (c: { investigationId: string | null }, about: string[]) => !!c.investigationId && about.includes(c.investigationId);
+
+/** The ids of `about` that the index holds text for. An id it does not know scopes nothing. */
+export const knownAbout = (index: Bm25Index, about: string[] = []) => {
+  const have = new Set(index.chunks.map((c) => c.investigationId));
+  return [...new Set(about)].filter((id) => have.has(id));
+};
+
+/**
+ * "Ask about this": the passages of the experiments the question is about go first, best match first, and each of
+ * those experiments keeps one passage even when it shares no word with the question ("what did this find?").
+ * The other hits follow in their own order. With no experiment named, the hits come back unchanged.
+ */
+export function aboutFirst(index: Bm25Index, hits: Hit[], query: string, about: string[], k: number): Hit[] {
+  if (!about.length) return hits;
+  const own = index.chunks.filter((c) => inAbout(c, about));
+  const matched = score({ ...index, chunks: own }, query, k);
+  const silent = about.flatMap((id): Hit[] => {
+    if (matched.some((h) => h.chunk.investigationId === id)) return [];
+    const chunk = own.find((c) => c.investigationId === id);
+    return chunk ? [{ chunk, score: 0 }] : [];
+  });
+  const first = [...matched, ...silent];
+  const taken = new Set(first.map((h) => h.chunk.id));
+  return [...first, ...hits.filter((h) => !taken.has(h.chunk.id))].slice(0, k);
+}
+
 const sentences = (t: string) => t.split(/(?<=[.!?])\s+/).filter(Boolean);
 
 /** Sentences written for another habitat are left out; text with no habitat applies everywhere. */
 const forHabitat = (index: Bm25Index, habitat?: string): Bm25Index =>
   habitat ? { ...index, chunks: index.chunks.filter((c) => !c.habitat || c.habitat === habitat) } : index;
 
-export function extractive(index: Bm25Index, question: string, habitat?: string, extras: AskExtras = {}, history: AskTurn[] = []): AskResult {
+export function extractive(index: Bm25Index, question: string, habitat?: string, extras: AskExtras = {}, history: AskTurn[] = [], about: string[] = []): AskResult {
   const facts = findFacts(extras.facts ?? [], question);
   if (onlyDashboard(facts)) return finish("", [], "extractive", facts); // the ranking is the answer
   const q = retrievalQuery(question, history);
   // Quote-only mode copies sentences word for word, so short-quotes-only papers are left out of it.
   const quotable = { ...index, chunks: forHabitat(index, habitat).chunks.filter((c) => !isRestricted(c, extras.licenses ?? {})) };
   const searched = sourcesIn(quotable.chunks);
-  const hits = score(quotable, expandQuery(q) + (facts[0] ? ` ${facts[0].keywords}` : ""), 3);
+  const query = expandQuery(q) + (facts[0] ? ` ${facts[0].keywords}` : "");
+  const hits = aboutFirst(quotable, score(quotable, query, 3), query, about, 3);
+  // The person pointed at an experiment: its passage is on topic even when the question shares no word with it.
+  const scoped = hits.some((h) => inAbout(h.chunk, about));
   // Several hits can be one source (an abstract plus a takeaway about it): count sources, as live mode does.
   const matched = sourcesIn(hits.map((h) => h.chunk));
-  if (!hits.length || (!facts.length && offTopic(index, q, hits.map((h) => h.chunk.text))))
+  if (!hits.length || (!facts.length && !scoped && offTopic(index, q, hits.map((h) => h.chunk.text))))
     return facts.length ? finish(DATA_ONLY, [], "extractive", facts, undefined, { searched }) : finish(NO_COVER, [], "extractive", [], undefined, { searched });
   // Best sentence per chunk, then top 2 across chunks.
   const picks = hits
@@ -435,6 +466,7 @@ export async function live(
   env: AskEnv,
   extras: AskExtras = {},
   history: AskTurn[] = [],
+  about: string[] = [],
 ): Promise<AskResult> {
   const licenses = extras.licenses ?? {};
   const facts = findFacts(extras.facts ?? [], question);
@@ -444,8 +476,10 @@ export async function live(
   // Only the sources' own text can be quoted, so our derived sentences (claims, brief takeaways) stay out of the pool.
   const sourceText = { ...index, chunks: forHabitat(index, habitat).chunks.filter((c) => !c.derived) };
   const st: Partial<AskSteps> = { searched: sourcesIn(sourceText.chunks) };
-  const pool = scoreCapped(sourceText, expandQuery(q) + (facts[0] ? ` ${facts[0].keywords}` : ""), POOL, 2, preferReports).map((h) => h.chunk);
-  if (!pool.length || (!facts.length && offTopic(index, q, pool.slice(0, 5).map((c) => c.text))))
+  const query = expandQuery(q) + (facts[0] ? ` ${facts[0].keywords}` : "");
+  const pool = aboutFirst(sourceText, scoreCapped(sourceText, query, POOL, 2, preferReports), query, about, POOL).map((h) => h.chunk);
+  const scoped = pool.some((c) => inAbout(c, about)); // see extractive(): a named experiment is on topic
+  if (!pool.length || (!facts.length && !scoped && offTopic(index, q, pool.slice(0, 5).map((c) => c.text))))
     return facts.length ? finish(DATA_ONLY, [], "live", facts, undefined, st) : finish(NO_COVER, [], "live", [], undefined, st);
   // 2. Haiku re-ranks by how directly each passage answers (it sees the data finding too); it may say none does.
   const rq = rerankQuestion(question, history) + (facts[0] ? ` (Data finding to explain: ${facts[0].statement})` : "");
@@ -453,8 +487,10 @@ export async function live(
   if (rr.used) st.reranked = pool.length;
   if (rr.noneRelevant) return facts.length ? finish(DATA_ONLY, [], "live", facts, undefined, st) : finish(NO_COVER, [], "live", [], undefined, st);
   // 3. Top passages, one excerpt per source (several chunks of one source are joined).
+  // The re-ranker orders by how directly a passage answers; the experiments the person named still go first.
+  const passages = scoped ? [...rr.passages.filter((c) => inAbout(c, about)), ...rr.passages.filter((c) => !inAbout(c, about))] : rr.passages;
   const bySource = new Map<string, Ctx>();
-  for (const chunk of rr.passages) {
+  for (const chunk of passages) {
     const seen = bySource.get(chunk.sourceId);
     if (!seen && bySource.size >= 6) continue;
     bySource.set(chunk.sourceId, seen ? { ...seen, text: `${seen.text} ${chunk.text}`, investigationId: seen.investigationId ?? chunk.investigationId } : chunk);
@@ -523,20 +559,23 @@ export async function ask(
   extras: AskExtras = {},
   history: AskTurn[] = [],
   fresh = false,
+  about: string[] = [],
 ): Promise<AskResult> {
+  const scope = knownAbout(index, about);
   // A demo question with a saved live answer: answered at once, no API call, labelled as saved with its date.
   // Only for a first question: a follow-up depends on the chat before it, so it is always answered fresh.
   const saved = extras.saved?.[normQuestion(question)];
-  if (saved && !fresh && !history.length) return { ...saved, steps: saved.steps ?? NO_STEPS, model: saved.model ?? null, mode: "saved" };
+  // Nor for a question scoped to an experiment: the saved answer was written without that scope.
+  if (saved && !fresh && !history.length && !scope.length) return { ...saved, steps: saved.steps ?? NO_STEPS, model: saved.model ?? null, mode: "saved" };
   const mode = pickMode(env);
   if (mode === "mock") return mockAnswer(index);
-  if (mode === "extractive") return withSources(extractive(index, question, habitat, extras, history), extras);
+  if (mode === "extractive") return withSources(extractive(index, question, habitat, extras, history, scope), extras);
   // One retry: a time-out, a busy API or a reply whose sentences all failed the checks often succeeds the second time.
   // Each try runs every check again, so a retried answer is held to exactly the same rules.
   let first: unknown;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      return withSources(await live(index, question, habitat, env, extras, history), extras);
+      return withSources(await live(index, question, habitat, env, extras, history, scope), extras);
     } catch (e) {
       first ??= e;
       if (!retryable(e)) break;
@@ -546,7 +585,7 @@ export async function ask(
     const e = first;
     console.warn("ask: live failed, quoting instead:", e instanceof Error ? e.message : "unknown");
     // live failed: stay honest, quote the records. Sentences the writer did produce and the checks refused are still counted.
-    const quoted = withSources(extractive(index, question, habitat, extras, history), extras);
+    const quoted = withSources(extractive(index, question, habitat, extras, history, scope), extras);
     const dropped = e instanceof LiveFailed ? e.dropped : 0;
     return { ...quoted, steps: { ...quoted.steps, dropped }, degraded: true, failReason: e instanceof Error ? e.message : "unknown" };
   }
