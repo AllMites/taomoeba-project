@@ -15,10 +15,10 @@ const DEPTH = 1;
 const FILL = 0.5;
 
 /**
- * Renders the main scene (when `world` is on), then the flames in their own scene and camera on top, each
+ * Renders the main scene (the habitat, or only the stars for the station and Earth), then the flames in their own scene and camera on top, each
  * centred on its DOM slot. The flames never share depth or light with the habitat.
  */
-export function FlamePair({ sides, slots, world, calm }: { sides: AirSide[]; slots: Slot[]; world: boolean; calm: boolean }) {
+export function FlamePair({ sides, slots, calm }: { sides: AirSide[]; slots: Slot[]; calm: boolean }) {
   const flameScene = useMemo(() => new Scene(), []);
   const flameCam = useMemo(() => new PerspectiveCamera(FOV, 1, 0.01, 10), []);
   const size = useThree((s) => s.size);
@@ -34,8 +34,7 @@ export function FlamePair({ sides, slots, world, calm }: { sides: AirSide[]; slo
 
   useFrame(({ gl, scene, camera }) => {
     gl.autoClear = true;
-    if (world) gl.render(scene, camera);
-    else gl.clear();
+    gl.render(scene, camera);
     gl.autoClear = false;
     gl.clearDepth();
     gl.render(flameScene, flameCam);
@@ -51,7 +50,7 @@ export function FlamePair({ sides, slots, world, calm }: { sides: AirSide[]; slo
         const y = -(slot.cy - size.height / 2) * mPerPx;
         return (
           <group key={side.key} position={[x, y, -DEPTH]}>
-            <Flame o2Percent={side.o2Percent} pressureKPa={side.pressureKPa} airflowCmS={AIRFLOW_CM_S} size={flameSize} calm={calm} />
+            <Flame o2Percent={side.o2Percent} pressureKPa={side.pressureKPa} airflowCmS={AIRFLOW_CM_S} size={flameSize} calm={calm} gravity={side.gravity} />
           </group>
         );
       })}

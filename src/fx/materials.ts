@@ -9,13 +9,19 @@ const shellVertex = /* glsl */ `
   uniform float uTime;
   uniform float uLean;
   uniform float uFlicker;
+  uniform float uTaper;
   varying vec3 vN;
   varying vec3 vV;
+  varying float vX;
   void main() {
     vec3 p = position;
+    vX = p.x;
     // Lean downstream (+x): stretch the downstream half, blunt the upstream half.
     float sx = p.x > 0.0 ? 1.0 + uLean : 1.0 - 0.3 * uLean;
+    // Taper (1 g only): the downstream half narrows to a tip, as rising hot gas pulls a flame into a teardrop.
+    float narrow = 1.0 - uTaper * smoothstep(0.0, 1.0, p.x);
     p.x *= sx;
+    p.yz *= narrow;
     vec3 n = normalize(vec3(normal.x / sx, normal.y, normal.z));
     // Flicker: a slow wobble of the surface. Off when uFlicker is 0 (calm).
     float w = sin(uTime * 7.1 + p.y * 9.0) * sin(uTime * 5.3 + p.z * 7.0 + p.x * 4.0);
@@ -34,8 +40,10 @@ const shellFragment = /* glsl */ `
   uniform float uBright;
   uniform float uTime;
   uniform float uFlicker;
+  uniform float uWarm;
   varying vec3 vN;
   varying vec3 vV;
+  varying float vX;
   void main() {
     float f = clamp(abs(dot(normalize(vN), normalize(vV))), 0.0, 1.0);
     float edge = 1.0 - f;
@@ -44,7 +52,10 @@ const shellFragment = /* glsl */ `
     float core = pow(f, 3.0) * 0.12;
     float rim = smoothstep(0.0, 0.12, f);
     float pulse = 1.0 + uFlicker * 0.08 * sin(uTime * 11.0);
-    vec3 col = (uShell * shell + uSoot * soot + uCore * core) * rim * uBright * pulse;
+    // Warm (1 g only): soot glows yellow above a blue base, and fills the body instead of a thin ring.
+    float warm = uWarm * smoothstep(-0.5, 0.4, vX);
+    vec3 shellCol = mix(uShell, uSoot, warm);
+    vec3 col = (shellCol * shell + uSoot * (soot + warm * 0.5 * f) + uCore * core) * rim * uBright * pulse;
     gl_FragColor = vec4(col, 1.0);
     #include <colorspace_fragment>
   }
@@ -55,12 +66,13 @@ const haloFragment = /* glsl */ `
   uniform vec3 uShell;
   uniform vec3 uSoot;
   uniform float uBright;
+  uniform float uWarm;
   varying vec3 vN;
   varying vec3 vV;
   void main() {
     float f = clamp(dot(normalize(vN), normalize(vV)), 0.0, 1.0);
     float g = pow(f, 2.6) * 0.32;
-    vec3 col = mix(uShell, uSoot, 0.1) * g * uBright;
+    vec3 col = mix(uShell, uSoot, 0.1 + 0.9 * uWarm) * g * uBright * (1.0 - 0.45 * uWarm);
     gl_FragColor = vec4(col, 1.0);
     #include <colorspace_fragment>
   }
@@ -72,6 +84,8 @@ export function makeShellMaterial(): ShaderMaterial {
       uTime: { value: 0 },
       uLean: { value: 0 },
       uFlicker: { value: 1 },
+      uTaper: { value: 0 },
+      uWarm: { value: 0 },
       uBright: { value: 1 },
       uCore: { value: new Color(FX_PAINT.core) },
       uShell: { value: new Color(FX_PAINT.shell) },
@@ -92,6 +106,8 @@ export function makeHaloMaterial(): ShaderMaterial {
       uTime: { value: 0 },
       uLean: { value: 0 },
       uFlicker: { value: 0 },
+      uTaper: { value: 0 },
+      uWarm: { value: 0 },
       uBright: { value: 1 },
       uShell: { value: new Color(FX_PAINT.shell) },
       uSoot: { value: new Color(FX_PAINT.soot) },

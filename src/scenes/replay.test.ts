@@ -1,0 +1,35 @@
+import { describe, expect, it } from "vitest";
+import { BASE_ORDER } from "../app/console.ts";
+import { replayFor } from "./replay.ts";
+
+describe("what the center replay shows", () => {
+  it("Now is the lunar scene with the base's own habitat; Earth and the station share the station's air", () => {
+    expect(BASE_ORDER.map((b) => [b, replayFor(b, "now").scene, replayFor(b, "now").habitat])).toEqual([
+      ["iss", "lunar", "iss"],
+      ["moon", "lunar", "moon"],
+      ["rover", "lunar", "rover"],
+      ["earth", "lunar", "iss"],
+    ]);
+  });
+
+  it("Past is the Saffire fire for every base, and keeps the base's habitat for its notes", () => {
+    for (const b of BASE_ORDER) expect(replayFor(b, "past").scene).toBe("saffire");
+    expect(replayFor("rover", "past").habitat).toBe("rover");
+    expect(replayFor("moon", "past").poster).toBe("/img/scenes/saffire.webp");
+  });
+
+  it("each surface base has its own still picture and phone crop; the others use the flames-only still", () => {
+    expect(replayFor("moon", "now")).toMatchObject({ poster: "/img/scenes/lunar-moon.webp", posterNarrow: "/img/scenes/lunar-moon-narrow.webp" });
+    expect(replayFor("rover", "now").poster).toBe("/img/scenes/lunar-rover.webp");
+    for (const b of ["iss", "earth"] as const) {
+      expect(replayFor(b, "now").poster).toBe("/img/scenes/lunar-iss.webp");
+      expect(replayFor(b, "now").posterNarrow).toBeUndefined();
+    }
+  });
+
+  it("the caption names the picked base, says it is an illustration, and stays one short line", () => {
+    expect(replayFor("moon", "now", "Moon Base").caption).toBe("Now: a flame in Moon Base air beside station air. Illustration.");
+    expect(replayFor("earth", "now").caption).toMatch(/Earth.*1 g.*Illustration/);
+    for (const b of BASE_ORDER) for (const w of ["past", "now"] as const) expect(replayFor(b, w, "Pressurized rover").caption.length).toBeLessThan(90);
+  });
+});

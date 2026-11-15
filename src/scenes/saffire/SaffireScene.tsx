@@ -164,7 +164,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
           className="sf-canvas"
           role="img"
           aria-label={label}
-          dpr={[1, 1.75]}
+          dpr={[1, 1.5]}
           frameloop={visible && playing ? "always" : visible ? "demand" : "never"}
           camera={{ position: [-0.14, 0.36, 0.5], fov: 38, near: 0.02, far: 12 }}
           gl={{ antialias: true, powerPreference: "high-performance" }}
@@ -212,7 +212,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
       )}
 
       {ready && v && hud && (
-        <div className="sf-hud">
+        <div className="sf-hud glass">
           <p className="sf-head">
             <span className="sf-name">{ready.experiment.name}</span>
             <span className="t-readout sf-small">Sample {ready.run.sample}</span>
@@ -234,7 +234,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
           {shown.map((c, i) => (
             <figure
               key={c.claim.id}
-              className={`sf-callout sf-at-${c.anchor}`}
+              className={`sf-callout glass sf-at-${c.anchor}`}
               ref={(el) => {
                 leaders.current.boxes[i] = el;
               }}
@@ -255,11 +255,11 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
         <div className="sf-controls">
           {useCanvas && (
             <>
-              <button type="button" className="sf-btn" onClick={replay}>
+              <button type="button" className="sf-btn glass" onClick={replay}>
                 {calm && !playing ? "Play once" : "Replay"}
               </button>
               {(!calm || playing) && (
-                <button type="button" className="sf-btn" aria-pressed={!playing} onClick={() => setPlaying((p) => !p)}>
+                <button type="button" className="sf-btn glass" aria-pressed={!playing} onClick={() => setPlaying((p) => !p)}>
                   {playing ? "Pause" : "Play"}
                 </button>
               )}
@@ -271,7 +271,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
                 <button
                   key={c.claim.id}
                   type="button"
-                  className="sf-btn sf-page"
+                  className="sf-btn glass sf-page"
                   aria-pressed={i === active}
                   aria-label={`Note ${i + 1} of ${callouts.length}`}
                   onClick={() => setActive(i)}

@@ -20,7 +20,15 @@ export type FlameProps = {
   size?: number;
   /** True: draw one still frame, no flicker. */
   calm?: boolean;
+  /**
+   * "earth": the flame as it burns at 1 g, for contrast. Hot gas rises, so the flame is a yellow teardrop pointing
+   * up. Default "micro": nothing rises, so the flame is a blue sphere. Illustrative, like the rest of the look.
+   */
+  gravity?: "micro" | "earth";
 };
+
+/** Stretch and narrowing of the 1 g teardrop, as shares of the flame radius. Picked for legibility. */
+const TEARDROP = { lean: 1.4, taper: 0.8, warm: 0.85 };
 
 // Shared unit geometry: one copy for every flame on the page.
 const SPHERE_HI = new SphereGeometry(1, 48, 32);
@@ -44,9 +52,11 @@ function useFlameMaterials() {
 }
 
 /** A microgravity flame: round, blue shell, pale core, no plume. Place it with a parent <group>. */
-export function Flame({ o2Percent, pressureKPa, airflowCmS, size = 0.1, calm = false }: FlameProps) {
+export function Flame({ o2Percent, pressureKPa, airflowCmS, size = 0.1, calm = false, gravity = "micro" }: FlameProps) {
   const look = flameLook(o2Percent, pressureKPa);
-  const lean = leanFromAirflow(airflowCmS);
+  const earth = gravity === "earth";
+  // At 1 g the rising gas, not the cabin airflow, shapes the flame.
+  const lean = earth ? TEARDROP.lean : leanFromAirflow(airflowCmS);
   const { shell, halo } = useFlameMaterials();
 
   useFrame(({ clock }) => {
@@ -55,6 +65,8 @@ export function Flame({ o2Percent, pressureKPa, airflowCmS, size = 0.1, calm = f
       m.uniforms.uTime.value = t;
       m.uniforms.uLean.value = lean;
       m.uniforms.uBright.value = look.brightness;
+      m.uniforms.uTaper.value = earth ? TEARDROP.taper : 0;
+      m.uniforms.uWarm.value = earth ? TEARDROP.warm : 0;
     }
     shell.uniforms.uFlicker.value = calm ? 0 : 1;
   });
@@ -62,8 +74,9 @@ export function Flame({ o2Percent, pressureKPa, airflowCmS, size = 0.1, calm = f
   if (!look.lit) return null;
   const r = (size / 2) * look.scale;
   return (
-    <group>
-      <mesh geometry={SPHERE_LO} material={halo} scale={r * 2.4} renderOrder={1} />
+    // Local +x is downstream. At 1 g downstream is up; the flame sits a little low so its body stays centred.
+    <group rotation={earth ? [0, 0, Math.PI / 2] : undefined} position={earth ? [0, -r * 0.5, 0] : undefined}>
+      <mesh geometry={SPHERE_LO} material={halo} scale={r * (earth ? 1.7 : 2.4)} renderOrder={1} />
       <mesh geometry={SPHERE_HI} material={shell} scale={r} renderOrder={2} />
       <pointLight color={FX_PAINT.light} intensity={0.02 * look.brightness * (size / 0.1) ** 2} distance={size * 15} decay={2} />
     </group>

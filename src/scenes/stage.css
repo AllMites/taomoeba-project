@@ -1,10 +1,97 @@
-.stage-tabs { display: flex; flex-wrap: wrap; gap: var(--space-2); border: 0; padding: 0; margin: 0 0 var(--space-4); }
-.stage-tab { display: inline-flex; align-items: center; gap: var(--space-2); min-height: 44px; padding: 0 var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); cursor: pointer; }
-.stage-tab:has(input:checked) { border-color: var(--color-accent); color: var(--color-accent); }
-.stage-tab:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-.stage-caption { margin-bottom: var(--space-4); max-width: 60ch; }
-.stage-box { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 80vh; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-2); background: var(--color-surface); }
+/*
+ * The center replay. It fills main.console-center (lane S's grid cell) and sits under every panel.
+ * --replay-top / --replay-bottom tell the scenes where their own overlays may start and end: the top band is the
+ * shell's base carousel plus the caption chip, the bottom band is the Past | Now switch. The shell may move both
+ * by setting --console-safe-top / --console-safe-bottom on .console-center.
+ */
+.stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--color-bg);
+  container-type: size;
+  container-name: stage;
+}
 .stage-poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.stage-scene { position: absolute; inset: 0; }
-.stage-load { position: relative; }
-@media (max-width: 600px) { .stage-box { aspect-ratio: 4 / 5; } }
+
+/* A new scene fades in over the still picture; a pick fades the old scene out first (Stage.tsx, FADE_OUT_MS). */
+.stage-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  transition: opacity var(--motion-mid) var(--ease);
+  animation: stage-in var(--motion-mid) var(--ease);
+  --replay-top: calc(var(--console-safe-top, 6rem) + 2.75rem + var(--space-4));
+  --replay-bottom: calc(var(--console-safe-bottom, 0rem) + 2.75rem + var(--space-6));
+}
+.stage-scene[data-fading] { opacity: 0; transition-duration: 160ms; }
+@keyframes stage-in { from { opacity: 0; } }
+
+/* Corner ticks: the one framed thing on the screen. Decorative. */
+.stage-ticks {
+  position: absolute;
+  inset: var(--space-2);
+  z-index: 4;
+  pointer-events: none;
+  --tick: linear-gradient(var(--line-strong), var(--line-strong));
+  background:
+    var(--tick) top left / 16px 1px, var(--tick) top left / 1px 16px,
+    var(--tick) top right / 16px 1px, var(--tick) top right / 1px 16px,
+    var(--tick) bottom left / 16px 1px, var(--tick) bottom left / 1px 16px,
+    var(--tick) bottom right / 16px 1px, var(--tick) bottom right / 1px 16px;
+  background-repeat: no-repeat;
+}
+
+.stage-caption {
+  position: absolute;
+  z-index: 5;
+  top: var(--console-safe-top, 6rem);
+  left: var(--space-4);
+  max-width: min(64ch, calc(100% - var(--space-6)));
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-1);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--color-text);
+}
+
+/* Past | Now: selected is the white fill, the other is clear. */
+.stage-when {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4));
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-1);
+  margin: 0;
+  padding: var(--space-1);
+  border-radius: var(--radius-full);
+}
+.stage-when-opt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.5rem;
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.stage-when-opt:hover { background: var(--glass-hi); }
+.stage-when-opt:has(input:checked) { background: var(--color-pill); color: var(--color-pill-text); }
+.stage-when-opt:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* Between two open panels the bottom edge holds the brief and the top-3 card, so the switch moves up beside the caption. */
+@container stage (min-width: 40rem) and (max-width: 60rem) {
+  .stage-when { left: auto; right: var(--space-4); bottom: auto; top: var(--console-safe-top, 6rem); transform: none; }
+  .stage-caption { max-width: calc(100% - 13rem - var(--space-6)); }
+  .stage-scene { --replay-top: calc(var(--console-safe-top, 6rem) + 3.25rem + var(--space-4)); --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage-scene { transition: none; animation: none; }
+}

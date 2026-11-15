@@ -22,6 +22,8 @@ export type AirSide = {
   /** Flame inputs; undefined when the record has no oxygen value (no flame is drawn). */
   o2Percent: number | undefined;
   pressureKPa: number | undefined;
+  /** "earth": drawn as a 1 g teardrop. Unset: weightless, a sphere. */
+  gravity?: "earth";
 };
 
 const num = (v: number | undefined) => (typeof v === "number" && Number.isFinite(v) ? v : undefined);
@@ -59,3 +61,18 @@ export function compareLine(same: boolean, pickedIss: boolean): string {
     ? "Your habitat has the same air as the station, so one flame is shown."
     : "Same flame, same airflow. Only the air differs. Drawn rule: more oxygen is brighter and tighter, less pressure is larger and dimmer.";
 }
+
+/**
+ * The Earth card: one air, two gravities. Earth air is the station's air (the same preset), so both sides read
+ * their numbers from it. Left burns at 1 g, right is weightless.
+ */
+export function earthSides(iss: HabitatPreset | undefined): AirSide[] {
+  const air = airSide(iss, "ISS");
+  return [
+    { ...air, key: "earth", name: "On Earth, 1 g", gravity: "earth" },
+    { ...air, key: "orbit", name: "In orbit, weightless" },
+  ];
+}
+
+/** Line above the Earth pair. Each sentence under 25 words. */
+export const EARTH_LINE = "Same air, different gravity. On Earth hot gas rises and pulls the flame into a teardrop. In orbit nothing rises, so the flame stays round.";
