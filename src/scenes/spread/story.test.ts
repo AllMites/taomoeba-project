@@ -176,3 +176,13 @@ describe("smoke in the air (15.9)", () => {
     expect(ym).toBeLessThan(LAYER_Y);
   });
 });
+
+it("every stage caption of every scenario cites a record or says Illustration", () => {
+  for (const s of all) {
+    const st = story(s);
+    for (const x of st.stages) {
+      const c = captionFor(st, x.id, "a station module");
+      expect(c.refs.length > 0 || c.text.includes("Illustration"), `${x.id} ${JSON.stringify(s)}: ${c.text}`).toBe(true);
+    }
+  }
+});

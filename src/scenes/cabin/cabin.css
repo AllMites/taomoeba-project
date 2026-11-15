@@ -190,4 +190,25 @@
 }
 .spread-field select:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 /* While more of the scenario panel is below, its last 3rem fades out (the "On Earth" card's cue). */
-.burn-panel[data-more] { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); }
+.burn-panel[data-more], .after-card[data-more] { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); }
+
+/* Stage 5: the aftermath card, top right under the scene picker; it stops above the top-3 card. */
+.after-card {
+  position: absolute;
+  z-index: 5;
+  right: var(--space-4);
+  top: max(var(--replay-top, 10rem), calc(var(--stage-top, 7rem) + 3.25rem + var(--space-2)));
+  width: min(24rem, calc(100% - 2 * var(--space-4)));
+  overflow: auto;
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-2);
+  color: var(--color-text);
+}
+.after-top { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.after-h { margin: 0; font-size: var(--text-xs); font-weight: 400; color: var(--color-text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.after-big { margin: 0; font-size: var(--text-sm); font-weight: 600; line-height: 1.4; }
+@container stage (max-width: 37.5rem) {
+  .after-card { top: auto; bottom: var(--space-2); left: var(--space-2); right: var(--space-2); width: auto; max-height: 50%; }
+}

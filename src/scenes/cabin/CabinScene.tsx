@@ -20,6 +20,7 @@ import { airOf, type Air } from "./air.ts";
 import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose, type V3 } from "./layout.ts";
 import { BurnPanel } from "./BurnPanel.tsx";
 import { Navigate } from "./Navigate.tsx";
+import { AftermathCard } from "./Aftermath.tsx";
 import { FirstFrame } from "../FirstFrame.tsx";
 import { SpreadSet, spreadChips } from "./Spread.tsx";
 import { SpreadPanel } from "./SpreadPanel.tsx";
@@ -221,6 +222,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
+      {mode === "spread" && <AftermathCard st={st} where={room.name} />}
       {mode === "spread" && <SpreadPanel air={air.name} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} st={st} />}
       {mode !== "spread" && doc && pick && <BurnPanel doc={doc} pick={pick} c={c} air={air.name} compare={base === "iss" ? null : compare} />}
       <p className="sr-only">
