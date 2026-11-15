@@ -34,17 +34,17 @@ describe("center replay, before any 3D has loaded (and for good where it cannot 
     expect(earth).toContain("a cabin on Earth");
   });
 
-  it("offers three named scenes with model burn picked, and no Past / Now", () => {
+  it("offers three named scenes with fire in this base picked, and no Past / Now", () => {
     const html = renderToStaticMarkup(<Stage />);
-    expect(html).toMatch(/name="replay-scene" checked=""\/><span class="stage-pick-opt-name">This base: model burn<\/span>/);
-    expect(html).toContain("This base: fire spread");
+    expect(html).toMatch(/name="replay-scene" checked=""\/><span class="stage-pick-opt-name">Fire in this base<\/span>/);
+    expect(html).toContain("Lab view: team model burn");
     expect(html).toContain("Real fire: Saffire flight test");
     expect(html).not.toMatch(/>Past<|>Now</);
   });
 
   it("says it is an illustration on the glass caption, with the longer note behind a real About control", () => {
     const html = renderToStaticMarkup(<Stage />);
-    expect(html).toMatch(/class="stage-caption-text glass"><p>A fuel droplet burning in [^<]*Illustration, not a simulation\.<\/p>/);
+    expect(html).toMatch(/class="stage-caption-text glass"><div class="stage-caption-words"><p aria-live="polite">What if a fire starts in [^<]*Illustration, not a simulation\.<\/p>/);
     expect(html).toContain('<summary aria-label="About this replay">');
     expect(html).toContain("No fire experiment on record ran in Moon gravity.");
   });

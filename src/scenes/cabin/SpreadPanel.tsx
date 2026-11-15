@@ -6,9 +6,6 @@ import { OUTCOME, type SolidsDoc } from "../../solids/logic.ts";
 import { usePlayback } from "../playback.ts";
 import { evidenceFor, OBJECTS, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
 
-/** Airflow choices, cm/s. The BASS-II fabric flames went out between about 1 and 5 cm/s. */
-export const FLOWS = [1, 2, 5, 10, 20];
-
 /** The detail card for one object: what it is, whether it burns, how it behaves, and the real test that matches. */
 function Card({ o, g, doc, fabric }: { o: CabinObject; g: Gravity; doc: SolidsDoc | null; fabric: Fabric }) {
   const inv = useDataset("investigations");
@@ -63,13 +60,11 @@ function Card({ o, g, doc, fabric }: { o: CabinObject; g: Gravity; doc: SolidsDo
 }
 
 /**
- * Fire spread controls at the stage's left edge: the cabin airflow (which decides, from the BASS-II tests, whether
- * the cloth's flame lives), every object as a button, and the picked object's card.
+ * The fire scenario's panel at the stage's left edge: every object as a button, and the picked object's card.
  */
 export function SpreadPanel({ air, g, doc, fabric }: { air: string; g: Gravity; doc: SolidsDoc | null; fabric: Fabric }) {
   const id = useId();
   const [open, setOpen] = useState(false);
-  const flow = usePlayback((s) => s.flow);
   const picked = usePlayback((s) => s.picked);
   const o = OBJECTS.find((x) => x.id === picked);
   return (
@@ -78,25 +73,8 @@ export function SpreadPanel({ air, g, doc, fabric }: { air: string; g: Gravity; 
         Objects
       </button>
       <form id={`${id}-panel`} className="burn-panel glass" aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
-        <p className="burn-h">Fire spread, in {air}</p>
-        <label className="burn-field">
-          <span>Cabin airflow</span>
-          <select value={flow} onChange={(e) => usePlayback.getState().setFlow(Number(e.target.value))}>
-            {FLOWS.map((f) => (
-              <option key={f} value={f}>
-                {f} cm/s
-              </option>
-            ))}
-          </select>
-        </label>
-        <p className="burn-support">
-          {g === "earth"
-            ? "At 1 g rising hot gas feeds the flame whatever the fan does."
-            : fabric.lives
-              ? "At this airflow the cloth's flame lives, as in the nearest real test."
-              : "At this airflow the cloth's flame goes out, as in the nearest real test."}{" "}
-          Spread speed is illustrative, scaled by oxygen.
-        </p>
+        <p className="burn-h">Fire in this base, {air}</p>
+        <p className="burn-support">Times and speeds are illustrative, scaled by oxygen. Pick an object to see what it is and what the tests say.</p>
         <div className="spread-list" role="group" aria-label="Objects in the cabin">
           {OBJECTS.map((x) => (
             <button

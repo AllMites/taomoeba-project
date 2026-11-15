@@ -3,11 +3,14 @@
 // contract (SceneProps) stays as it is; scenes read and write this store instead.
 import { create } from "zustand";
 import type { BurnPick } from "./burn/model.ts";
+import type { Gravity, ObjId } from "./spread/spread.ts";
+import type { Response } from "./spread/story.ts";
 
-/** "burn": this base, model burn. "spread": this base, fire spread. "saffire": the real Saffire flight test. */
+/** "spread": fire in this base (the default). "burn": lab view, the team model burn. "saffire": the real Saffire flight test. */
 export type Mode = "burn" | "spread" | "saffire";
 
-export type Phase = { at: number; name: string };
+/** A named point on the timeline. A stage carries its caption and the records behind it ("kind:id" refs). */
+export type Phase = { at: number; name: string; caption?: string; refs?: string[]; mark?: boolean };
 
 /** A scene's timeline in its own seconds. `rate` is screen speed (10 = ten times real time). */
 export type Timeline = { key: string; start: number; end: number; rate: number; phases: Phase[] };
@@ -33,8 +36,10 @@ export type PlaybackState = {
   compare: boolean;
   /** Fire spread: the object pointed at or picked. */
   picked: string | null;
-  /** Fire spread: the cabin's airflow along the bench, cm/s. */
-  flow: number;
+  /** Fire in this base: where it starts, the crew's response, and the gravity (null: the base's own). */
+  start: ObjId;
+  response: Response;
+  grav: Gravity | null;
   /** The scene's canvas has drawn its first frame (set by the scene itself, never by an input event). */
   live: boolean;
   setMode: (m: Mode) => void;
@@ -47,14 +52,14 @@ export type PlaybackState = {
   setSel: (s: BurnPick | null) => void;
   setCompare: (c: boolean) => void;
   pick: (id: string | null) => void;
-  setFlow: (cmS: number) => void;
   setLive: (live: boolean) => void;
+  setScenario: (p: Partial<Pick<PlaybackState, "start" | "response" | "grav">>) => void;
 };
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
 export const usePlayback = create<PlaybackState>((set, get) => ({
-  mode: "burn",
+  mode: "spread",
   timeline: null,
   t: 0,
   playing: false,
@@ -65,8 +70,10 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   sel: null,
   compare: false,
   picked: null,
-  flow: 10,
   live: false,
+  start: "cloth",
+  response: "vent",
+  grav: null,
   setMode: (mode) => set({ mode, picked: null }),
   // A new timeline (another scene, base or setting) starts from its beginning; the same one keeps its place.
   setTimeline: (tl) => {
@@ -85,7 +92,7 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   setSel: (sel) => set({ sel }),
   setCompare: (compare) => set({ compare }),
   pick: (picked) => set({ picked }),
-  setFlow: (flow) => set({ flow }),
+  setScenario: (p) => set(p),
   setLive: (live) => set((s) => (s.live === live ? s : { live })),
 }));
 

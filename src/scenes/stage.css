@@ -298,3 +298,41 @@
 @media (prefers-reduced-motion: reduce) {
   .stage-scene { transition: none; }
 }
+
+/* A stage's own caption, with "How we know" for the records behind it (the brief's markup, styled here). */
+.stage-caption-words { min-width: 0; padding: var(--space-2) 0; }
+.stage-caption-words > p { margin: 0; font-size: var(--text-sm); line-height: 1.4; color: var(--color-text); }
+.stage-caption-words .brief-how summary {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin-bottom: calc(-1 * var(--space-2));
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+.stage-caption-words .brief-how summary:hover { color: var(--color-text); }
+.stage-caption-words .brief-how summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.stage-caption-words .brief-how[open] { max-height: 40vh; overflow: auto; padding-bottom: var(--space-2); }
+.stage-caption-words .brief-record + .brief-record { margin-top: var(--space-2); }
+.stage-caption-words .brief-summary, .stage-caption-words .brief-excerpt, .stage-caption-words .brief-sources { font-size: var(--text-xs); line-height: 1.45; overflow-wrap: anywhere; }
+.stage-caption-words .brief-summary { margin: var(--space-1) 0 0; }
+.stage-caption-words .brief-excerpt { margin: var(--space-1) 0; padding-left: var(--space-2); border-left: 1px solid var(--line-strong); }
+.stage-caption-words .brief-sources { margin: 0; padding-left: var(--space-4); }
+.stage-caption-words .brief-sources a { color: var(--color-text); }
+
+/* The story's stage marks on the seeker: numbered ticks above the track, at each stage's start. */
+.stage-marks { grid-area: seek; position: relative; align-self: start; height: 0.9rem; margin: 0 8px; pointer-events: none; }
+.stage-mark {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 0.625rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+}
+.stage-mark::after { content: ""; display: block; width: 1px; height: 0.35rem; margin: 1px auto 0; background: var(--color-text-muted); }
+@container stage (max-width: 37.5rem) {
+  .stage-caption-words > p { font-size: var(--text-xs); }
+}
