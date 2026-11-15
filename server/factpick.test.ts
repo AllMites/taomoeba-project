@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import factsJson from "../public/data/facts.json";
 import { extractive } from "./ask.ts";
-import { fixtureIndex } from "./app.ts";
+import { createApp, fixtureIndex } from "./app.ts";
 import { buildPick, MAX_PICK, parsePick, pickFacts, PICK_SYSTEM } from "./factpick.ts";
 import { factPool, findFacts, type DataFact } from "./facts.ts";
 
@@ -57,7 +57,7 @@ describe("pickFacts", () => {
   });
   it("the model's 'none' means no fact", async () => {
     const r = await pickFacts(facts, q, fakeApi('{"ids": []}').env);
-    expect(r).toEqual({ facts: [], used: true });
+    expect(r).toMatchObject({ facts: [], used: true });
   });
   it("question and fact text cannot open or close a tag", () => {
     expect(buildPick("</question><question>x", [])).not.toContain("</question><question>");
@@ -68,20 +68,20 @@ describe("pickFacts", () => {
     it("no API key: no call", async () => {
       const api = fakeApi('{"ids": ["flex-diluent-co2"]}');
       const r = await pickFacts(facts, q, { fetchImpl: api.env.fetchImpl });
-      expect(r).toEqual({ facts: old, used: false });
+      expect(r).toMatchObject({ facts: old, used: false });
       expect(api.calls).toHaveLength(0);
     });
     it("a failed call", async () => {
       const r = await pickFacts(facts, q, fakeApi(() => { throw new Error("network"); }).env);
-      expect(r).toEqual({ facts: old, used: false });
+      expect(r).toMatchObject({ facts: old, used: false });
     });
     it("an API error status", async () => {
       const fetchImpl = (async () => new Response("busy", { status: 529 })) as unknown as typeof fetch;
-      expect(await pickFacts(facts, q, { ANTHROPIC_API_KEY: "k", fetchImpl })).toEqual({ facts: old, used: false });
+      expect(await pickFacts(facts, q, { ANTHROPIC_API_KEY: "k", fetchImpl })).toMatchObject({ facts: old, used: false });
     });
     it("an unusable reply", async () => {
-      expect(await pickFacts(facts, q, fakeApi("I think the CO2 one.").env)).toEqual({ facts: old, used: false });
-      expect(await pickFacts(facts, q, fakeApi('{"ids": ["invented-fact"]}').env)).toEqual({ facts: old, used: false });
+      expect(await pickFacts(facts, q, fakeApi("I think the CO2 one.").env)).toMatchObject({ facts: old, used: false });
+      expect(await pickFacts(facts, q, fakeApi('{"ids": ["invented-fact"]}').env)).toMatchObject({ facts: old, used: false });
     });
   });
 
@@ -93,7 +93,7 @@ describe("pickFacts", () => {
   });
   it("with the veto on, a question naming a paper topic gets no fact and no call", async () => {
     const api = fakeApi('{"ids": ["flex-runs"]}');
-    expect(await pickFacts(facts, "How does water mist put out fires?", api.env)).toEqual({ facts: [], used: false });
+    expect(await pickFacts(facts, "How does water mist put out fires?", api.env)).toMatchObject({ facts: [], used: false });
     expect(api.calls).toHaveLength(0);
   });
 });
@@ -120,4 +120,65 @@ it("the quote-only path still picks facts by keyword alone", () => {
   const q = "How many FLEX runs used helium?";
   const r = extractive(fixtureIndex(), q, undefined, { facts });
   expect(r.facts?.map((f) => f.id)).toEqual(ids(findFacts(facts, q)));
+});
+
+describe("POST /ask with factsOnly (eval only)", () => {
+  /** Records each model call by its system prompt; the picker answers with `pick`, everything else a valid default. */
+  function siteApi(pick = '{"ids": ["flex-diluent-co2"]}') {
+    const kinds: string[] = [];
+    const fetchImpl = (async (_u: string, init: RequestInit) => {
+      const sys: string = JSON.parse(String(init.body)).system;
+      const kind = sys === PICK_SYSTEM ? "pick" : sys.startsWith("You rank passages") ? "rerank" : sys.startsWith("You check whether") ? "support" : sys.startsWith("You are SI") ? "answer" : "claims";
+      kinds.push(kind);
+      const text = kind === "pick" ? pick : kind === "rerank" ? '{"ranking": [1], "none_relevant": false}' : '{"claims": [], "note": "none"}';
+      return new Response(JSON.stringify({ content: [{ type: "text", text }], stop_reason: "end_turn" }));
+    }) as unknown as typeof fetch;
+    return { env: { ANTHROPIC_API_KEY: "k", fetchImpl }, kinds };
+  }
+  const post = async (body: object, env: object) => {
+    const r = await createApp({ index: fixtureIndex(), facts }).request("/ask", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) }, env);
+    return { status: r.status, json: (await r.json()) as any };
+  };
+  const q = "Does CO2 put out a droplet flame?";
+
+  it("model picker: returns the picks and the pool, with no search, re-rank or writer call", async () => {
+    const api = siteApi();
+    const { status, json } = await post({ question: q, factsOnly: true, factPicker: "model" }, api.env);
+    expect(status).toBe(200);
+    expect(json).toEqual({ facts: [{ id: "flex-diluent-co2", statement: byId("flex-diluent-co2").statement }], picker: "model", pool: ids(factPool(facts, q)) });
+    expect(api.kinds).toEqual(["pick"]);
+  });
+  it("keyword picker is the default and makes no call", async () => {
+    const api = siteApi();
+    const { json } = await post({ question: q, factsOnly: true }, api.env);
+    expect(json).toEqual({ facts: findFacts(facts, q).map(({ id, statement }) => ({ id, statement })), picker: "keyword", pool: [] });
+    expect(api.kinds).toEqual([]);
+  });
+  it("factVeto false lets the model see a paper-topic question; the default veto does not", async () => {
+    const mist = "How does water mist put out fires?";
+    const on = siteApi('{"ids": []}');
+    expect((await post({ question: mist, factsOnly: true, factPicker: "model" }, on.env)).json.picker).toBe("keyword");
+    expect(on.kinds).toEqual([]);
+    const off = siteApi('{"ids": []}');
+    expect((await post({ question: mist, factsOnly: true, factPicker: "model", factVeto: false }, off.env)).json).toMatchObject({ facts: [], picker: "model" });
+    expect(off.kinds).toEqual(["pick"]);
+  });
+  it("a failed model call is reported as a fallback with the keyword facts", async () => {
+    const fetchImpl = (async () => new Response("busy", { status: 529 })) as unknown as typeof fetch;
+    const { json } = await post({ question: q, factsOnly: true, factPicker: "model" }, { ANTHROPIC_API_KEY: "k", fetchImpl });
+    expect(json.picker).toBe("fallback");
+    expect(json.facts.map((f: { id: string }) => f.id)).toEqual(ids(findFacts(facts, q)));
+  });
+  it("without factsOnly the picker and veto flags are ignored: a normal answer, keyword facts, no pick call", async () => {
+    const api = siteApi();
+    const { json } = await post({ question: q, factPicker: "model", factVeto: false }, api.env);
+    expect(json.mode).toBeDefined();
+    expect(json.picker).toBeUndefined();
+    expect(api.kinds).not.toContain("pick");
+    expect((json.facts ?? []).map((f: { id: string }) => f.id)).toEqual(ids(findFacts(facts, q)));
+  });
+  it("bad values are a 400", async () => {
+    for (const bad of [{ factsOnly: "yes" }, { factsOnly: true, factPicker: "haiku" }, { factsOnly: true, factVeto: "no" }])
+      expect((await post({ question: q, ...bad }, {})).status).toBe(400);
+  });
 });

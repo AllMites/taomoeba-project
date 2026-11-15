@@ -40,7 +40,9 @@ export function parsePick(reply: string, pool: DataFact[]): DataFact[] | null {
   return out.slice(0, MAX_PICK);
 }
 
-export type PickResult = { facts: DataFact[]; used: boolean };
+/** Why findFacts' answer was kept: by design (dashboard, veto, no_pool) or because the model could not be used. */
+type KeepReason = "dashboard" | "no_key" | "veto" | "no_pool" | "error" | "unusable";
+export type PickResult = { facts: DataFact[]; used: boolean; reason?: KeepReason; pool: DataFact[] };
 
 /**
  * Live-path fact picking. `veto`: the question names a fire-science word no fact uses -> no fact, no call (findFacts'
@@ -48,15 +50,26 @@ export type PickResult = { facts: DataFact[]; used: boolean };
  */
 export async function pickFacts(facts: DataFact[], question: string, env: LlmEnv, veto = true): Promise<PickResult> {
   const old = findFacts(facts, question);
-  const keep = { facts: old, used: false };
-  if (onlyDashboard(old) || !env.ANTHROPIC_API_KEY) return keep; // the ranking is the answer: no model call
-  if (veto && namesPaperTopic(facts, question)) return keep; // old is [] here
+  const keep = (reason: KeepReason, pool: DataFact[] = []): PickResult => ({ facts: old, used: false, reason, pool });
+  if (onlyDashboard(old)) return keep("dashboard"); // the ranking is the answer: no model call
+  if (!env.ANTHROPIC_API_KEY) return keep("no_key");
+  if (veto && namesPaperTopic(facts, question)) return keep("veto"); // old is [] here
   const pool = factPool(facts, question, FACT_POOL);
-  if (!pool.length) return keep;
+  if (!pool.length) return keep("no_pool");
   try {
     const picked = parsePick(await callHaiku(env, PICK_SYSTEM, buildPick(question, pool), 200, 8_000), pool);
-    return picked ? { facts: picked, used: true } : keep;
+    return picked ? { facts: picked, used: true, pool } : keep("unusable", pool);
   } catch {
-    return keep;
+    return keep("error", pool);
   }
+}
+
+/** Eval only (POST /ask with factsOnly): one picker's facts, which picker answered, and the model's pool. */
+export async function factsOnly(facts: DataFact[], question: string, env: LlmEnv, picker: "model" | "keyword", veto: boolean) {
+  const view = (fs: DataFact[]) => fs.map(({ id, statement }) => ({ id, statement }));
+  if (picker === "keyword") return { facts: view(findFacts(facts, question)), picker: "keyword" as const, pool: [] as string[] };
+  const r = await pickFacts(facts, question, env, veto);
+  // dashboard, veto and an empty pool keep the keyword answer by design; a missing key, failure or bad reply is a fallback.
+  const by = r.used ? "model" : r.reason === "dashboard" || r.reason === "veto" || r.reason === "no_pool" ? "keyword" : "fallback";
+  return { facts: view(r.facts), picker: by as "model" | "keyword" | "fallback", pool: r.pool.map((f) => f.id) };
 }

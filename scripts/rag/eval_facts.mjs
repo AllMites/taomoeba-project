@@ -1,59 +1,76 @@
-// Fact-picking eval: the keyword picker (findFacts) against the Haiku picker (pickFacts) on fact_questions.json.
-// Usage: node scripts/rag/eval_facts.mjs            (Node 22.6+ loads the server's .ts files directly)
-// Key: ANTHROPIC_API_KEY, else read from .dev.vars beside the repo root (never printed). One Haiku call per question.
-// Without a key only the keyword picker runs.
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { findFacts, namesPaperTopic } from "../../server/facts.ts";
-import { pickFacts } from "../../server/factpick.ts";
+// Fact-picking eval through the site: the keyword picker against the Haiku picker (with and without the topic veto)
+// on the labelled set scripts/rag/fact_questions.json, labelled before any run.
+//
+//   node scripts/rag/eval_facts.mjs https://<your-site>      (or http://localhost:8787 with wrangler dev)
+//
+// Uses POST /ask with factsOnly (no paper search, writer or checks). 3 requests per question, one every 7 s to stay
+// inside the site's rate limit (burst 10, then one per 6 s); 71 questions take about 25 minutes and at most 142 Haiku
+// calls (vetoed and dashboard questions make none). Writes eval-results/facts-<date>.json and prints the scores.
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 
-const here = dirname(fileURLToPath(import.meta.url));
-const root = resolve(here, "../..");
-const facts = JSON.parse(readFileSync(join(root, "public/data/facts.json"), "utf8"));
-const { questions } = JSON.parse(readFileSync(join(here, "fact_questions.json"), "utf8"));
+const args = process.argv.slice(2);
+const BASE = (args.find((a) => /^https?:\/\//.test(a)) ?? "http://localhost:8787").replace(/\/$/, "");
+const { questions } = JSON.parse(readFileSync(new URL("./fact_questions.json", import.meta.url), "utf8"));
+const GROUPS = [
+  { name: "keyword", body: { factPicker: "keyword" } },
+  { name: "model, veto in front", body: { factPicker: "model" } },
+  { name: "model, no veto", body: { factPicker: "model", factVeto: false } },
+];
 
-function keyFromDevVars() {
-  // The worktree's own .dev.vars, else the main checkout's (worktrees live in <repo>/.claude/worktrees/<name>).
-  for (const p of [join(root, ".dev.vars"), resolve(root, "../../../.dev.vars")]) {
-    if (!existsSync(p)) continue;
-    const m = /^ANTHROPIC_API_KEY\s*=\s*"?([^"\r\n]+)"?/m.exec(readFileSync(p, "utf8"));
-    if (m) return m[1].trim();
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let sent = 0;
+async function pick(question, extra) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (sent++) await sleep(Number(process.env.EVAL_DELAY_MS ?? 7000));
+    let r;
+    try {
+      const res = await fetch(`${BASE}/ask`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ question, factsOnly: true, ...extra }),
+      });
+      r = res.status === 429 ? { error: "rate_limited" } : await res.json();
+    } catch (e) {
+      r = { error: e.message };
+    }
+    if (r.error !== "rate_limited") return r;
+    await sleep(10000); // the site's own rate limit: wait and ask again, never score it as a miss
   }
-  return undefined;
+  return { error: "rate_limited" };
 }
-const key = process.env.ANTHROPIC_API_KEY || keyFromDevVars();
 
-function score(name, rows) {
+const rows = [];
+for (const [i, x] of questions.entries()) {
+  const row = { kind: x.kind, q: x.q, expect: x.expect };
+  for (const g of GROUPS) {
+    const r = await pick(x.q, g.body);
+    row[g.name] = r.error ? { error: r.error } : { got: (r.facts ?? []).map((f) => f.id), picker: r.picker, pool: r.pool };
+  }
+  rows.push(row);
+  const show = (g) => (row[g.name].error ? `error:${row[g.name].error}` : `[${row[g.name].got}]${row[g.name].picker === "fallback" ? " FALLBACK" : ""}`);
+  console.log(`${i + 1}/${questions.length} ${x.kind} ${x.q}\n   ${GROUPS.map((g) => `${g.name}=${show(g)}`).join("  ")}`);
+}
+
+function score(name) {
+  const got = (r) => r[name].got ?? [];
   const out = { name };
   for (const kind of ["old", "para"]) {
     const rs = rows.filter((r) => r.kind === kind && r.expect.length);
-    out[`${kind}_first`] = `${rs.filter((r) => r.expect.includes(r.got[0])).length}/${rs.length}`;
-    out[`${kind}_in2`] = `${rs.filter((r) => r.got.some((id) => r.expect.includes(id))).length}/${rs.length}`;
+    out[`${kind}_first`] = `${rs.filter((r) => r.expect.includes(got(r)[0])).length}/${rs.length}`;
+    out[`${kind}_in2`] = `${rs.filter((r) => got(r).some((id) => r.expect.includes(id))).length}/${rs.length}`;
   }
   const none = rows.filter((r) => !r.expect.length);
-  out.none_shown = `${none.filter((r) => r.got.length).length}/${none.length}`;
+  out.none_shown = `${none.filter((r) => got(r).length).length}/${none.length}`;
+  out.errors = rows.filter((r) => r[name].error).length;
+  out.fallbacks = rows.filter((r) => r[name].picker === "fallback").length;
+  out.model_calls = rows.filter((r) => r[name].picker === "model").length;
   return out;
 }
+const scores = GROUPS.map((g) => score(g.name));
+console.table(scores);
 
-const oldRows = questions.map((x) => ({ ...x, got: findFacts(facts, x.q).map((f) => f.id) }));
-const tables = [score("keyword (findFacts)", oldRows)];
-let newRows = [];
-if (key) {
-  const env = { ANTHROPIC_API_KEY: key };
-  let calls = 0;
-  for (const x of questions) {
-    const r = await pickFacts(facts, x.q, env, false); // no veto; the veto variant is derived below without a call
-    calls += r.used ? 1 : 0;
-    newRows.push({ ...x, got: r.facts.map((f) => f.id), used: r.used });
-  }
-  const vetoRows = newRows.map((r) => (namesPaperTopic(facts, r.q) ? { ...r, got: [] } : r));
-  tables.push(score("haiku, no veto", newRows), score("haiku, veto in front", vetoRows));
-  console.log(`model calls with a usable reply: ${calls} of ${questions.length}`);
-} else console.log("No ANTHROPIC_API_KEY (env or .dev.vars): keyword picker only.");
-console.table(tables);
-for (const [i, r] of oldRows.entries()) {
-  const n = newRows[i];
-  const mark = (got) => (r.expect.length ? (r.expect.includes(got[0]) ? "ok " : got.some((id) => r.expect.includes(id)) ? "2nd" : "MISS") : got.length ? "SHOWN" : "ok ");
-  console.log(`${r.kind.padEnd(4)} old:${mark(r.got).padEnd(5)}${n ? ` new:${mark(n.got).padEnd(5)}` : ""} ${r.q}  old=[${r.got}]${n ? ` new=[${n.got}]` : ""}`);
-}
+mkdirSync("eval-results", { recursive: true });
+const file = `eval-results/facts-${new Date().toISOString().slice(0, 10)}.json`;
+writeFileSync(file, JSON.stringify({ base: BASE, at: new Date().toISOString(), scores, rows }, null, 2));
+console.log(`wrote ${file}`);
+console.log("Ship rule: model (chosen veto setting) >= keyword on old_first and old_in2, > keyword on para_first, none_shown <= keyword.");
