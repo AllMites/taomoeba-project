@@ -6,6 +6,7 @@ import { OUTCOME, type SolidsDoc } from "../../solids/logic.ts";
 import { usePlayback } from "../playback.ts";
 import HowWeKnow from "../../brief/HowWeKnow.tsx";
 import { AftermathCard } from "./Aftermath.tsx";
+import { nextPick } from "./callout.ts";
 import { useCited } from "../cite.ts";
 import { evidenceFor, OBJECTS, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
 import { GRAVITIES, gravityName, MOON_ESTIMATE, RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
@@ -86,8 +87,8 @@ function Scenario({ st, kPa }: { st: Story; kPa: number | undefined }) {
   );
 }
 
-/** The detail card for one object: what it is, whether it burns, how it behaves, and the real test that matches. */
-function Card({ o, g, doc, fabric, start }: { o: CabinObject; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; start: string }) {
+/** The details of one object, pinned in its callout in the scene: what it is, whether it burns, how it behaves, and the real test that matches. */
+export function ObjectCard({ o, g, doc, fabric, start }: { o: CabinObject; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; start: string }) {
   const inv = useDataset("investigations");
   const known = new Set(inv.status === "ready" ? inv.data.map((i) => i.id) : []);
   const ev = evidenceFor(o, doc, known);
@@ -155,16 +156,6 @@ export function SpreadPanel({ air, kPa, g, doc, fabric, st, where = "" }: { air:
   const picked = usePlayback((s) => s.picked);
   const o = OBJECTS.find((x) => x.id === picked);
   const form = useRef<HTMLFormElement>(null);
-  // A pick in 3D opens the panel on the object's card (until the details move into the scene as callouts).
-  useEffect(() => {
-    if (picked) setOpen(true);
-  }, [picked]);
-  // A pick (in 3D or in the list) scrolls the panel to the object's card.
-  useEffect(() => {
-    const f = form.current;
-    const c = f?.querySelector<HTMLElement>(".spread-card");
-    if (picked && open && f && c) f.scrollTo({ top: c.offsetTop - f.offsetTop - 8 });
-  }, [picked, open]);
   // Escape closes the open panel.
   useEffect(() => {
     if (!open) return;
@@ -200,7 +191,10 @@ export function SpreadPanel({ air, kPa, g, doc, fabric, st, where = "" }: { air:
         <p className="burn-support">Illustrative times, scaled by oxygen.</p>
         <AftermathCard st={st} where={where} inline />
         <Scenario st={st} kPa={kPa} />
-        {o && <Card o={o} g={g} doc={doc} fabric={fabric} start={st.input.start} />}
+        {/* The pinned object's details show in the scene; here they are read out for a screen reader. */}
+        <p className="sr-only" aria-live="polite">
+          {o ? `${o.name}: ${o.burns(g) ? "combustible" : "does not burn"}${g === "earth" ? " at 1 g" : " here"}. ${o.behaviour}` : ""}
+        </p>
         <details className="spread-objs">
           <summary className="spread-legend">Objects in the cabin ({OBJECTS.length})</summary>
           <div className="spread-list" role="group" aria-label="Objects in the cabin">
@@ -210,7 +204,7 @@ export function SpreadPanel({ air, kPa, g, doc, fabric, st, where = "" }: { air:
                 type="button"
                 className="spread-obj"
                 aria-pressed={picked === x.id}
-                onClick={() => usePlayback.getState().pick(picked === x.id ? null : x.id)}
+                onClick={() => usePlayback.getState().pick(nextPick(picked, x.id))}
               >
                 <span className="burn-mark" data-mark={x.burns(g) ? "solid" : "dashed"} aria-hidden="true" />
                 {x.name}

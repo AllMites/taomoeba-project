@@ -93,13 +93,16 @@ export function ChipTracker({ chips, refs }: { chips: ChipSpec[]; refs: React.Re
     }
     // Chips come in order of importance: one that overlaps an earlier chip steps aside (hidden) for it, and no more
     // than MAX_CHIPS show at once.
+    // A callout card in the scene (17.5) comes first: a label under it steps aside.
     const shown: DOMRect[] = [];
+    const layer = refs.current.values().next().value?.parentElement?.parentElement;
+    const cards = [...(layer?.querySelectorAll<HTMLElement>(".callout-card") ?? [])].filter((e) => e.style.visibility !== "hidden").map((e) => e.getBoundingClientRect());
     for (const c of chips) {
       const el = refs.current.get(c.id);
       if (!el || el.style.visibility === "hidden") continue;
       const b = el.firstElementChild?.getBoundingClientRect();
       if (!b) continue;
-      if (shown.length >= MAX_CHIPS || shown.some((a) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom)) el.style.visibility = "hidden";
+      if (shown.length >= MAX_CHIPS || cards.some((a) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom) || shown.some((a) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom)) el.style.visibility = "hidden";
       else shown.push(b);
     }
   });

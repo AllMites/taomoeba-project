@@ -14,11 +14,14 @@ const panel = (s: Partial<StoryInput> = {}, kPa: number | undefined = 101.3) =>
     <SpreadPanel air="ISS" kPa={kPa} g="micro" doc={null} fabric={{ lives: true, test: null, beyond: false }} st={story({ g: "micro", o2: 21, start: "cloth", response: "vent", ...s })} />,
   );
 
-it("a picked object's card comes before the object list (P1-5)", () => {
+it("a picked object's details leave the side panel for the scene callout (17.5), and are read out there (P1-5)", () => {
   const html = panel();
-  const card = html.indexOf('class="spread-card"');
-  expect(card).toBeGreaterThan(0);
-  expect(card).toBeLessThan(html.indexOf('class="spread-list"'));
+  // No detail card in the panel: the details are pinned in the scene.
+  expect(html).not.toContain('class="spread-card"');
+  // The object list stays as the keyboard path, the pinned row pressed, ahead of nothing it must scroll past.
+  expect(html).toMatch(/aria-pressed="true"><span class="burn-mark"[^>]*><\/span>Cotton-fiberglass cloth/);
+  // The pinned details are announced politely.
+  expect(html).toMatch(/<p class="sr-only" aria-live="polite">Cotton-fiberglass cloth \(SIBAL\): combustible here\./);
 });
 
 describe("the scenario controls and the outcome card (15.10)", () => {
@@ -37,9 +40,13 @@ describe("the scenario controls and the outcome card (15.10)", () => {
     expect(html).toContain("Not tested: drawn as a weaker flame");
     expect(html).not.toContain("The flame goes out");
   });
-  it("the picked object's card offers to start the fire there when it is another start point", () => {
-    expect(panel({ start: "foam" })).toContain("Start a fire here");
-    expect(panel({ start: "cloth" })).not.toContain("Start a fire here");
+  it("the pinned callout offers to start the fire there when it is another start point", async () => {
+    const { ObjectCard } = await import("./SpreadPanel.tsx");
+    const { OBJECTS } = await import("../spread/spread.ts");
+    const cloth = OBJECTS.find((o) => o.id === "cloth")!;
+    const card = (start: string) => renderToStaticMarkup(<ObjectCard o={cloth} g="micro" doc={null} fabric={{ lives: true, test: null, beyond: false }} start={start} />);
+    expect(card("foam")).toContain("Start a fire here");
+    expect(card("cloth")).not.toContain("Start a fire here");
   });
 });
 
