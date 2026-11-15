@@ -2,8 +2,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { createApp, fixtureIndex } from "./app.ts";
-import { asksAboutHabitat, buildClaimsPrompt, extractive, HABITAT_AIR, NO_STEPS, parseClaims, retrievalQuery, checkSummary, withoutSourceName } from "./ask.ts";
+import { asksAboutHabitat, buildClaimsPrompt, extractive, HABITAT_AIR, MOON_AIR_NOTE, MOON_NOTE, NO_STEPS, parseClaims, retrievalQuery, checkSummary, withoutSourceName } from "./ask.ts";
 import { buildIndex } from "./bm25.ts";
+import { nums } from "./checks.ts";
 
 const index = fixtureIndex();
 const SENT = "Median particle diameter was larger than typical ground-based smoke detector test aerosols.";
@@ -104,6 +105,22 @@ describe("habitat air", () => {
     expect(asksAboutHabitat("How hot is the flame?")).toBe(false);
     const no = await run("How hot are oxygen burns tested?");
     expect(no.j.mode).toBe("extractive"); // 30 is not in the excerpt, and the question is not about the habitat
+  });
+
+  it("Moon notes: station tests are microgravity, and the gap is Moon gravity, not the air (some FLEX runs are near it)", async () => {
+    // The air note's premise, from the team's data: FLEX has runs at 30% oxygen or more at low pressure.
+    const facts = JSON.parse(readFileSync("public/data/facts.json", "utf8")) as { id: string; statement: string }[];
+    expect(facts.find((f) => f.id === "model-moon-validity")!.statement).toMatch(/only 9 methanol and 7 heptane runs have oxygen of 30% or more at 620 mmHg or less/);
+    expect(MOON_NOTE).toMatch(/microgravity, not reduced gravity/);
+    expect(MOON_NOTE).not.toMatch(/partial-gravity/);
+    expect(MOON_AIR_NOTE).toMatch(/what no test covers is Moon gravity/);
+    expect(nums(MOON_AIR_NOTE).size).toBe(0); // the summary's number check is unchanged
+    const idx = buildIndex([{ id: "x", sourceId: "SRC-05", investigationId: "PSI-05", text: "Burns were tested at about 21% oxygen. Smoke detector test aerosols were smaller." }]);
+    const api = fakeApi({ claims: claims({ text: "Smoke detector test aerosols were smaller.", source: "SRC-05", excerpt: "Smoke detector test aerosols were smaller." }) });
+    await post(createApp({ index: idx }), { question: "Are smoke detector test aerosols smaller?", habitat: "moon" }, { ANTHROPIC_API_KEY: "k", fetchImpl: api.fetchImpl });
+    const answer = api.seen.find((s) => s.kind === "answer")!.body.messages.at(-1).content as string;
+    expect(answer).toContain(MOON_NOTE);
+    expect(answer).toContain(MOON_AIR_NOTE);
   });
 });
 

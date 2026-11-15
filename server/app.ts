@@ -4,6 +4,7 @@ import { z } from "zod";
 import claimsFixture from "../public/data/fixtures/claims.fixture.json";
 import sourcesFixture from "../public/data/fixtures/sources.fixture.json";
 import { HabitatId } from "../src/contracts/habitat.ts";
+import { factsOnly } from "./factpick.ts";
 import { ask, normQuestion, type AskEnv, type AskExtras, type AskResult, type SourceInfo } from "./ask.ts";
 import type { DataFact } from "./facts.ts";
 import { buildIndex, type Bm25Index, type Chunk } from "./bm25.ts";
@@ -79,6 +80,11 @@ const AskBody = z.object({ question: z.string(), habitat: HabitatId.optional(), 
   // about: investigation ids the question is scoped to. Ids only (short, plain characters); they are matched
   // against the index and never reach a prompt. An id the index does not know is ignored.
   about: z.array(z.string().regex(/^[A-Za-z0-9._:-]{1,40}$/)).max(MAX_ABOUT).optional(),
+  // Eval only (scripts/rag/eval_facts.mjs): pick data facts and return at once, no search, writer or checks, never cached.
+  // factPicker and factVeto are honoured only with factsOnly, so a caller cannot switch how normal answers are made.
+  factsOnly: z.boolean().optional(),
+  factPicker: z.enum(["model", "keyword"]).optional(),
+  factVeto: z.boolean().optional(),
 });
 const VerifyBody = z.object({ text: z.string().max(2000), excerpt: z.string().max(4000), sourceText: z.string().max(200_000).optional() });
 
@@ -214,12 +220,16 @@ export function createApp(
     if (!question) return c.json({ error: "bad_request", message: "Question is empty." }, 400);
     if (question.length > MAX_QUESTION) return c.json({ error: "too_long", message: `Question must be ${MAX_QUESTION} characters or fewer.` }, 400);
 
+    const origin = new URL(c.req.url).origin;
+    if (body.data.factsOnly === true) {
+      const { facts = [] } = await getExtras(c.env ?? {}, origin);
+      return c.json(await factsOnly(facts, question, c.env ?? {}, body.data.factPicker ?? "keyword", body.data.factVeto !== false));
+    }
     const history = body.data.history ?? [];
     const about = [...new Set(body.data.about ?? [])];
     const key = await sha256(`${question.toLowerCase().replace(/\s+/g, " ")}|${body.data.habitat ?? ""}|${JSON.stringify(history)}|${about.join(",")}`);
     const fresh = body.data.fresh === true;
     if (!fresh && cache.has(key)) return c.json(cache.get(key));
-    const origin = new URL(c.req.url).origin;
     const [index, extras] = await Promise.all([getIndex(c.env ?? {}, origin), getExtras(c.env ?? {}, origin)]);
     const result = await ask(index, question, body.data.habitat, c.env ?? {}, extras, history, fresh, about);
     if (!result.degraded) { // a fallback is not cached: the next try may reach the writer
