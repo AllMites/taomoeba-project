@@ -9,6 +9,9 @@ const CASES: [string, string[]][] = [
   ["Do bigger droplets go out at a bigger diameter?", ["flex-dext-d0-methanol", "flex-dext-d0-heptane"]],
   ["Why did so many high-oxygen FLEX runs end in disruption?", ["flex-end-o2"]],
   ["How many FLEX runs used helium?", ["flex-diluent-he"]],
+  // Used to get the two droplet-size facts, and the answer then said the data "reports no CO2 results".
+  ["Does CO2 put out a droplet flame?", ["flex-dext-share-co2-methanol", "flex-dext-share-co2-heptane"]],
+  ["Does carbon dioxide extinguish a burning droplet?", ["flex-dext-share-co2-methanol", "flex-dext-share-co2-heptane", "flex-diluent-co2"]],
   ["Why do gas flames self-extinguish at low oxygen in CFI-G?", ["cfig-se-o2-normal", "cfig-se-normal"]],
   ["Do inverse flames self-extinguish less often than normal flames?", ["cfig-se-inverse", "cfig-se-normal"]],
   ["How accurate is the burning rate model?", ["model-br-accuracy"]],
