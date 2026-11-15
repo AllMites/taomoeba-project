@@ -36,7 +36,8 @@ export function WatchBurn(p: {
         ) : (
           <p className="muted burn-none">No burn to show for this setting.</p>
         )}
-        <GravityPanel doc={p.doc} sel={p.sel} burningRate={p.burningRate} rough={p.level === "far" || p.level === "out"} />
+        <GravityPanel />
+        <GravityEstimate doc={p.doc} sel={p.sel} burningRate={p.burningRate} rough={p.level === "far" || p.level === "out"} />
       </div>
       <p className="muted whatif-small">
         The droplet's size and the timing come from the model predictions: by the d²-law, the square of the diameter falls at the
@@ -166,35 +167,37 @@ function BurnPlayer({ plan, fuel, rough }: { plan: Burn; fuel: string; rough: bo
 /** d^2 against time: the straight line the d^2-law predicts, solid until flame-out, dashed after. */
 function D2Chart({ plan, t }: { plan: Burn; t: number }) {
   const W = 240;
-  const H = 96;
+  const H = 112;
+  const L = 30; // left edge of the plot (tick numbers sit left of it)
+  const TOP = 26; // top of the plot; the axis title sits above it, so the line never crosses the words
+  const BASE = H - 20;
   const tFull = (plan.d0 * plan.d0) / plan.k; // time to burn away completely
-  const x = (s: number) => 30 + (s / tFull) * (W - 40);
-  const y = (d2: number) => H - 18 - (d2 / (plan.d0 * plan.d0)) * (H - 28);
+  const x = (s: number) => L + (s / tFull) * (W - L - 10);
+  const y = (d2: number) => BASE - (d2 / (plan.d0 * plan.d0)) * (BASE - TOP);
   const d = diameterAt(plan, t);
   return (
     <svg className="burn-d2" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Diameter squared falls in a straight line from ${fmt(plan.d0 * plan.d0, 2)} to ${fmt(plan.dEnd * plan.dEnd, 2)} square millimetres over ${fmt(plan.tEnd)} seconds.`}>
-      <line className="burn-axis" x1={30} y1={H - 18} x2={W - 10} y2={H - 18} />
-      <line className="burn-axis" x1={30} y1={10} x2={30} y2={H - 18} />
+      <text className="burn-tick" x={L} y={11}>
+        d² (mm²)
+      </text>
+      <line className="burn-axis" x1={L} y1={BASE} x2={W - 10} y2={BASE} />
+      <line className="burn-axis" x1={L} y1={TOP - 6} x2={L} y2={BASE} />
       {plan.ends === "flame-out" && <line className="burn-rest" x1={x(plan.tEnd)} y1={y(plan.dEnd ** 2)} x2={x(tFull)} y2={y(0)} />}
       <line className="burn-line" x1={x(0)} y1={y(plan.d0 ** 2)} x2={x(plan.tEnd)} y2={y(plan.dEnd ** 2)} />
       <circle className="burn-dot" cx={x(Math.min(t, plan.tEnd))} cy={y(d * d)} r={3.5} />
-      <text className="burn-tick" x={26} y={14} textAnchor="end">
+      <text className="burn-tick" x={L - 5} y={TOP + 3} textAnchor="end">
         {fmt(plan.d0 * plan.d0, 1)}
       </text>
-      <text className="burn-tick" x={26} y={H - 18} textAnchor="end">
+      <text className="burn-tick" x={L - 5} y={BASE + 3} textAnchor="end">
         0
       </text>
       <text className="burn-tick" x={W - 10} y={H - 4} textAnchor="end">
         time (s) →
       </text>
-      <text className="burn-tick" x={34} y={14}>
-        d² (mm²)
-      </text>
     </svg>
   );
 }
 
-/** Illustration, not data: why a flame is a teardrop on Earth and a sphere in microgravity. */
 /** Same droplet under gravity: the team model's microgravity rate times the textbook buoyancy factor. Theory, not data. */
 export function GravityEstimate({ doc, sel, burningRate, rough }: { doc: WhatIfDoc; sel: Sel; burningRate: number; rough: boolean }) {
   const moon = gravityFactor(doc, sel, "moon");
@@ -246,7 +249,8 @@ export function GravityEstimate({ doc, sel, burningRate, rough }: { doc: WhatIfD
   );
 }
 
-export function GravityPanel(p: { doc: WhatIfDoc; sel: Sel; burningRate: number; rough: boolean }) {
+/** Illustration, not data: why a flame is a teardrop on Earth and a sphere in microgravity. */
+export function GravityPanel() {
   return (
     <aside className="burn-side" aria-label="Illustration: a flame on Earth and in microgravity">
       <div className="burn-side-pair">
@@ -281,7 +285,6 @@ export function GravityPanel(p: { doc: WhatIfDoc; sel: Sel; burningRate: number;
         </figure>
       </div>
       <p className="muted whatif-small">Illustration of textbook physics, not data. This is why FLEX droplets burn inside a spherical flame.</p>
-      <GravityEstimate {...p} />
     </aside>
   );
 }
