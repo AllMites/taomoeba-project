@@ -240,11 +240,15 @@ it("steps render a tick and the word Done, so state is not carried by colour alo
 });
 
 // ---- the panel in the console, and the composer ----
-it("there is no floating launcher or dialog: the panel is a section, hidden while closed, opened and closed by the console", () => {
-  expect(panel([], true)).toMatch(/^<section class="ask-panel glass" aria-labelledby="ask-panel-h">/);
-  expect(panel([], false)).toMatch(/^<section class="ask-panel glass" hidden="" aria-labelledby="ask-panel-h">/);
+it("there is no floating launcher or dialog: the panel is a section, never hidden itself (the shell minimizes it), opened and closed by the console", () => {
+  // Peek shows the panel while it is not pinned, so the section carries no hidden attribute and no glass of its own.
+  expect(panel([], true)).toMatch(/^<section class="ask-panel" data-open="true" aria-labelledby="ask-panel-h">/);
+  expect(panel([], false)).toMatch(/^<section class="ask-panel" data-open="false" aria-labelledby="ask-panel-h">/);
   expect(panel([])).toMatch(/<h2 id="ask-panel-h"[^>]*>Ask SI<\/h2>/);
-  expect(panel([])).toContain(">Close</button>");
+  // The shared panel header: Pin (and Close, shown on a phone); no Close text button of its own.
+  expect(panel([])).toContain('aria-label="Pin Ask SI"');
+  expect(panel([])).toContain('aria-label="Close Ask SI"');
+  expect(panel([])).not.toContain(">Close</button>");
   const src = readFileSync(new URL("./index.tsx", import.meta.url), "utf8") + readFileSync(new URL("./chat.tsx", import.meta.url), "utf8");
   expect(src).not.toMatch(/<dialog|showModal|ask-launch/);
   expect(src).toContain("useConsole((s) => s.askOpen)");

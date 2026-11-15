@@ -48,18 +48,13 @@ export function TopBar({ view, leftOpen, askOpen }: Panels) {
   );
 }
 
-export function Rail({ view, leftOpen, askOpen }: Panels) {
-  const { setView, setLeftOpen, setAskOpen } = useConsole.getState();
+/** The rail keeps Replay only: Library and Ask SI each have one control, the strip on their own edge (SidePanel.tsx). */
+export function Rail({ view }: { view: View }) {
+  const { setView } = useConsole.getState();
   return (
-    <nav className="console-rail" aria-label="Panels">
+    <nav className="console-rail" aria-label="Replay">
       <button type="button" className="icon-btn" aria-label="Replay" title="Replay" aria-pressed={view === "stage"} onClick={() => setView("stage")}>
         <Icon name="flame" />
-      </button>
-      <button type="button" className="icon-btn" aria-label="Library" title="Library" aria-pressed={leftOpen} onClick={() => setLeftOpen(!leftOpen)}>
-        <Icon name="library" />
-      </button>
-      <button type="button" className="icon-btn" aria-label="Ask SI" title="Ask SI" aria-pressed={askOpen} onClick={() => setAskOpen(!askOpen)}>
-        <Icon name="message" />
       </button>
     </nav>
   );

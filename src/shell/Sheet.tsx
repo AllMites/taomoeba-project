@@ -45,7 +45,7 @@ export function Scrim() {
  * A glass sheet over the replay, one per nav view. The replay dims behind it. It is mounted only while its
  * view is open: focus moves into it on open and back to its nav button on close, and what it covers is inert.
  * Esc, the close button and a press on the dimming close it.
- * The section inside keeps its own h2 as the visible heading; the header here only names the view.
+ * The section inside keeps its own h2 as the visible heading; the header holds only the close button.
  */
 export default function Sheet({ view, children }: { view: SheetView; children: ReactNode }) {
   const ref = useRef<HTMLElement>(null);
@@ -73,7 +73,6 @@ export default function Sheet({ view, children }: { view: SheetView; children: R
       <Scrim />
       <section ref={ref} className="sheet glass" aria-label={navLabel(view)} tabIndex={-1}>
         <header className="sheet-head">
-          <span className="t-readout">{navLabel(view)}</span>
           <button type="button" className="icon-btn" aria-label={`Close ${navLabel(view)}`} onClick={close}>
             <Icon name="x" />
           </button>

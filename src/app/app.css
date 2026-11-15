@@ -123,35 +123,94 @@ body { overflow: hidden; }
   border-right: 1px solid var(--line);
 }
 
-/* ---- Side panels ---- */
-.console-left, .console-right { position: relative; min-height: 0; background: var(--color-bg); }
-.console-left[hidden], .console-right[hidden] { display: none; }
-.console-left {
-  grid-area: left;
-  width: 20rem;
+/* ---- Side panels (src/shell/SidePanel.tsx): Library and Ask SI share one frame, one header, three states ----
+   Minimized: a 48px strip on the edge. Peek: the panel over the replay, beside the strip; the center does not move.
+   Pinned: docked beside the center, which gives up the width. One background and one hairline per panel. */
+.console { --panel-w: 21.25rem; --strip-w: 3rem; --panel-head-h: 3rem; }
+.console-left, .console-right {
+  position: relative;
+  z-index: 12;
+  display: flex;
+  width: var(--strip-w);
+  min-height: 0;
+}
+.console-left { grid-area: left; }
+.console-right { grid-area: right; }
+.console-left[data-mode="pinned"], .console-right[data-mode="pinned"] { width: var(--panel-w); }
+
+.panel-strip {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: 0 var(--space-4) var(--space-5);
-  overflow-y: auto;
-  border-right: 1px solid var(--line);
+  align-items: center;
+  gap: var(--space-3);
+  width: var(--strip-w);
+  min-height: 0;
+  padding: var(--space-4) 0;
+  font: inherit;
+  color: var(--label);
+  background: transparent;
+  border: 0 solid var(--line);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
 }
-.console-right { grid-area: right; width: 22.5rem; overflow: auto; border-left: 1px solid var(--line); }
-.panel-head {
-  position: sticky;
+.console-left .panel-strip { border-right-width: 1px; }
+.console-right .panel-strip { border-left-width: 1px; }
+.panel-strip:hover, .panel-strip[aria-expanded="true"] { color: var(--color-text); background: var(--glass-hi); }
+.panel-strip:focus-visible { outline-offset: -3px; }
+.panel-strip-name { writing-mode: vertical-rl; white-space: nowrap; }
+[data-mode="pinned"] > .panel-strip { display: none; }
+
+.panel-box {
+  position: absolute;
   top: 0;
-  z-index: 1;
+  bottom: 0;
+  width: var(--panel-w);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--color-bg);
+  border: 0 solid var(--line);
+  visibility: hidden;
+  opacity: 0;
+}
+.console-left .panel-box { left: var(--strip-w); border-right-width: 1px; translate: calc(-1 * var(--space-2)) 0; }
+.console-right .panel-box { right: var(--strip-w); border-left-width: 1px; translate: var(--space-2) 0; }
+/* Peek sits over the replay, so it is glass (.glass, base.css); its hairline stays on the side that meets the replay. */
+.console-left > .panel-box.glass { border-width: 0 1px 0 0; }
+.console-right > .panel-box.glass { border-width: 0 0 0 1px; }
+[data-mode="peek"] > .panel-box, [data-mode="pinned"] > .panel-box { visibility: visible; opacity: 1; translate: 0 0; }
+[data-mode="pinned"] > .panel-box { position: relative; inset: auto; flex: 1 1 auto; width: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .panel-box { transition: opacity var(--motion-fast) var(--ease), translate var(--motion-fast) var(--ease), visibility var(--motion-fast); }
+  [data-mode="pinned"] > .panel-box { transition: none; }
+}
+
+/* The header both panels share: name, the panel's actions, Pin. Same height, padding and hairline on both sides. */
+.panel-head {
+  flex: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  min-height: 3.25rem;
-  margin: 0 calc(-1 * var(--space-4));
-  padding: 0 var(--space-2) 0 var(--space-4);
-  background: var(--color-bg);
+  gap: var(--space-2);
+  height: var(--panel-head-h);
+  padding: 0 var(--space-1) 0 var(--space-4);
   border-bottom: 1px solid var(--line);
   color: var(--label);
 }
+.panel-title { flex: 1 1 auto; min-width: 0; margin: 0; font-size: inherit; color: var(--color-text); }
+.panel-actions { display: flex; align-items: center; gap: var(--space-1); }
 .panel-head .icon-btn { border-color: transparent; }
+.panel-close { display: none; }
+/* Same inner padding and the same scroller as the Ask thread (.ask-body). */
+.panel-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-4);
+}
 /* The panel header already names the Library, so the Library's own heading stays for assistive tech only. */
 .console-left .lib-h { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -275,15 +334,12 @@ body { overflow: hidden; }
   overflow: clip;
 }
 .sheet:focus { outline: none; }
+/* The section inside names the sheet with its own h2, so the header is only the close button, in the top corner. */
 .sheet-head {
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 3.25rem;
-  padding: 0 var(--space-2) 0 var(--space-5);
-  border-bottom: 1px solid var(--line);
-  color: var(--color-text-muted);
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
 }
 .sheet-head .icon-btn { border-color: transparent; }
 .sheet-body {
@@ -367,19 +423,23 @@ body { overflow: hidden; }
 @media (max-width: 68.75rem) {
   .stat-wide { display: none; }
 }
-/* Drawers under the carousel, so the base can still be picked while one is open. */
+/* Mid widths: a pinned panel would squeeze the replay, so it stays over the center like a peek, as a drawer under
+   the carousel (the base can still be picked while one is open). The strips stay on their edges. */
 @media (min-width: 47.5625rem) and (max-width: 68.75rem) {
-  .console-left, .console-right {
-    grid-area: center;
-    z-index: 15;
-    margin: calc(var(--carousel-h) + var(--space-5)) var(--space-3) var(--space-3);
+  .console-left[data-mode="pinned"], .console-right[data-mode="pinned"] { width: var(--strip-w); }
+  [data-mode="pinned"] > .panel-strip { display: flex; }
+  [data-mode="peek"] > .panel-box, [data-mode="pinned"] > .panel-box {
+    position: absolute;
+    top: calc(var(--carousel-h) + var(--space-5));
+    bottom: var(--space-3);
+    width: var(--panel-w);
     border: 1px solid var(--line);
     border-radius: var(--radius-2);
-    background: var(--color-surface);
+    overflow: clip;
   }
-  .console-left { justify-self: start; }
-  .console-right { justify-self: end; }
-  .panel-head { background: var(--color-surface); }
+  [data-mode="pinned"] > .panel-box { background: var(--color-surface); }
+  .console-left > .panel-box { left: calc(var(--strip-w) + var(--space-3)); }
+  .console-right > .panel-box { right: calc(var(--strip-w) + var(--space-3)); }
 }
 
 /* ---- Phone (docs/RESKIN_PRD.md, section 8) ---- */
@@ -420,10 +480,27 @@ body { overflow: hidden; }
     border-top: 1px solid var(--line-strong);
     border-radius: var(--radius-2) var(--radius-2) 0 0;
     background: var(--color-surface);
+    flex-direction: column;
   }
   /* Ask SI opens over a full-screen sheet too: "Ask about this" in the Rank sheet must show the chat. */
   .console-right { height: var(--bottom-sheet-h); z-index: 35; }
-  .panel-head { background: var(--color-surface); }
+  /* No strip and no peek on a phone: a panel is a bottom sheet while pinned (open) and gone otherwise. Close, not Pin. */
+  .console-left:not([data-mode="pinned"]), .console-right:not([data-mode="pinned"]) { display: none; }
+  .console-left[data-mode], .console-right[data-mode] { width: auto; }
+  .panel-strip { display: none; }
+  .console-left > .panel-box, .console-right > .panel-box {
+    position: relative;
+    inset: auto;
+    flex: 1 1 auto;
+    width: auto;
+    visibility: visible;
+    opacity: 1;
+    translate: 0 0;
+    border: 0;
+    background: transparent;
+  }
+  .panel-pin { display: none; }
+  .panel-close { display: inline-grid; }
 
   .console-carousel { top: var(--space-2); max-width: calc(100% - 2 * var(--space-2)); }
   .console-ticks { inset: var(--space-2); }
@@ -457,7 +534,6 @@ body { overflow: hidden; }
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
-  .sheet-head { padding-left: var(--space-4); }
   .sheet-body { padding: var(--space-4); }
 
   .console-status { gap: var(--space-2); padding: var(--space-1) var(--space-3); letter-spacing: 0.04em; }
