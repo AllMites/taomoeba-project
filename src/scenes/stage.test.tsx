@@ -30,18 +30,20 @@ describe("center replay, before any 3D has loaded (and for good where it cannot 
     picked.base = "earth";
     const earth = renderToStaticMarkup(<Stage />);
     expect(earth).toContain('src="/img/scenes/lunar-iss.webp"');
-    expect(earth).toContain("On Earth");
+    expect(earth).toContain("a cabin on Earth");
   });
 
-  it("offers Past and Now, with Now picked", () => {
+  it("offers three named scenes with model burn picked, and no Past / Now", () => {
     const html = renderToStaticMarkup(<Stage />);
-    expect(html).toMatch(/name="stage-when"\/><span[^>]*>Past<\/span>/);
-    expect(html).toMatch(/name="stage-when" checked=""\/><span[^>]*>Now<\/span>/);
+    expect(html).toMatch(/name="replay-scene" checked=""\/><span class="stage-pick-opt-name">This base: model burn<\/span>/);
+    expect(html).toContain("This base: fire spread");
+    expect(html).toContain("Real fire: Saffire flight test");
+    expect(html).not.toMatch(/>Past<|>Now</);
   });
 
   it("says it is an illustration on the glass caption, with the longer note behind a real About control", () => {
     const html = renderToStaticMarkup(<Stage />);
-    expect(html).toMatch(/class="stage-caption-text glass"><p>Now: [^<]*Illustration, not a simulation\.<\/p>/);
+    expect(html).toMatch(/class="stage-caption-text glass"><p>A fuel droplet burning in [^<]*Illustration, not a simulation\.<\/p>/);
     expect(html).toContain('<summary aria-label="About this replay">');
     expect(html).toContain("No fire experiment on record ran in Moon gravity.");
   });

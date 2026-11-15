@@ -68,3 +68,14 @@ export function project(pose: Pose, w: number, h: number, at: V3, radius = 0): {
     inFront: depth > 0,
   };
 }
+
+/**
+ * View offset (px) that moves the focus point from where the pose puts it to the middle of a clear zone of the
+ * stage. Null when the zone is empty. The shift is capped at a third of the box, so the cabin never slides away.
+ */
+export function lensShift(pose: Pose, w: number, h: number, focus: V3, zone: { x: number; y: number; w: number; h: number }): { x: number; y: number } | null {
+  if (!(zone.w > 0 && zone.h > 0)) return null;
+  const p = project(pose, w, h, focus);
+  const cap = (v: number, m: number) => Math.max(-m, Math.min(m, v));
+  return { x: cap(p.x - (zone.x + zone.w / 2), w / 3), y: cap(p.y - (zone.y + zone.h / 2), h / 3) };
+}

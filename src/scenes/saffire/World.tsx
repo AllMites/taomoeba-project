@@ -37,7 +37,7 @@ const POSES: Record<"wide" | "tall", { establish: Pose; close: Pose }> = {
   // Landscape box: start outside the flow unit, looking down the module, then push in low over the window.
   wide: {
     establish: { pos: new Vector3(-0.62, 0.62, 1.9), look: new Vector3(0.02, -0.02, -0.4) },
-    close: { pos: new Vector3(-0.26, 0.5, 0.86), look: new Vector3(0.04, 0.0, -0.7) },
+    close: { pos: new Vector3(-0.24, 0.4, 0.56), look: new Vector3(0.03, -0.01, -0.1) },
   },
   // Portrait box (phone): higher, so the strip sits in the band between the readouts and the note.
   tall: {

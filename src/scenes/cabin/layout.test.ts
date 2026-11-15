@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BASE_ORDER } from "../../app/console.ts";
-import { chipAnchor, DROPLET, flameRadius, homePose, project } from "./layout.ts";
+import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, project } from "./layout.ts";
 
 // The center replay at 1440 x 900 with no side panels is about 1380 x 794.
 const W = 1380;
@@ -30,5 +30,23 @@ describe("the fire is large and in the scene in the first frame (defect: flames 
     expect(ign.x).toBeLessThan(W);
     expect(ign.y).toBeGreaterThan(H * 0.2);
     expect(ign.y).toBeLessThan(H * 0.8);
+  });
+});
+
+describe("the fire sits in the clear part of the stage", () => {
+  it("shifts the picture so the flame lands in the middle of the zone, and not at all for an empty zone", () => {
+    const pose = homePose("moon", "burn");
+    const at = project(pose, W, H, DROPLET.at);
+    const zone = { x: 100, y: 300, w: 400, h: 300 };
+    const off = lensShift(pose, W, H, DROPLET.at, zone)!;
+    // A view offset of (ox, oy) moves the picture by (-ox, -oy).
+    expect(at.x - off.x).toBeCloseTo(300, 6);
+    expect(at.y - off.y).toBeCloseTo(450, 6);
+    expect(lensShift(pose, W, H, DROPLET.at, { x: 0, y: 0, w: 0, h: 0 })).toBeNull();
+  });
+  it("never slides the cabin more than a third of the box", () => {
+    const off = lensShift(homePose("iss", "burn"), W, H, DROPLET.at, { x: 0, y: 0, w: 10, h: 10 })!;
+    expect(Math.abs(off.x)).toBeLessThanOrEqual(W / 3);
+    expect(Math.abs(off.y)).toBeLessThanOrEqual(H / 3);
   });
 });

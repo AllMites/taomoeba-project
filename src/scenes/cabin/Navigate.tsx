@@ -50,6 +50,9 @@ export function Navigate({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [homeKey, resetN, rig, camera, invalidate]);
 
+  // An on-demand canvas (paused, or reduced motion) redraws when the seeker moves.
+  useEffect(() => usePlayback.subscribe((s, prev) => void (s.t !== prev.t && invalidate())), [invalidate]);
+
   // Slow drift until the viewer moves the camera. Off under reduced motion.
   useFrame(({ clock }) => {
     const st = usePlayback.getState();

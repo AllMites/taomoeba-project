@@ -1,15 +1,21 @@
 import { Billboard } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { Canvas, useThree } from "@react-three/fiber";
+import type { PerspectiveCamera } from "three";
+import { useEffect, useRef, useState } from "react";
 import { useConsole } from "../../app/console.ts";
 import type { SceneProps } from "../../contracts/index.ts";
 import { Flame } from "../../fx/index.tsx";
 import { Glow } from "../lunar/FlamePair.tsx";
 import { hasWebGL } from "../lunar/LunarScene.tsx";
 import { usePlayback } from "../playback.ts";
+import { loadWhatIf } from "../../whatif/load.ts";
+import type { WhatIfDoc } from "../../whatif/logic.ts";
+import { burnCase, dropletAt, startPick, type BurnCase } from "../burn/model.ts";
+import { OBJECTS, spreadAt, spreadEnd } from "../spread/spread.ts";
+import { burnTimeline, spreadTimeline } from "../timelines.ts";
 import { Cabin, CABIN_PAINT, ChipLayer, ChipTracker, windowAt, type ChipSpec } from "./Cabin.tsx";
 import { airOf, type Air } from "./air.ts";
-import { chipAnchor, DROPLET, flameRadius, homePose, ROOMS, type V3 } from "./layout.ts";
+import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose, type V3 } from "./layout.ts";
 import { Navigate } from "./Navigate.tsx";
 import "./cabin.css";
 
@@ -50,6 +56,79 @@ export function DropletFlame({ air, dMm, calm, faint }: { air: Air & { o2Percent
   );
 }
 
+/**
+ * Lens shift: moves the picture so the fire sits in the middle of the clear part of the stage (the zone the stage
+ * hands down as --fz-* custom properties), not under the console's glass. Orbiting keeps the shift.
+ */
+function LensShift({ home, focus }: { home: Pose; focus: V3 }) {
+  const camera = useThree((s) => s.camera) as PerspectiveCamera;
+  const gl = useThree((s) => s.gl);
+  const size = useThree((s) => s.size);
+  const invalidate = useThree((s) => s.invalidate);
+  const key = home.pos.join() + focus.join();
+  useEffect(() => {
+    const apply = () => {
+      const host = gl.domElement.closest<HTMLElement>(".stage-scene");
+      const css = host ? getComputedStyle(host) : null;
+      const px = (n: string) => parseFloat(css?.getPropertyValue(n) ?? "");
+      const z = { x: px("--fz-x"), y: px("--fz-y"), w: px("--fz-w"), h: px("--fz-h") };
+      const off = Number.isFinite(z.x + z.y + z.w + z.h) ? lensShift(home, size.width, size.height, focus, z) : null;
+      if (off) camera.setViewOffset(size.width, size.height, off.x, off.y, size.width, size.height);
+      else camera.clearViewOffset();
+      invalidate();
+    };
+    apply();
+    window.addEventListener("replay-zone", apply);
+    return () => {
+      window.removeEventListener("replay-zone", apply);
+      camera.clearViewOffset();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, size.width, size.height, camera, gl, invalidate]);
+  return null;
+}
+
+/** The model burn at the seeker's time: the droplet shrinks by the d² law and the flame goes out at the predicted size. */
+function BurnFire({ c, air, d0, calm }: { c: BurnCase | null; air: Air; d0: number; calm: boolean }) {
+  const t = usePlayback((s) => s.t);
+  const now = c ? dropletAt(c, t, d0) : { d: d0, lit: true };
+  return (
+    <>
+      <Droplet at={DROPLET.at} dMm={now.d} />
+      {now.lit && air.o2Percent !== undefined && <DropletFlame air={{ ...air, o2Percent: air.o2Percent }} dMm={now.d} calm={calm} />}
+    </>
+  );
+}
+
+/** Fire spread, first cut: the flame front moves along the bench with the seeker (15.6 adds the objects). */
+function SpreadFire({ air, calm }: { air: Air; calm: boolean }) {
+  const t = usePlayback((s) => s.t);
+  if (air.o2Percent === undefined) return null;
+  const g = air.gravity === "earth" ? "earth" : "micro";
+  const at = spreadAt(OBJECTS, g, air.o2Percent, FABRIC_LIVES, t);
+  if (!at.alive) return null;
+  return (
+    <group position={[at.front, 0.03, 0]}>
+      <Flame o2Percent={air.o2Percent} pressureKPa={air.pressureKPa} airflowCmS={3} size={0.08} calm={calm} gravity={air.gravity} />
+    </group>
+  );
+}
+
+const FABRIC_LIVES = { lives: true, test: null, beyond: false };
+
+/** Loads the team's model grid once. */
+function useWhatIf() {
+  const [doc, setDoc] = useState<WhatIfDoc | null>(null);
+  useEffect(() => {
+    let live = true;
+    void loadWhatIf().then((d) => live && setDoc(d));
+    return () => {
+      live = false;
+    };
+  }, []);
+  return doc;
+}
+
 /** The replay inside the picked base's cabin: a droplet burning on a holder on the bench, the window behind. */
 export function CabinScene({ habitat, calm }: SceneProps) {
   const base = useConsole((s) => s.base);
@@ -58,11 +137,30 @@ export function CabinScene({ habitat, calm }: SceneProps) {
   const air = airOf(base, habitat);
   const room = ROOMS[base];
   const home = homePose(base, mode === "spread" ? "spread" : "burn");
-  const dMm = 2;
+  const doc = useWhatIf();
+  const pick = doc ? startPick(doc) : null;
+  const c = doc && pick && air.o2Percent !== undefined && air.pressureKPa !== undefined ? burnCase(doc, { o2Percent: air.o2Percent, pressureKPa: air.pressureKPa }, pick, base === "earth") : null;
+  const dMm = doc && pick ? doc.axes.d0[pick.d0] : 2;
   const r = flameRadius(dMm);
+
+  // The one timeline: the model burn, or the spread along the bench.
+  const g = air.gravity === "earth" ? "earth" : "micro";
+  const tl =
+    mode === "spread"
+      ? air.o2Percent === undefined
+        ? null
+        : spreadTimeline(spreadEnd(OBJECTS, g, air.o2Percent, FABRIC_LIVES), `spread|${base}`)
+      : c
+        ? burnTimeline(c, `burn|${base}|${JSON.stringify(pick)}`)
+        : null;
+  const tlKey = tl?.key;
+  useEffect(() => {
+    usePlayback.getState().setTimeline(tl);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tlKey]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
   const chips: ChipSpec[] = [
-    { id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout },
+    ...(mode === "spread" ? [] : [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
     { id: "window", at: windowAt(base), below: true, text: room.outside === "orbit" ? "Window: Earth from orbit" : room.outside === "moon" ? "Window: the lunar surface" : "Window: daylight on Earth" },
   ];
 
@@ -79,8 +177,8 @@ export function CabinScene({ habitat, calm }: SceneProps) {
       >
         <Cabin base={base} />
         <Navigate home={home} calm={calm} />
-        <Droplet at={DROPLET.at} dMm={dMm} />
-        {air.o2Percent !== undefined && <DropletFlame air={{ ...air, o2Percent: air.o2Percent }} dMm={dMm} calm={calm} />}
+        <LensShift home={home} focus={mode === "spread" ? home.target : DROPLET.at} />
+        {mode === "spread" ? <SpreadFire air={air} calm={calm} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} />}
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
