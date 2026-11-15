@@ -1,0 +1,292 @@
+{
+ "about": "Which PSI investigations each NTRS paper reports on, and its fire-safety pillar, from the x5 corpus list (corpus/sources.csv, built from the PSI and NTRS records). Copied here so the graph can be rebuilt without the x5 folder.",
+ "items": {
+  "ntrs:20170001636": {
+   "psi": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ],
+   "pillar": "Prevention",
+   "year": "2016"
+  },
+  "ntrs:20170000230": {
+   "psi": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ],
+   "pillar": "Prevention",
+   "year": "2016"
+  },
+  "ntrs:20150022421": {
+   "psi": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ],
+   "pillar": "Prevention",
+   "year": "2015"
+  },
+  "ntrs:20180005168": {
+   "psi": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ],
+   "pillar": "Prevention",
+   "year": "2017"
+  },
+  "ntrs:20220002714": {
+   "psi": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ],
+   "pillar": "Prevention",
+   "year": "2022"
+  },
+  "ntrs:20240002981": {
+   "psi": [
+    "PSI-98",
+    "PSI-99",
+    "PSI-100"
+   ],
+   "pillar": "Prevention",
+   "year": "2024"
+  },
+  "ntrs:20150000894": {
+   "psi": [
+    "PSI-98",
+    "PSI-99"
+   ],
+   "pillar": "Prevention",
+   "year": "2014"
+  },
+  "ntrs:20210011385": {
+   "psi": [
+    "PSI-25"
+   ],
+   "pillar": "Prevention",
+   "year": "2021"
+  },
+  "ntrs:20160000593": {
+   "psi": [
+    "PSI-25"
+   ],
+   "pillar": "Prevention",
+   "year": "2014"
+  },
+  "ntrs:20140011099": {
+   "psi": [
+    "PSI-26",
+    "PSI-25"
+   ],
+   "pillar": "Prevention",
+   "year": "2013"
+  },
+  "ntrs:20150008961": {
+   "psi": [
+    "PSI-25",
+    "PSI-62"
+   ],
+   "pillar": "Prevention",
+   "year": "2015"
+  },
+  "ntrs:20200000557": {
+   "psi": [
+    "PSI-99"
+   ],
+   "pillar": "Prevention",
+   "year": "2018"
+  },
+  "ntrs:20040053557": {
+   "psi": [
+    "PSI-26",
+    "PSI-25"
+   ],
+   "pillar": "Prevention",
+   "year": "2003"
+  },
+  "ntrs:20080034883": {
+   "psi": [
+    "PSI-26",
+    "PSI-25"
+   ],
+   "pillar": "Prevention",
+   "year": "2008"
+  },
+  "ntrs:20160010073": {
+   "psi": [
+    "PSI-20"
+   ],
+   "pillar": "Prevention",
+   "year": "2015"
+  },
+  "ntrs:20170009141": {
+   "psi": [
+    "PSI-20"
+   ],
+   "pillar": "Prevention",
+   "year": "2017"
+  },
+  "ntrs:20040053578": {
+   "psi": [
+    "PSI-102"
+   ],
+   "pillar": "Detection",
+   "year": "2003"
+  },
+  "ntrs:20140006585": {
+   "psi": [
+    "PSI-101",
+    "PSI-102"
+   ],
+   "pillar": "Detection",
+   "year": "2013"
+  },
+  "ntrs:20130000422": {
+   "psi": [
+    "PSI-101",
+    "PSI-115"
+   ],
+   "pillar": "Detection",
+   "year": "2012"
+  },
+  "ntrs:20080012612": {
+   "psi": [
+    "PSI-102"
+   ],
+   "pillar": "Detection",
+   "year": "2007"
+  },
+  "ntrs:20070031686": {
+   "psi": [
+    "PSI-47"
+   ],
+   "pillar": "Detection",
+   "year": "2007"
+  },
+  "ntrs:20120012884": {
+   "psi": [
+    "PSI-102"
+   ],
+   "pillar": "Detection",
+   "year": "2009"
+  },
+  "ntrs:20230013826": {
+   "psi": [
+    "PSI-101",
+    "PSI-115"
+   ],
+   "pillar": "Detection",
+   "year": "2023"
+  },
+  "ntrs:20040142387": {
+   "psi": [
+    "PSI-47"
+   ],
+   "pillar": "Detection",
+   "year": "2004"
+  },
+  "ntrs:20210022143": {
+   "psi": [
+    "PSI-47",
+    "PSI-101"
+   ],
+   "pillar": "Detection",
+   "year": "2021"
+  },
+  "ntrs:19960008413": {
+   "psi": [
+    "PSI-102"
+   ],
+   "pillar": "Detection",
+   "year": "1995"
+  },
+  "ntrs:20150019858": {
+   "psi": [
+    "PSI-26",
+    "PSI-25"
+   ],
+   "pillar": "Detection",
+   "year": "2015"
+  },
+  "ntrs:20150023456": {
+   "psi": [
+    "PSI-69",
+    "PSI-68"
+   ],
+   "pillar": "Suppression",
+   "year": "2015"
+  },
+  "ntrs:20120015928": {
+   "psi": [
+    "PSI-69"
+   ],
+   "pillar": "Suppression",
+   "year": "2012"
+  },
+  "ntrs:20130014061": {
+   "psi": [
+    "PSI-69"
+   ],
+   "pillar": "Suppression",
+   "year": "2013"
+  },
+  "ntrs:20090014812": {
+   "psi": [
+    "PSI-69",
+    "PSI-68"
+   ],
+   "pillar": "Suppression",
+   "year": "2009"
+  },
+  "ntrs:20040053586": {
+   "psi": [
+    "PSI-69"
+   ],
+   "pillar": "Suppression",
+   "year": "2003"
+  },
+  "ntrs:20040053582": {
+   "psi": [
+    "PSI-69"
+   ],
+   "pillar": "Suppression",
+   "year": "2003"
+  },
+  "ntrs:20110012300": {
+   "psi": [
+    "PSI-69"
+   ],
+   "pillar": "Suppression",
+   "year": "2011"
+  },
+  "ntrs:20150023467": {
+   "psi": [
+    "PSI-69"
+   ],
+   "pillar": "Suppression",
+   "year": "2013"
+  },
+  "ntrs:20140006750": {
+   "psi": [
+    "PSI-39",
+    "PSI-117"
+   ],
+   "pillar": "Suppression",
+   "year": "2014"
+  },
+  "ntrs:20220015583": {
+   "psi": [
+    "PSI-10",
+    "PSI-20",
+    "PSI-22",
+    "PSI-159"
+   ],
+   "pillar": "Other",
+   "year": "2023"
+  }
+ }
+}
