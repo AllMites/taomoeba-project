@@ -9,6 +9,9 @@ import { useCited } from "../cite.ts";
 import { evidenceFor, OBJECTS, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
 import { RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
 
+/** More of a scroll box is below its visible part (2 px of slack for rounding). */
+export const moreBelow = (el: { scrollHeight: number; scrollTop: number; clientHeight: number }) => el.scrollHeight - el.scrollTop - el.clientHeight > 2;
+
 /** What the chosen response does here, in words the viewer reads first. */
 export const OUTCOME_WORDS: Record<Outcome, string> = {
   out: "The flame goes out",
@@ -142,12 +145,30 @@ export function SpreadPanel({ air, g, doc, fabric, st }: { air: string; g: Gravi
     const c = f?.querySelector<HTMLElement>(".spread-card");
     if (picked && f && c) f.scrollTo({ top: c.offsetTop - f.offsetTop - 8 });
   }, [picked]);
+  // While more is below, the panel's bottom edge fades (the "On Earth" card's cue), so the last line is not missed.
+  const [more, setMore] = useState(false);
+  useEffect(() => {
+    const f = form.current;
+    if (!f) return;
+    const sync = () => setMore(moreBelow(f));
+    sync();
+    f.addEventListener("scroll", sync, { passive: true });
+    f.addEventListener("toggle", sync, true);
+    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(sync);
+    ro?.observe(f);
+    for (const c of f.children) ro?.observe(c);
+    return () => {
+      f.removeEventListener("scroll", sync);
+      f.removeEventListener("toggle", sync, true);
+      ro?.disconnect();
+    };
+  });
   return (
     <div className="burn" data-open={open || undefined}>
       <button type="button" className="burn-toggle glass" aria-expanded={open} aria-controls={`${id}-panel`} onClick={() => setOpen((v) => !v)}>
         Fire scenario
       </button>
-      <form ref={form} id={`${id}-panel`} className="burn-panel glass" aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
+      <form ref={form} id={`${id}-panel`} className="burn-panel glass" data-more={more || undefined} aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
         <p className="burn-h">Fire in this base, {air}</p>
         <p className="burn-support">Illustrative times, scaled by oxygen.</p>
         <Scenario st={st} />

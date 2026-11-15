@@ -189,3 +189,5 @@
   font: inherit;
 }
 .spread-field select:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+/* While more of the scenario panel is below, its last 3rem fades out (the "On Earth" card's cue). */
+.burn-panel[data-more] { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); }

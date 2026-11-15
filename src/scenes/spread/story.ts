@@ -318,7 +318,7 @@ export function captionFor(st: Story, id: Stage["id"], baseName: string): Captio
     case "detect": {
       const r = responseLines(st).evidence;
       const name = RESPONSES.find((x) => x.id === s.response)!.name;
-      return { text: `The detector trips at ${r0(st.detect)} s. Response: ${name}. ${r.text}${st.outcome === "weaker" ? " Not tested here." : ""}`, refs: r.refs };
+      return { text: `The detector trips at ${r0(st.detect)} s. Response: ${name}. ${r.text}${st.outcome === "weaker" ? " Not tested here." : ""}${s.response === "co2" ? " Illustration." : ""}`, refs: r.refs };
     }
     case "after":
       return { text: "What the fire and smoke touched. Times and speeds illustrative.", refs: [] };
