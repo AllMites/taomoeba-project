@@ -67,11 +67,8 @@ describe("phone (390 wide)", () => {
     const sheet = Number(decls(phone, ".sheet.glass")["z-index"]);
     expect(ask).toBeGreaterThan(sheet);
   });
-  it("the brief line and the top 3 never reach up into the carousel; the top 3 shrinks instead", () => {
-    // At 320x568 the brief line (122 to 265px) sat over the carousel (129 to 220px).
-    expect(decls(phone, ".console-hud").top).toBe("calc(var(--space-2) + var(--carousel-h) + var(--space-2))");
-    expect(decls(phone, ".console-hud")["justify-content"]).toBe("flex-end");
-    expect(decls(phone, ".console-overlay")["min-height"]).toBe("0");
+  it("the phone block no longer stacks the brief line and the top 3: the collapsed bar replaces that", () => {
+    expect(phone).not.toMatch(/.console-(hud|brief|overlay)/);
   });
   it("the Library and Ask bottom sheets stop under the carousel", () => {
     // At 80dvh they reached 169px from the top, over the carousel that ends at 220px.
@@ -79,5 +76,25 @@ describe("phone (390 wide)", () => {
     expect(vars["--bottom-sheet-h"]).toMatch(/100dvh - var\(--top-h\) - var\(--carousel-h\)/);
     expect(decls(phone, ".console-left")["max-height"]).toBe("var(--bottom-sheet-h)");
     expect(decls(phone, ".console-right").height).toBe("var(--bottom-sheet-h)");
+  });
+});
+
+describe("the HUD collapses on the center's width", () => {
+  const collapsed = atRule(appCss, "@container center");
+  it("the center is a size container the query is keyed on", () => {
+    expect(decls(appCss, ".console-center").container).toBe("center / inline-size");
+    expect(appCss).toContain("@container center (max-width: 60rem)");
+    expect(collapsed).toContain(".hud-bar");
+  });
+  it("while collapsed, the stage ends above the bar, so nothing in the replay sits under it", () => {
+    // 1280x720 with both panels pinned, and a phone: the cards used to cover the playback bar and the scene picker.
+    expect(decls(collapsed, ".console-center > .stage").inset).toBe("0 0 var(--hud-bar-h) 0");
+    expect(decls(appCss, ".console-center")["--hud-bar-h"]).toBe("3rem");
+    expect(decls(collapsed, ".hud-bar").height).toBe("var(--hud-bar-h)");
+  });
+  it("the bar is hidden on a wide center, which keeps today's layout", () => {
+    const wide = appCss.replace(collapsed, "");
+    expect(decls(wide, ".hud-bar").display).toBe("none");
+    expect(decls(wide, ".hud-close").display).toBe("none");
   });
 });

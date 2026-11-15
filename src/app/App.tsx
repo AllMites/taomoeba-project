@@ -17,7 +17,8 @@ import { Rail, StatusStrip, TopBar } from "../shell/chrome.tsx";
 import { openRankOnHighlight } from "../shell/logic.ts";
 import Sheet from "../shell/Sheet.tsx";
 import SidePanel, { PanelHead } from "../shell/SidePanel.tsx";
-import TopForBase, { BriefLine } from "../top/index.tsx";
+import Hud from "../top/Hud.tsx";
+import TopForBase from "../top/index.tsx";
 import Trust from "../trust/index.tsx";
 import WhatIf from "../whatif/index.tsx";
 import "./app.css";
@@ -114,12 +115,7 @@ export default function App() {
           <Carousel base={base} habitats={habitats.status === "ready" ? habitats.data : null} />
           <Stage />
           <div className="console-ticks" aria-hidden="true" />
-          <div className="console-hud">
-            <div className="console-brief">
-              <BriefLine />
-            </div>
-            <div className="console-overlay">{base === "earth" ? <Earth /> : <TopForBase />}</div>
-          </div>
+          <Hud base={base} overlay={base === "earth" ? <Earth /> : <TopForBase />} />
           {view === "interpret" && (
             <Sheet view="interpret">
               <Brief />

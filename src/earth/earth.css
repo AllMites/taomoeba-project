@@ -2,14 +2,15 @@
 .earth {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
   max-height: 50vh;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: var(--space-4);
+  overflow: hidden;
   border-radius: var(--radius-2);
   min-width: 0;
 }
+/* The inner scroll area. While more is below, the last 3rem fades out, so text is never cut mid-sentence without a cue. */
+.earth-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-4); }
+.earth-scroll[data-more] { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent); }
+.earth-body { display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
 .earth-h { margin: 0; color: var(--color-text); }
 .earth-intro { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); }
 .earth-key { font-size: var(--text-sm); }
