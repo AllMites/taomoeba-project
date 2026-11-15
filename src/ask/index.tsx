@@ -4,7 +4,7 @@ import { useStore } from "../app/store.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { Panel } from "./chat.tsx";
 import { askForHabitat, MAX_ABOUT, readable, type AskResult } from "./respond.ts";
-import { historyFrom, startOver, suggestionsFor, type TurnState } from "./thread.ts";
+import { centredScrollTop, focusBackTo, historyFrom, startOver, suggestionsFor, type TurnState } from "./thread.ts";
 import "./ask.css";
 
 export { Answer, Composer, Panel, Steps, TurnView } from "./chat.tsx";
@@ -65,7 +65,8 @@ export default function Ask() {
     }
     if (!open && wasOpen.current) {
       const lost = document.activeElement === document.body || !!panel.current?.contains(document.activeElement);
-      if (lost && opener.current?.isConnected) opener.current.focus({ preventScroll: true });
+      const back = lost && focusBackTo(opener.current, [document.querySelector<HTMLElement>(".ask-pill"), document.getElementById("main")]);
+      if (back) back.focus({ preventScroll: true });
     }
     wasOpen.current = open;
   }, [open]);
@@ -147,7 +148,17 @@ export default function Ask() {
     setHighlightIds(ids);
     useConsole.getState().setView("rank");
     // New ids: the ranking lane scrolls to the first lit card itself. Same ids: nothing would fire, so go there once the list is up.
-    if (same) requestAnimationFrame(() => (document.querySelector<HTMLElement>('[data-lit="true"]') ?? document.getElementById("ranking-h"))?.scrollIntoView({ block: "center", behavior: calmMotion() ? "auto" : "smooth" }));
+    if (same) requestAnimationFrame(() => revealInList(document.querySelector<HTMLElement>('[data-lit="true"]') ?? document.getElementById("ranking-h")));
+  }
+  /** Scroll only the list that holds the card (the Rank sheet), never the console around it. */
+  function revealInList(el: HTMLElement | null) {
+    let list = el?.parentElement ?? null;
+    while (list && !/auto|scroll/.test(getComputedStyle(list).overflowY)) list = list.parentElement;
+    if (!el || !list) return;
+    const l = list.getBoundingClientRect();
+    const b = el.getBoundingClientRect();
+    const top = centredScrollTop({ scrollTop: list.scrollTop, scrollHeight: list.scrollHeight, clientHeight: list.clientHeight, top: l.top }, { top: b.top, height: b.height });
+    list.scrollTo({ top, behavior: calmMotion() ? "auto" : "smooth" });
   }
   function openExperiment(id: string) {
     if (narrow()) close(); // the drawer would open behind the sheet

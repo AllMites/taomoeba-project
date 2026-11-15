@@ -52,14 +52,6 @@ export type StepView = {
   word: string;
 };
 
-/** Before any question: how an answer is made, in plain words. These describe the live writer; each answer then shows what really ran. */
-export const IDLE_STEPS: StepView[] = [
-  { n: 1, state: "idle", word: "", text: "Search", small: "SI looks through the NASA fire experiment records and the team's data tables." },
-  { n: 2, state: "idle", word: "", text: "Pick", small: "The passages that answer your question most directly are kept." },
-  { n: 3, state: "idle", word: "", text: "Write", small: "When the SI writer is on, it writes short sentences. Each one copies a line from a source." },
-  { n: 4, state: "idle", word: "", text: "Check", small: "Code checks each sentence against its line. A second SI read compares them. Failures are dropped." },
-];
-
 /** A question is on its way: only step 1 is really running, and nothing about the later steps is claimed yet. */
 export const WORKING_STEPS: StepView[] = [
   { n: 1, state: "active", word: "Working", text: "Searching the records" },
@@ -154,4 +146,22 @@ export function startOver(d: { abort: () => void; clearTurns: () => void; clearH
 /** What a key press in the composer does: Enter sends, Shift+Enter is a new line, and Enter while composing text (IME) is left alone. */
 export function composerKey(e: { key: string; shiftKey: boolean; isComposing?: boolean }): "send" | "newline" {
   return e.key === "Enter" && !e.shiftKey && !e.isComposing ? "send" : "newline";
+}
+
+type Place = { isConnected: boolean; getClientRects: () => { length: number } };
+/**
+ * Where focus goes when the panel closes: the control that opened it, if it is still on screen; else the first
+ * of the fallbacks that is (the Ask SI button, then the main area). A panel open from page load has no opener,
+ * and an opener inside a sheet that has since closed is hidden: without this, focus falls to the page.
+ */
+export const focusBackTo = <T extends Place>(opener: T | null, fallbacks: (T | null)[]): T | null =>
+  [opener, ...fallbacks].find((el): el is T => !!el && el.isConnected && el.getClientRects().length > 0) ?? null;
+
+/**
+ * The scrollTop that puts a box in the middle of its own scrolling list, kept within the list's range.
+ * Used instead of scrollIntoView, which also scrolls every ancestor, the page included.
+ */
+export function centredScrollTop(list: { scrollTop: number; scrollHeight: number; clientHeight: number; top: number }, box: { top: number; height: number }): number {
+  const top = list.scrollTop + (box.top - list.top) - (list.clientHeight - box.height) / 2;
+  return Math.round(Math.max(0, Math.min(top, list.scrollHeight - list.clientHeight)));
 }

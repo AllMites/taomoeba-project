@@ -55,7 +55,6 @@
 .ask-body { position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-4); }
 .ask-empty { display: grid; gap: var(--space-3); }
 .ask-empty-lead { margin: 0; color: var(--color-text-muted); font-size: var(--text-sm); }
-.ask-empty .ask-examples + .ask-empty-lead { margin-top: var(--space-3); }
 
 /* ---- Steps: a list; a tick and a word say what is done ---- */
 .ask-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-3); }

@@ -4,7 +4,7 @@ import { expect, it, vi } from "vitest";
 import { DRAG_TYPE } from "../app/console.ts";
 import { Answer, Composer, isCardDrag, Panel, Steps, TurnView } from "./chat.tsx";
 import { askRecords, NO_STEPS, type AskOutcome, type AskResult } from "./respond.ts";
-import { composerKey, filledSteps, FOLLOW_UPS, historyFrom, IDLE_STEPS, modelLabel, startOver, suggestionsFor, summaryLine, WORKING_STEPS, writerLine, type TurnState } from "./thread.ts";
+import { centredScrollTop, composerKey, filledSteps, focusBackTo, FOLLOW_UPS, historyFrom, modelLabel, startOver, suggestionsFor, summaryLine, WORKING_STEPS, writerLine, type TurnState } from "./thread.ts";
 
 const noop = () => {};
 const claim = { id: "ask-1", investigationId: "PSI-20", kind: "finding" as const, text: "Silicone burned.", sourceIds: ["psi:PSI-20"], excerpt: "e" };
@@ -137,7 +137,6 @@ it("nothing matched is said in one plain line", () => {
 
 it("no step line says AI, according to NASA, or goes past 25 words", () => {
   const all = [
-    ...IDLE_STEPS,
     ...WORKING_STEPS,
     ...filledSteps(result()),
     ...filledSteps(result({ mode: "extractive", model: null, degraded: true, steps: { ...NO_STEPS, dropped: 2, kept: 1 } })),
@@ -163,10 +162,11 @@ it("the writer line after a fallback whose sentences failed the checks does not 
 });
 
 // ---- the panel ----
-it("the empty panel explains the steps and offers the examples; the composer is labelled", () => {
+it("the empty panel offers the examples and leaves how an answer is made to the Library; the composer is labelled", () => {
   const html = panel([]);
-  expect(html).toContain("How an answer is made");
-  for (const s of IDLE_STEPS) expect(html).toContain(s.small!.replace(/'/g, "&#x27;"));
+  // The Library panel ("How an answer is made") and the Trust panel already explain it; each answer shows its own steps.
+  expect(html).not.toContain("How an answer is made");
+  expect(html).not.toContain('class="ask-steps"');
   expect(html).toContain("What caused the Apollo 1 fire?");
   expect(html).toContain('<label for="ask-compose" class="ask-compose-label">Your question</label>');
   expect(html).toContain("Answering for: Moon Base");
@@ -328,14 +328,35 @@ it("the panel fills the box the shell gives it: never fixed to the window, and i
 });
 
 // ---- the page never moves uninvited ----
-it("a reply never scrolls the page: the only page scroll is the Show control; the chat list scrolls itself", () => {
+it("nothing in the panel scrolls the console: the chat list and the Rank sheet's list scroll themselves", () => {
+  // In the one-screen console scrollIntoView also scrolled the document: Show moved the whole console up 88px (headless Chrome, 1440x900).
   const src = readFileSync(new URL("./index.tsx", import.meta.url), "utf8");
   const calls = src.match(/scrollIntoView|window\.scrollTo|scrollBy\(/g) ?? [];
-  expect(calls).toEqual(["scrollIntoView"]);
+  expect(calls).toEqual([]);
   const show = src.slice(src.indexOf("function showExperiments"), src.indexOf("function openExperiment"));
-  expect(show).toContain("scrollIntoView");
+  expect(show).toContain("revealInList(");
+  expect(show).toContain("list.scrollTo(");
   expect(src).toMatch(/const LIGHT_ON_ANSWER = false/);
   expect(src).toContain("el.scrollTo("); // the panel's own list, not the page
+});
+
+it("Show centres the lit card in its own list, within the list's range", () => {
+  const list = { scrollTop: 100, scrollHeight: 2000, clientHeight: 600, top: 150 };
+  expect(centredScrollTop(list, { top: 950, height: 200 })).toBe(100 + 800 - 200);
+  expect(centredScrollTop(list, { top: 160, height: 200 })).toBe(0);
+  expect(centredScrollTop(list, { top: 3000, height: 200 })).toBe(1400);
+});
+
+it("closing the panel gives focus back to its opener, or to the Ask SI button, never to the page", () => {
+  const el = (name: string, connected = true, shown = true) => ({ name, isConnected: connected, getClientRects: () => ({ length: shown ? 1 : 0 }) });
+  const pill = el("pill");
+  const main = el("main");
+  expect(focusBackTo(el("opener"), [pill, main])?.name).toBe("opener");
+  expect(focusBackTo(null, [pill, main])?.name).toBe("pill"); // open from page load: no opener
+  expect(focusBackTo(el("chip in a closed sheet", true, false), [pill, main])?.name).toBe("pill");
+  expect(focusBackTo(el("gone", false), [null, main])?.name).toBe("main");
+  const src = readFileSync(new URL("./index.tsx", import.meta.url), "utf8");
+  expect(src).toMatch(/focusBackTo\(opener\.current, \[document\.querySelector<HTMLElement>\("\.ask-pill"\), document\.getElementById\("main"\)\]\)/);
 });
 
 it("a saved answer says it is saved: no search, writer or check is claimed for now", () => {
