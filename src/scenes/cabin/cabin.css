@@ -1,0 +1,124 @@
+/* The cabin replay. Chips are glass with a leader line down-left to the point they name (the anchor). */
+.cabin { position: absolute; inset: 0; }
+.cabin canvas { touch-action: none; }
+
+.scene-chips { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.scene-chip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  pointer-events: none;
+  width: max-content;
+  /* The anchor is the top-left of this box; the chip sits up and right of it with a leader line. */
+  transform: translate(0, -100%);
+  padding: 0 0 14px 14px;
+}
+.scene-chip::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  border-left: 1px solid var(--color-text);
+  transform: skewX(45deg);
+  transform-origin: bottom left;
+  opacity: 0.7;
+}
+.scene-chip-below, .scene-chip-flip { transform: none; padding: 14px 0 0 14px; }
+.scene-chip-below::before, .scene-chip-flip::before { top: 0; bottom: auto; transform: skewX(-45deg); transform-origin: top left; }
+/* Up and to the left of the anchor, the leader line down to it on the right. */
+.scene-chip-left { transform: translate(-100%, -100%); padding: 0 14px 14px 0; }
+.scene-chip-left::before { left: auto; right: 0; border-left: 0; border-right: 1px solid var(--color-text); transform: skewX(-45deg); transform-origin: bottom right; }
+.scene-chip-below.scene-chip-left { transform: translate(-100%, 0); padding: 14px 14px 0 0; }
+.scene-chip-below.scene-chip-left::before { top: 0; bottom: auto; transform: skewX(45deg); transform-origin: top right; }
+.scene-chip-box {
+  display: grid;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: var(--radius-1);
+  max-width: 22ch;
+}
+.scene-chip-text { font-size: var(--text-sm); color: var(--color-text); line-height: 1.25; }
+.scene-chip-sub { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* On a narrow stage the caption already names the air; the chips would only crowd the console's glass. */
+@container stage (max-width: 37.5rem) {
+  .scene-chips { display: none; }
+}
+
+/*
+ * Model burn panel: glass at the stage's left edge, between the caption row (and the playback bar when it sits
+ * there) and the brief at the bottom left. On a phone it folds behind a "Model" button.
+ */
+.burn {
+  position: absolute;
+  z-index: 5;
+  left: var(--space-4);
+  top: var(--replay-top, 10rem);
+  /* Stops above the brief at the bottom left (measured by the stage), or a fixed gap where it is not measured. */
+  bottom: calc(var(--replay-brief, calc(var(--replay-bottom, 4rem) + 10rem)) + var(--space-2));
+  width: 16.5rem;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
+.burn-toggle { display: none; }
+.burn-panel {
+  pointer-events: auto;
+  max-height: 100%;
+  overflow: auto;
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-2);
+  color: var(--color-text);
+}
+.burn-h { margin: 0; font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
+.burn-field { display: grid; grid-template-columns: 6rem 1fr; align-items: center; gap: var(--space-2); font-size: var(--text-sm); }
+.burn-field select {
+  min-height: 2.75rem;
+  min-width: 0;
+  padding: 0 var(--space-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-1);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+.burn-field select:focus-visible, .burn-check input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.burn-ro { display: grid; gap: 2px; margin: var(--space-1) 0 0; font-size: var(--text-xs); }
+.burn-ro div { display: flex; justify-content: space-between; gap: var(--space-2); }
+.burn-ro dt { color: var(--color-text-muted); }
+.burn-ro dd { margin: 0; color: var(--color-text); }
+.burn-support, .burn-none { margin: 0; font-size: var(--text-xs); line-height: 1.45; }
+.burn-mark { display: inline-block; width: 0.75rem; height: 0.75rem; margin-right: var(--space-1); vertical-align: -1px; border: 2px solid var(--color-text); border-radius: var(--radius-full); }
+.burn-mark[data-mark="solid"] { background: var(--color-text); }
+.burn-mark[data-mark="half"] { background: linear-gradient(90deg, var(--color-text) 50%, transparent 50%); }
+.burn-mark[data-mark="dashed"] { border-style: dashed; }
+.burn-check { display: flex; align-items: center; gap: var(--space-2); min-height: 2.75rem; font-size: var(--text-sm); cursor: pointer; }
+.burn-check input { width: 1.125rem; height: 1.125rem; accent-color: var(--color-text); }
+
+/* The narrow center: the brief and the top-3 card fill the bottom; the panel stops above the brief. */
+@container stage (max-width: 80rem) {
+  .burn { width: 15rem; }
+}
+/* A phone: a "Model" button; the panel opens over the stage. */
+@container stage (max-width: 37.5rem) {
+  .burn { left: var(--space-2); right: var(--space-2); width: auto; bottom: var(--space-2); }
+  .burn-toggle {
+    display: block;
+    align-self: flex-start;
+    min-height: 2.75rem;
+    padding: 0 var(--space-4);
+    border-radius: var(--radius-full);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-sm);
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .burn-panel { display: none; margin-top: var(--space-2); }
+  .burn[data-open] .burn-panel { display: grid; }
+}

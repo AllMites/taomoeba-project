@@ -1,10 +1,9 @@
-// What the center replay shows for a picked base. Pure, so the mapping is tested without a browser.
+// What the center replay shows for a picked base and scene. Pure, so the mapping is tested without a browser.
 import { habitatOf, type BaseId } from "../app/console.ts";
 import type { HabitatId, SceneId } from "../contracts/index.ts";
 import { compareLine, EARTH_LINE, LIMITS } from "./lunar/copy.ts";
-
-/** Past = the Saffire fire that really burned. Now = a flame drawn in the picked base's air. */
-export type When = "past" | "now";
+import type { Mode } from "./playback.ts";
+import { sceneFor } from "./timelines.ts";
 
 export type Replay = {
   scene: SceneId;
@@ -18,44 +17,30 @@ export type Replay = {
   caption: string;
   /** The longer note behind the chip's "About" disclosure. */
   notes: string[];
-  /** Flames the scene draws side by side (0: the scene places its own fire). The stage clears room for them. */
-  flames: 0 | 1 | 2;
 };
 
 const ILLUSTRATION = LIMITS[0];
 
-export function replayFor(base: BaseId, when: When, label?: string): Replay {
+export function replayFor(base: BaseId, mode: Mode, label?: string): Replay {
   const habitat = habitatOf(base);
-  if (when === "past") {
+  const scene = sceneFor(mode);
+  if (scene === "saffire") {
     return {
-      scene: "saffire",
+      scene,
       habitat,
       poster: "/img/scenes/saffire.webp",
-      caption: "Past: SAFFIRE-II, a real fire inside a cargo ship. Timing from the run table.",
+      caption: "A real fire: SAFFIRE-II, a fabric strip burning inside a cargo ship. Timing from the run table.",
       notes: [],
-      flames: 0,
     };
   }
-  if (base === "moon" || base === "rover") {
-    return {
-      scene: "lunar",
-      habitat,
-      poster: `/img/scenes/lunar-${base}.webp`,
-      posterNarrow: `/img/scenes/lunar-${base}-narrow.webp`,
-      caption: `Now: station air beside ${label ?? "your base"} air. ${ILLUSTRATION}`,
-      notes: [LIMITS[1], compareLine(false, false)],
-      flames: 2,
-    };
-  }
-  if (base === "earth") {
-    return {
-      scene: "lunar",
-      habitat,
-      poster: "/img/scenes/lunar-iss.webp",
-      caption: `On Earth: the same air at 1 g beside weightless. ${ILLUSTRATION}`,
-      notes: [EARTH_LINE],
-      flames: 2,
-    };
-  }
-  return { scene: "lunar", habitat, poster: "/img/scenes/lunar-iss.webp", caption: `Now: a flame in station air. ${ILLUSTRATION}`, notes: [compareLine(true, true)], flames: 1 };
+  const where = base === "earth" ? "a cabin on Earth, at 1 g" : base === "iss" ? "a station module" : `the ${label ?? "base"} cabin`;
+  const surface = base === "moon" || base === "rover";
+  return {
+    scene,
+    habitat,
+    poster: surface ? `/img/scenes/lunar-${base}.webp` : "/img/scenes/lunar-iss.webp",
+    posterNarrow: surface ? `/img/scenes/lunar-${base}-narrow.webp` : undefined,
+    caption: mode === "spread" ? `Fire spreading in ${where}. ${ILLUSTRATION}` : `A fuel droplet burning in ${where}. ${ILLUSTRATION}`,
+    notes: base === "earth" ? [EARTH_LINE] : base === "iss" ? [compareLine(true, true)] : [LIMITS[1]],
+  };
 }

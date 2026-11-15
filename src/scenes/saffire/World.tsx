@@ -6,6 +6,8 @@ import { FlameFront } from "../../fx/index.tsx";
 import { SET_PAINT } from "./paint.ts";
 import { ANCHORS, buildSet, SAMPLE_LEN, SAMPLE_W, sampleZ } from "./set.ts";
 import { frameAt, loopSpan, PLAYBACK_SPEED, type ReplayFrame, type SaffireRecord } from "./timeline.ts";
+import { Navigate } from "../cabin/Navigate.tsx";
+import { usePlayback } from "../playback.ts";
 
 export type LeaderRefs = {
   root: HTMLElement | null;
@@ -35,7 +37,7 @@ const POSES: Record<"wide" | "tall", { establish: Pose; close: Pose }> = {
   // Landscape box: start outside the flow unit, looking down the module, then push in low over the window.
   wide: {
     establish: { pos: new Vector3(-0.62, 0.62, 1.9), look: new Vector3(0.02, -0.02, -0.4) },
-    close: { pos: new Vector3(-0.26, 0.5, 0.86), look: new Vector3(0.04, 0.0, -0.7) },
+    close: { pos: new Vector3(-0.24, 0.4, 0.56), look: new Vector3(0.03, -0.01, -0.1) },
   },
   // Portrait box (phone): higher, so the strip sits in the band between the readouts and the note.
   tall: {
@@ -64,6 +66,8 @@ function CameraRig({ rec, calm, clock }: Pick<Props, "rec" | "calm" | "clock">) 
     invalidate();
   }, [camera, aspect, invalidate]);
   useFrame(() => {
+    // The viewer has the camera (Navigate): the rig waits until "Reset view".
+    if (usePlayback.getState().steered) return;
     const start = loopSpan(rec).start;
     const u = calm ? 1 : Math.min(1, Math.max(0, (clock.current - start) / (DOLLY_END_S - start)));
     const k = u * u * (3 - 2 * u);
@@ -72,7 +76,7 @@ function CameraRig({ rec, calm, clock }: Pick<Props, "rec" | "calm" | "clock">) 
     camera.lookAt(look);
     camera.updateMatrixWorld();
   });
-  return null;
+  return <Navigate calm={calm} follow={look} minDistance={0.15} maxDistance={2.5} />;
 }
 
 function SetPieces({ rec }: { rec: SaffireRecord }) {

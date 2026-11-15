@@ -5,6 +5,8 @@ import { useDataset } from "../../data/useDataset.ts";
 import { frameAt, loopSpan, midBurn, statusLine, type ReplayFrame, type SaffireRecord } from "./timeline.ts";
 import { World, type LeaderRefs } from "./World.tsx";
 import "./saffire.css";
+import { usePlayback } from "../playback.ts";
+import { saffireTimeline } from "../timelines.ts";
 
 const POSTER = "/img/scenes/saffire.webp";
 const NARROW_PX = 640;
@@ -89,7 +91,8 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
   const callouts = useCallouts(ready, habitat?.id);
   const webgl = useMemo(hasWebGL, []);
   const [lost, setLost] = useState(false);
-  const [playing, setPlaying] = useState(!calm);
+  // The stage's playback bar owns time: this scene registers its timeline and follows the seeker.
+  const playing = usePlayback((s) => s.playing);
   const [visible, setVisible] = useState(true);
   const [narrow, setNarrow] = useState(false);
   const [active, setActive] = useState(0);
@@ -103,10 +106,19 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
   const still = calm || !webgl || lost;
   useEffect(() => {
     if (!ready) return;
-    clock.current = still ? midBurn(ready) : loopSpan(ready).start;
+    const pb = usePlayback.getState();
+    pb.setTimeline(saffireTimeline(ready));
+    if (still) pb.seek(midBurn(ready));
+    clock.current = usePlayback.getState().t;
     setHud(frameAt(ready, clock.current));
-    setPlaying(!still);
   }, [ready, still]);
+  useEffect(
+    () =>
+      usePlayback.subscribe((s) => {
+        clock.current = s.t;
+      }),
+    [],
+  );
 
   // Size class and on-screen state.
   useEffect(() => {
@@ -135,13 +147,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
       setHud(f);
     }
   }, []);
-  const onEnd = useCallback(() => setPlaying(false), []);
-
-  const replay = () => {
-    if (!ready) return;
-    clock.current = loopSpan(ready).start;
-    setPlaying(true);
-  };
+  const onEnd = useCallback(() => {}, []);
 
   if (rec === "error") {
     return (
@@ -178,8 +184,8 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
           <World
             rec={ready}
             calm={calm}
-            playing={playing}
-            loop={!calm}
+            playing={false}
+            loop={false}
             clock={clock}
             onTick={onTick}
             onEnd={onEnd}
@@ -253,18 +259,6 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
 
       {ready && (
         <div className="sf-controls">
-          {useCanvas && (
-            <>
-              <button type="button" className="sf-btn glass" onClick={replay}>
-                {calm && !playing ? "Play once" : "Replay"}
-              </button>
-              {(!calm || playing) && (
-                <button type="button" className="sf-btn glass" aria-pressed={!playing} onClick={() => setPlaying((p) => !p)}>
-                  {playing ? "Pause" : "Play"}
-                </button>
-              )}
-            </>
-          )}
           {narrow && callouts.length > 1 && (
             <div className="sf-pager" role="group" aria-label="Notes">
               {callouts.map((c, i) => (

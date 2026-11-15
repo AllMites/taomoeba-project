@@ -42,7 +42,7 @@ function makeGlow(color: string) {
   });
 }
 
-function Glow({ size, o2Percent, pressureKPa, warm }: { size: number; o2Percent: number; pressureKPa?: number; warm: boolean }) {
+export function Glow({ size, o2Percent, pressureKPa, warm }: { size: number; o2Percent: number; pressureKPa?: number; warm: boolean }) {
   const mat = useMemo(() => makeGlow(warm ? FX_PAINT.soot : FX_PAINT.light), [warm]);
   useEffect(() => () => mat.dispose(), [mat]);
   const look = flameLook(o2Percent, pressureKPa);

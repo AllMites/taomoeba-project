@@ -121,46 +121,168 @@
 }
 .stage-info-body p { margin: 0; font-size: var(--text-sm); line-height: 1.5; color: var(--color-text); }
 
-/* Past | Now: selected is the white fill, the other is clear. */
-.stage-when {
+/* Scene picker: top right, across from the caption. A disclosure, so it stays one chip tall until opened. */
+.stage-pick {
+  position: absolute;
+  z-index: 6;
+  top: var(--stage-top);
+  right: var(--space-4);
+}
+.stage-pick-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  list-style: none;
+  cursor: pointer;
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  white-space: nowrap;
+}
+.stage-pick-btn::-webkit-details-marker { display: none; }
+.stage-pick-btn:hover { background: var(--glass-hi); }
+.stage-pick-btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.stage-pick-label { color: var(--color-text-muted); font-size: var(--text-xs); }
+.stage-pick[open] svg { transform: rotate(180deg); }
+.stage-pick-list {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-2));
+  width: min(22rem, calc(100cqw - 2 * var(--space-4)));
+  margin: 0;
+  padding: var(--space-1);
+  border-radius: var(--radius-2);
+  display: grid;
+  gap: 2px;
+}
+.stage-pick-opt {
+  display: grid;
+  gap: 2px;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-1);
+  cursor: pointer;
+  color: var(--color-text);
+}
+.stage-pick-opt:hover { background: var(--glass-hi); }
+.stage-pick-opt:has(input:checked) { background: var(--color-pill); color: var(--color-pill-text); }
+.stage-pick-opt:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.stage-pick-opt-name { font-size: var(--text-sm); font-weight: 600; }
+.stage-pick-opt-line { font-size: var(--text-xs); line-height: 1.4; }
+
+/*
+ * One playback bar. Wide box: bottom centre, in the gap between the brief (left, 44ch) and the top-3 card (right,
+ * 320px), as wide as that gap allows. Under 80rem those two cards leave too little room: the bar takes the row under
+ * the caption.
+ */
+.stage-play {
   position: absolute;
   z-index: 5;
   left: 50%;
   bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-5));
   transform: translateX(-50%);
-  display: flex;
-  gap: var(--space-1);
-  margin: 0;
-  padding: var(--space-1);
-  border-radius: var(--radius-full);
-}
-.stage-when-opt {
-  display: inline-flex;
+  width: min(40rem, calc(100cqw - 2 * 28rem));
+  display: grid;
+  grid-template-columns: 2.75rem 1fr auto;
+  grid-template-areas: "btn seek time" "phase phase phase";
   align-items: center;
-  justify-content: center;
-  min-width: 4.5rem;
+  column-gap: var(--space-2);
+  padding: var(--space-1) var(--space-3) var(--space-2) var(--space-1);
+  border-radius: var(--radius-2);
+}
+.stage-play-btn {
+  grid-area: btn;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-pill);
+  color: var(--color-pill-text);
+  cursor: pointer;
+}
+.stage-play-btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.stage-seek {
+  grid-area: seek;
+  width: 100%;
+  height: 2.75rem;
+  margin: 0;
+  accent-color: var(--color-text);
+  cursor: pointer;
+}
+.stage-seek:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-radius: var(--radius-1); }
+.stage-time { grid-area: time; font-size: var(--text-xs); color: var(--color-text); white-space: nowrap; }
+.stage-rate { color: var(--color-text-muted); }
+.stage-phase {
+  grid-area: phase;
+  padding-left: calc(2.75rem + var(--space-2));
+  font-size: var(--text-xs);
+  line-height: 1.3;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Navigation: the hint until the first drag, then "Reset view" once the camera is the viewer's. */
+.stage:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.stage-scene canvas { touch-action: none; overscroll-behavior: contain; }
+.stage-nav {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-5) + 4.75rem + var(--space-2));
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.stage-hint {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-full);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+.stage-hint-touch { display: none; }
+@media (pointer: coarse) {
+  .stage-hint-fine { display: none; }
+  .stage-hint-touch { display: inline; }
+}
+.stage-reset {
   min-height: 2.75rem;
   padding: 0 var(--space-4);
   border-radius: var(--radius-full);
+  font: inherit;
+  font-size: var(--text-sm);
   color: var(--color-text);
   cursor: pointer;
+  pointer-events: auto;
 }
-.stage-when-opt:hover { background: var(--glass-hi); }
-.stage-when-opt:has(input:checked) { background: var(--color-pill); color: var(--color-pill-text); }
-.stage-when-opt:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.stage-reset:hover { background: var(--glass-hi); }
+.stage-reset:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
-/* The brief and the top-3 card fill the bottom edge: the switch joins the caption's row, on the right. */
-@container stage (max-width: 64rem) {
-  .stage-when { left: auto; right: var(--space-4); bottom: auto; top: var(--stage-top); transform: none; }
-  .stage-caption { right: calc(var(--space-4) + var(--stage-when-w, 10rem) + var(--space-2)); }
-  .stage-scene { --replay-top: calc(var(--stage-top) + 3.25rem + var(--space-4)); --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4)); }
+/* The brief and the top-3 card leave no room at the bottom: the bar takes the row under the caption and the picker. */
+@container stage (max-width: 80rem) {
+  .stage-caption { right: calc(var(--space-4) + var(--stage-pick-w, 17rem) + var(--space-2)); }
+  .stage-play { left: var(--space-4); right: var(--space-4); width: auto; transform: none; bottom: auto; top: calc(var(--stage-top) + 3.25rem + var(--space-2)); }
+  .stage-nav { left: auto; right: var(--space-4); transform: none; bottom: auto; top: calc(var(--stage-top) + 3.25rem + 4.75rem + var(--space-3)); }
+  .stage-scene { --replay-top: calc(var(--stage-top) + 3.25rem + 4.75rem + var(--space-4)); --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4)); }
+  /* No room for the hint beside the flame's labels here; the stage's label still says how to move. */
+  .stage-hint { display: none; }
 }
-/* A phone: a compact switch and smaller caption type, so the row stays one chip tall where it can. */
+/* A phone: a compact picker and smaller caption type. */
 @container stage (max-width: 37.5rem) {
-  .stage-caption { --stage-when-w: 8rem; }
-  .stage-caption, .stage-when { --space-4: var(--space-2); }
-  .stage-when-opt { min-width: 3.5rem; padding: 0 var(--space-2); }
+  .stage-caption { --stage-pick-w: 9.5rem; }
+  .stage-caption, .stage-pick, .stage-play, .stage-nav { --space-4: var(--space-2); }
+  .stage-pick-label { display: none; }
+  .stage-pick-name { max-width: 7rem; overflow: hidden; text-overflow: ellipsis; }
   .stage-caption-text > p { font-size: var(--text-xs); }
+  .stage-hint { font-size: var(--text-xs); }
 }
 
 @media (prefers-reduced-motion: reduce) {
