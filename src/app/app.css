@@ -326,8 +326,9 @@ body { overflow: hidden; }
 .sheet-scrim { position: absolute; inset: 0; z-index: 3; background: var(--scrim); }
 .sheet {
   position: absolute;
-  inset: calc(var(--carousel-h) + var(--space-5)) var(--space-5) var(--space-5);
-  z-index: 4;
+  /* Fills the whole center, over the base carousel: the reading space matters more than the picker while a sheet is open. */
+  inset: var(--space-3);
+  z-index: 6;
   display: flex;
   flex-direction: column;
   border-radius: var(--radius-2);

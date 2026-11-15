@@ -16,18 +16,15 @@ export interface InertNode {
 }
 
 /**
- * Makes what a sheet covers inert, so Tab cannot walk behind it. Wide screen: the rest of the center (replay,
- * brief line, top 3), but not the carousel, which sits above the dimming. Phone: the sheet is full screen, so the
- * whole console except the Ask panel, which opens over sheets. Returns the undo; leaves alone what was inert already.
+ * Makes what a sheet covers inert, so Tab cannot walk behind it. Wide screen: the rest of the center (carousel,
+ * replay, brief line, top 3). Phone: the sheet is full screen, so the whole console except the Ask panel, which
+ * opens over sheets. Returns the undo; leaves alone what was inert already.
  */
 export function inertBehind(sheet: InertNode, phone: boolean): () => void {
   const center = sheet.parentElement;
   if (!center) return () => {};
   const keep = (el: InertNode) =>
-    el === sheet ||
-    el.classList.contains("sheet-scrim") ||
-    el.classList.contains("console-right") ||
-    (!phone && el.classList.contains("console-carousel"));
+    el === sheet || el.classList.contains("sheet-scrim") || el.classList.contains("console-right");
   const around = phone && center.parentElement ? [...center.parentElement.children].filter((el) => el !== center) : [];
   const covered = [...center.children, ...around].filter((el) => !keep(el) && !el.hasAttribute("inert"));
   for (const el of covered) el.setAttribute("inert", "");

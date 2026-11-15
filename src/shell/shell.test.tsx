@@ -135,10 +135,10 @@ function consoleTree() {
 }
 
 describe("what a sheet covers", () => {
-  it("on a wide screen, Tab cannot reach the replay, brief or top 3 behind a sheet; the carousel and panels stay live", () => {
+  it("on a wide screen, Tab cannot reach the carousel, replay, brief or top 3 behind a sheet; the panels stay live", () => {
     const { sheet, inert } = consoleTree();
     const undo = inertBehind(sheet, false);
-    expect(inert()).toEqual(["stage", "console-ticks", "console-hud"]);
+    expect(inert()).toEqual(["console-carousel", "stage", "console-ticks", "console-hud"]);
     undo();
     expect(inert()).toEqual([]);
   });

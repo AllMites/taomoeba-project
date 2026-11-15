@@ -40,6 +40,10 @@ describe("the console never scrolls", () => {
     expect(decls(appCss, ".console-center").overflow).toBe("clip");
     expect(decls(appCss, ".sheet").overflow).toBe("clip");
   });
+  it("an open sheet fills the center and covers the base carousel", () => {
+    expect(decls(appCss, ".sheet").inset).toBe("var(--space-3)");
+    expect(Number(decls(appCss, ".sheet")["z-index"])).toBeGreaterThan(Number(decls(appCss, ".console-carousel")["z-index"]));
+  });
   it("absolute elements inside the panels stay inside them instead of growing the page", () => {
     // The Library's visually hidden heading sat at its static place 2,700px down and made <html> scrollable.
     expect(decls(appCss, ".console").position).toBe("relative");
