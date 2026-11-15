@@ -408,3 +408,19 @@ Replace each cube stand-in with a shaped prop: cloth as a draped, slightly folde
 - A test that every base defines all required story anchors and all three start points, inside its room bounds.
 - Screenshots of each base at home pose and one close view of the props, at 1440x900 and 390x844, saved with the lane report. The coordinator looks at them before shipping.
 - Draw calls and first-frame time per base, reported.
+
+### 17.5 Material details as callouts in the scene (owner request, 2026-11-15)
+
+The details of an object no longer open as a card in the side panel. They show in the scene, as a labelled diagram does: a glass card joined to the object by a thin leader line.
+
+- **Hover** an object (pointer): a small preview callout shows its name, whether it burns here, and one line of why. It goes when the pointer leaves.
+- **Click** an object (or tap, or Enter on its row in the panel list): the callout is pinned and shows the full details: name, burns or not and why, "How we know" with the record, "Start a fire here" where the object is a start point, and "Ask about this". The object keeps its outline while pinned.
+- **Deselect** (click the object again, click empty scene, the callout's close button, or Escape): the callout goes. Nothing shows for an object that is neither hovered nor pinned.
+- One pinned callout at a time. A hover preview may show beside a pinned one.
+- The callout follows the object as the camera orbits, pans and zooms: its anchor is the object's projected position, re-computed on every camera change (the existing `project()` in `layout.ts`). The card itself stays upright, at a fixed readable size, and never scales with distance.
+- The leader line runs from the object's anchor point to the nearest edge of the card: one hairline, with a small dot at the object end.
+- The card stays inside the stage and out of the keep-out boxes (`zone.ts`: caption, playback bar, top-3 card, scenario panel, bottom bar). When it cannot sit beside the object it moves to the nearest free side and the line follows.
+- When the object is behind the camera or outside the view, the preview hides; a pinned callout docks at the nearest stage edge with its line pointing off-screen.
+- The panel keeps the object list as the keyboard and screen-reader path: each row is a button, `aria-pressed` when pinned, and the pinned details are also announced (aria-live polite).
+- Narrow center and phones: there is no hover. A tap pins. The pinned callout is at most 60% of the stage width, with inner scroll.
+- Checks: a test for the three states (none, preview, pinned) and for deselect; a test that the card position stays inside the stage and out of each keep-out box for a set of anchor points; seen in a real browser while orbiting.
