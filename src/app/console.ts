@@ -14,7 +14,7 @@ export const BASE_ORDER: BaseId[] = ["iss", "moon", "rover", "earth"];
 export const habitatOf = (base: BaseId): HabitatId => (base === "earth" ? "iss" : base);
 
 /** What sits over the replay. "stage" means no sheet is open. */
-export type View = "stage" | "interpret" | "rank" | "compare" | "models" | "graph";
+export type View = "stage" | "interpret" | "rank" | "compare" | "materials" | "models" | "graph";
 
 export interface ConsoleState {
   base: BaseId;
@@ -32,7 +32,7 @@ export interface ConsoleState {
   clearAskAbout: () => void;
 }
 
-const VIEWS: View[] = ["stage", "interpret", "rank", "compare", "models", "graph"];
+const VIEWS: View[] = ["stage", "interpret", "rank", "compare", "materials", "models", "graph"];
 
 /**
  * First state, from the URL so any state can be linked, screenshotted and filmed:

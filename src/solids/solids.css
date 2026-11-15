@@ -1,0 +1,57 @@
+/* "Solid materials in microgravity". Monochrome: marks differ by shape, never by colour. Tokens only. */
+/* No box of its own: the section sits inside a glass sheet, which is the surface. */
+.solids { min-width: 0; }
+.solids-intro { margin: 0 0 var(--space-5); max-width: 62ch; color: var(--color-text-muted); }
+.solids-card { display: grid; gap: var(--space-3); padding: var(--space-4); margin-bottom: var(--space-5); border: 1px solid var(--line); border-radius: var(--radius-1); background: transparent; min-width: 0; }
+.solids-h3 { margin: 0; font-size: var(--text-lg, 1.125rem); }
+.solids-small { margin: 0; font-size: var(--text-sm); }
+.solids-block { display: block; }
+.solids-callout { margin: 0; padding: var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-1); background: var(--glass-hi); max-width: 70ch; }
+.solids-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); font-size: var(--text-sm); }
+.solids-legend li { display: inline-flex; align-items: center; gap: var(--space-1); }
+.solids-svg { width: 100%; height: auto; max-width: 52rem; display: block; overflow: visible; }
+.sm-fill { fill: var(--color-text); }
+.sm-open { fill: var(--color-bg); stroke: var(--color-text); stroke-width: 1.6; }
+.sm-cross { stroke: var(--color-text-muted); stroke-width: 2; fill: none; }
+.sm-path { stroke: var(--color-text-muted); stroke-width: 1.2; opacity: 0.7; }
+.sm-test:hover .sm-path { opacity: 1; stroke: var(--color-text); }
+.sm-grid { stroke: var(--line); stroke-width: 1; }
+.sm-axis { stroke: var(--line-strong); stroke-width: 1; }
+.sm-tick { fill: var(--label); font-size: 12px; font-family: var(--font-mono); }
+.sm-hab-label, .sm-gap { fill: var(--color-text-muted); font-size: 12px; font-family: var(--font-sans); }
+.sm-title { fill: var(--color-text-muted); font-size: 12px; font-family: var(--font-sans); }
+.sm-gap { fill: var(--color-text); font-weight: 600; }
+.sm-hatch { stroke: var(--line-strong); stroke-width: 1; }
+.sm-hab { stroke: var(--color-text-muted); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.sm-hab.strong { stroke: var(--color-text); stroke-width: 1.6; }
+.solids-findings { margin: 0; padding-left: 1.2rem; display: grid; gap: var(--space-1); max-width: 70ch; }
+.solids-details summary { cursor: pointer; min-height: 2.75rem; display: flex; align-items: center; }
+.solids-details[open] { display: grid; gap: var(--space-2); justify-items: start; }
+.solids-scroll { overflow-x: auto; max-width: 100%; }
+.solids-table { border-collapse: collapse; font-size: var(--text-sm); width: 100%; }
+.solids-table caption { text-align: left; padding-bottom: var(--space-2); caption-side: top; }
+.solids-table th, .solids-table td { text-align: left; vertical-align: top; padding: var(--space-2); border-top: 1px solid var(--line); }
+.solids-table thead th { border-top: 0; color: var(--color-text-muted); font-weight: 500; }
+.solids-vs th[scope="row"] { min-width: 12rem; }
+.solids-dim { opacity: 0.7; }
+.solids-lvl { display: inline-block; font-size: var(--text-sm); font-weight: 600; padding: 0 var(--space-2); margin-right: var(--space-1); border-radius: var(--radius-1); border: 1px solid var(--color-border-strong); }
+.lvl-none { background: transparent; border-style: dashed; }
+.lvl-part { background: var(--glass-hi); }
+.lvl-all { background: var(--color-text); color: var(--color-bg); border-color: var(--color-text); }
+.solids-src { margin: 0; font-size: var(--text-sm); }
+.solids-exp { font: inherit; font-size: var(--text-sm); padding: var(--space-1) var(--space-3); min-height: 2.75rem; border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); background: transparent; color: var(--color-text); cursor: pointer; }
+.solids-exp:hover { border-color: var(--color-accent); }
+.solids-exp:focus-visible, .solids-details summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.solids-ask { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+.solids-chart { overflow-x: auto; max-width: 100%; }
+.solids-chart .solids-svg { min-width: 34rem; }
+@media (max-width: 40rem) {
+  .solids-vs thead { display: none; }
+  .solids-vs tr { display: grid; gap: var(--space-1); padding: var(--space-2) 0; border-top: 1px solid var(--line); }
+  .solids-vs th, .solids-vs td { display: block; border-top: 0; padding: 0; }
+  .solids-vs td::before { content: attr(data-label) ": "; color: var(--color-text-muted); font-size: var(--text-sm); }
+}
+@media (min-width: 40.01rem) {
+  .solids-vs { table-layout: fixed; }
+  .solids-vs th[scope="row"] { width: 34%; min-width: 0; }
+}

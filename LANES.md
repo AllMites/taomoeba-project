@@ -21,12 +21,12 @@ Lane reports go in `docs/lane-reports/<lane>.md`, never the repo root.
 
 ## Reskin (one-screen console)
 
-Design source: `docs/RESKIN_PRD.md`. Layout state: `src/app/console.ts` (`useConsole`, `pickBase`, `askAbout`, `dragProps`). Any state can be opened by URL: `?base=iss|moon|rover|earth&view=stage|interpret|rank|compare|models|graph&lib=0|1&ask=0|1`.
+Design source: `docs/RESKIN_PRD.md`. Layout state: `src/app/console.ts` (`useConsole`, `pickBase`, `askAbout`, `dragProps`). Any state can be opened by URL: `?base=iss|moon|rover|earth&view=stage|interpret|rank|compare|materials|models|graph&lib=0|1&ask=0|1`.
 
 | Lane | Owns |
 |---|---|
 | S Shell | `src/app/App.tsx`, `src/app/app.css`, `src/shell/`, `src/styles/`, `index.html`, `docs/DESIGN_SYSTEM.md` |
-| M Sections | `src/brief/`, `src/ranking/`, `src/compare/`, `src/whatif/`, `src/gaps/`, `src/earth/`, `src/trust/`; CSS only in `src/graph/`, `src/evidence/` |
+| M Sections | `src/brief/`, `src/ranking/`, `src/compare/`, `src/whatif/`, `src/gaps/`, `src/earth/`, `src/trust/`, `src/solids/`; CSS only in `src/graph/`, `src/evidence/` |
 | K Replay | `src/scenes/` (not `registry.ts`), `src/fx/` |
 | A Ask | `src/ask/`, `server/app.ts`, `server/ask.ts` |
 | T Top + Library + Models | `src/top/`, `src/library/`, `public/models/iss/`, `CREDITS.md` |

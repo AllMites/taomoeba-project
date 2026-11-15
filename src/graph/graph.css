@@ -62,3 +62,30 @@
 .g-swatch.g-psi_related, .g-swatch.g-same_event { border-top-style: dotted; }
 .g-swatch.g-same_hardware { border-color: var(--color-border-strong); }
 .g-swatch.g-area { border-color: var(--color-border); }
+
+/* views, Ask focus, habitat fading. Mono: selected is a white fill; lit is a heavier ring; faded is lower opacity. */
+.graph-modes { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-3); }
+.graph-modes button[aria-pressed="true"] { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-contrast); }
+.graph-banner { margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-1); background: var(--glass-hi); display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.graph-habitat { display: flex; gap: var(--space-2); align-items: flex-start; margin: 0 0 var(--space-3); font-size: var(--text-sm); max-width: 72ch; cursor: pointer; min-height: 2.75rem; }
+.graph-habitat input { margin-top: 0.2em; flex: none; }
+.g-hit circle { stroke: var(--color-text); stroke-width: 3; }
+.g-fade { opacity: 0.22; }
+.g-half { opacity: 0.6; }
+.g-labels text.g-fade { opacity: 0.4; }
+.graph-timeline { overflow-x: auto; overscroll-behavior-x: contain; }
+.graph-timeline svg { aspect-ratio: auto; max-height: none; min-width: 40rem; touch-action: auto; cursor: default; }
+.gt-grid { stroke: var(--line); }
+.gt-lane { stroke: var(--line); stroke-dasharray: 2 4; }
+.gt-year { fill: var(--label); font-size: 12px; font-family: var(--font-mono); }
+.gt-label { fill: var(--color-text); font-size: 12px; font-family: var(--font-sans); cursor: pointer; }
+.gt-label.gt-hit, .gt-label.gt-sel { font-weight: 700; text-decoration: underline; }
+.gt-label:focus-visible, .graph-timeline .g-node:focus-visible { outline: 2px solid var(--color-focus); }
+.graph-list { display: grid; gap: var(--space-5); }
+.graph-list-items { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+.graph-list-items details { border: 1px solid var(--line); border-radius: var(--radius-1); padding: 0 var(--space-3); background: transparent; }
+.graph-list-items summary { cursor: pointer; min-height: 2.75rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--space-1); padding: var(--space-2) 0; }
+.graph-list-items summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.graph-list-items .graph-badge { margin-left: var(--space-2); }
+.graph-list-items .graph-link { min-height: 2.75rem; }
+.gl-hit details { border-color: var(--line-strong); border-style: solid; border-width: 2px; }

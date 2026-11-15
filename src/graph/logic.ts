@@ -12,6 +12,7 @@ const Node = z.object({
   page: z.string().optional(),
   area: z.string().optional(),
   hardware: z.string().optional(),
+  year: z.number().int().optional(),
   x: z.number(),
   y: z.number(),
   degree: z.number(),
@@ -79,3 +80,55 @@ export function find(doc: GraphDoc, q: string): GNode | null {
 }
 
 export const shortTitle = (n: GNode, max = 42) => n.label ?? (n.title.length <= max ? n.title : `${n.title.slice(0, max - 1)}…`);
+
+/** Of the ids an Ask answer used, the ones that are dots in the graph; the rest (team data, model report) are counted. */
+export function focusIn(doc: GraphDoc, ids: string[]) {
+  const have = new Set(doc.nodes.map((n) => n.id));
+  const lit = ids.filter((id) => have.has(id));
+  return { lit: new Set(lit), missing: ids.length - lit.length };
+}
+
+/** How an experiment relates to the habitat's air: both oxygen and pressure tested near it, oxygen only, or neither. */
+export type Tone = "both" | "o2" | "none";
+
+/** Timeline rows: one per experiment, holding the dated reports about it (reports_on links), oldest first. */
+export type TimelineRow = { node: GNode; reports: GNode[] };
+export function timeline(doc: GraphDoc) {
+  const byId = new Map(doc.nodes.map((n) => [n.id, n]));
+  const rows = new Map<string, GNode[]>();
+  for (const e of doc.edges) {
+    if (e.type !== "reports_on") continue;
+    const src = byId.get(e.s);
+    const exp = byId.get(e.t);
+    if (!src || !exp || exp.kind !== "experiment" || src.year === undefined) continue;
+    rows.set(exp.id, [...(rows.get(exp.id) ?? []), src]);
+  }
+  const out: TimelineRow[] = [...rows.entries()].map(([id, reps]) => ({
+    node: byId.get(id)!,
+    reports: reps.sort((a, b) => a.year! - b.year! || a.id.localeCompare(b.id)),
+  }));
+  out.sort((a, b) => a.reports[0].year! - b.reports[0].year! || a.node.title.localeCompare(b.node.title));
+  const years = doc.nodes.flatMap((n) => (n.year === undefined ? [] : [n.year]));
+  const undated = doc.nodes.filter((n) => n.kind === "report" && n.year === undefined);
+  const noReports = doc.nodes.filter((n) => n.kind === "experiment" && !rows.has(n.id));
+  return { rows: out, from: Math.min(...years), to: Math.max(...years), undated, noReports };
+}
+
+/** For the list view: every dot, grouped by kind, each with its links grouped by type (only the link types shown). */
+export const LIST_KINDS: { kind: GNode["kind"]; label: string }[] = [
+  { kind: "experiment", label: "PSI experiments" },
+  { kind: "report", label: "NASA technical reports" },
+  { kind: "page", label: "NASA pages" },
+  { kind: "area", label: "Fire-safety areas" },
+];
+export function linkGroups(edges: GEdge[], byId: Map<string, GNode>, id: string) {
+  const groups = new Map<string, { n: GNode; why: string }[]>();
+  for (const [other, es] of neighbours(edges, id))
+    for (const e of es) {
+      const n = byId.get(other);
+      if (n) groups.set(e.type, [...(groups.get(e.type) ?? []), { n, why: e.why }]);
+    }
+  return Object.keys(LINKS)
+    .filter((t) => groups.has(t))
+    .map((t) => ({ type: t, items: groups.get(t)!.sort((a, b) => a.n.title.localeCompare(b.n.title)) }));
+}

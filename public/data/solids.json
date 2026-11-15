@@ -1,0 +1,380 @@
+{
+ "about": "Real NASA test tables on solid materials (fabrics, plastics, silicone) in microgravity. Built by scripts/solids/build.py.",
+ "flammability": {
+  "source": {
+   "id": "ntrs:20210011385",
+   "title": "Burning and Suppression of Solids-II (BASS-II) Summary Report",
+   "url": "https://ntrs.nasa.gov/citations/20210011385",
+   "where": "NASA/TM-20210011385, Table 7.1 (p. 96) and Section 7.1.4"
+  },
+  "material": "SIBAL cotton-fiberglass fabric, 2.2 cm or 1.2 cm wide",
+  "flow": "Concurrent (air moving the same way as the flame)",
+  "findings": [
+   "When the crew turned the airflow down, flames on the 2.2 cm fabric went out at flows between about 1 and 5 cm/s.",
+   "With less oxygen, the flame needed more airflow to stay alight.",
+   "The narrower 1.2 cm fabric had a smaller range of conditions where it could burn.",
+   "The lowest oxygen that can still support a flame could not be pinned down this way; the report says a test that slowly lowers oxygen is needed."
+  ],
+  "tests": [
+   {
+    "test": "GMT45-T1",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 10,
+    "flowTo": 10,
+    "o2": 18.5,
+    "outcome": "burned",
+    "o2Uncertain": true
+   },
+   {
+    "test": "GMT45-T2",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 10,
+    "flowTo": 5,
+    "o2": 18.5,
+    "outcome": "burned",
+    "o2Uncertain": true
+   },
+   {
+    "test": "GMT45-T4",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 10,
+    "flowTo": 2.2,
+    "o2": 18.7,
+    "outcome": "quenched"
+   },
+   {
+    "test": "GMT45-T15",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 10,
+    "flowTo": 29,
+    "o2": 18.7,
+    "outcome": "no-blowoff"
+   },
+   {
+    "test": "GMT100-T5",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 10,
+    "flowTo": 2.4,
+    "o2": 18.8,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT100-T6",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 4.5,
+    "flowTo": 2.6,
+    "o2": 18.8,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT100-T13",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 4,
+    "flowTo": 2.2,
+    "o2": 17.5,
+    "outcome": "quenched"
+   },
+   {
+    "test": "GMT100-T16",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 4,
+    "flowTo": 3,
+    "o2": 17.6,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT175-T9",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 10,
+    "flowTo": 10,
+    "o2": 16.4,
+    "outcome": "no-ignition"
+   },
+   {
+    "test": "GMT175-T10",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 5,
+    "flowTo": 5,
+    "o2": 16.4,
+    "outcome": "no-ignition"
+   },
+   {
+    "test": "GMT175-T18",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 5,
+    "flowTo": 2.6,
+    "o2": 17.4,
+    "outcome": "quenched"
+   },
+   {
+    "test": "GMT178-T11",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 4,
+    "flowTo": 4,
+    "o2": 17.1,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT178-T12",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 5,
+    "flowTo": 5,
+    "o2": 16.8,
+    "outcome": "no-ignition"
+   },
+   {
+    "test": "GMT178-T14",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 4,
+    "flowTo": 2.8,
+    "o2": 16.9,
+    "outcome": "quenched"
+   },
+   {
+    "test": "GMT178-T17",
+    "series": "BASS-II",
+    "widthCm": 2.2,
+    "flowFrom": 6,
+    "flowTo": 53,
+    "o2": 16.9,
+    "outcome": "no-blowoff"
+   },
+   {
+    "test": "GMT190-T19",
+    "series": "BASS-II",
+    "widthCm": 1.2,
+    "flowFrom": 11,
+    "flowTo": 11,
+    "o2": 17.2,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT190-T20",
+    "series": "BASS-II",
+    "widthCm": 1.2,
+    "flowFrom": 11,
+    "flowTo": 3,
+    "o2": 17.2,
+    "outcome": "quenched"
+   },
+   {
+    "test": "GMT190-T21",
+    "series": "BASS-II",
+    "widthCm": 1.2,
+    "flowFrom": 11,
+    "flowTo": 47,
+    "o2": 17.2,
+    "outcome": "blowoff"
+   },
+   {
+    "test": "GMT190-T22",
+    "series": "BASS-II",
+    "widthCm": 1.2,
+    "flowFrom": 10.5,
+    "flowTo": 5,
+    "o2": 17.1,
+    "outcome": "quenched"
+   },
+   {
+    "test": "GMT96-T8",
+    "series": "BASS",
+    "widthCm": 2.2,
+    "flowFrom": 5,
+    "flowTo": 5,
+    "o2": 21,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT96-T7",
+    "series": "BASS",
+    "widthCm": 2.2,
+    "flowFrom": 10,
+    "flowTo": 10,
+    "o2": 21,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT131-T10",
+    "series": "BASS",
+    "widthCm": 1.2,
+    "flowFrom": 11,
+    "flowTo": 11,
+    "o2": 21,
+    "outcome": "burned"
+   },
+   {
+    "test": "GMT222-T11",
+    "series": "BASS",
+    "widthCm": 1.2,
+    "flowFrom": 19,
+    "flowTo": 19,
+    "o2": 21,
+    "outcome": "burned"
+   }
+  ],
+  "excluded": [
+   "GMT190-T23",
+   "GMT190-T24",
+   "GMT216-T25",
+   "GMT216-T26",
+   "GMT216-T27",
+   "GMT216-T28a",
+   "GMT216-T28b",
+   "GMT216-T29"
+  ],
+  "excludedWhy": "Re-ignited, partly burned samples; the report leaves them out because they give little usable data.",
+  "maxO2": 21,
+  "minBurnO2": 16.9,
+  "counts": {
+   "burned": 11,
+   "quenched": 6,
+   "blowoff": 1,
+   "no-blowoff": 2,
+   "no-ignition": 3
+  }
+ },
+ "saffire": {
+  "source": {
+   "id": "psi:PSI-99",
+   "title": "Spacecraft Fire Experiment-II (SAFFIRE-II), run table",
+   "url": "https://psi.nasa.gov/geode-py/ws/repo/search?term=PSI-99&source=psi&type=investigation",
+   "where": "PSI-99 run table: microgravity burn columns and 1-g (normal gravity) columns"
+  },
+  "o2": [
+   21.5,
+   22.1
+  ],
+  "flowCmS": [
+   20
+  ],
+  "sampleLengthCm": 29,
+  "samples": [
+   {
+    "sample": "2-1",
+    "material": "Silicone",
+    "thickness": "0.27 mm",
+    "flowDirection": "concurrent",
+    "o2": 21.5,
+    "space": {
+     "level": "none",
+     "text": "About 0 cm burned"
+    },
+    "earth": {
+     "level": "all",
+     "text": "Burned completely, speeding up"
+    }
+   },
+   {
+    "sample": "2-2",
+    "material": "Silicone",
+    "thickness": "0.61 mm",
+    "flowDirection": "concurrent",
+    "o2": 22.1,
+    "space": {
+     "level": "none",
+     "text": "About 0 cm burned"
+    },
+    "earth": {
+     "level": "part",
+     "text": "Burned 7.6 cm at 1.2 mm/s"
+    }
+   },
+   {
+    "sample": "2-3",
+    "material": "Silicone",
+    "thickness": "1.03 mm",
+    "flowDirection": "concurrent",
+    "o2": 22.1,
+    "space": {
+     "level": "none",
+     "text": "About 0 cm burned"
+    },
+    "earth": {
+     "level": "none",
+     "text": "About 0 cm burned"
+    }
+   },
+   {
+    "sample": "2-4",
+    "material": "Silicone",
+    "thickness": "0.37 mm",
+    "flowDirection": "opposed",
+    "o2": 22.1,
+    "space": {
+     "level": "none",
+     "text": "About 0 cm burned"
+    },
+    "earth": {
+     "level": "all",
+     "text": "Burned completely at 0.6 mm/s"
+    }
+   },
+   {
+    "sample": "2-5",
+    "material": "Cotton-fiberglass fabric (SIBAL)",
+    "thickness": "0.37 mm",
+    "flowDirection": "concurrent",
+    "o2": 22.1,
+    "space": {
+     "level": "all",
+     "text": "Burned the whole 29 cm at 2.1 mm/s"
+    },
+    "earth": {
+     "level": "all",
+     "text": "Burned completely, speeding up"
+    }
+   },
+   {
+    "sample": "2-7",
+    "material": "PMMA strip, then Nomex fabric",
+    "thickness": "0.85 and 0.37 mm",
+    "flowDirection": "concurrent",
+    "o2": 22.1,
+    "space": {
+     "level": "part",
+     "text": "The PMMA strip burned up; the Nomex fabric never caught fire"
+    },
+    "earth": {
+     "level": "none",
+     "text": "Nomex: about 0 cm burned"
+    },
+    "comparable": false,
+    "note": "The 1-g column only reports the Nomex part, so this pair is not a like-for-like comparison."
+   },
+   {
+    "sample": "2-8",
+    "material": "PMMA",
+    "thickness": "thickness varies (see the PSI table)",
+    "flowDirection": "concurrent",
+    "o2": "22.1; 22",
+    "space": {
+     "level": "part",
+     "text": "Flame stayed anchored at the base, which wore away at only 0.01 to 0.04 mm/s; about 10 cm visibly damaged"
+    },
+    "earth": {
+     "level": "all",
+     "text": "Burned completely, speeding up"
+    }
+   }
+  ],
+  "skipped": [
+   "2-6",
+   "2-9"
+  ],
+  "skippedWhy": "The material cell is blank in the PSI table."
+ }
+}
