@@ -63,3 +63,13 @@ export function freeZone(box: { w: number; h: number }, obstacles: Rect[], n: nu
   }
   return best;
 }
+
+/**
+ * Keep-out for a stack of glass that grows down from `stack.y` (the Saffire fact chips): how tall it may get before
+ * it reaches `card` (the top-3 card) less `margin`. Null when the card is not below it in the same columns.
+ */
+export function roomAbove(stack: Rect, card: Rect | null, margin = 12): number | null {
+  if (!card || card.w <= 0 || card.h <= 0) return null;
+  if (stack.x >= card.x + card.w || card.x >= stack.x + stack.w || card.y + card.h <= stack.y) return null;
+  return Math.max(0, card.y - margin - stack.y);
+}

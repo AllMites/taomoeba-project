@@ -1,6 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { FirstFrame } from "../FirstFrame.tsx";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { roomAbove } from "../zone.ts";
 import type { Claim, SceneProps, Source } from "../../contracts/index.ts";
 import { useDataset } from "../../data/useDataset.ts";
 import { frameAt, loopSpan, midBurn, statusLine, type ReplayFrame, type SaffireRecord } from "./timeline.ts";
@@ -139,6 +140,29 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
   const shown = narrow ? callouts.filter((_, i) => i === active) : callouts;
   leaders.current.anchors = shown.map((c) => c.anchor);
 
+  // The fact chips stop above the console's top-3 card; what does not fit wraps into a second column.
+  const calloutsRef = useRef<HTMLDivElement>(null);
+  const shownKey = shown.map((c) => c.claim.id).join("|");
+  useLayoutEffect(() => {
+    const el = calloutsRef.current;
+    const card = document.querySelector<HTMLElement>(".console-overlay");
+    if (!el) return;
+    const fit = () => {
+      el.style.maxHeight = "";
+      const r = (e: Element) => {
+        const b = e.getBoundingClientRect();
+        return { x: b.left, y: b.top, w: b.width, h: b.height };
+      };
+      const room = roomAbove(r(el), card ? r(card) : null);
+      if (room !== null) el.style.maxHeight = `${room}px`;
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(rootRef.current ?? el);
+    if (card) ro.observe(card);
+    return () => ro.disconnect();
+  }, [shownKey, narrow]);
+
   // HUD refresh: only when a shown number changes (whole seconds, tenths of a centimetre).
   const last = useRef("");
   const onTick = useCallback((f: ReplayFrame) => {
@@ -238,7 +262,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
       )}
 
       {shown.length > 0 && (
-        <div className="sf-callouts">
+        <div className="sf-callouts" ref={calloutsRef}>
           {shown.map((c, i) => (
             <figure
               key={c.claim.id}
