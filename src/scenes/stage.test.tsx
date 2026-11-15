@@ -50,16 +50,48 @@ describe("center replay, before any 3D has loaded (and for good where it cannot 
   });
 });
 
-it("on a narrow stage the bar sits under the caption's real height, so a wrapped caption is not covered", async () => {
+it("the caption sits under the strip's real height, so a strip that wraps on a phone is not covered (18.2)", async () => {
   const { readFileSync } = await import("node:fs");
   const css = readFileSync(new URL("./stage.css", import.meta.url), "utf8");
-  const play = css.match(/\.stage-play \{[^}]*top: calc\(([^;]*)\);/)?.[1] ?? "";
-  expect(play).toContain("var(--stage-caption-h");
+  const row2 = css.match(/--stage-row2: calc\(([^;]*)\);/)?.[1] ?? "";
+  expect(row2).toContain("var(--stage-strip-h");
+  expect(css).toMatch(/\.stage-caption \{[^}]*top: var\(--stage-row2\);/);
+  // Play, seeker and time live in the one strip with the scene picker.
+  const html = renderToStaticMarkup(<Stage />);
+  expect(html).toMatch(/class="stage-strip"><details class="stage-pick"/);
 });
 
 it("a scene's side panel starts below the caption's real height, never under a long caption", async () => {
   const { readFileSync } = await import("node:fs");
   const css = readFileSync(new URL("./cabin/cabin.css", import.meta.url), "utf8");
-  const top = css.match(/\.burn \{[^}]*\n\s*top: ([^;]*);/)?.[1] ?? "";
+  const top = css.match(/\.burn-panel \{[^}]*\n\s*top: ([^;]*);/)?.[1] ?? "";
   expect(top).toContain("var(--stage-caption-h");
+});
+
+describe("stage clutter budget (18.2)", () => {
+  it("the caption is one line at rest, with the Illustration mark kept in view, and opens in full on press", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync(new URL("./stage.css", import.meta.url), "utf8");
+    expect(css).toMatch(/\.stage-caption-words > p \{[^}]*white-space: nowrap;[^}]*text-overflow: ellipsis;/);
+    expect(css).toMatch(/\.stage-caption\[data-open\] \.stage-caption-words > p \{ white-space: normal;/);
+    const html = renderToStaticMarkup(<Stage />);
+    expect(html).toMatch(/class="stage-mark-word t-readout"[^>]*>Illustration</);
+    expect(html).not.toContain('class="stage-caption" data-open');
+  });
+  it("a scene's panel is closed at rest at every width, behind one button", async () => {
+    const { readFileSync } = await import("node:fs");
+    const css = readFileSync(new URL("./cabin/cabin.css", import.meta.url), "utf8");
+    expect(css).toMatch(/\.burn-panel \{[^}]*display: none;/);
+    expect(css).toContain(".burn[data-open] .burn-panel { display: grid; }");
+    expect(css).toMatch(/\.burn-panel \{[^}]*width: min\(22rem/);
+  });
+  it("Reset view is an icon button with an accessible name and a tooltip", async () => {
+    const { readFileSync } = await import("node:fs");
+    const src = readFileSync(new URL("./Stage.tsx", import.meta.url), "utf8");
+    expect(src).toMatch(/className="stage-reset glass" aria-label="Reset view" title="Reset view"/);
+  });
+  it("in-scene labels are capped at five", async () => {
+    const { MAX_CHIPS } = await import("./cabin/Cabin.tsx");
+    expect(MAX_CHIPS).toBeLessThanOrEqual(5);
+  });
 });

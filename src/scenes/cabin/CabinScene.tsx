@@ -20,10 +20,9 @@ import { airOf, type Air } from "./air.ts";
 import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose, type V3 } from "./layout.ts";
 import { BurnPanel } from "./BurnPanel.tsx";
 import { Navigate } from "./Navigate.tsx";
-import { AftermathCard } from "./Aftermath.tsx";
 import { FirstFrame } from "../FirstFrame.tsx";
 import { SpreadSet, spreadChips } from "./Spread.tsx";
-import { SpreadPanel } from "./SpreadPanel.tsx";
+import { OUTCOME_WORDS, SpreadPanel } from "./SpreadPanel.tsx";
 import "./cabin.css";
 
 /** The fuel droplet on its fibre holder: drawn larger than life (DROPLET.scale), like the flame around it. */
@@ -198,6 +197,12 @@ export function CabinScene({ habitat, calm }: SceneProps) {
     usePlayback.getState().setTimeline(tl);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tlKey]);
+  // Once the crew's response has played, the caption leads with what it did.
+  const responded = usePlayback((s) => mode === "spread" && s.t >= st.respond);
+  useEffect(() => {
+    usePlayback.getState().setHeadline(responded ? OUTCOME_WORDS[st.outcome] : null);
+    return () => usePlayback.getState().setHeadline(null);
+  }, [responded, st.outcome]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
   const fire = useMemo(() => (mode === "spread" ? spreadChips(g, st.detect) : null), [mode, g, st.detect]);
   const chips: ChipSpec[] = [
@@ -224,8 +229,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
-      {mode === "spread" && <AftermathCard st={st} where={room.name} />}
-      {mode === "spread" && <SpreadPanel air={air.name} kPa={air.pressureKPa} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} st={st} />}
+      {mode === "spread" && <SpreadPanel where={room.name} air={air.name} kPa={air.pressureKPa} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} st={st} />}
       {mode !== "spread" && doc && pick && <BurnPanel doc={doc} pick={pick} c={c} air={air.name} compare={base === "iss" ? null : compare} />}
       <p className="sr-only">
         {mode === "spread"

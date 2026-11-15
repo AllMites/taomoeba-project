@@ -16,13 +16,13 @@ export function askScenario(ids: string[], question: string) {
  * Stage 5, Aftermath: what the fire and smoke touched, counted from the run, what the response did, what is not
  * known, and that the data has no test of structural damage. "Ask about this" opens Ask SI on the records behind it.
  */
-export function AftermathCard({ st, where }: { st: Story; where: string }) {
+export function AftermathCard({ st, where, inline }: { st: Story; where: string; inline?: boolean }) {
   const on = usePlayback((s) => s.timeline?.compressed === true && s.t >= st.stages[4].at);
   const ref = useRef<HTMLElement>(null);
   // Stops above the console's top-3 card, like the Saffire chips; the rest scrolls.
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || inline) return;
     const card = document.querySelector<HTMLElement>(".console-overlay");
     const r = (e: Element) => {
       const b = e.getBoundingClientRect();
@@ -46,12 +46,12 @@ export function AftermathCard({ st, where }: { st: Story; where: string }) {
       el.removeEventListener("scroll", sync);
       ro?.disconnect();
     };
-  }, [on, st]);
+  }, [on, st, inline]);
   if (!on) return null;
   const [counts, detector, did, unknown, structure] = aftermathLines(st);
   const ids = scenarioIds(st);
   return (
-    <section ref={ref} className="after-card glass" aria-label="Aftermath" aria-live="polite">
+    <section ref={ref} className={inline ? "after-card after-inline" : "after-card glass"} aria-label="Aftermath" aria-live="polite">
       <div className="after-top">
         <h3 className="after-h">Aftermath</h3>
         <button type="button" className="spread-btn spread-btn-main" title={scenarioQuestion(st, where)} onClick={() => askScenario(ids, scenarioQuestion(st, where))}>

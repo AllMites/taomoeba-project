@@ -45,6 +45,8 @@ export function ChipLayer({ chips, refs }: { chips: ChipSpec[]; refs: React.RefO
 }
 
 const P = new Vector3();
+/** In-scene labels on screen at once, at most (PRD 18.2). */
+export const MAX_CHIPS = 5;
 /** The window on the far wall: left of the flame as the camera sees it, clear of the console's glass. */
 const WIN_R = 0.2;
 /** Where the window sits on the far wall: right of the flame as the camera sees it, clear of the model panel on the left. */
@@ -89,14 +91,15 @@ export function ChipTracker({ chips, refs }: { chips: ChipSpec[]; refs: React.Re
       // A flipped chip whose point is under the top controls slides down to clear them.
       el.style.top = `${flip ? Math.max(y, clearTop.current) : y}px`;
     }
-    // Chips come in order of importance: one that overlaps an earlier chip steps aside (hidden) for it.
+    // Chips come in order of importance: one that overlaps an earlier chip steps aside (hidden) for it, and no more
+    // than MAX_CHIPS show at once.
     const shown: DOMRect[] = [];
     for (const c of chips) {
       const el = refs.current.get(c.id);
       if (!el || el.style.visibility === "hidden") continue;
       const b = el.firstElementChild?.getBoundingClientRect();
       if (!b) continue;
-      if (shown.some((a) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom)) el.style.visibility = "hidden";
+      if (shown.length >= MAX_CHIPS || shown.some((a) => a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom)) el.style.visibility = "hidden";
       else shown.push(b);
     }
   });

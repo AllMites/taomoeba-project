@@ -34,11 +34,12 @@
 .scene-chip-below.scene-chip-left { transform: translate(-100%, 0); padding: 14px 14px 0 0; }
 .scene-chip-below.scene-chip-left::before { top: 0; bottom: auto; transform: skewX(45deg); transform-origin: top right; }
 .scene-chip-box {
-  display: grid;
-  gap: 2px;
-  padding: 6px 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 4px 10px;
   border-radius: var(--radius-1);
-  max-width: 22ch;
+  white-space: nowrap;
 }
 .scene-chip-text { font-size: var(--text-sm); color: var(--color-text); line-height: 1.25; }
 .scene-chip-sub { font-size: var(--text-xs); color: var(--color-text-muted); }
@@ -49,32 +50,45 @@
 }
 
 /*
- * Model burn panel: glass at the stage's left edge, between the caption row (and the playback bar when it sits
- * there) and the brief at the bottom left. On a phone it folds behind a "Model" button.
+ * A scene's settings panel (the model burn, the fire scenario): closed at rest at every width, behind one button at
+ * the right end of the caption's row. Open, it sits at the right side, at most 22rem wide, below the caption's real
+ * height (measured by the stage), with inner scroll.
  */
-.burn {
+.burn { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.burn-toggle {
   position: absolute;
-  z-index: 5;
-  left: var(--space-4);
-  /* Below the stage caption's real height (measured by the stage; it wraps when the caption is long). */
-  top: max(var(--replay-top, 10rem), calc(var(--stage-top, 7rem) + var(--stage-caption-h, 0px) + var(--space-2)));
-  /* Stops above the brief at the bottom left (measured by the stage), or a fixed gap where it is not measured. */
-  bottom: calc(var(--replay-brief, calc(var(--replay-bottom, 4rem) + 10rem)) + var(--space-2));
-  width: 16.5rem;
-  pointer-events: none;
-  display: flex;
-  flex-direction: column;
-}
-.burn-toggle { display: none; }
-.burn-panel {
+  top: var(--stage-row2, 10rem);
+  right: var(--space-4);
+  width: var(--stage-side-btn, 8.5rem);
+  min-height: 2.75rem;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+  font: inherit;
+  font-size: var(--text-sm);
   pointer-events: auto;
-  max-height: 100%;
+  cursor: pointer;
+}
+.burn-toggle[aria-expanded="true"] { background: var(--color-pill); color: var(--color-pill-text); }
+.burn-toggle:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.burn-panel {
+  position: absolute;
+  right: var(--space-4);
+  top: calc(var(--stage-row2, 10rem) + max(2.75rem, var(--stage-caption-h, 0px)) + var(--space-2));
+  width: min(22rem, calc(100% - 2 * var(--space-4)));
+  max-height: calc(100% - var(--stage-row2, 10rem) - max(2.75rem, var(--stage-caption-h, 0px)) - var(--space-2) - var(--replay-bottom, 1rem));
+  pointer-events: auto;
   overflow: auto;
-  display: grid;
+  display: none;
   gap: var(--space-2);
   padding: var(--space-3);
   border-radius: var(--radius-2);
   color: var(--color-text);
+}
+.burn[data-open] .burn-panel { display: grid; }
+@container stage (max-width: 37.5rem) {
+  .burn-toggle { right: var(--space-2); top: var(--stage-top, 7rem); width: auto; }
+  .burn-panel { left: var(--space-2); right: var(--space-2); width: auto; }
 }
 .burn-h { margin: 0; font-size: var(--text-xs); color: var(--color-text-muted); letter-spacing: 0.04em; text-transform: uppercase; }
 .burn-field { display: grid; grid-template-columns: 6rem 1fr; align-items: center; gap: var(--space-2); font-size: var(--text-sm); }
@@ -100,29 +114,6 @@
 .burn-mark[data-mark="dashed"] { border-style: dashed; }
 .burn-check { display: flex; align-items: center; gap: var(--space-2); min-height: 2.75rem; font-size: var(--text-sm); cursor: pointer; }
 .burn-check input { width: 1.125rem; height: 1.125rem; accent-color: var(--color-text); }
-
-/* The narrow center: the brief and the top-3 card fill the bottom; the panel stops above the brief. */
-@container stage (max-width: 80rem) {
-  .burn { width: 15rem; }
-}
-/* A phone: a "Model" button; the panel opens over the stage. */
-@container stage (max-width: 37.5rem) {
-  .burn { left: var(--space-2); right: var(--space-2); width: auto; bottom: var(--space-2); }
-  .burn-toggle {
-    display: block;
-    align-self: flex-start;
-    min-height: 2.75rem;
-    padding: 0 var(--space-4);
-    border-radius: var(--radius-full);
-    color: var(--color-text);
-    font: inherit;
-    font-size: var(--text-sm);
-    pointer-events: auto;
-    cursor: pointer;
-  }
-  .burn-panel { display: none; margin-top: var(--space-2); }
-  .burn[data-open] .burn-panel { display: grid; }
-}
 
 /* Fire spread: the object list and the picked object's card, in the same glass panel. */
 .spread-list { display: grid; gap: 2px; }
@@ -212,6 +203,7 @@
 @container stage (max-width: 37.5rem) {
   .after-card { top: auto; bottom: var(--space-2); left: var(--space-2); right: var(--space-2); width: auto; max-height: 50%; }
 }
+.after-card.after-inline { position: static; width: auto; max-height: none; overflow: visible; padding: 0 0 var(--space-2); border-bottom: 1px solid var(--line-strong); border-radius: 0; }
 .spread-grav { grid-template-columns: repeat(3, 1fr); gap: var(--space-1); }
 .spread-grav legend { grid-column: 1 / -1; }
 .spread-grav .spread-obj { justify-content: center; text-align: center; padding: var(--space-1); min-height: 2.75rem; line-height: 1.2; }

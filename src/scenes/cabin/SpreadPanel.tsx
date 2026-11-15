@@ -5,6 +5,7 @@ import { useDataset } from "../../data/useDataset.ts";
 import { OUTCOME, type SolidsDoc } from "../../solids/logic.ts";
 import { usePlayback } from "../playback.ts";
 import HowWeKnow from "../../brief/HowWeKnow.tsx";
+import { AftermathCard } from "./Aftermath.tsx";
 import { useCited } from "../cite.ts";
 import { evidenceFor, OBJECTS, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
 import { GRAVITIES, gravityName, MOON_ESTIMATE, RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
@@ -148,18 +149,29 @@ function Card({ o, g, doc, fabric, start }: { o: CabinObject; g: Gravity; doc: S
 /**
  * The fire scenario's panel at the stage's left edge: every object as a button, and the picked object's card.
  */
-export function SpreadPanel({ air, kPa, g, doc, fabric, st }: { air: string; kPa: number | undefined; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; st: Story }) {
+export function SpreadPanel({ air, kPa, g, doc, fabric, st, where = "" }: { air: string; kPa: number | undefined; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; st: Story; where?: string }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const picked = usePlayback((s) => s.picked);
   const o = OBJECTS.find((x) => x.id === picked);
   const form = useRef<HTMLFormElement>(null);
+  // A pick in 3D opens the panel on the object's card (until the details move into the scene as callouts).
+  useEffect(() => {
+    if (picked) setOpen(true);
+  }, [picked]);
   // A pick (in 3D or in the list) scrolls the panel to the object's card.
   useEffect(() => {
     const f = form.current;
     const c = f?.querySelector<HTMLElement>(".spread-card");
-    if (picked && f && c) f.scrollTo({ top: c.offsetTop - f.offsetTop - 8 });
-  }, [picked]);
+    if (picked && open && f && c) f.scrollTo({ top: c.offsetTop - f.offsetTop - 8 });
+  }, [picked, open]);
+  // Escape closes the open panel.
+  useEffect(() => {
+    if (!open) return;
+    const key = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", key);
+    return () => document.removeEventListener("keydown", key);
+  }, [open]);
   // While more is below, the panel's bottom edge fades (the "On Earth" card's cue), so the last line is not missed.
   const [more, setMore] = useState(false);
   useEffect(() => {
@@ -181,11 +193,12 @@ export function SpreadPanel({ air, kPa, g, doc, fabric, st }: { air: string; kPa
   return (
     <div className="burn" data-open={open || undefined}>
       <button type="button" className="burn-toggle glass" aria-expanded={open} aria-controls={`${id}-panel`} onClick={() => setOpen((v) => !v)}>
-        Fire scenario
+        Scenario
       </button>
       <form ref={form} id={`${id}-panel`} className="burn-panel glass" data-more={more || undefined} aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
         <p className="burn-h">Fire in this base, {air}</p>
         <p className="burn-support">Illustrative times, scaled by oxygen.</p>
+        <AftermathCard st={st} where={where} inline />
         <Scenario st={st} kPa={kPa} />
         {o && <Card o={o} g={g} doc={doc} fabric={fabric} start={st.input.start} />}
         <details className="spread-objs">

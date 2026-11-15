@@ -33,8 +33,9 @@
   inset: 0;
   opacity: 1;
   transition: opacity var(--motion-mid) var(--ease);
-  --replay-top: calc(var(--stage-top) + 2.75rem + var(--space-4));
-  --replay-bottom: calc(var(--console-safe-bottom, 0rem) + 2.75rem + var(--space-6));
+  /* Where a scene's own overlays may start and end: under the caption's row, above the bottom edge. */
+  --replay-top: calc(var(--stage-row2) + var(--stage-caption-h, 2.75rem) + var(--space-3));
+  --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4));
 }
 .stage-scene[data-fading] { opacity: 0; transition-duration: 160ms; }
 
@@ -54,20 +55,36 @@
 }
 
 /*
- * The stage's own glass: the caption chip (with its About disclosure) top left under the base carousel, and the
- * Past | Now switch. --stage-top is the first free line under the carousel (the shell may set --console-safe-top).
- * Wide box: the switch sits bottom centre, between the brief and the top-3 card. Under 64rem those two cards fill
- * the bottom edge, so the switch moves up to the caption's row, on the right. Under 37.5rem (a phone) both shrink.
+ * The stage's own glass, kept small so the scene is the subject (PRD 18.2). One strip at the top: the scene picker,
+ * play or pause, the seeker with its stage marks, and the time (one row on a wide stage, two on a phone). Under it
+ * the caption, one line that expands on press. The scene's own panel waits behind one button on the caption's row.
+ * --stage-top is the first free line under the base carousel (the shell may set --console-safe-top).
  */
 .stage {
   --stage-top: var(--console-safe-top, calc(var(--carousel-h, 6.5rem) + var(--space-2)));
+  /* The caption's row, under the strip's real height (measured by the stage). */
+  --stage-row2: calc(var(--stage-top) + var(--stage-strip-h, 2.75rem) + var(--space-2));
+  /* Room on the caption's row, at the right, for a scene's panel button. */
+  --stage-side-btn: 8.5rem;
 }
-.stage-caption {
+.stage-strip {
   position: absolute;
-  z-index: 5;
+  z-index: 6;
   top: var(--stage-top);
   left: var(--space-4);
   right: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+.stage-strip > * { pointer-events: auto; }
+.stage-caption {
+  position: absolute;
+  z-index: 5;
+  top: var(--stage-row2);
+  left: var(--space-4);
+  right: calc(var(--space-4) + var(--stage-side-btn) + var(--space-2));
   display: flex;
   pointer-events: none;
 }
@@ -77,6 +94,7 @@
   align-items: center;
   gap: var(--space-1);
   max-width: min(64ch, 100%);
+  min-width: 0;
   min-height: 2.75rem;
   padding: 0 var(--space-1) 0 var(--space-3);
   border-radius: var(--radius-1);
@@ -89,10 +107,9 @@
   line-height: 1.4;
   color: var(--color-text);
 }
-.stage-caption-text:not(:has(.stage-info)) { padding-right: var(--space-3); }
 
-/* About: a real control (summary), 44px target, opening a glass note under the chip. */
-.stage-info { flex: none; }
+/* About: a real control (summary), 44px target; it opens the caption in full, with the notes in it. */
+.stage-info { flex: none; align-self: flex-start; }
 .stage-info > summary {
   display: grid;
   place-items: center;
@@ -118,26 +135,9 @@
 .stage-info > summary:hover > span,
 .stage-info[open] > summary > span { background: var(--color-pill); color: var(--color-pill-text); border-color: var(--color-pill); }
 .stage-info > summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.stage-info-body {
-  position: absolute;
-  top: calc(100% + var(--space-2));
-  left: 0;
-  width: min(36ch, calc(100cqw - 2 * var(--space-4)));
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3);
-  border-radius: var(--radius-1);
-}
-.stage-info-body p { margin: 0; font-size: var(--text-sm); line-height: 1.5; color: var(--color-text); }
 
-/* Scene picker: top right, across from the caption. A disclosure, so it stays one chip tall until opened. */
-.stage-pick {
-  position: absolute;
-  z-index: 6;
-  top: var(--stage-top);
-  right: var(--space-4);
-}
+/* Scene picker: first in the strip. A disclosure, so it stays one chip tall until opened. */
+.stage-pick { position: relative; flex: none; }
 .stage-pick-btn {
   display: flex;
   align-items: center;
@@ -158,7 +158,7 @@
 .stage-pick[open] svg { transform: rotate(180deg); }
 .stage-pick-list {
   position: absolute;
-  right: 0;
+  left: 0;
   top: calc(100% + var(--space-2));
   width: min(22rem, calc(100cqw - 2 * var(--space-4)));
   margin: 0;
@@ -182,25 +182,17 @@
 .stage-pick-opt-name { font-size: var(--text-sm); font-weight: 600; }
 .stage-pick-opt-line { font-size: var(--text-xs); line-height: 1.4; }
 
-/*
- * One playback bar. Wide box: bottom centre, in the gap between the brief (left, 44ch) and the top-3 card (right,
- * 320px), as wide as that gap allows. Under 80rem those two cards leave too little room: the bar takes the row under
- * the caption.
- */
+/* Playback: the rest of the strip, one row. The phase is read out to screen readers; the caption says it on screen. */
 .stage-play {
-  position: absolute;
-  z-index: 5;
-  left: 50%;
-  bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-5));
-  transform: translateX(-50%);
-  width: min(40rem, calc(100cqw - 2 * 28rem));
+  flex: 1 1 auto;
+  min-width: 0;
   display: grid;
   grid-template-columns: 2.75rem 1fr auto;
-  grid-template-areas: "btn seek time" "phase phase phase";
+  grid-template-areas: "btn seek time";
   align-items: center;
   column-gap: var(--space-2);
-  padding: var(--space-1) var(--space-3) var(--space-2) var(--space-1);
-  border-radius: var(--radius-2);
+  padding: 0 var(--space-3) 0 0;
+  border-radius: var(--radius-full);
 }
 .stage-play-btn {
   grid-area: btn;
@@ -226,25 +218,15 @@
 .stage-seek:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; border-radius: var(--radius-1); }
 .stage-time { grid-area: time; font-size: var(--text-xs); color: var(--color-text); white-space: nowrap; }
 .stage-rate { color: var(--color-text-muted); }
-.stage-phase {
-  grid-area: phase;
-  padding-left: calc(2.75rem + var(--space-2));
-  font-size: var(--text-xs);
-  line-height: 1.3;
-  color: var(--color-text);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 
-/* Navigation: the hint until the first drag, then "Reset view" once the camera is the viewer's. */
+/* Navigation: the hint until the first drag, then a "Reset view" icon once the camera is the viewer's. */
 .stage:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
 .stage-scene canvas { touch-action: none; overscroll-behavior: contain; }
 .stage-nav {
   position: absolute;
   z-index: 5;
   left: 50%;
-  bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-5) + 4.75rem + var(--space-2));
+  bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4));
   transform: translateX(-50%);
   display: flex;
   gap: var(--space-2);
@@ -252,9 +234,9 @@
 }
 .stage-hint {
   margin: 0;
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-full);
-  font-size: var(--text-sm);
+  font-size: var(--text-xs);
   color: var(--color-text);
   white-space: nowrap;
 }
@@ -264,11 +246,12 @@
   .stage-hint-touch { display: inline; }
 }
 .stage-reset {
-  min-height: 2.75rem;
-  padding: 0 var(--space-4);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
   border-radius: var(--radius-full);
-  font: inherit;
-  font-size: var(--text-sm);
   color: var(--color-text);
   cursor: pointer;
   pointer-events: auto;
@@ -276,32 +259,39 @@
 .stage-reset:hover { background: var(--glass-hi); }
 .stage-reset:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
-/* The brief and the top-3 card leave no room at the bottom: the bar takes the row under the caption and the picker. */
-@container stage (max-width: 80rem) {
-  .stage-caption { right: calc(var(--space-4) + var(--stage-pick-w, 17rem) + var(--space-2)); }
-  .stage-play { left: var(--space-4); right: var(--space-4); width: auto; transform: none; bottom: auto; top: calc(var(--stage-top) + max(3.25rem, var(--stage-caption-h, 0px) + var(--space-1)) + var(--space-2)); }
-  .stage-nav { left: auto; right: var(--space-4); transform: none; bottom: auto; top: calc(var(--stage-top) + max(3.25rem, var(--stage-caption-h, 0px) + var(--space-1)) + 4.75rem + var(--space-3)); }
-  .stage-scene { --replay-top: calc(var(--stage-top) + max(3.25rem, var(--stage-caption-h, 0px) + var(--space-1)) + 4.75rem + var(--space-4)); --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4)); }
-  /* No room for the hint beside the flame's labels here; the stage's label still says how to move. */
-  .stage-hint { display: none; }
-}
-/* A phone: a compact picker and smaller caption type. */
+/* A phone: the strip takes two rows (picker, then playback), a compact picker, smaller caption type. */
 @container stage (max-width: 37.5rem) {
-  .stage-caption { --stage-pick-w: 9.5rem; }
-  .stage-caption, .stage-pick, .stage-play, .stage-nav { --space-4: var(--space-2); }
+  .stage { --stage-side-btn: 6.5rem; }
+  .stage-strip { flex-wrap: wrap; row-gap: var(--space-1); }
+  .stage-play { flex-basis: 100%; }
+  .stage-strip, .stage-caption, .stage-nav { --space-4: var(--space-2); }
+  /* The scene's panel button shares the picker's row, so the caption takes the full width. */
+  .stage-caption { right: var(--space-2); }
   .stage-pick-label { display: none; }
-  .stage-pick-name { max-width: 7rem; overflow: hidden; text-overflow: ellipsis; }
   .stage-caption-text > p { font-size: var(--text-xs); }
-  .stage-hint { font-size: var(--text-xs); }
+  .stage-hint { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .stage-scene { transition: none; }
 }
 
-/* A stage's own caption, with "How we know" for the records behind it (the brief's markup, styled here). */
-.stage-caption-words { min-width: 0; padding: var(--space-2) 0; }
-.stage-caption-words > p { margin: 0; font-size: var(--text-sm); line-height: 1.4; color: var(--color-text); }
+/*
+ * A stage's own caption, with "How we know" for the records behind it (the brief's markup, styled here). At rest
+ * one line cut with an ellipsis, the "Illustration" mark kept in view at its end; open, the full text and records.
+ */
+.stage-caption-words { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-2); padding: var(--space-2) 0; }
+.stage-caption-words > p { flex: 1 1 0; min-width: 0; margin: 0; font-size: var(--text-sm); line-height: 1.4; color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.stage-headline { font-weight: 600; }
+.stage-mark-word { flex: none; font-size: 0.625rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-text-muted); cursor: pointer; }
+.stage-caption-words > .brief-how, .stage-notes { flex-basis: 100%; }
+.stage-caption:not([data-open]) .stage-caption-words > :is(.brief-how, .stage-notes) { display: none; }
+.stage-notes { display: grid; gap: var(--space-1); margin-top: var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--line-strong); }
+.stage-notes p { margin: 0; font-size: var(--text-xs); line-height: 1.5; color: var(--color-text); }
+.stage-caption[data-open] .stage-caption-words > p { white-space: normal; flex-basis: 100%; }
+.stage-caption[data-open] .stage-caption-text { max-height: calc(100cqh - var(--stage-row2) - var(--space-4)); overflow: auto; align-items: flex-start; }
+/* Labels in the scene step aside while the caption or a scene's panel is open over them. */
+.stage:has(.stage-caption[data-open], .burn[data-open]) .scene-chips { display: none; }
 .stage-caption-words .brief-how summary {
   display: flex;
   align-items: center;

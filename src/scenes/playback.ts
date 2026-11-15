@@ -45,6 +45,8 @@ export type PlaybackState = {
   grav: Gravity | null;
   /** The scene's canvas has drawn its first frame (set by the scene itself, never by an input event). */
   live: boolean;
+  /** What the crew's response did, once it has played (the caption shows it first); null before. */
+  headline: string | null;
   setMode: (m: Mode) => void;
   setTimeline: (tl: Timeline | null) => void;
   seek: (t: number) => void;
@@ -56,6 +58,7 @@ export type PlaybackState = {
   setCompare: (c: boolean) => void;
   pick: (id: string | null) => void;
   setLive: (live: boolean) => void;
+  setHeadline: (h: string | null) => void;
   setScenario: (p: Partial<Pick<PlaybackState, "start" | "response" | "grav">>) => void;
 };
 
@@ -74,6 +77,7 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   compare: false,
   picked: null,
   live: false,
+  headline: null,
   start: "cloth",
   response: "vent",
   grav: null,
@@ -97,6 +101,7 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   pick: (picked) => set({ picked }),
   setScenario: (p) => set(p),
   setLive: (live) => set((s) => (s.live === live ? s : { live })),
+  setHeadline: (headline) => set((s) => (s.headline === headline ? s : { headline })),
 }));
 
 /**
