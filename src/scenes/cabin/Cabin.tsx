@@ -16,7 +16,7 @@ export const CABIN_PAINT = {
   frame: "#8a8882",
 };
 
-export type ChipSpec = { id: string; at: V3; text: string; sub?: string; below?: boolean; left?: boolean };
+export type ChipSpec = { id: string; at: V3; text: string; sub?: string; below?: boolean; left?: boolean; hide?: boolean };
 
 /**
  * Labels on glass, each with a short leader line to the point it names. They live in the DOM over the canvas and
@@ -78,7 +78,7 @@ export function ChipTracker({ chips, refs }: { chips: ChipSpec[]; refs: React.Re
       const el = refs.current.get(c.id);
       if (!el) continue;
       P.set(...c.at).project(camera);
-      const off = P.z > 1 || P.x < -1.2 || P.x > 1.2 || P.y < -1.2 || P.y > 1.2;
+      const off = c.hide || P.z > 1 || P.x < -1.2 || P.x > 1.2 || P.y < -1.2 || P.y > 1.2;
       el.style.visibility = off ? "hidden" : "visible";
       // Keep the chip on screen: past the right edge it slides left (the leader line then points less exactly).
       const x = ((P.x + 1) / 2) * size.width;

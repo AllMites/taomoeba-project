@@ -1,7 +1,7 @@
 import { Billboard } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
 import type { PerspectiveCamera } from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useConsole } from "../../app/console.ts";
 import type { SceneProps } from "../../contracts/index.ts";
 import { Flame, flameLook } from "../../fx/index.tsx";
@@ -11,13 +11,16 @@ import { usePlayback } from "../playback.ts";
 import { loadWhatIf } from "../../whatif/load.ts";
 import type { WhatIfDoc } from "../../whatif/logic.ts";
 import { burnCase, dropletAt, startPick, type BurnCase } from "../burn/model.ts";
-import { OBJECTS, spreadAt, spreadEnd } from "../spread/spread.ts";
+import { fabricVerdict, gravityOf, OBJECTS, spreadEnd } from "../spread/spread.ts";
+import { parseSolids, type SolidsDoc } from "../../solids/logic.ts";
 import { burnTimeline, spreadTimeline } from "../timelines.ts";
 import { Cabin, CABIN_PAINT, ChipLayer, ChipTracker, windowAt, type ChipSpec } from "./Cabin.tsx";
 import { airOf, type Air } from "./air.ts";
 import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose, type V3 } from "./layout.ts";
 import { BurnPanel } from "./BurnPanel.tsx";
 import { Navigate } from "./Navigate.tsx";
+import { SpreadSet, spreadChips } from "./Spread.tsx";
+import { SpreadPanel } from "./SpreadPanel.tsx";
 import "./cabin.css";
 
 /** The fuel droplet on its fibre holder: drawn larger than life (DROPLET.scale), like the flame around it. */
@@ -117,21 +120,6 @@ function StationOutline({ dMm }: { dMm: number }) {
 
 const STATION = { o2Percent: 21, pressureKPa: 101.3 };
 
-/** Fire spread, first cut: the flame front moves along the bench with the seeker (15.6 adds the objects). */
-function SpreadFire({ air, calm }: { air: Air; calm: boolean }) {
-  const t = usePlayback((s) => s.t);
-  if (air.o2Percent === undefined) return null;
-  const g = air.gravity === "earth" ? "earth" : "micro";
-  const at = spreadAt(OBJECTS, g, air.o2Percent, FABRIC_LIVES, t);
-  if (!at.alive) return null;
-  return (
-    <group position={[at.front, 0.03, 0]}>
-      <Flame o2Percent={air.o2Percent} pressureKPa={air.pressureKPa} airflowCmS={3} size={0.08} calm={calm} gravity={air.gravity} />
-    </group>
-  );
-}
-
-const FABRIC_LIVES = { lives: true, test: null, beyond: false };
 
 /** Loads the team's model grid once. */
 function useWhatIf() {
@@ -143,6 +131,23 @@ function useWhatIf() {
       live = false;
     };
   }, []);
+  return doc;
+}
+
+/** Loads the solid-materials tests (BASS-II fabric, SAFFIRE-II samples) once, for the fire spread. */
+function useSolids(on: boolean) {
+  const [doc, setDoc] = useState<SolidsDoc | null>(null);
+  useEffect(() => {
+    if (!on || doc) return;
+    let live = true;
+    fetch("/data/solids.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => live && setDoc(parseSolids(j)))
+      .catch(() => undefined);
+    return () => {
+      live = false;
+    };
+  }, [on, doc]);
   return doc;
 }
 
@@ -162,29 +167,35 @@ export function CabinScene({ habitat, calm }: SceneProps) {
   const dMm = doc && pick ? doc.axes.d0[pick.d0] : 2;
   const r = flameRadius(dMm);
 
+  // Fire spread: the cabin airflow and the nearest real fabric test decide whether the cloth's flame lives.
+  const solids = useSolids(mode === "spread");
+  const flow = usePlayback((s) => s.flow);
+  const g = gravityOf(base);
+  const o2 = air.o2Percent ?? 21;
+  const fabric = fabricVerdict(solids, o2, flow, g);
   // The one timeline: the model burn, or the spread along the bench.
-  const g = air.gravity === "earth" ? "earth" : "micro";
   const tl =
     mode === "spread"
       ? air.o2Percent === undefined
         ? null
-        : spreadTimeline(spreadEnd(OBJECTS, g, air.o2Percent, FABRIC_LIVES), `spread|${base}`)
+        : spreadTimeline(spreadEnd(OBJECTS, g, o2, fabric), `spread|${base}|${flow}|${fabric.lives}`)
       : c
         ? burnTimeline(c, `burn|${base}|${JSON.stringify(pick)}`)
         : null;
   const tlKey = tl?.key;
   // The stage frames the fire around the console's glass and this scene's own panel: say when the panel comes or goes.
-  const panel = mode !== "spread" && !!doc;
+  const panel = mode === "spread" || !!doc;
   useEffect(() => {
     window.dispatchEvent(new Event("replay-obstacles"));
-  }, [panel]);
+  }, [panel, mode]);
   useEffect(() => {
     usePlayback.getState().setTimeline(tl);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tlKey]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
+  const fire = useMemo(() => (mode === "spread" ? spreadChips(g, flow) : null), [mode, g, flow]);
   const chips: ChipSpec[] = [
-    ...(mode === "spread" ? [] : [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
+    ...(fire ?? [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
     { id: "window", at: windowAt(base), left: true, below: true, text: room.outside === "orbit" ? "Window: Earth from orbit" : room.outside === "moon" ? "Window: the lunar surface" : "Window: daylight on Earth" },
   ];
 
@@ -202,13 +213,16 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         <Cabin base={base} />
         <Navigate home={home} calm={calm} />
         <LensShift home={home} focus={mode === "spread" ? home.target : DROPLET.at} />
-        {mode === "spread" ? <SpreadFire air={air} calm={calm} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
+        {mode === "spread" ? <SpreadSet air={air} g={g} fabric={fabric} flow={flow} calm={calm} chips={fire ?? undefined} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
+      {mode === "spread" && <SpreadPanel air={air.name} g={g} doc={solids} fabric={fabric} />}
       {mode !== "spread" && doc && pick && <BurnPanel doc={doc} pick={pick} c={c} air={air.name} compare={base === "iss" ? null : compare} />}
       <p className="sr-only">
-        {`Inside the ${room.name}: a fuel droplet burns on a holder on the bench. ${air.name}: ${air.readout}. Illustration, not a simulation.`}
+        {mode === "spread"
+          ? `Inside the ${room.name}: a flame spreads over cloth, paper, foam and an acrylic panel on the bench and stops at a metal locker. ${air.name}: ${air.readout}. Illustration, not a simulation.`
+          : `Inside the ${room.name}: a fuel droplet burns on a holder on the bench. ${air.name}: ${air.readout}. Illustration, not a simulation.`}
       </p>
     </div>
   );

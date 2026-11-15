@@ -33,6 +33,8 @@ export type PlaybackState = {
   compare: boolean;
   /** Fire spread: the object pointed at or picked. */
   picked: string | null;
+  /** Fire spread: the cabin's airflow along the bench, cm/s. */
+  flow: number;
   setMode: (m: Mode) => void;
   setTimeline: (tl: Timeline | null) => void;
   seek: (t: number) => void;
@@ -43,6 +45,7 @@ export type PlaybackState = {
   setSel: (s: BurnPick | null) => void;
   setCompare: (c: boolean) => void;
   pick: (id: string | null) => void;
+  setFlow: (cmS: number) => void;
 };
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
@@ -59,6 +62,7 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   sel: null,
   compare: false,
   picked: null,
+  flow: 10,
   setMode: (mode) => set({ mode, picked: null }),
   // A new timeline (another scene, base or setting) starts from its beginning; the same one keeps its place.
   setTimeline: (tl) => {
@@ -77,6 +81,7 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   setSel: (sel) => set({ sel }),
   setCompare: (compare) => set({ compare }),
   pick: (picked) => set({ picked }),
+  setFlow: (flow) => set({ flow }),
 }));
 
 /** The phase showing at time t: the last one that has started. */
