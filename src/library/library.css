@@ -1,0 +1,52 @@
+/* Library: content of the 320px left panel. The panel scrolls; this does not. No glass here: the panel owns its surface. */
+.lib { display: flex; flex-direction: column; padding: var(--space-4); min-width: 0; }
+.lib-h { color: var(--label); font-weight: 500; margin-bottom: var(--space-3); }
+
+.lib-search input {
+  width: 100%; min-height: 2.75rem; padding: 0 var(--space-3);
+  font: inherit; color: var(--color-text); background: transparent;
+  border: 1px solid var(--color-border-strong); border-radius: var(--radius-1);
+}
+.lib-search input::placeholder { color: var(--color-text-muted); }
+
+/* Selected = white fill, dark text. Unselected = transparent with a hairline. */
+.lib-seg { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-top: var(--space-2); }
+.lib-seg-btn {
+  min-height: 2.75rem; padding: 0 var(--space-3);
+  font: inherit; font-size: var(--text-sm); font-weight: 600; color: var(--color-text);
+  background: transparent; border: 1px solid var(--line-strong); border-radius: var(--radius-1); cursor: pointer;
+}
+.lib-seg-btn:hover { background: var(--glass-hi); }
+.lib-seg-btn[aria-pressed="true"] { background: var(--color-pill); color: var(--color-pill-text); border-color: var(--color-pill); }
+
+.lib-sub { display: flex; align-items: baseline; justify-content: space-between; color: var(--label); font-weight: 500; margin: var(--space-5) 0 var(--space-2); }
+.lib-count { color: var(--color-text-muted); }
+.lib-note { color: var(--color-text-muted); font-size: var(--text-sm); padding: var(--space-2) 0; }
+
+.lib-list, .lib-steps { list-style: none; margin: 0; padding: 0; }
+.lib-row { display: flex; align-items: stretch; min-height: 2.75rem; border-top: 1px solid var(--line); }
+.lib-open {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: var(--space-1);
+  padding: var(--space-2) var(--space-2) var(--space-2) 0;
+  font: inherit; color: var(--color-text); text-align: left; background: transparent; border: 0; cursor: pointer;
+}
+.lib-open:hover, .lib-ask:hover { background: var(--glass-hi); }
+.lib-open:focus-visible, .lib-ask:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.lib-name { font-weight: 600; overflow-wrap: anywhere; line-height: 1.3; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.lib-meta { color: var(--color-text-muted); font-size: var(--text-sm); }
+.lib-meta.t-readout, .lib-meta .t-readout { font-size: var(--text-xs); color: var(--label); }
+.lib-ask { flex: none; width: 2.75rem; display: grid; place-items: center; color: var(--color-text-muted); background: transparent; border: 0; cursor: pointer; }
+.lib-ask:hover { color: var(--color-text); }
+
+.lib-source { flex-direction: column; justify-content: center; gap: var(--space-1); padding: var(--space-2) 0; }
+/* A row that leaves the page: text colour, no underline until hover. */
+.lib-source a { color: var(--color-text); font-size: var(--text-sm); text-decoration: none; overflow-wrap: anywhere; }
+.lib-source a:hover { text-decoration: underline; }
+.lib-more { align-self: flex-start; margin-top: var(--space-3); font-size: var(--text-sm); }
+
+.lib-step { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) 0; border-top: 1px solid var(--line); }
+.lib-step-n { color: var(--label); }
+.lib-step-body { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.lib-step-name { font-weight: 600; }
+.lib-step-name .lib-meta { margin-left: var(--space-2); font-weight: 500; }
+.lib-step-text { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.35; }
