@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { HabitatPreset } from "../../contracts/index.ts";
-import { airSide, compareLine, LIMITS, NOT_ON_RECORD, sidesFor } from "./copy.ts";
+import { airSide, compareLine, EARTH_LINE, earthSides, LIMITS, NOT_ON_RECORD, sidesFor } from "./copy.ts";
 
 const iss: HabitatPreset = { id: "iss", label: "ISS", o2Percent: 21, pressureKPa: 101.3, note: "" };
 const moon: HabitatPreset = { id: "moon", label: "Moon Base", o2Percent: 30, pressureKPa: 70.3, note: "" };
@@ -48,5 +48,21 @@ describe("lunar copy", () => {
     expect(side.oxygen).toBe(NOT_ON_RECORD);
     expect(side.o2Percent).toBeUndefined();
     expect(sidesFor(moon, undefined).sides[0].oxygen).toBe(NOT_ON_RECORD);
+  });
+});
+
+describe("Earth card", () => {
+  it("draws one air at two gravities, with the numbers read from the station preset", () => {
+    const sides = earthSides({ id: "iss", label: "ISS", o2Percent: 20.9, pressureKPa: 101.3, note: "" });
+    expect(sides.map((s) => [s.name, s.gravity, s.oxygen, s.pressure])).toEqual([
+      ["On Earth, 1 g", "earth", "20.9% oxygen", "101.3 kPa"],
+      ["In orbit, weightless", undefined, "20.9% oxygen", "101.3 kPa"],
+    ]);
+    expect(new Set(sides.map((s) => s.key)).size).toBe(2);
+  });
+
+  it("keeps its line to sentences under 25 words, in page vocabulary", () => {
+    for (const s of EARTH_LINE.split(/(?<=\.)\s+/)) expect(s.split(/\s+/).length).toBeLessThan(25);
+    expect(EARTH_LINE).not.toMatch(/\bAI\b|investigation|according to NASA/i);
   });
 });

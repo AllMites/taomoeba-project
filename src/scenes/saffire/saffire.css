@@ -1,15 +1,17 @@
-/* SAFFIRE replay. The canvas is always dark (it looks into a dark cargo module), so the DOM over it uses the
-   --glass-* tokens, which stay dark in both schemes. Spacing: 4 / 8 / 16 / 24 / 32 only. */
+/* SAFFIRE replay. The DOM over the canvas sits on glass. Spacing: 4 / 8 / 16 / 24 / 32 only.
+   --replay-top / --replay-bottom come from the center replay (stage.css) and keep the readouts, notes and buttons
+   clear of the base carousel, the caption and the Past | Now switch. In the dev harness they fall back to the edge. */
 
 .sf-root {
   position: relative;
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: var(--radius-2);
   background: var(--glass-sky);
   color: var(--glass-text);
   isolation: isolate;
+  --sf-top: var(--replay-top, var(--space-4));
+  --sf-bottom: var(--replay-bottom, var(--space-4));
 }
 
 .sf-canvas, .sf-poster {
@@ -37,12 +39,11 @@
 .sf-hud {
   position: absolute;
   z-index: 2;
-  top: var(--space-4);
+  top: var(--sf-top);
   left: var(--space-4);
   max-width: 17rem;
   padding: var(--space-4);
   border-radius: var(--radius-1);
-  background: var(--glass-panel);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -73,23 +74,31 @@
 .sf-phase { font-size: var(--text-xs); color: var(--glass-text); }
 .sf-speed { font-size: var(--text-xs); color: var(--glass-muted); }
 
-/* ---- Callouts: one cited sentence + source chip, at most two ---- */
-.sf-callouts { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
-.sf-callout {
+/* ---- Callouts: one cited sentence + source chip, at most two, stacked down the right edge ---- */
+.sf-callouts {
   position: absolute;
+  z-index: 2;
+  top: var(--sf-top);
+  right: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-4);
+  pointer-events: none;
+}
+.sf-callout {
   margin: 0;
   max-width: 17rem;
   padding: var(--space-4);
   border-radius: var(--radius-1);
-  background: var(--glass-panel);
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
   pointer-events: auto;
 }
 .sf-callout p { font-size: var(--text-sm); line-height: 1.4; }
-.sf-at-silicone { top: var(--space-4); right: var(--space-4); }
-.sf-at-box { bottom: var(--space-4); left: var(--space-4); }
+.sf-at-silicone { order: 0; }
+.sf-at-box { order: 1; }
 .sf-chip {
   display: flex;
   flex-direction: column;
@@ -99,12 +108,13 @@
 }
 .sf-chip-title { font-size: var(--text-xs); color: var(--glass-text); }
 
-/* ---- Controls, bottom right ---- */
+/* ---- Controls, bottom centre, above the Past | Now switch ---- */
 .sf-controls {
   position: absolute;
   z-index: 3;
-  right: var(--space-4);
-  bottom: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: var(--sf-bottom);
   display: flex;
   gap: var(--space-2);
   align-items: center;
@@ -114,9 +124,7 @@
   min-height: 2.75rem;
   min-width: 2.75rem;
   padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--glass-edge);
   border-radius: var(--radius-full);
-  background: var(--glass-panel);
   color: var(--glass-text);
   font-family: var(--font-mono);
   font-weight: 600;
@@ -126,13 +134,13 @@
   text-decoration: none;
   cursor: pointer;
 }
-.sf-btn:hover { border-color: var(--glass-accent); color: var(--glass-accent); }
-.sf-btn[aria-pressed="true"].sf-page { border: 2px solid var(--glass-accent); color: var(--glass-accent); }
-.sf-root :focus-visible { outline: 3px solid var(--glass-accent); outline-offset: 2px; }
+.sf-btn:hover { border-color: var(--line-strong); }
+.sf-btn[aria-pressed="true"].sf-page { background: var(--color-pill); color: var(--color-pill-text); }
+.sf-root :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
 /* ---- Narrow box (phone): readouts in a compact band on top, one note at a time at the bottom ---- */
 .sf-narrow .sf-hud {
-  top: var(--space-2);
+  top: var(--replay-top, var(--space-2));
   left: var(--space-2);
   right: var(--space-2);
   max-width: none;
@@ -143,19 +151,27 @@
 .sf-narrow .sf-readouts { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-1) var(--space-2); }
 .sf-narrow .sf-ro { display: flex; flex-direction: column; min-width: 0; }
 .sf-narrow .sf-ro dd.t-readout { font-size: var(--text-xs); }
-.sf-narrow .sf-callout {
+.sf-narrow .sf-callouts {
   left: var(--space-2);
   right: var(--space-2);
   top: auto;
-  bottom: calc(2.75rem + var(--space-4));
+  bottom: calc(var(--replay-bottom, var(--space-2)) + 2.75rem + var(--space-2));
+  align-items: stretch;
+}
+.sf-narrow .sf-callout {
   max-width: none;
   padding: var(--space-2);
   gap: var(--space-1);
 }
 .sf-narrow .sf-callout p { font-size: var(--text-xs); }
 .sf-narrow .sf-chip { flex-direction: row; flex-wrap: wrap; column-gap: var(--space-2); padding-top: var(--space-1); }
-.sf-narrow .sf-controls { left: var(--space-2); right: var(--space-2); bottom: var(--space-2); justify-content: space-between; }
+.sf-narrow .sf-controls { left: var(--space-2); right: var(--space-2); transform: none; bottom: var(--replay-bottom, var(--space-2)); justify-content: space-between; }
 .sf-narrow .sf-btn { padding: var(--space-2); }
+
+/* Between two open panels the bottom edge is taken (brief, top-3 card), so the buttons sit under the readouts. */
+@container stage (min-width: 40rem) and (max-width: 60rem) {
+  .sf-controls { left: var(--space-4); transform: none; bottom: auto; top: calc(var(--sf-top) + 14.5rem); }
+}
 
 @media (prefers-contrast: more) {
   .sf-hud, .sf-callout, .sf-btn { background: var(--glass-sky); }

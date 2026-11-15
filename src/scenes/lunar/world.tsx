@@ -1,13 +1,13 @@
-import { useGLTF } from "@react-three/drei";
+import { Stars, useGLTF } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Component, Suspense, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
-import { Color, DirectionalLight, Mesh, MeshStandardMaterial, Object3D, ShaderMaterial, Vector3, type Material, type PerspectiveCamera, type Texture } from "three";
+import { Component, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
+import { Color, DirectionalLight, type Group, Mesh, MeshStandardMaterial, Object3D, ShaderMaterial, Vector3, type Material, type PerspectiveCamera, type Texture } from "three";
 import { hold } from "./hold.ts";
 import { makeHeightField, makeRegolith, type Pad } from "./terrain.ts";
 
 // Scene colours. Physical surfaces, not UI: the DOM overlay takes its colours from tokens.css.
 export const PALETTE = {
-  space: "#05070b",
+  space: "#070707", // neutral near-black, so the scene edge melts into the mono page
   regolith: "#a19d96",
   sun: "#fff3e2",
   fill: "#b9c8ee", // cool camera-side fill: a truly backlit Moon reads as pure silhouette
@@ -29,6 +29,15 @@ const LAYOUT = {
 
 export type ShotId = "moon" | "rover";
 
+/**
+ * How the box is framed. The console lays glass over the replay (flames and words on the left, the top-3 card
+ * bottom right, a switch bottom centre), so the subject goes where the box is clear:
+ * wide = a landscape box; tall = a box between two open panels; phone = a narrow portrait box.
+ */
+export type Framing = "wide" | "tall" | "phone";
+export const framingOf = (width: number, height: number): Framing =>
+  width / Math.max(1, height) >= 1.2 ? "wide" : width >= 640 ? "tall" : "phone";
+
 type Shot = {
   /** Point the frame is built around. */
   subject: [number, number, number];
@@ -36,15 +45,15 @@ type Shot = {
   dist: number;
   az: number;
   eye: number;
-  /** Vertical field of view: wide box, narrow (phone) box. Small values = long lens. */
-  fov: [number, number];
+  /** Vertical field of view per framing (see framingOf). Small values = long lens. */
+  fov: Record<Framing, number>;
   /** Shadow box half-size around the subject. */
   shadow: number;
 };
 
 export const SHOTS: Record<ShotId, Shot> = {
-  moon: { subject: [0, 2.4, 0], dist: 52, az: 12, eye: 1.4, fov: [20, 28], shadow: 22 },
-  rover: { subject: [LAYOUT.sev.pos[0], 1.7, LAYOUT.sev.pos[2]], dist: 24, az: -45, eye: 1.0, fov: [20, 28], shadow: 14 },
+  moon: { subject: [0, 2.4, 0], dist: 52, az: 12, eye: 1.4, fov: { wide: 20, tall: 44, phone: 32 }, shadow: 22 },
+  rover: { subject: [LAYOUT.sev.pos[0], 1.7, LAYOUT.sev.pos[2]], dist: 24, az: -45, eye: 1.0, fov: { wide: 20, tall: 44, phone: 44 }, shadow: 14 },
 };
 
 const deg = Math.PI / 180;
@@ -69,8 +78,8 @@ for (const s of Object.values(SHOTS)) {
 }
 export const FIELD = makeHeightField({ pads: PADS, centre: [0, 18] });
 
-/** Where the subject sits in the frame (NDC, -1..1): right of centre on a wide box, low and centred on a phone. */
-const AIM = { wide: [0.3, -0.32], narrow: [0, -0.6] } as const;
+/** Where the subject sits in the frame (NDC, -1..1): the part of each box the console leaves clear. */
+const AIM: Record<Framing, readonly [number, number]> = { wide: [0.12, -0.2], tall: [-0.38, -0.5], phone: [0, -0.36] };
 /** Where the Earth sits in the frame (NDC), clear of the overlay column. A phone box has no free sky: no Earth. */
 const EARTH_AT = { wide: [0.62, 0.55] as const, narrow: null };
 
@@ -103,7 +112,7 @@ function releaseModels() {
   gltfLoader?.dracoLoader?.dispose();
 }
 
-function Model({ url, pos, rotY }: { url: string; pos: readonly [number, number, number]; rotY: number }) {
+function Model({ url, pos, rotY, onLoad }: { url: string; pos: readonly [number, number, number]; rotY: number; onLoad: (url: string) => void }) {
   const { scene } = useGLTF(url, DRACO, true, keepLoader);
   const gl = useThree((s) => s.gl);
   const invalidate = useThree((s) => s.invalidate);
@@ -112,7 +121,8 @@ function Model({ url, pos, rotY }: { url: string; pos: readonly [number, number,
     loaded.set(url, scene);
     gl.shadowMap.needsUpdate = true;
     invalidate();
-  }, [scene, url, gl, invalidate]);
+    onLoad(url);
+  }, [scene, url, gl, invalidate, onLoad]);
   return <primitive object={scene} position={pos} rotation={[0, rotY, 0]} />;
 }
 
@@ -134,14 +144,23 @@ export class LoadGuard extends Component<{ onError: (e: unknown) => void; childr
  * The three models. GPU memory, loader cache and Draco workers go back when the scene really unmounts; the release
  * is deferred (see hold.ts) so a StrictMode remount keeps them instead of refetching on every later render.
  */
-export function Models({ onError }: { onError: (e: unknown) => void }) {
+export function Models({ onError, onReady }: { onError: (e: unknown) => void; onReady: () => void }) {
   useEffect(() => hold("lunar-models", releaseModels), []);
+  // Ready once every model is in the scene, so the still picture gives way to a finished frame, not to bare ground.
+  const seen = useRef(new Set<string>());
+  const onLoad = useCallback(
+    (url: string) => {
+      seen.current.add(url);
+      if (seen.current.size === Object.keys(MODEL_URLS).length) onReady();
+    },
+    [onReady],
+  );
   return (
     <LoadGuard onError={onError}>
       <Suspense fallback={null}>
-        <Model url={MODEL_URLS.hdu} {...LAYOUT.hdu} />
-        <Model url={MODEL_URLS.sev} {...LAYOUT.sev} />
-        <Model url={MODEL_URLS.astronaut} {...LAYOUT.astronaut} />
+        <Model url={MODEL_URLS.hdu} {...LAYOUT.hdu} onLoad={onLoad} />
+        <Model url={MODEL_URLS.sev} {...LAYOUT.sev} onLoad={onLoad} />
+        <Model url={MODEL_URLS.astronaut} {...LAYOUT.astronaut} onLoad={onLoad} />
       </Suspense>
     </LoadGuard>
   );
@@ -294,10 +313,10 @@ export function Rig({ shot, calm }: { shot: ShotId; calm: boolean }) {
   const camera = useThree((st) => st.camera);
   const size = useThree((st) => st.size);
   const invalidate = useThree((st) => st.invalidate);
-  const wide = size.width / Math.max(1, size.height) >= 1.2;
+  const framing = framingOf(size.width, size.height);
   useFrame(({ clock }) => {
     const cam = camera as PerspectiveCamera;
-    const fov = wide ? s.fov[0] : s.fov[1];
+    const fov = s.fov[framing];
     if (cam.fov !== fov) {
       cam.fov = fov;
       cam.near = 0.3;
@@ -314,14 +333,33 @@ export function Rig({ shot, calm }: { shot: ShotId; calm: boolean }) {
     const aim = V.b.copy(subject).addScaledVector(right, sway * 0.6);
     cam.position.copy(pos);
     cam.lookAt(aim);
-    const [ax, ay] = wide ? AIM.wide : AIM.narrow;
+    const [ax, ay] = AIM[framing];
     const tanV = Math.tan((fov / 2) * deg);
     cam.rotateY(Math.atan(ax * tanV * cam.aspect));
     cam.rotateX(Math.atan(-ay * tanV));
     cam.updateMatrixWorld();
   }, -2);
-  useEffect(() => invalidate(), [shot, calm, wide, invalidate]);
+  useEffect(() => invalidate(), [shot, calm, framing, invalidate]);
   return null;
+}
+
+/**
+ * Star field and depth fog. The stars turn very slowly unless calm; the fog takes the far ground down into the
+ * dark, so the horizon has depth and no hard mesh edge.
+ */
+export function Sky({ calm, fog }: { calm: boolean; fog: boolean }) {
+  const stars = useRef<Group>(null);
+  useFrame((_, dt) => {
+    if (!calm && stars.current) stars.current.rotation.y += Math.min(dt, 0.1) * 0.004;
+  });
+  return (
+    <>
+      {fog && <fog attach="fog" args={[PALETTE.space, 90, 520]} />}
+      <group ref={stars}>
+        <Stars radius={420} depth={80} count={1400} factor={9} saturation={0} fade speed={calm ? 0 : 0.5} />
+      </group>
+    </>
+  );
 }
 
 /** Free every geometry, material and texture under a root. */
