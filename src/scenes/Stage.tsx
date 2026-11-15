@@ -367,6 +367,8 @@ export default function Stage() {
     const brief = el.parentElement?.querySelector<HTMLElement>(".console-brief");
     const fit = () => {
       if (strip) el.style.setProperty("--stage-strip-h", `${strip.offsetHeight}px`);
+      // What lies under the stage on screen (the bottom bars): a full-screen menu on a short stage stops above it.
+      el.style.setProperty("--stage-under", `${Math.max(0, window.innerHeight - el.getBoundingClientRect().bottom)}px`);
       if (cap && !cap.closest("[data-open]")) el.style.setProperty("--stage-caption-h", `${cap.offsetHeight}px`);
       const b = brief?.getBoundingClientRect();
       el.style.setProperty("--replay-brief", b?.height ? `${Math.max(0, el.getBoundingClientRect().bottom - b.top)}px` : "calc(var(--console-safe-bottom, 0rem) + 1rem)");
@@ -442,6 +444,11 @@ export default function Stage() {
         <ScenePicker />
         <div className="stage-strip-slot" />
         <PlayBar />
+        {steered && (
+          <button type="button" className="stage-reset glass" aria-label="Reset view" title="Reset view" onClick={() => usePlayback.getState().resetView()}>
+            <ResetIcon />
+          </button>
+        )}
       </div>
       <div className="stage-caption" data-open={capOpen || undefined}>
         <div className="stage-caption-text glass" ref={capBox}>
@@ -459,11 +466,6 @@ export default function Stage() {
             <span className="stage-hint-fine">Drag to look around, scroll to zoom</span>
             <span className="stage-hint-touch">Drag to look around, pinch to zoom</span>
           </p>
-        )}
-        {steered && (
-          <button type="button" className="stage-reset glass" aria-label="Reset view" title="Reset view" onClick={() => usePlayback.getState().resetView()}>
-            <ResetIcon />
-          </button>
         )}
       </div>
     </section>

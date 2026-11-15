@@ -368,3 +368,36 @@
   .stage-strip .burn-panel { left: 0; right: 0; width: auto; }
   .stage-strip .burn-toggle .stage-pick-name { max-width: 8rem; }
 }
+
+/* "Reset view" ends the strip. */
+.stage-strip .stage-reset { flex: none; width: 2.75rem; height: 2.75rem; }
+/* Touch sizes: every stage control at least 44 px tall. */
+@media (pointer: coarse), (max-width: 64rem) {
+  .stage button, .stage select, .stage summary, .stage .spread-resp { min-height: 2.75rem; }
+}
+/*
+ * A short stage (a small phone, a phone on its side): the strip takes priority. The pickers keep their labels and
+ * drop the current value, so the strip stays at most two rows; the caption keeps one line.
+ */
+@container stage (max-height: 30rem) {
+  .stage-strip .stage-pick-name { display: none; }
+  .stage .stage-strip .stage-pick-label { display: inline; }
+  .stage-strip .stage-play { flex: 1 1 12rem; }
+  .stage-caption-text { max-height: 2.75rem; overflow: hidden; }
+  .stage-strip .stage-pick-list, .stage-strip .burn-panel { max-height: calc(100cqh - var(--stage-strip-bottom) - var(--stage-strip-h, 2.75rem) - var(--space-2)); }
+}
+/*
+ * A very short stage: the caption folds to its "About this replay" button at the right end of the strip's row; its
+ * words step aside. Menus then open over the whole stage height above the strip, with inner scroll.
+ */
+@container stage (max-height: 18rem) {
+  .stage-caption { top: auto; left: auto; right: var(--space-4); bottom: var(--stage-strip-bottom); }
+  .stage-caption-text { padding: 0; }
+  .stage-caption:not([data-open]) .stage-caption-words { display: none; }
+  /* Above the carousel's readout line where the two meet: the controls win. */
+  .stage-strip { right: calc(var(--space-4) + 3.25rem); z-index: 40; }
+  .stage-caption { z-index: 40; }
+  .stage-hint { display: none; }
+  /* No room above the strip: an open menu or scenario panel takes the screen, with inner scroll. */
+  .stage-strip .stage-pick-list, .stage-strip .burn-panel { position: fixed; inset: var(--space-2) var(--space-2) calc(var(--stage-under, 0px) + var(--space-2)); width: auto; max-height: none; z-index: 1000; overflow: auto; }
+}
