@@ -91,3 +91,8 @@ describe("the gravity switch (15.10)", () => {
     expect(gravityName("partial", 30, 70.3)).toBe("On the Moon (estimate)");
   });
 });
+
+it("is closed at rest behind one Scenario button, and carries the aftermath inside it (18.2)", () => {
+  const html = panel();
+  expect(html).toMatch(/<div class="burn"><button type="button" class="burn-toggle glass" aria-expanded="false"[^>]*>Scenario<\/button>/);
+});

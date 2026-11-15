@@ -169,7 +169,7 @@ const PauseIcon = () => (
   </svg>
 );
 
-/** Play and pause, the seeker, elapsed and total time, and the phase on screen. One bar for every scene. */
+/** Play and pause, the seeker with its stage marks, and the time. One bar for every scene, in the top strip. */
 function PlayBar() {
   const tl = usePlayback((s) => s.timeline);
   const t = usePlayback((s) => s.t);
@@ -225,7 +225,7 @@ function PlayBar() {
           {tl.rate > 1 && <span className="stage-rate"> · {tl.rate}×</span>}
         </span>
       )}
-      <span className="stage-phase" aria-live="polite">
+      <span className="stage-phase sr-only" aria-live="polite">
         {phase}
         {tl.compressed && <span className="stage-rate"> · time compressed</span>}
       </span>
@@ -244,18 +244,60 @@ function usePhase() {
   });
 }
 
-/** The caption: the current stage's own words where the scene gives them, with "How we know" for its records. */
-function StageCaption({ fallback, mode }: { fallback: string; mode: string }) {
+/**
+ * The caption: the current stage's own words where the scene gives them, with "How we know" for its records. One
+ * line at rest, cut with an ellipsis, the outcome headline first once a response has played, and a short mark
+ * ("Illustration" or "Record") kept in view at its end. A press expands it.
+ */
+function StageCaption({ fallback, mode, onPress, notes }: { fallback: string; mode: string; onPress: () => void; notes: string[] }) {
   const phase = usePhase();
   const own = phase?.caption && usePlayback.getState().timeline?.key.startsWith(mode) ? phase : null;
+  const headline = usePlayback((s) => s.headline);
   const cited = useCited(own?.refs);
+  const text = own?.caption ?? fallback;
   return (
     <div className="stage-caption-words">
-      <p aria-live="polite">{own?.caption ?? fallback}</p>
+      <p aria-live="polite" onClick={onPress}>
+        {headline && <b className="stage-headline">{headline}. </b>}
+        {text}
+      </p>
+      <span className="stage-mark-word t-readout" aria-hidden="true" onClick={onPress}>
+        {/illustrat/i.test(fallback) ? "Illustration" : "Record"}
+      </span>
+      {notes.length > 0 && (
+        <div className="stage-notes">
+          {notes.map((n) => (
+            <p key={n}>{n}</p>
+          ))}
+        </div>
+      )}
       {cited.length > 0 && <HowWeKnow records={cited} />}
     </div>
   );
 }
+
+/** The caption's open state: a press opens or closes it; Escape or a press outside it closes it. */
+function useCaptionOpen(box: React.RefObject<HTMLElement | null>) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (!open) return;
+    const key = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const press = (e: PointerEvent) => !box.current?.contains(e.target as Node) && setOpen(false);
+    document.addEventListener("keydown", key);
+    document.addEventListener("pointerdown", press);
+    return () => {
+      document.removeEventListener("keydown", key);
+      document.removeEventListener("pointerdown", press);
+    };
+  }, [open, box]);
+  return [open, setOpen] as const;
+}
+
+const ResetIcon = () => (
+  <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+    <path d="M3 8a5 5 0 1 0 1.6-3.7M3 2.5v3h3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 /** Which scene: a disclosure with the three named scenes, each with its one-line description. */
 function ScenePicker() {
@@ -321,15 +363,17 @@ export default function Stage() {
     const el = section.current;
     if (!el || typeof ResizeObserver === "undefined") return;
     const cap = el.querySelector<HTMLElement>(".stage-caption-text");
+    const strip = el.querySelector<HTMLElement>(".stage-strip");
     const brief = el.parentElement?.querySelector<HTMLElement>(".console-brief");
     const fit = () => {
-      if (cap) el.style.setProperty("--stage-caption-h", `${cap.offsetHeight}px`);
+      if (strip) el.style.setProperty("--stage-strip-h", `${strip.offsetHeight}px`);
+      if (cap && !cap.closest("[data-open]")) el.style.setProperty("--stage-caption-h", `${cap.offsetHeight}px`);
       const b = brief?.getBoundingClientRect();
       el.style.setProperty("--replay-brief", b?.height ? `${Math.max(0, el.getBoundingClientRect().bottom - b.top)}px` : "calc(var(--console-safe-bottom, 0rem) + 1rem)");
     };
     fit();
     const ro = new ResizeObserver(fit);
-    for (const o of [el, cap, brief]) if (o) ro.observe(o);
+    for (const o of [el, cap, strip, brief]) if (o) ro.observe(o);
     return () => ro.disconnect();
   }, [shown]);
   useTicker();
@@ -361,6 +405,8 @@ export default function Stage() {
   const [webgl] = useState(canWebGL);
   const view = stageView({ loaded: !!mod, live, poster: target.poster });
   const drifted = usePlayback((s) => s.drifted);
+  const capBox = useRef<HTMLDivElement>(null);
+  const [capOpen, setCapOpen] = useCaptionOpen(capBox);
   const steered = usePlayback((s) => s.steered);
   // Arrow keys orbit and plus / minus zoom while the stage itself has focus (not a control inside it).
   const onKey = (e: React.KeyboardEvent) => {
@@ -392,24 +438,20 @@ export default function Stage() {
         </SceneGuard>
       )}
       <div className="stage-ticks" aria-hidden="true" />
-      <div className="stage-caption">
-        <div className="stage-caption-text glass">
-          <StageCaption fallback={target.caption} mode={mode} />
-          {target.notes.length > 0 && (
-            <details className="stage-info">
-              <summary aria-label="About this replay">
-                <span aria-hidden="true">i</span>
-              </summary>
-              <div className="stage-info-body glass">
-                {target.notes.map((n) => (
-                  <p key={n}>{n}</p>
-                ))}
-              </div>
-            </details>
-          )}
+      <div className="stage-strip">
+        <ScenePicker />
+        <PlayBar />
+      </div>
+      <div className="stage-caption" data-open={capOpen || undefined}>
+        <div className="stage-caption-text glass" ref={capBox}>
+          <StageCaption fallback={target.caption} mode={mode} onPress={() => setCapOpen((o) => !o)} notes={target.notes} />
+          <details className="stage-info" open={capOpen} onToggle={(e) => setCapOpen((e.currentTarget as HTMLDetailsElement).open)}>
+            <summary aria-label="About this replay">
+              <span aria-hidden="true">i</span>
+            </summary>
+          </details>
         </div>
       </div>
-      <ScenePicker />
       <div className="stage-nav">
         {!drifted && (
           <p className="stage-hint glass" role="note">
@@ -418,12 +460,11 @@ export default function Stage() {
           </p>
         )}
         {steered && (
-          <button type="button" className="stage-reset glass" onClick={() => usePlayback.getState().resetView()}>
-            Reset view
+          <button type="button" className="stage-reset glass" aria-label="Reset view" title="Reset view" onClick={() => usePlayback.getState().resetView()}>
+            <ResetIcon />
           </button>
         )}
       </div>
-      <PlayBar />
     </section>
   );
 }
