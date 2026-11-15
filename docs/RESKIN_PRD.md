@@ -227,5 +227,5 @@ Wave 1 lanes touch separate files, so they run side by side. K waits for S's cen
 3. Earth: Interpret tab or its own sheet?
 4. Which NASA models for the ISS and the rover? Do they pass the size budget?
 5. ~~Light mode?~~ Decided: no (§6).
-6. Does round 1 of the decision board still apply? Ask SI amber, phone padding, the rover label clip and
+6. Does round 1 of the decision board still apply? Ask SI is now the white pill (§6), not amber. Phone padding, the rover label clip and
    section-link fixes carry over; the structure, nav, carousel and bottom-card cards are replaced by this PRD.
