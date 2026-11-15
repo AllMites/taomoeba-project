@@ -8,6 +8,7 @@ import Earth from "../earth/index.tsx";
 import Evidence from "../evidence/index.tsx";
 import Gaps from "../gaps/index.tsx";
 import Graph from "../graph/index.tsx";
+import GuideBar from "../guide/GuideBar.tsx";
 import Library from "../library/index.tsx";
 import Ranking from "../ranking/index.tsx";
 import Solids from "../solids/index.tsx";
@@ -103,6 +104,7 @@ export default function App() {
       <a className="skip" href="#main">Skip to content</a>
       <div className="console" data-view={view} data-left={leftOpen} data-ask={askOpen}>
         <TopBar view={view} leftOpen={leftOpen} askOpen={askOpen} />
+        <GuideBar />
         <Rail view={view} />
         <SidePanel panel="left">
           <PanelHead panel="left" />
