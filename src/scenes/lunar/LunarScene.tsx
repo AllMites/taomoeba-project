@@ -6,6 +6,7 @@ import { earthSides, NOT_ON_RECORD, sidesFor } from "./copy.ts";
 import { FlamePair, type Slot } from "./FlamePair.tsx";
 import { issAirNow, loadIssAir } from "./iss.ts";
 import { posterFor } from "./poster.ts";
+import { Station } from "./station.tsx";
 import { Beacons, Earth, Ground, Lights, Models, PALETTE, Rig, Sky, type ShotId } from "./world.tsx";
 import "./lunar.css";
 
@@ -155,6 +156,7 @@ export function LunarScene({ habitat, calm }: SceneProps) {
                 <Models onError={onLoadError} onReady={onModelsReady} />
               </>
             )}
+            {shot === "iss" && <Station calm={calm} />}
             {!POSTER_CAPTURE && <FlamePair sides={sides} slots={slots} calm={calm} />}
           </Canvas>
         )}
