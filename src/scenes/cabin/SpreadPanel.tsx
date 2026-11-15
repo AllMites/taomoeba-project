@@ -7,7 +7,7 @@ import { usePlayback } from "../playback.ts";
 import HowWeKnow from "../../brief/HowWeKnow.tsx";
 import { useCited } from "../cite.ts";
 import { evidenceFor, OBJECTS, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
-import { RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
+import { GRAVITIES, MOON_ESTIMATE, RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
 
 /** More of a scroll box is below its visible part (2 px of slack for rounding). */
 export const moreBelow = (el: { scrollHeight: number; scrollTop: number; clientHeight: number }) => el.scrollHeight - el.scrollTop - el.clientHeight > 2;
@@ -46,6 +46,21 @@ function Scenario({ st }: { st: Story }) {
           ))}
         </select>
       </label>
+      <fieldset className="spread-set spread-grav">
+        <legend className="spread-legend">Gravity</legend>
+        {GRAVITIES.map((x) => {
+          const [where, how] = x.name.replace(")", "").split(" (");
+          return (
+            <button key={x.id} type="button" className="spread-obj spread-resp" aria-pressed={st.input.g === x.id} onClick={() => usePlayback.getState().setScenario({ grav: x.id })}>
+              <span>
+                {where}
+                <span className="spread-how">{how}</span>
+              </span>
+            </button>
+          );
+        })}
+      </fieldset>
+      {st.input.g === "partial" && <p className="spread-text spread-estimate">{MOON_ESTIMATE}. Drawn between orbit and Earth.</p>}
       <fieldset className="spread-set">
         <legend className="spread-legend">Response when the detector trips</legend>
         {RESPONSES.map((x) => (

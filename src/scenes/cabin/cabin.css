@@ -212,3 +212,8 @@
 @container stage (max-width: 37.5rem) {
   .after-card { top: auto; bottom: var(--space-2); left: var(--space-2); right: var(--space-2); width: auto; max-height: 50%; }
 }
+.spread-grav { grid-template-columns: repeat(3, 1fr); gap: var(--space-1); }
+.spread-grav legend { grid-column: 1 / -1; }
+.spread-grav .spread-obj { justify-content: center; text-align: center; padding: var(--space-1); min-height: 2.75rem; line-height: 1.2; }
+.spread-how { display: block; font-size: var(--text-xs); color: var(--color-text-muted); }
+.spread-estimate { padding-left: var(--space-2); border-left: 2px dashed var(--color-text); }

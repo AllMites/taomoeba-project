@@ -175,6 +175,8 @@ export function CabinScene({ habitat, calm }: SceneProps) {
   const start = usePlayback((s) => s.start);
   const response = usePlayback((s) => s.response);
   const g = usePlayback((s) => s.grav) ?? gravityOf(base);
+  // Another base starts in its own gravity: ISS in orbit, Earth at 1 g, Moon Base and the rover on the Moon.
+  useEffect(() => usePlayback.getState().setScenario({ grav: null }), [base]);
   const o2 = air.o2Percent ?? 21;
   const st = useMemo(() => story({ g, o2, start, response }), [g, o2, start, response]);
   // The one timeline: the model burn, or the spread along the bench.
