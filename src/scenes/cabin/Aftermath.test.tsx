@@ -29,3 +29,16 @@ it("Ask about this carries the experiments behind the response's records", () =>
   expect(scenarioIds(st)).toEqual(["PSI-25", "PSI-20"]);
   expect(scenarioIds(story({ g: "micro", o2: 21, start: "cloth", response: "co2" }))).toEqual(["PSI-69"]);
 });
+
+it("Ask about this attaches the chips, then hands Ask SI the scenario question once", async () => {
+  const { askScenario } = await import("./Aftermath.tsx");
+  const { useStore } = await import("../../app/store.ts");
+  const { useConsole } = await import("../../app/console.ts");
+  const requestAsk = vi.fn();
+  useStore.setState({ requestAsk });
+  const q = "If a fire starts on the cloth near the air vent in the ISS module, what then?";
+  askScenario(["PSI-25", "PSI-20"], q);
+  expect(requestAsk).toHaveBeenCalledTimes(1);
+  expect(requestAsk).toHaveBeenCalledWith(q);
+  expect(useConsole.getState().askAbout).toEqual(expect.arrayContaining(["PSI-25", "PSI-20"]));
+});
