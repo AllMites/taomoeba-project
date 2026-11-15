@@ -245,3 +245,62 @@ Wave 1 lanes touch separate files, so they run side by side. K waits for S's cen
 5. ~~Light mode?~~ Decided: no (§6).
 6. Does round 1 of the decision board still apply? Ask SI is now the white pill (§6), not amber. Phone padding, the rover label clip and
    section-link fixes carry over; the structure, nav, carousel and bottom-card cards are replaced by this PRD.
+
+## 15. Replay v2 (Daniel's review of the live site, 15 Nov)
+
+This section replaces the Past / Now toggle and the two-flame comparison of sections 3, 4 and 7. Owner: `src/scenes/` (not `registry.ts`) and `src/fx/`. Read-only imports: `src/whatif/logic.ts`, `src/whatif/load.ts`, `src/solids/logic.ts`, `src/app/console.ts`, `src/app/store.ts`.
+
+What Daniel said: "I'm very confused about what the 3D scene is." "I don't understand the difference between Past and Now." "Can we have a timeline seeker for the playback?" "Make the scene navigable with actual 3D movement." "I'd like the team models applied in the 3D scene, with controls on the side so the data gets rendered live." "Show the fire spreading around combustible objects. Show how a microgravity fire would interact. Label parts of the fire. Hover over an object to see whether it is combustible, with details." "The ISS air and Moon Base air flames look separated. Have the fire actually show in the 3D scene."
+
+### 15.1 Known defect (fix first)
+
+At 1440x900, `?lib=0&ask=0&base=moon` and `base=rover`: the flames are dots about 6px wide above the rover and the habitat, and their label chips float mid-frame, not at the flames. `base=iss` is correct. Add a test that fails on this: each base's flame has a projected size above a floor at 1440x900, and each chip sits near its flame.
+
+### 15.2 The fire is in the scene
+
+- The default view puts the viewer where the fire is: inside the picked base's cabin, with the flame burning on something in the scene. The flame is large and in view at all times.
+- The exterior of the habitat, rover or station is the establishing view: the camera may start there and "Reset view" may return to it.
+- The side-by-side two-flame comparison is removed. "Compare with station air" is an optional toggle, off by default, that shows a faint second flame at the same spot.
+
+### 15.3 Scene picker and one timeline
+
+- No Past / Now. A scene picker with three named options, each with a one-line description:
+  1. "This base: model burn" (default)
+  2. "This base: fire spread"
+  3. "Real fire: Saffire flight test"
+- One playback bar, bottom center, on glass: play and pause, a seeker (`<input type="range">`, keyboard operable, 44px), elapsed and total time in mono, and the phase name. Scrubbing moves the fire in every scene. Saffire uses `src/scenes/saffire/timeline.ts`.
+- Both scene modules stay lazy-loaded through `registry.ts`, which is not edited (feature lock).
+
+### 15.4 Navigation
+
+- drei `OrbitControls` in every scene: drag to orbit, wheel or pinch to zoom, right-drag or two-finger drag to pan, with distance and polar limits and damping.
+- Camera drift stops for good at the first interaction. A "Reset view" button. A hint chip ("Drag to look around, scroll to zoom") that goes away after the first interaction.
+- Keyboard, when the stage has focus: arrow keys orbit, plus and minus zoom. The wheel over the stage never scrolls or zooms the page.
+
+### 15.5 Model burn (team models in the scene)
+
+- A fuel droplet on a holder in the cabin. It shrinks by the d-squared law at the predicted burning rate, and the flame goes out at the extinction diameter the CatBoost model predicts for the picked base's oxygen and pressure. Use `habitatPoint`, `predict`, `burnPlan`, `diameterAt`, `playbackSpeed`, `support`, `describe`; `src/whatif/Burn.tsx` shows the 2D version.
+- Side controls on a glass panel at the stage's left edge: fuel, diluent gas and amount, start diameter, with the same option lists as the Team models sheet. A change re-renders the burn at once.
+- Live mono readouts: droplet diameter now, predicted burning rate, predicted extinction diameter, time to extinction, and the model's support level (in range, sparse, out of range) by form and a word.
+- Where the model has no prediction for the base (`isMoonLike`, and how `WatchBurn` handles it), say so on the panel and show a steady flame with no numbers.
+
+### 15.6 Fire spread
+
+- An interior of the picked base's cabin with a few everyday objects from simple geometry, some combustible and some not: for example cotton cloth, paper checklist, plastic panel, cable insulation, foam pad, aluminium locker, glass window. For Earth, the same cabin at 1 g.
+- A flame starts at a marked ignition point and creeps across the combustible objects along the timeline. Burnt area darkens behind the front. Non-combustible objects do not burn.
+- Microgravity against 1 g, visibly different: low, rounded, blue-edged flames that hug the surface, no rising plume, spread and smoke that follow the cabin's airflow (drawn as faint arrows and named). At 1 g: tall teardrop flames and rising smoke.
+- Real data first. `public/data/solids.json` has BASS-II tests of SIBAL cotton-fiberglass fabric (oxygen, airflow, burned or went out, `minBurnO2`, four findings) and Saffire-II samples in space and on Earth. The cloth is the SIBAL fabric; an airflow control decides whether the flame lives or goes out, following the tests; the Earth contrast uses the Saffire-II rows. What the data does not cover is labelled as illustrative, including spread speed scaled by oxygen.
+- Labels on the fire, on glass chips with leader lines: flame front, burnt zone, unburnt fuel, airflow direction.
+- Hover, keyboard focus or tap on an object: white outline and a glass detail card with what it is, "Combustible" or "Does not burn" as a word plus a solid or dashed mark, one or two plain sentences on its behaviour in microgravity, and, where the data has a match, the experiment or sample with its source and three buttons: "Open the evidence" (`setSelectedInvestigationId`), "Ask about this" (`askAbout`), "Open Materials" (`setView("materials")`). Ids, names and wording come from `public/data/`; nothing is invented. With no match in the data, the card gives only the general behaviour.
+- The same objects are listed as buttons on the side panel, so every card is reachable without a pointer.
+
+### 15.7 Say what the viewer sees
+
+- One caption on glass, top-left, in plain words, that changes with scene and phase. Example: "A heptane droplet burning in Moon Base air (30% oxygen, 70.3 kPa). Size and timing come from the team's model. The flame goes out at 1.8 mm."
+- Things in view carry small glass labels. The word "illustration" stays where it is true.
+
+### 15.8 Layout and checks
+
+- Stage controls stay clear of the base carousel (top 96px, center), the brief line (bottom-left, 44ch) and the top-3 card (bottom-right, 320px) at center widths from 600px to 1700px, by container queries on `.stage`. On a phone the side controls collapse behind a "Model" button.
+- Tests: seeker time to droplet diameter, the no-prediction case, scene picker to scene, which objects burn, front position at a time, oxygen scaling, object to data lookup.
+- Build order, one commit each: 15.1, 15.4, 15.3, 15.5, 15.6, 15.7. Each commit passes `npx tsc --noEmit && npx vitest run && npx vite build` and is checked in a real Chrome with WebGL at 1440x900 and 390x844.
