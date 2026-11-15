@@ -123,3 +123,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .rk-card[data-lit="true"] { transition-delay: calc(var(--lit-i, 0) * 60ms); }
 }
+/* Touch and narrow screens: "How ranking works" is a 44px tall tap target (it measured 31px). */
+@media (pointer: coarse), (max-width: 68.75rem) {
+  .rk-how summary { padding: 0; line-height: 2.75rem; }
+}

@@ -189,3 +189,12 @@ main:focus { outline: none; }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .glass { background: var(--color-surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
 }
+
+/* ---- Touch, phone and phone landscape: no zoom on focus ----
+ * iOS Safari zooms the page when a field under 16px takes focus. Fields are set by their sections (14px search,
+ * selects in Compare and in the replay), so this floor wins over each of them on purpose. */
+@media (pointer: coarse), (max-width: 47.5rem), (max-height: 30rem) {
+  input:not([type="range"], [type="checkbox"], [type="radio"], [type="button"], [type="submit"]), select, textarea {
+    font-size: max(1rem, 1em) !important;
+  }
+}
