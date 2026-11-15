@@ -20,6 +20,7 @@ import { airOf, type Air } from "./air.ts";
 import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose, type V3 } from "./layout.ts";
 import { BurnPanel } from "./BurnPanel.tsx";
 import { Navigate } from "./Navigate.tsx";
+import { AftermathCard } from "./Aftermath.tsx";
 import { FirstFrame } from "../FirstFrame.tsx";
 import { SpreadSet, spreadChips } from "./Spread.tsx";
 import { SpreadPanel } from "./SpreadPanel.tsx";
@@ -174,6 +175,8 @@ export function CabinScene({ habitat, calm }: SceneProps) {
   const start = usePlayback((s) => s.start);
   const response = usePlayback((s) => s.response);
   const g = usePlayback((s) => s.grav) ?? gravityOf(base);
+  // Another base starts in its own gravity: ISS in orbit, Earth at 1 g, Moon Base and the rover on the Moon.
+  useEffect(() => usePlayback.getState().setScenario({ grav: null }), [base]);
   const o2 = air.o2Percent ?? 21;
   const st = useMemo(() => story({ g, o2, start, response }), [g, o2, start, response]);
   // The one timeline: the model burn, or the spread along the bench.
@@ -196,7 +199,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tlKey]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
-  const fire = useMemo(() => (mode === "spread" ? spreadChips(g) : null), [mode, g]);
+  const fire = useMemo(() => (mode === "spread" ? spreadChips(g, st.detect) : null), [mode, g, st.detect]);
   const chips: ChipSpec[] = [
     ...(fire ?? [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
     { id: "window", at: windowAt(base), left: true, below: true, text: room.outside === "orbit" ? "Window: Earth from orbit" : room.outside === "moon" ? "Window: the lunar surface" : "Window: daylight on Earth" },
@@ -221,7 +224,8 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
-      {mode === "spread" && <SpreadPanel air={air.name} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} st={st} />}
+      {mode === "spread" && <AftermathCard st={st} where={room.name} />}
+      {mode === "spread" && <SpreadPanel air={air.name} kPa={air.pressureKPa} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} st={st} />}
       {mode !== "spread" && doc && pick && <BurnPanel doc={doc} pick={pick} c={c} air={air.name} compare={base === "iss" ? null : compare} />}
       <p className="sr-only">
         {mode === "spread"

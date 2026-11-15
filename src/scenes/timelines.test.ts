@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parseDoc, type WhatIfDoc } from "../whatif/logic.ts";
 import { burnCase, startPick } from "./burn/model.ts";
-import { advance, clock, phaseAt } from "./playback.ts";
+import { advance, clock, phaseAt, plainTime } from "./playback.ts";
 import type { SaffireRecord } from "./saffire/timeline.ts";
 import { burnTimeline, MODES, saffireTimeline, sceneFor, storyTimeline, timelineKey } from "./timelines.ts";
 import { story } from "./spread/story.ts";
@@ -57,9 +57,15 @@ describe("fire in this base on the timeline", () => {
     expect(tl.phases.filter((p) => p.mark)).toHaveLength(5);
     expect(tl.end).toBe(st.end);
     expect(phaseAt(tl, 0)).toBe("Ignition");
-    expect(phaseAt(tl, st.detect!)).toBe("Detection and response");
+    expect(phaseAt(tl, st.detect!)).toBe(`Detected at ${Math.round(st.detect)} s, response`);
     expect(phaseAt(tl, tl.end)).toBe("Aftermath");
     for (const p of tl.phases) expect(p.caption).toBeTruthy();
+  });
+  it("is an illustrative scenario: its readout says plain minutes and 'time compressed', no speed or exact total", () => {
+    const st = story({ g: "micro", o2: 21, start: "checklist", response: "co2" });
+    expect(storyTimeline(st, "k", "a station module").compressed).toBe(true);
+    expect(plainTime(40)).toBe("40 s");
+    expect(plainTime(42 * 60 + 42)).toBe("about 43 min");
   });
 });
 

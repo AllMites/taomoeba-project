@@ -12,8 +12,11 @@ export type Mode = "burn" | "spread" | "saffire";
 /** A named point on the timeline. A stage carries its caption and the records behind it ("kind:id" refs). */
 export type Phase = { at: number; name: string; caption?: string; refs?: string[]; mark?: boolean };
 
-/** A scene's timeline in its own seconds. `rate` is screen speed (10 = ten times real time). */
-export type Timeline = { key: string; start: number; end: number; rate: number; phases: Phase[] };
+/**
+ * A scene's timeline in its own seconds. `rate` is screen speed (10 = ten times real time). `compressed`: an
+ * illustrative scenario whose readout says plain minutes and "time compressed", never a speed or an exact total.
+ */
+export type Timeline = { key: string; start: number; end: number; rate: number; phases: Phase[]; compressed?: boolean };
 
 export type Nudge = { orbit: number; tilt: number; zoom: number; n: number };
 
@@ -116,6 +119,12 @@ export function phaseAt(tl: Timeline, t: number): string {
 export function advance(tl: Timeline, t: number, dt: number): { t: number; ended: boolean } {
   const next = t + Math.max(0, dt) * tl.rate;
   return next >= tl.end ? { t: tl.end, ended: true } : { t: next, ended: false };
+}
+
+/** Scenario time in plain words: "40 s", "about 13 min". */
+export function plainTime(s: number): string {
+  const v = Math.max(0, s);
+  return v < 60 ? `${Math.round(v)} s` : `about ${Math.round(v / 60)} min`;
 }
 
 /** "1:05" style clock for a seeker readout; tenths under ten seconds. */

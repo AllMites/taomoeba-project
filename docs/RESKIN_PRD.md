@@ -374,3 +374,74 @@ New folder `src/guide/` (steps data, bar component, css, tests). Mount in `src/a
 - A test that each step sets the stated console state, and that a state change by hand maps back to the right step.
 - A test that `?guide=N` and the localStorage choice are read.
 - Seen in a real browser at 1440x900, 1280x720 and 390x844.
+
+## 17. Scene detail: each base is its own place (owner request, 2026-11-15)
+
+Problem: the four cabins look the same and read as a bunch of cubes. The owner wants a detailed environment, built differently for each base.
+
+### 17.1 Rules that hold
+
+- Detail comes from form, light and surface, not from colour. Scene materials stay neutral (greys, off-white, dark metal). The flame, the smoke and one small screen glow per base are the only light sources that draw the eye. No new saturated colours.
+- Built in code with three.js and the installed `@react-three/drei` (RoundedBox, Instances, Edges, Text and the like). No new dependency, no downloaded model, no texture file over 50 KB. Canvas-drawn textures are fine.
+- The story does not change: `src/scenes/spread/story.ts` positions (ignition points, vent, detector, locker, airflow) and the picked-object ids keep their meaning. If a prop moves, the story position it stands for moves with it, in one place.
+- Camera limits and home poses (`layout.ts`) still hold: the fire is in view at home, and the camera stays inside the walls.
+- Speed: the scene must still reach its first frame in about one second and hold a smooth frame rate on a laptop with integrated graphics. Budget: under 150 draw calls per base (use instancing and merged geometry), no real-time shadow maps, no post-processing pass. Measure with `renderer.info.render.calls` and report it.
+- Every object the viewer can pick keeps a readable name, and it must look like what it is named: cloth looks like cloth, a cable like a cable.
+
+### 17.2 The four places
+
+| Base | What it must read as at a glance | Required set pieces |
+|---|---|---|
+| ISS | A station lab module: a tube with no floor, every wall in use | Four walls of rack fronts with seams and latches; handrails; a hatch ring at each end; cable bundles along a standoff; a laptop on an arm; soft stowage bags held by straps; an air diffuser grille (the vent); the work bench as a glovebox-style frame; a round window with Earth |
+| Moon Base | A surface habitat with weight: things rest on a floor | Curved shell with ribs; a floor of panels; a workbench on legs; an airlock hatch with a wheel; bunks or a suit rack; a plant rack with a grow light (the one glow); storage crates stacked; a window with the grey horizon and Earth small above it |
+| Pressurized rover | A cramped vehicle cockpit | Two seats with headrests; a wide windshield with the lunar surface; a dashboard with screens and a hand controller; overhead stowage; side hatches; ribbed floor; everything within arm's reach |
+| Earth | An ordinary lab room on Earth | Lab bench with stools; a fume hood; ceiling light panels; a door; a window with daylight; shelves; things sit on surfaces and hang down, so gravity is visible |
+
+The three start points (cloth near the air vent, paper on the desk, foam pad by the bench) keep their ids and map to a fitting prop in each base: for example in the rover the cloth is a seat cover by the cabin vent, the paper is a checklist on the dashboard, and the foam is a seat cushion.
+
+### 17.3 Props, not cubes
+
+Replace each cube stand-in with a shaped prop: cloth as a draped, slightly folded sheet; paper as a small stack with one sheet lifted; foam as a rounded pad; cable as tubes in a bundle with ties; the locker with a door seam, hinge and handle; the detector as a ceiling disc with a ring light; the vent as a slatted grille. Burn and char states still apply to the same meshes or their stand-ins.
+
+### 17.4 Checks
+
+- A test that every base defines all required story anchors and all three start points, inside its room bounds.
+- Screenshots of each base at home pose and one close view of the props, at 1440x900 and 390x844, saved with the lane report. The coordinator looks at them before shipping.
+- Draw calls and first-frame time per base, reported.
+
+### 17.5 Material details as callouts in the scene (owner request, 2026-11-15)
+
+The details of an object no longer open as a card in the side panel. They show in the scene, as a labelled diagram does: a glass card joined to the object by a thin leader line.
+
+- **Hover** an object (pointer): a small preview callout shows its name, whether it burns here, and one line of why. It goes when the pointer leaves.
+- **Click** an object (or tap, or Enter on its row in the panel list): the callout is pinned and shows the full details: name, burns or not and why, "How we know" with the record, "Start a fire here" where the object is a start point, and "Ask about this". The object keeps its outline while pinned.
+- **Deselect** (click the object again, click empty scene, the callout's close button, or Escape): the callout goes. Nothing shows for an object that is neither hovered nor pinned.
+- One pinned callout at a time. A hover preview may show beside a pinned one.
+- The callout follows the object as the camera orbits, pans and zooms: its anchor is the object's projected position, re-computed on every camera change (the existing `project()` in `layout.ts`). The card itself stays upright, at a fixed readable size, and never scales with distance.
+- The leader line runs from the object's anchor point to the nearest edge of the card: one hairline, with a small dot at the object end.
+- The card stays inside the stage and out of the keep-out boxes (`zone.ts`: caption, playback bar, top-3 card, scenario panel, bottom bar). When it cannot sit beside the object it moves to the nearest free side and the line follows.
+- When the object is behind the camera or outside the view, the preview hides; a pinned callout docks at the nearest stage edge with its line pointing off-screen.
+- The panel keeps the object list as the keyboard and screen-reader path: each row is a button, `aria-pressed` when pinned, and the pinned details are also announced (aria-live polite).
+- Narrow center and phones: there is no hover. A tap pins. The pinned callout is at most 60% of the stage width, with inner scroll.
+- Checks: a test for the three states (none, preview, pinned) and for deselect; a test that the card position stays inside the stage and out of each keep-out box for a set of anchor points; seen in a real browser while orbiting.
+
+## 18. Stage clutter budget (owner feedback with a screenshot, 2026-11-15)
+
+Problem: at 1141x847 the scene is almost fully covered: a three-line caption card, the playback bar, an object detail panel, the brief card, the top-3 card, the scene picker and three labels all sit on the stage at once. The owner: "there are so many screens here taking up space".
+
+Rule: the scene is the subject. At rest (nothing opened by the viewer), overlays cover at most 20% of the stage area at every width, measured as the union of overlay rectangles over the stage rectangle. Anything more opens on demand and closes again.
+
+### 18.1 Shell (files: src/app/app.css, src/top/)
+
+- The brief and the top-3 card are never drawn over the stage at rest, at any width. The 48px bottom bar (today's narrow-center layout: top result, score, "Top 3", "Brief") is the layout at every width. The wide variant with both cards open over the stage is removed.
+- A card opened from the bar opens upward over the stage, one at a time, and closes on Escape, on an outside press or on its close button, as today.
+
+### 18.2 Stage chrome (files: src/scenes/)
+
+- One strip at the top of the stage holds the scene picker, play or pause, the seeker with its stage marks, and the time. One row on a wide stage, two on a phone.
+- The caption is one line under that strip, cut with an ellipsis. A press on it (or on its "i") expands the full text and "How we know"; a second press, Escape or an outside press closes it. The word "Illustration" or the source mark stays visible in the one-line form.
+- The scenario panel (start point, response, gravity, outcome) is closed at rest at every width, behind one "Scenario" button. Open, it sits at one side, at most 22rem wide, with inner scroll. The outcome headline also shows as one line in the caption when a response has played, so the viewer need not open the panel to see what happened.
+- The object detail panel goes: details are the in-scene callouts of 17.5.
+- In-scene labels (window, burnt zone, detector, flame front) are at most 5 at once, one line each, and hide while the caption or the scenario panel is open over them.
+- "Reset view" is an icon button with a tooltip and an accessible name.
+- Check: a browser measurement of the covered share at 1141x847, 1440x900 and 390x844 at rest, reported with the hand-back; target 20% or less.

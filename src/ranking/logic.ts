@@ -106,12 +106,13 @@ export const covers = (r: [number, number], o2: number) => o2 >= r[0] && o2 <= r
 export const rankNumeral = (n: number) => String(n).padStart(2, "0");
 
 /**
- * The count line. A cut list says "Top 8 of 26"; a filter or search says "5 of 26 experiments";
- * the whole list says "26 of 26 experiments".
+ * The count line. `other` is how many of `total` are records tagged Other, which are not fire experiments:
+ * the status strip counts fire experiments only, so this line names both. A cut list says
+ * "Top 8 of 24 fire experiments"; a filter, a search or the whole list says "5 of 26 records (24 fire experiments, 2 other)".
  */
-export function countText(shown: number, total: number, filtering: boolean): string {
-  if (!filtering && shown < total) return `Top ${shown} of ${total}`;
-  return `${shown} of ${total} experiments`;
+export function countText(shown: number, total: number, filtering: boolean, other = 0): string {
+  if (!filtering && shown < total) return other ? `Top ${shown} of ${total - other} fire experiments` : `Top ${shown} of ${total}`;
+  return other ? `${shown} of ${total} records (${total - other} fire experiments, ${other} other)` : `${shown} of ${total} experiments`;
 }
 
 /** Experiments the last answer cited that the current filter or search hides. */

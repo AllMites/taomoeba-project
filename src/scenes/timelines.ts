@@ -65,9 +65,12 @@ export function storyTimeline(st: Story, key: string, where: string): Timeline {
     start: 0,
     end: st.end,
     rate: Math.max(1, Math.ceil(st.end / 20)),
+    compressed: true,
     phases: st.stages.map((s) => {
       const c = captionFor(st, s.id, where);
-      return { at: s.at, name: s.name, mark: true, caption: c.text, refs: c.refs };
+      // The detector trip is named on its mark and in the phase line: "Detected at 23 s".
+      const name = s.id === "detect" ? `Detected at ${Math.round(st.detect)} s, response` : s.name;
+      return { at: s.at, name, mark: true, caption: c.text, refs: c.refs };
     }),
   };
 }

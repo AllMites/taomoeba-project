@@ -36,6 +36,19 @@ export const GRAVITIES: { id: Gravity; name: string }[] = [
   { id: "earth", name: "On Earth (measured)" },
 ];
 export const MOON_ESTIMATE = "Estimate: no fire test has run in Moon gravity";
+/**
+ * The air the orbit and Earth fire tests burned in: station air, sea-level pressure, oxygen no higher than the
+ * richest test (SAFFIRE-II, 22.1%). A base whose air is outside this has its gravity measured but not that air.
+ */
+export const TESTED_AIR = { maxO2: 22.1, kPa: 101.3, kPaSlack: 5 };
+export const airTested = (o2: number, kPa: number | undefined) =>
+  kPa !== undefined && o2 <= TESTED_AIR.maxO2 + 0.05 && Math.abs(kPa - TESTED_AIR.kPa) <= TESTED_AIR.kPaSlack;
+/** A gravity setting's label for this air: "(measured)" only when both the gravity and the air were tested. */
+export function gravityName(g: Gravity, o2: number, kPa: number | undefined): string {
+  const x = GRAVITIES.find((y) => y.id === g)!;
+  if (g === "partial" || airTested(o2, kPa)) return x.name;
+  return x.name.replace("(measured)", "(gravity measured, this air not tested)");
+}
 
 /** Cabin ventilation while it runs, cm/s along the bench (illustrative; inside the BASS-II "burned" range). */
 export const VENT_CMS = 10;
@@ -61,8 +74,8 @@ const RISE = { micro: 0, partial: 0.12, earth: 0.3 } as const;
 const CEILING_JET = { micro: 0, partial: 0.06, earth: 0.2 } as const;
 /** Still air: how far smoke drifts out from the fire, metres after s seconds (illustrative, slow). */
 const stillRadius = (s: number) => 0.05 + 0.03 * Math.sqrt(Math.max(0, s));
-/** The smoke detector: on the air return at the downstream end of the bench. */
-export const DETECTOR = { x: 2.15, y: 0.45, z: -0.22 };
+/** The smoke detector: on the back wall by the locker, where the air slows against it (drawn in the home view). */
+export const DETECTOR = { x: 1.45, y: 0.15, z: -0.3 };
 /** Height the smoke rises to at 1 g before it spreads (drawn). */
 export const LAYER_Y = 0.6;
 export const riseOf = (g: Gravity) => RISE[g];
@@ -302,7 +315,7 @@ export function captionFor(st: Story, id: Stage["id"], baseName: string): Captio
       return { text: `What if a fire starts here, in the ${baseName}? ${STARTS.find((x) => x.id === s.start)!.name}. Illustration.`, refs: [] };
     case "spread":
       return s.g === "earth"
-        ? { text: "At 1 g hot gas rises and the flames stand tall as they spread. Speed illustrative, scaled by oxygen.", refs: [] }
+        ? { text: "At 1 g hot gas rises and the flames stand tall as they spread. Illustration: speed scaled by oxygen.", refs: [] }
         : s.g === "partial"
           ? { text: `The flame spreads with the cabin air, a little taller than in orbit.${moon} Illustration.`, refs: [] }
           : {
@@ -318,9 +331,56 @@ export function captionFor(st: Story, id: Stage["id"], baseName: string): Captio
     case "detect": {
       const r = responseLines(st).evidence;
       const name = RESPONSES.find((x) => x.id === s.response)!.name;
-      return { text: `The detector trips at ${r0(st.detect)} s. Response: ${name}. ${r.text}${st.outcome === "weaker" ? " Not tested here." : ""}`, refs: r.refs };
+      return { text: `The detector trips at ${r0(st.detect)} s. Response: ${name}. ${r.text}${st.outcome === "weaker" ? " Not tested here." : ""}${s.response === "co2" ? " Illustration." : ""}`, refs: r.refs };
     }
     case "after":
-      return { text: "What the fire and smoke touched. Times and speeds illustrative.", refs: [] };
+      return { text: "What the fire and smoke touched. Illustration: times and speeds are drawn.", refs: [] };
   }
+}
+
+/** One soft puff of the smoke volume, metres; o is its opacity (0..1). */
+export type Puff = { x: number; y: number; z: number; r: number; o: number };
+
+/** Where the airflow is weak: against the locker's face, where the air slows and smoke gathers (drawn). */
+export const WEAK_FLOW_X = 1.35;
+/** How far along the bench the smoke volume is drawn (the cabin past the locker). */
+export const SMOKE_END_X = 2.6;
+
+/**
+ * The smoke in the air at time t, as soft puffs from the fire to the smoke's downstream edge. In orbit it does not
+ * rise: it drifts with the ventilation close to the bench and gathers where the flow is weak (against the locker); with the ventilation off it pools round the fire. At 1 g it rises to a layer under the ceiling and
+ * spreads there. The Moon is drawn between (estimate). Illustration: positions are drawn, not measured.
+ */
+export function smokeAt(st: Story, t: number, n = 12): Puff[] {
+  if (t < SMOKE_S) return [];
+  const g = st.input.g;
+  const at = storyAt(st, t);
+  // Drawn only as far as the cabin's far end past the locker; the smoke beyond is out of sight.
+  const head = Math.min(at.smoke, SMOKE_END_X);
+  const age = t - SMOKE_S;
+  const fade = t > st.out + 4 ? Math.max(0.35, 1 - (t - st.out - 4) / 60) : 1;
+  const rise = g === "earth" ? 1 : g === "partial" ? 0.4 : 0;
+  const out: Puff[] = [];
+  for (let i = 0; i < n; i++) {
+    const u = n === 1 ? 0 : i / (n - 1);
+    // From the flame front (where the smoke is made) to the smoke's downstream edge.
+    const src = Math.min(at.hi, head);
+    const x = src + (head - src) * u;
+    const weak = !at.vent ? 1 : x >= WEAK_FLOW_X ? 1 : 0;
+    // Rising: the first third climbs above the fire, the rest spreads under the layer.
+    const climb = Math.min(1, u * 3);
+    const y = 0.06 + 0.04 * u + rise * (LAYER_Y - 0.06) * climb;
+    const z = -0.04 + 0.05 * Math.sin(i * 1.7 + age * 0.05);
+    const r = (0.05 + 0.05 * u) * (1 + 0.8 * weak) * Math.min(1, 0.4 + age / 8);
+    const o = (0.22 + 0.2 * weak) * fade;
+    out.push({ x, y, z, r, o });
+  }
+  return out;
+}
+
+/** The experiments behind the chosen response's records, for Ask SI's "about" chips. */
+export function scenarioIds(st: Story): string[] {
+  const of: Record<string, string> = { "fact:solids-quench-flow": "PSI-25", "fact:flex-dext-share-co2-methanol": "PSI-69", "solids:sample:2-5": "PSI-99" };
+  const ids = responseLines(st).evidence.refs.map((r) => of[r] ?? r.match(/PSI-\d+/)?.[0]).filter((x): x is string => !!x);
+  return [...new Set(ids)];
 }

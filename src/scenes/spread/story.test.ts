@@ -10,7 +10,11 @@ import {
   QUENCH_S,
   RESPONSE_S,
   RESPONSES,
+  LAYER_Y,
   responseLines,
+  SMOKE_S,
+  smokeAt,
+  WEAK_FLOW_X,
   scenarioQuestion,
   stageAt,
   STARTS,
@@ -145,4 +149,40 @@ describe("captions: a record where one supports them, the word Illustration wher
       }
     }
   });
+});
+
+describe("smoke in the air (15.9)", () => {
+  it("none before smoke leaves the fire; in orbit it reaches the detector along the bench without rising", () => {
+    const st = story(iss);
+    expect(smokeAt(st, SMOKE_S - 0.5)).toEqual([]);
+    const at = smokeAt(st, st.detect);
+    expect(Math.max(...at.map((p) => p.x))).toBeGreaterThan(DETECTOR.x - 0.1);
+    expect(Math.max(...at.map((p) => p.y))).toBeLessThan(0.2);
+  });
+  it("gathers where the flow is weak: puffs against the locker are denser than mid-bench", () => {
+    const st = story(iss);
+    const at = smokeAt(st, st.detect);
+    const weak = at.filter((p) => p.x >= WEAK_FLOW_X);
+    const mid = at.filter((p) => p.x > st.xs + 0.3 && p.x < WEAK_FLOW_X - 0.3);
+    expect(weak.length).toBeGreaterThan(0);
+    expect(Math.min(...weak.map((p) => p.o))).toBeGreaterThan(Math.max(...mid.map((p) => p.o)));
+  });
+  it("at 1 g it rises to the layer under the ceiling; on the Moon it rises part way (estimate)", () => {
+    const e = story(earth);
+    expect(Math.max(...smokeAt(e, e.detect).map((p) => p.y))).toBeCloseTo(LAYER_Y + 0.04, 1);
+    const m = story(moon);
+    const ym = Math.max(...smokeAt(m, m.detect).map((p) => p.y));
+    expect(ym).toBeGreaterThan(0.2);
+    expect(ym).toBeLessThan(LAYER_Y);
+  });
+});
+
+it("every stage caption of every scenario cites a record or says Illustration", () => {
+  for (const s of all) {
+    const st = story(s);
+    for (const x of st.stages) {
+      const c = captionFor(st, x.id, "a station module");
+      expect(c.refs.length > 0 || c.text.includes("Illustration"), `${x.id} ${JSON.stringify(s)}: ${c.text}`).toBe(true);
+    }
+  }
 });
