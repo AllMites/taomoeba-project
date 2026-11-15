@@ -7,6 +7,7 @@ import {
   isDataOnly,
   isShortQuotesOnly,
   MAX_QUESTION,
+  modeLabel,
   readable,
   RELATION_LABEL,
   sourceKind,
@@ -178,6 +179,12 @@ type PanelProps = {
   onDropAbout?: (id: string) => void;
 };
 
+/** The newest answer is the fixed about-this-site text: real questions follow it, not "what does that mean". */
+const lastIsAbout = (turns: TurnState[]) => {
+  const o = turns[turns.length - 1]?.outcome;
+  return o?.kind === "answer" && o.result.mode === "about";
+};
+
 /** True when a drag carries an experiment card (dragProps in src/app/console.ts). */
 export const isCardDrag = (types: readonly string[] | undefined) => !!types && Array.from(types).includes(DRAG_TYPE);
 
@@ -248,7 +255,7 @@ export function Panel(p: PanelProps) {
               ))}
             </ol>
             {/* Follow-ups end the thread, under the last answer, so the composer stays short in a narrow panel. */}
-            <Chips chips={FOLLOW_UPS} label="Follow-up questions" busy={p.busy} onPick={p.onPick} />
+            <Chips chips={lastIsAbout(p.turns) ? (p.suggestions ?? EXAMPLES.slice(0, 3)) : FOLLOW_UPS} label={lastIsAbout(p.turns) ? "Suggested questions" : "Follow-up questions"} busy={p.busy} onPick={p.onPick} />
           </>
         )}
       </div>
@@ -312,9 +319,24 @@ export function TurnView({
           <StepsSummary result={o.result} noCover />
         </div>
       )}
-      {o?.kind === "answer" && <Answer result={o.result} titleOf={titleOf} onOpen={onOpen} onShow={onShow} onGraph={onGraph} />}
-      {o?.kind === "answer" && <CopyCitation text={() => citationText(turn.question, o.result, titleOf)} />}
+      {o?.kind === "answer" && o.result.mode === "about" && <AboutAnswer result={o.result} />}
+      {o?.kind === "answer" && o.result.mode !== "about" && <Answer result={o.result} titleOf={titleOf} onOpen={onOpen} onShow={onShow} onGraph={onGraph} />}
+      {o?.kind === "answer" && o.result.mode !== "about" && <CopyCitation text={() => citationText(turn.question, o.result, titleOf)} />}
     </li>
+  );
+}
+
+/** The fixed about-this-site text: plain paragraphs under a label that says who wrote them. No steps, sources or copy button. */
+export function AboutAnswer({ result }: { result: AskResult }) {
+  return (
+    <div className="ask-reply">
+      <p className="ask-mode">{modeLabel(result)}</p>
+      {result.answer.split(/\n{2,}/).filter(Boolean).map((para) => (
+        <p key={para} className="ask-text">
+          {para}
+        </p>
+      ))}
+    </div>
   );
 }
 
