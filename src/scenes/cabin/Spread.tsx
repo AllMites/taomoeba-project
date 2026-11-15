@@ -125,6 +125,44 @@ function Front({ x, y, g, o2, kPa, strength, calm, flow }: { x: number; y: numbe
   );
 }
 
+/** Screen seconds the carbon dioxide puff takes, whatever the timeline's speed (illustrative). */
+export const PUFF_SCREEN_S = 2.5;
+
+/**
+ * The carbon dioxide discharge, at scenario time t on a timeline running `rate` times real time: null before the
+ * crew responds or for another response; else k (0..1 along the puff) and how opaque the gas is drawn.
+ */
+export function puffAt(st: Story, t: number, rate: number): { k: number; opacity: number } | null {
+  if (st.input.response !== "co2" || t < st.respond) return null;
+  const k = (t - st.respond) / (PUFF_SCREEN_S * Math.max(1, rate));
+  if (k > 2) return null;
+  return { k: Math.min(1, k), opacity: k <= 1 ? 0.65 : 0.65 * (2 - k) };
+}
+
+/** A wall nozzle and a short pale puff of gas toward the fire. Illustration: no test in the data did this. */
+function Co2Puff({ from, to, k, opacity }: { from: [number, number, number]; to: [number, number, number]; k: number; opacity: number }) {
+  const blobs = [0, 0.18, 0.36, 0.54, 0.72];
+  return (
+    <group>
+      <mesh position={from} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.012, 0.018, 0.05, 12]} />
+        <meshStandardMaterial color={PAINT.inert} metalness={0.6} roughness={0.35} />
+      </mesh>
+      {blobs.map((b) => {
+        const u = Math.max(0, Math.min(1, k * 1.4 - b));
+        if (u <= 0) return null;
+        const p = from.map((v, i) => v + (to[i] - v) * u) as [number, number, number];
+        return (
+          <mesh key={b} position={p} scale={0.03 + 0.1 * u}>
+            <sphereGeometry args={[1, 14, 10]} />
+            <meshBasicMaterial color="#eef1f2" transparent opacity={opacity * (1 - u * 0.5)} depthWrite={false} />
+          </mesh>
+        );
+      })}
+    </group>
+  );
+}
+
 /** The object a point along the bench sits on (the burnable one on the bench line), for the flame's height. */
 const heightAt = (x: number, g: Gravity) => OBJECTS.find((o) => o.burns(g) && Math.abs(o.z) < 0.1 && o.x0 - 0.06 <= x && x <= o.x1 + 0.06)?.hd[0] ?? 0.004;
 
@@ -133,7 +171,9 @@ export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percen
   const t = usePlayback((s) => s.t);
   const g = st.input.g;
   const o2 = st.input.o2;
+  const rate = usePlayback((s) => s.timeline?.rate ?? 1);
   const at = storyAt(st, t);
+  const puff = puffAt(st, t, rate);
   const flow = at.vent ? 10 : 0;
   if (chips) placeSpreadChips(chips, st, at);
   const fronts = at.alive ? [...new Set([at.hi, at.lo].map((x) => Math.round(x * 1000) / 1000))] : [];
@@ -151,6 +191,7 @@ export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percen
       ))}
       {at.alive && <Smoke x={at.hi} y={heightAt(at.hi, g)} t={t} g={g === "earth" ? "earth" : "micro"} flow={flow} />}
       {at.vent && <Airflow />}
+      {puff && <Co2Puff from={[st.xs + 0.5, 0.2, -0.18]} to={[at.hi, heightAt(at.hi, g) + 0.03, 0]} k={puff.k} opacity={puff.opacity} />}
     </group>
   );
 }

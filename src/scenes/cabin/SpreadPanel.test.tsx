@@ -42,3 +42,25 @@ describe("the scenario controls and the outcome card (15.10)", () => {
     expect(panel({ start: "cloth" })).not.toContain("Start a fire here");
   });
 });
+
+it("the panel says there is more below until its end is in view", async () => {
+  const { moreBelow } = await import("./SpreadPanel.tsx");
+  expect(moreBelow({ scrollHeight: 600, scrollTop: 0, clientHeight: 400 })).toBe(true);
+  expect(moreBelow({ scrollHeight: 600, scrollTop: 200, clientHeight: 400 })).toBe(false);
+  expect(moreBelow({ scrollHeight: 400, scrollTop: 0, clientHeight: 400 })).toBe(false);
+});
+
+describe("carbon dioxide discharge in the scene", () => {
+  it("puffs from the crew's response for a few screen seconds at any speed, and only for carbon dioxide", async () => {
+    const { puffAt, PUFF_SCREEN_S } = await import("./Spread.tsx");
+    const { captionFor } = await import("../spread/story.ts");
+    const co2 = story({ g: "micro", o2: 21, start: "checklist", response: "co2" });
+    expect(puffAt(co2, co2.respond - 1, 88)).toBeNull();
+    expect(puffAt(co2, co2.respond + 88 * PUFF_SCREEN_S * 0.5, 88)?.k).toBeCloseTo(0.5);
+    expect(puffAt(co2, co2.respond + 88 * PUFF_SCREEN_S * 3, 88)).toBeNull();
+    expect(puffAt(story({ g: "micro", o2: 21, start: "checklist", response: "vent" }), co2.respond + 1, 1)).toBeNull();
+    const cap = captionFor(co2, "detect", "a station module").text;
+    expect(cap).toContain("Not tested here");
+    expect(cap).toContain("Illustration");
+  });
+});

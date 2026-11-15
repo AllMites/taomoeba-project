@@ -65,6 +65,7 @@ export function storyTimeline(st: Story, key: string, where: string): Timeline {
     start: 0,
     end: st.end,
     rate: Math.max(1, Math.ceil(st.end / 20)),
+    compressed: true,
     phases: st.stages.map((s) => {
       const c = captionFor(st, s.id, where);
       return { at: s.at, name: s.name, mark: true, caption: c.text, refs: c.refs };

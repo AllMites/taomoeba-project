@@ -6,7 +6,7 @@ import { useDataset } from "../data/useDataset.ts";
 import { scenes } from "./registry.ts";
 import HowWeKnow from "../brief/HowWeKnow.tsx";
 import { useCited } from "./cite.ts";
-import { advance, clock, phaseAt, stageView, usePlayback } from "./playback.ts";
+import { advance, clock, phaseAt, plainTime, stageView, usePlayback } from "./playback.ts";
 import { replayFor } from "./replay.ts";
 import { MODES } from "./timelines.ts";
 import { freeZone, type FlameLayout, type Rect } from "./zone.ts";
@@ -195,7 +195,7 @@ function PlayBar() {
         max={tl.end}
         step={span / 200}
         value={t}
-        aria-valuetext={`${clock(t - tl.start)} of ${clock(span)}. ${phase}`}
+        aria-valuetext={tl.compressed ? `${plainTime(t - tl.start)}, time compressed. ${phase}` : `${clock(t - tl.start)} of ${clock(span)}. ${phase}`}
         onChange={(e) => {
           setPlaying(false);
           seek(Number(e.target.value));
@@ -217,12 +217,17 @@ function PlayBar() {
             })}
         </span>
       )}
-      <span className="stage-time t-readout">
-        {clock(t - tl.start)} / {clock(span)}
-        {tl.rate > 1 && <span className="stage-rate"> · {tl.rate}×</span>}
-      </span>
+      {tl.compressed ? (
+        <span className="stage-time t-readout">{plainTime(t - tl.start)}</span>
+      ) : (
+        <span className="stage-time t-readout">
+          {clock(t - tl.start)} / {clock(span)}
+          {tl.rate > 1 && <span className="stage-rate"> · {tl.rate}×</span>}
+        </span>
+      )}
       <span className="stage-phase" aria-live="polite">
         {phase}
+        {tl.compressed && <span className="stage-rate"> · time compressed</span>}
       </span>
     </div>
   );
