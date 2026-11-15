@@ -1,0 +1,883 @@
+[
+ {
+  "size": "320x568",
+  "state": "stage-iss"
+ },
+ {
+  "size": "320x568",
+  "state": "stage-iss-picker-open"
+ },
+ {
+  "size": "320x568",
+  "state": "stage-iss-scene2"
+ },
+ {
+  "size": "320x568",
+  "state": "stage-moon",
+  "offscreen": [
+   "button.burn-toggle.glass [Fire scenario] @65,645"
+  ]
+ },
+ {
+  "size": "320x568",
+  "state": "stage-moon-picker-open",
+  "offscreen": [
+   "button.burn-toggle.glass [Fire scenario] @65,645"
+  ]
+ },
+ {
+  "size": "320x568",
+  "state": "stage-moon-scene2"
+ },
+ {
+  "size": "320x568",
+  "state": "stage-rover",
+  "offscreen": [
+   "button.burn-toggle.glass [Fire scenario] @65,645"
+  ]
+ },
+ {
+  "size": "320x568",
+  "state": "stage-earth"
+ },
+ {
+  "size": "320x568",
+  "state": "hud-top3"
+ },
+ {
+  "size": "320x568",
+  "state": "hud-brief"
+ },
+ {
+  "size": "320x568",
+  "state": "hud-earth"
+ },
+ {
+  "size": "320x568",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "320x568",
+  "state": "sheet-rank"
+ },
+ {
+  "size": "320x568",
+  "state": "sheet-compare"
+ },
+ {
+  "size": "320x568",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "320x568",
+  "state": "sheet-models"
+ },
+ {
+  "size": "320x568",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "320x568",
+  "state": "library"
+ },
+ {
+  "size": "320x568",
+  "state": "ask-typed"
+ },
+ {
+  "size": "320x568",
+  "state": "ask-over-rank"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-iss"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-iss-picker-open"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-iss-scene2"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-moon"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-moon-picker-open"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-moon-scene2"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-rover"
+ },
+ {
+  "size": "360x740",
+  "state": "stage-earth"
+ },
+ {
+  "size": "360x740",
+  "state": "hud-top3"
+ },
+ {
+  "size": "360x740",
+  "state": "hud-brief"
+ },
+ {
+  "size": "360x740",
+  "state": "hud-earth"
+ },
+ {
+  "size": "360x740",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "360x740",
+  "state": "sheet-rank"
+ },
+ {
+  "size": "360x740",
+  "state": "sheet-compare",
+  "small": [
+   "button.cmp-open [FLEX] 36x44"
+  ]
+ },
+ {
+  "size": "360x740",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "360x740",
+  "state": "sheet-models"
+ },
+ {
+  "size": "360x740",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "360x740",
+  "state": "library"
+ },
+ {
+  "size": "360x740",
+  "state": "ask-typed"
+ },
+ {
+  "size": "360x740",
+  "state": "ask-over-rank"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-iss"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-iss-picker-open"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-iss-scene2"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-moon"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-moon-picker-open"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-moon-scene2"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-rover"
+ },
+ {
+  "size": "390x844",
+  "state": "stage-earth"
+ },
+ {
+  "size": "390x844",
+  "state": "hud-top3"
+ },
+ {
+  "size": "390x844",
+  "state": "hud-brief"
+ },
+ {
+  "size": "390x844",
+  "state": "hud-earth"
+ },
+ {
+  "size": "390x844",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "390x844",
+  "state": "sheet-rank"
+ },
+ {
+  "size": "390x844",
+  "state": "sheet-compare",
+  "small": [
+   "button.cmp-open [FLEX] 36x44"
+  ]
+ },
+ {
+  "size": "390x844",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "390x844",
+  "state": "sheet-models"
+ },
+ {
+  "size": "390x844",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "390x844",
+  "state": "library"
+ },
+ {
+  "size": "390x844",
+  "state": "ask-typed"
+ },
+ {
+  "size": "390x844",
+  "state": "ask-over-rank"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-iss"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-iss-picker-open"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-iss-scene2"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-moon"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-moon-picker-open"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-moon-scene2"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-rover"
+ },
+ {
+  "size": "414x896",
+  "state": "stage-earth"
+ },
+ {
+  "size": "414x896",
+  "state": "hud-top3"
+ },
+ {
+  "size": "414x896",
+  "state": "hud-brief"
+ },
+ {
+  "size": "414x896",
+  "state": "hud-earth"
+ },
+ {
+  "size": "414x896",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "414x896",
+  "state": "sheet-rank"
+ },
+ {
+  "size": "414x896",
+  "state": "sheet-compare",
+  "small": [
+   "button.cmp-open [FLEX] 36x44"
+  ]
+ },
+ {
+  "size": "414x896",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "414x896",
+  "state": "sheet-models"
+ },
+ {
+  "size": "414x896",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "414x896",
+  "state": "library"
+ },
+ {
+  "size": "414x896",
+  "state": "ask-typed"
+ },
+ {
+  "size": "414x896",
+  "state": "ask-over-rank"
+ },
+ {
+  "size": "844x390",
+  "state": "stage-iss"
+ },
+ {
+  "size": "844x390",
+  "state": "stage-iss-picker-open",
+  "offscreen": [
+   "label.stage-pick-opt [Real fire: Saffire fligh] @604,415"
+  ]
+ },
+ {
+  "size": "844x390",
+  "state": "stage-iss-scene2",
+  "covered": [
+   "summary [About this replay] by b [101.3]",
+   "summary.stage-pick-btn.glass [SceneLab view: team mode] by div.console-carousel.glass [ISSMoon BasePressurized ]"
+  ]
+ },
+ {
+  "size": "844x390",
+  "state": "stage-moon",
+  "scrollEnd": [
+   "form.burn-panel.glass [Fire spread settings] box 401-427 of 390"
+  ]
+ },
+ {
+  "size": "844x390",
+  "state": "stage-moon-picker-open",
+  "scrollEnd": [
+   "form.burn-panel.glass [Fire spread settings] box 401-427 of 390"
+  ],
+  "offscreen": [
+   "label.stage-pick-opt [Real fire: Saffire fligh] @604,415"
+  ]
+ },
+ {
+  "size": "844x390",
+  "state": "stage-moon-scene2",
+  "covered": [
+   "summary [About this replay] by b [70.3]",
+   "summary.stage-pick-btn.glass [SceneLab view: team mode] by div.console-carousel.glass [ISSMoon BasePressurized ]"
+  ]
+ },
+ {
+  "size": "844x390",
+  "state": "stage-rover",
+  "scrollEnd": [
+   "form.burn-panel.glass [Fire spread settings] box 401-427 of 390"
+  ]
+ },
+ {
+  "size": "844x390",
+  "state": "stage-earth"
+ },
+ {
+  "size": "844x390",
+  "state": "hud-top3"
+ },
+ {
+  "size": "844x390",
+  "state": "hud-brief"
+ },
+ {
+  "size": "844x390",
+  "state": "hud-earth"
+ },
+ {
+  "size": "844x390",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "844x390",
+  "state": "sheet-rank"
+ },
+ {
+  "size": "844x390",
+  "state": "sheet-compare"
+ },
+ {
+  "size": "844x390",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "844x390",
+  "state": "sheet-models"
+ },
+ {
+  "size": "844x390",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "844x390",
+  "state": "library"
+ },
+ {
+  "size": "844x390",
+  "state": "ask-typed"
+ },
+ {
+  "size": "844x390",
+  "state": "ask-over-rank"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-iss"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-iss-picker-open"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-iss-scene2"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-moon"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-moon-picker-open"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-moon-scene2"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-rover"
+ },
+ {
+  "size": "600x960",
+  "state": "stage-earth"
+ },
+ {
+  "size": "600x960",
+  "state": "hud-top3"
+ },
+ {
+  "size": "600x960",
+  "state": "hud-brief"
+ },
+ {
+  "size": "600x960",
+  "state": "hud-earth"
+ },
+ {
+  "size": "600x960",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "600x960",
+  "state": "sheet-rank"
+ },
+ {
+  "size": "600x960",
+  "state": "sheet-compare",
+  "small": [
+   "button.cmp-open [FLEX] 36x44"
+  ]
+ },
+ {
+  "size": "600x960",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "600x960",
+  "state": "sheet-models"
+ },
+ {
+  "size": "600x960",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "600x960",
+  "state": "library"
+ },
+ {
+  "size": "600x960",
+  "state": "ask-typed"
+ },
+ {
+  "size": "600x960",
+  "state": "ask-over-rank"
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-iss",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-iss-picker-open",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-iss-scene2",
+  "inputs": [
+   "select [MethanolHeptane] font 14px",
+   "select [Nitrogen onlyAdd carbon ] font 14px",
+   "select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-moon",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-moon-picker-open",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-moon-scene2",
+  "inputs": [
+   "select [MethanolHeptane] font 14px",
+   "select [Nitrogen onlyAdd carbon ] font 14px",
+   "select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-rover",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "stage-earth",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "hud-top3",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "hud-brief",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "hud-earth",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "768x1024",
+  "state": "sheet-rank",
+  "inputs": [
+   "input font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "sheet-compare",
+  "small": [
+   "button.cmp-open [FLEX] 36x44"
+  ],
+  "inputs": [
+   "select [All hardwareACME (CIR)MD] font 14px",
+   "select [ACME/Flame Design (PSI-1] font 14px",
+   "select [ACME/Flame Design (PSI-1] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "768x1024",
+  "state": "sheet-models"
+ },
+ {
+  "size": "768x1024",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "768x1024",
+  "state": "library",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "ask-typed",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36",
+   "button.spread-obj.spread-resp [Do nothing] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "768x1024",
+  "state": "ask-over-rank",
+  "inputs": [
+   "input font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-iss",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-iss-picker-open",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-iss-scene2",
+  "inputs": [
+   "select [MethanolHeptane] font 14px",
+   "select [Nitrogen onlyAdd carbon ] font 14px",
+   "select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-moon",
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-moon-picker-open",
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-moon-scene2",
+  "inputs": [
+   "select [MethanolHeptane] font 14px",
+   "select [Nitrogen onlyAdd carbon ] font 14px",
+   "select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-rover",
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "stage-earth",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "hud-top3",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "hud-brief",
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "hud-earth",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "sheet-interpret"
+ },
+ {
+  "size": "1024x768",
+  "state": "sheet-rank",
+  "inputs": [
+   "input font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "sheet-compare",
+  "small": [
+   "button.cmp-open [FLEX] 36x44"
+  ],
+  "inputs": [
+   "select [All hardwareACME (CIR)MD] font 14px",
+   "select [ACME/Flame Design (PSI-1] font 14px",
+   "select [ACME/Flame Design (PSI-1] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "sheet-materials"
+ },
+ {
+  "size": "1024x768",
+  "state": "sheet-models"
+ },
+ {
+  "size": "1024x768",
+  "state": "sheet-graph"
+ },
+ {
+  "size": "1024x768",
+  "state": "library",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "ask-typed",
+  "small": [
+   "button.spread-obj.spread-resp [Stop the ventilation] 214x36",
+   "button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"
+  ],
+  "inputs": [
+   "select [Cloth near the air ventP] font 14px"
+  ]
+ },
+ {
+  "size": "1024x768",
+  "state": "ask-over-rank",
+  "inputs": [
+   "input font 14px"
+  ]
+ }
+]

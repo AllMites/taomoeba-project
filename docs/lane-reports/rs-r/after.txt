@@ -1,0 +1,232 @@
+{"size":"320x568","state":"stage-iss"}
+{"size":"320x568","state":"stage-iss-picker-open"}
+{"size":"320x568","state":"stage-iss-scene2"}
+{"size":"320x568","state":"stage-moon","offscreen":["button.burn-toggle.glass [Fire scenario] @65,645"]}
+{"size":"320x568","state":"stage-moon-picker-open","offscreen":["button.burn-toggle.glass [Fire scenario] @65,645"]}
+{"size":"320x568","state":"stage-moon-scene2"}
+{"size":"320x568","state":"stage-rover","offscreen":["button.burn-toggle.glass [Fire scenario] @65,645"]}
+{"size":"320x568","state":"stage-earth"}
+{"size":"320x568","state":"hud-top3"}
+{"size":"320x568","state":"hud-brief"}
+{"size":"320x568","state":"hud-earth"}
+carousel 320x568 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 320x568 ["Library:true:12-91","Interpret:true:99-188","Rank:true:196-263","Compare:true:226-320","Materials:true:227-320","Team models:true:200-320","Research map:true:194-320","Ask SI:true:193-308"]
+{"size":"320x568","state":"sheet-interpret"}
+sheet-end 320x568 interpret {"body":[0,568],"last":[-4101,552],"vh":568,"reach":true}
+{"size":"320x568","state":"sheet-rank"}
+sheet-end 320x568 rank {"body":[0,568],"last":[-184,552],"vh":568,"reach":true}
+{"size":"320x568","state":"sheet-compare"}
+sheet-end 320x568 compare {"body":[0,568],"last":[-1512,552],"vh":568,"reach":true}
+{"size":"320x568","state":"sheet-materials"}
+sheet-end 320x568 materials {"body":[0,568],"last":[-3035,552],"vh":568,"reach":true}
+{"size":"320x568","state":"sheet-models"}
+sheet-end 320x568 models {"body":[0,568],"last":[-4440,552],"vh":568,"reach":true}
+{"size":"320x568","state":"sheet-graph"}
+sheet-end 320x568 graph {"body":[0,568],"last":[-773,552],"vh":568,"reach":true}
+{"size":"320x568","state":"library"}
+lib-end 320x568 {"box":[278,568],"vh":568,"sh":4365,"ch":290}
+{"size":"320x568","state":"ask-typed"}
+{"size":"320x568","state":"ask-over-rank"}
+{"size":"360x740","state":"stage-iss"}
+{"size":"360x740","state":"stage-iss-picker-open"}
+{"size":"360x740","state":"stage-iss-scene2"}
+{"size":"360x740","state":"stage-moon"}
+{"size":"360x740","state":"stage-moon-picker-open"}
+{"size":"360x740","state":"stage-moon-scene2"}
+{"size":"360x740","state":"stage-rover"}
+{"size":"360x740","state":"stage-earth"}
+{"size":"360x740","state":"hud-top3"}
+{"size":"360x740","state":"hud-brief"}
+{"size":"360x740","state":"hud-earth"}
+carousel 360x740 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 360x740 ["Library:true:12-91","Interpret:true:99-188","Rank:true:196-263","Compare:true:266-360","Materials:true:267-360","Team models:true:240-360","Research map:true:234-360","Ask SI:true:233-348"]
+{"size":"360x740","state":"sheet-interpret"}
+sheet-end 360x740 interpret {"body":[0,740],"last":[-3717,724],"vh":740,"reach":true}
+{"size":"360x740","state":"sheet-rank"}
+sheet-end 360x740 rank {"body":[0,740],"last":[11,724],"vh":740,"reach":true}
+{"size":"360x740","state":"sheet-compare","small":["button.cmp-open [FLEX] 36x44"]}
+sheet-end 360x740 compare {"body":[0,740],"last":[-1287,724],"vh":740,"reach":true}
+{"size":"360x740","state":"sheet-materials"}
+sheet-end 360x740 materials {"body":[0,740],"last":[-2422,724],"vh":740,"reach":true}
+{"size":"360x740","state":"sheet-models"}
+sheet-end 360x740 models {"body":[0,740],"last":[-3845,724],"vh":740,"reach":true}
+{"size":"360x740","state":"sheet-graph"}
+sheet-end 360x740 graph {"body":[0,740],"last":[-716,724],"vh":740,"reach":true}
+{"size":"360x740","state":"library"}
+lib-end 360x740 {"box":[278,740],"vh":740,"sh":4157,"ch":462}
+{"size":"360x740","state":"ask-typed"}
+{"size":"360x740","state":"ask-over-rank"}
+{"size":"390x844","state":"stage-iss"}
+{"size":"390x844","state":"stage-iss-picker-open"}
+{"size":"390x844","state":"stage-iss-scene2"}
+{"size":"390x844","state":"stage-moon"}
+{"size":"390x844","state":"stage-moon-picker-open"}
+{"size":"390x844","state":"stage-moon-scene2"}
+{"size":"390x844","state":"stage-rover"}
+{"size":"390x844","state":"stage-earth"}
+{"size":"390x844","state":"hud-top3"}
+{"size":"390x844","state":"hud-brief"}
+{"size":"390x844","state":"hud-earth"}
+carousel 390x844 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 390x844 ["Library:true:12-91","Interpret:true:99-188","Rank:true:196-263","Compare:true:271-365","Materials:true:297-390","Team models:true:270-390","Research map:true:264-390","Ask SI:true:263-378"]
+{"size":"390x844","state":"sheet-interpret"}
+sheet-end 390x844 interpret {"body":[0,844],"last":[-3394,828],"vh":844,"reach":true}
+{"size":"390x844","state":"sheet-rank"}
+sheet-end 390x844 rank {"body":[0,844],"last":[187,828],"vh":844,"reach":true}
+{"size":"390x844","state":"sheet-compare","small":["button.cmp-open [FLEX] 36x44"]}
+sheet-end 390x844 compare {"body":[0,844],"last":[-1183,828],"vh":844,"reach":true}
+{"size":"390x844","state":"sheet-materials"}
+sheet-end 390x844 materials {"body":[0,844],"last":[-2181,828],"vh":844,"reach":true}
+{"size":"390x844","state":"sheet-models"}
+sheet-end 390x844 models {"body":[0,844],"last":[-3619,828],"vh":844,"reach":true}
+{"size":"390x844","state":"sheet-graph"}
+sheet-end 390x844 graph {"body":[0,844],"last":[-715,828],"vh":844,"reach":true}
+{"size":"390x844","state":"library"}
+lib-end 390x844 {"box":[278,844],"vh":844,"sh":4052,"ch":566}
+{"size":"390x844","state":"ask-typed"}
+{"size":"390x844","state":"ask-over-rank"}
+{"size":"414x896","state":"stage-iss"}
+{"size":"414x896","state":"stage-iss-picker-open"}
+{"size":"414x896","state":"stage-iss-scene2"}
+{"size":"414x896","state":"stage-moon"}
+{"size":"414x896","state":"stage-moon-picker-open"}
+{"size":"414x896","state":"stage-moon-scene2"}
+{"size":"414x896","state":"stage-rover"}
+{"size":"414x896","state":"stage-earth"}
+{"size":"414x896","state":"hud-top3"}
+{"size":"414x896","state":"hud-brief"}
+{"size":"414x896","state":"hud-earth"}
+carousel 414x896 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 414x896 ["Library:true:12-91","Interpret:true:99-188","Rank:true:196-263","Compare:true:271-365","Materials:true:321-414","Team models:true:294-414","Research map:true:288-414","Ask SI:true:287-402"]
+{"size":"414x896","state":"sheet-interpret"}
+sheet-end 414x896 interpret {"body":[0,896],"last":[-3262,880],"vh":896,"reach":true}
+{"size":"414x896","state":"sheet-rank"}
+sheet-end 414x896 rank {"body":[0,896],"last":[263,880],"vh":896,"reach":true}
+{"size":"414x896","state":"sheet-compare","small":["button.cmp-open [FLEX] 36x44"]}
+sheet-end 414x896 compare {"body":[0,896],"last":[-1107,880],"vh":896,"reach":true}
+{"size":"414x896","state":"sheet-materials"}
+sheet-end 414x896 materials {"body":[0,896],"last":[-1946,880],"vh":896,"reach":true}
+{"size":"414x896","state":"sheet-models"}
+sheet-end 414x896 models {"body":[0,896],"last":[-3493,880],"vh":896,"reach":true}
+{"size":"414x896","state":"sheet-graph"}
+sheet-end 414x896 graph {"body":[0,896],"last":[-702,880],"vh":896,"reach":true}
+{"size":"414x896","state":"library"}
+lib-end 414x896 {"box":[278,896],"vh":896,"sh":3947,"ch":618}
+{"size":"414x896","state":"ask-typed"}
+{"size":"414x896","state":"ask-over-rank"}
+{"size":"844x390","state":"stage-iss"}
+{"size":"844x390","state":"stage-iss-picker-open","offscreen":["label.stage-pick-opt [Real fire: Saffire fligh] @604,415"]}
+{"size":"844x390","state":"stage-iss-scene2","covered":["summary [About this replay] by b [101.3]","summary.stage-pick-btn.glass [SceneLab view: team mode] by div.console-carousel.glass [ISSMoon BasePressurized ]"]}
+{"size":"844x390","state":"stage-moon","scrollEnd":["form.burn-panel.glass [Fire spread settings] box 401-427 of 390"]}
+{"size":"844x390","state":"stage-moon-picker-open","scrollEnd":["form.burn-panel.glass [Fire spread settings] box 401-427 of 390"],"offscreen":["label.stage-pick-opt [Real fire: Saffire fligh] @604,415"]}
+{"size":"844x390","state":"stage-moon-scene2","covered":["summary [About this replay] by b [70.3]","summary.stage-pick-btn.glass [SceneLab view: team mode] by div.console-carousel.glass [ISSMoon BasePressurized ]"]}
+{"size":"844x390","state":"stage-rover","scrollEnd":["form.burn-panel.glass [Fire spread settings] box 401-427 of 390"]}
+{"size":"844x390","state":"stage-earth"}
+{"size":"844x390","state":"hud-top3"}
+{"size":"844x390","state":"hud-brief"}
+{"size":"844x390","state":"hud-earth"}
+carousel 844x390 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 844x390 ["Library:false:0-0","Interpret:true:168-257","Rank:true:265-332","Compare:true:340-434","Materials:true:442-535","Team models:true:543-663","Research map:true:563-689","Ask SI:true:713-828"]
+{"size":"844x390","state":"sheet-interpret"}
+sheet-end 844x390 interpret {"body":[74,332],"last":[-2422,308],"vh":390,"reach":true}
+{"size":"844x390","state":"sheet-rank"}
+sheet-end 844x390 rank {"body":[74,332],"last":[-224,308],"vh":390,"reach":true}
+{"size":"844x390","state":"sheet-compare"}
+sheet-end 844x390 compare {"body":[74,332],"last":[-1394,308],"vh":390,"reach":true}
+{"size":"844x390","state":"sheet-materials"}
+sheet-end 844x390 materials {"body":[74,332],"last":[-1922,308],"vh":390,"reach":true}
+{"size":"844x390","state":"sheet-models"}
+sheet-end 844x390 models {"body":[74,332],"last":[-3126,308],"vh":390,"reach":true}
+{"size":"844x390","state":"sheet-graph"}
+sheet-end 844x390 graph {"body":[74,332],"last":[-653,308],"vh":390,"reach":true}
+{"size":"844x390","state":"library"}
+lib-end 844x390 {"box":[122,332],"vh":390,"sh":4262,"ch":210}
+{"size":"844x390","state":"ask-typed"}
+{"size":"844x390","state":"ask-over-rank"}
+{"size":"600x960","state":"stage-iss"}
+{"size":"600x960","state":"stage-iss-picker-open"}
+{"size":"600x960","state":"stage-iss-scene2"}
+{"size":"600x960","state":"stage-moon"}
+{"size":"600x960","state":"stage-moon-picker-open"}
+{"size":"600x960","state":"stage-moon-scene2"}
+{"size":"600x960","state":"stage-rover"}
+{"size":"600x960","state":"stage-earth"}
+{"size":"600x960","state":"hud-top3"}
+{"size":"600x960","state":"hud-brief"}
+{"size":"600x960","state":"hud-earth"}
+carousel 600x960 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 600x960 ["Library:true:12-91","Interpret:true:99-188","Rank:true:196-263","Compare:true:271-365","Materials:true:373-466","Team models:true:474-594","Research map:true:474-600","Ask SI:true:473-588"]
+{"size":"600x960","state":"sheet-interpret"}
+sheet-end 600x960 interpret {"body":[0,960],"last":[-2739,944],"vh":960,"reach":true}
+{"size":"600x960","state":"sheet-rank"}
+sheet-end 600x960 rank {"body":[0,960],"last":[401,944],"vh":960,"reach":true}
+{"size":"600x960","state":"sheet-compare","small":["button.cmp-open [FLEX] 36x44"]}
+sheet-end 600x960 compare {"body":[0,960],"last":[-880,944],"vh":960,"reach":true}
+{"size":"600x960","state":"sheet-materials"}
+sheet-end 600x960 materials {"body":[0,960],"last":[-1299,944],"vh":960,"reach":true}
+{"size":"600x960","state":"sheet-models"}
+sheet-end 600x960 models {"body":[0,960],"last":[-2609,944],"vh":960,"reach":true}
+{"size":"600x960","state":"sheet-graph"}
+sheet-end 600x960 graph {"body":[0,960],"last":[-708,944],"vh":960,"reach":true}
+{"size":"600x960","state":"library"}
+lib-end 600x960 {"box":[278,960],"vh":960,"sh":3640,"ch":682}
+{"size":"600x960","state":"ask-typed"}
+{"size":"600x960","state":"ask-over-rank"}
+{"size":"768x1024","state":"stage-iss","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"stage-iss-picker-open","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"stage-iss-scene2","inputs":["select [MethanolHeptane] font 14px","select [Nitrogen onlyAdd carbon ] font 14px","select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"]}
+{"size":"768x1024","state":"stage-moon","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"stage-moon-picker-open","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"stage-moon-scene2","inputs":["select [MethanolHeptane] font 14px","select [Nitrogen onlyAdd carbon ] font 14px","select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"]}
+{"size":"768x1024","state":"stage-rover","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"stage-earth","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"hud-top3","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"hud-brief","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"hud-earth","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+carousel 768x1024 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 768x1024 ["Library:false:0-0","Interpret:true:168-257","Rank:true:265-332","Compare:true:340-434","Materials:true:442-535","Team models:true:493-613","Research map:true:487-613","Ask SI:true:637-752"]
+{"size":"768x1024","state":"sheet-interpret"}
+sheet-end 768x1024 interpret {"body":[74,966],"last":[-2487,942],"vh":1024,"reach":true}
+{"size":"768x1024","state":"sheet-rank","inputs":["input font 14px"]}
+sheet-end 768x1024 rank {"body":[74,966],"last":[390,942],"vh":1024,"reach":true}
+{"size":"768x1024","state":"sheet-compare","small":["button.cmp-open [FLEX] 36x44"],"inputs":["select [All hardwareACME (CIR)MD] font 14px","select [ACME/Flame Design (PSI-1] font 14px","select [ACME/Flame Design (PSI-1] font 14px"]}
+sheet-end 768x1024 compare {"body":[74,966],"last":[-969,942],"vh":1024,"reach":true}
+{"size":"768x1024","state":"sheet-materials"}
+sheet-end 768x1024 materials {"body":[74,966],"last":[-1467,942],"vh":1024,"reach":true}
+{"size":"768x1024","state":"sheet-models"}
+sheet-end 768x1024 models {"body":[74,966],"last":[-2902,942],"vh":1024,"reach":true}
+{"size":"768x1024","state":"sheet-graph"}
+sheet-end 768x1024 graph {"body":[74,966],"last":[-682,942],"vh":1024,"reach":true}
+{"size":"768x1024","state":"library","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+lib-end 768x1024 {"box":[238,966],"vh":1024,"sh":4262,"ch":728}
+{"size":"768x1024","state":"ask-typed","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36","button.spread-obj.spread-resp [Do nothing] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"768x1024","state":"ask-over-rank","inputs":["input font 14px"]}
+{"size":"1024x768","state":"stage-iss","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"stage-iss-picker-open","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"stage-iss-scene2","inputs":["select [MethanolHeptane] font 14px","select [Nitrogen onlyAdd carbon ] font 14px","select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"]}
+{"size":"1024x768","state":"stage-moon","inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"stage-moon-picker-open","inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"stage-moon-scene2","inputs":["select [MethanolHeptane] font 14px","select [Nitrogen onlyAdd carbon ] font 14px","select [1.5 mm2 mm2.5 mm3 mm3.5 ] font 14px"]}
+{"size":"1024x768","state":"stage-rover","inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"stage-earth","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"hud-top3","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"hud-brief","inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"hud-earth","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+carousel 1024x768 ["ISS:true:54x44","Moon Base:true:133x44","Pressurize:true:215x44","Earth:true:87x44"]
+nav 1024x768 ["Library:false:0-0","Interpret:true:235-324","Rank:true:332-400","Compare:true:408-501","Materials:true:509-603","Team models:true:611-730","Research map:true:738-865","Ask SI:true:893-1008"]
+{"size":"1024x768","state":"sheet-interpret"}
+sheet-end 1024x768 interpret {"body":[74,710],"last":[-1798,686],"vh":768,"reach":true}
+{"size":"1024x768","state":"sheet-rank","inputs":["input font 14px"]}
+sheet-end 1024x768 rank {"body":[74,710],"last":[324,686],"vh":768,"reach":true}
+{"size":"1024x768","state":"sheet-compare","small":["button.cmp-open [FLEX] 36x44"],"inputs":["select [All hardwareACME (CIR)MD] font 14px","select [ACME/Flame Design (PSI-1] font 14px","select [ACME/Flame Design (PSI-1] font 14px"]}
+sheet-end 1024x768 compare {"body":[74,710],"last":[-792,686],"vh":768,"reach":true}
+{"size":"1024x768","state":"sheet-materials"}
+sheet-end 1024x768 materials {"body":[74,710],"last":[-1490,686],"vh":768,"reach":true}
+{"size":"1024x768","state":"sheet-models"}
+sheet-end 1024x768 models {"body":[74,710],"last":[-2270,686],"vh":768,"reach":true}
+{"size":"1024x768","state":"sheet-graph"}
+sheet-end 1024x768 graph {"body":[74,710],"last":[-208,686],"vh":768,"reach":true}
+{"size":"1024x768","state":"library","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+lib-end 1024x768 {"box":[238,710],"vh":768,"sh":4262,"ch":472}
+{"size":"1024x768","state":"ask-typed","small":["button.spread-obj.spread-resp [Stop the ventilation] 214x36","button.spread-obj.spread-resp [Discharge carbon dioxide] 214x36"],"inputs":["select [Cloth near the air ventP] font 14px"]}
+{"size":"1024x768","state":"ask-over-rank","inputs":["input font 14px"]}
