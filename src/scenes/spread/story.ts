@@ -36,6 +36,19 @@ export const GRAVITIES: { id: Gravity; name: string }[] = [
   { id: "earth", name: "On Earth (measured)" },
 ];
 export const MOON_ESTIMATE = "Estimate: no fire test has run in Moon gravity";
+/**
+ * The air the orbit and Earth fire tests burned in: station air, sea-level pressure, oxygen no higher than the
+ * richest test (SAFFIRE-II, 22.1%). A base whose air is outside this has its gravity measured but not that air.
+ */
+export const TESTED_AIR = { maxO2: 22.1, kPa: 101.3, kPaSlack: 5 };
+export const airTested = (o2: number, kPa: number | undefined) =>
+  kPa !== undefined && o2 <= TESTED_AIR.maxO2 + 0.05 && Math.abs(kPa - TESTED_AIR.kPa) <= TESTED_AIR.kPaSlack;
+/** A gravity setting's label for this air: "(measured)" only when both the gravity and the air were tested. */
+export function gravityName(g: Gravity, o2: number, kPa: number | undefined): string {
+  const x = GRAVITIES.find((y) => y.id === g)!;
+  if (g === "partial" || airTested(o2, kPa)) return x.name;
+  return x.name.replace("(measured)", "(gravity measured, this air not tested)");
+}
 
 /** Cabin ventilation while it runs, cm/s along the bench (illustrative; inside the BASS-II "burned" range). */
 export const VENT_CMS = 10;

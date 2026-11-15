@@ -9,9 +9,9 @@ vi.mock("../playback.ts", async (original) => ({
   usePlayback: (select: (s: { picked: string }) => unknown) => select({ picked: "cloth" }),
 }));
 
-const panel = (s: Partial<StoryInput> = {}) =>
+const panel = (s: Partial<StoryInput> = {}, kPa: number | undefined = 101.3) =>
   renderToStaticMarkup(
-    <SpreadPanel air="ISS" g="micro" doc={null} fabric={{ lives: true, test: null, beyond: false }} st={story({ g: "micro", o2: 21, start: "cloth", response: "vent", ...s })} />,
+    <SpreadPanel air="ISS" kPa={kPa} g="micro" doc={null} fabric={{ lives: true, test: null, beyond: false }} st={story({ g: "micro", o2: 21, start: "cloth", response: "vent", ...s })} />,
   );
 
 it("a picked object's card comes before the object list (P1-5)", () => {
@@ -76,5 +76,18 @@ describe("the gravity switch (15.10)", () => {
   it("says nothing about an estimate in orbit or on Earth", () => {
     expect(panel({ g: "micro" })).not.toContain("Estimate: no fire test");
     expect(panel({ g: "earth" })).not.toContain("Estimate: no fire test");
+  });
+  it("says the gravity is measured but this air is not, for a base whose air no test burned in (Moon Base, rover)", () => {
+    const html = panel({ g: "earth", o2: 30 }, 70.3);
+    expect(html).toMatch(/On Earth<span class="spread-how">gravity measured, this air not tested/);
+    expect(html).toMatch(/In orbit<span class="spread-how">gravity measured, this air not tested/);
+    expect(html).not.toMatch(/On Earth<span class="spread-how">measured/);
+  });
+  it("keeps (measured) only for station air at sea-level pressure; an unknown pressure is not tested", async () => {
+    const { gravityName } = await import("../spread/story.ts");
+    expect(gravityName("earth", 21, 101.3)).toBe("On Earth (measured)");
+    expect(gravityName("earth", 30, 70.3)).toBe("On Earth (gravity measured, this air not tested)");
+    expect(gravityName("earth", 21, undefined)).toBe("On Earth (gravity measured, this air not tested)");
+    expect(gravityName("partial", 30, 70.3)).toBe("On the Moon (estimate)");
   });
 });

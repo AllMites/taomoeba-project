@@ -7,7 +7,7 @@ import { usePlayback } from "../playback.ts";
 import HowWeKnow from "../../brief/HowWeKnow.tsx";
 import { useCited } from "../cite.ts";
 import { evidenceFor, OBJECTS, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
-import { GRAVITIES, MOON_ESTIMATE, RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
+import { GRAVITIES, gravityName, MOON_ESTIMATE, RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
 
 /** More of a scroll box is below its visible part (2 px of slack for rounding). */
 export const moreBelow = (el: { scrollHeight: number; scrollTop: number; clientHeight: number }) => el.scrollHeight - el.scrollTop - el.clientHeight > 2;
@@ -31,7 +31,7 @@ function respond(st: Story, id: Response) {
 }
 
 /** The scenario: where the fire starts, the crew's response, and what the records say that response does. */
-function Scenario({ st }: { st: Story }) {
+function Scenario({ st, kPa }: { st: Story; kPa: number | undefined }) {
   const lines = responseLines(st);
   const cited = useCited(lines.evidence.refs);
   return (
@@ -49,7 +49,7 @@ function Scenario({ st }: { st: Story }) {
       <fieldset className="spread-set spread-grav">
         <legend className="spread-legend">Gravity</legend>
         {GRAVITIES.map((x) => {
-          const [where, how] = x.name.replace(")", "").split(" (");
+          const [where, how] = gravityName(x.id, st.input.o2, kPa).replace(")", "").split(" (");
           return (
             <button key={x.id} type="button" className="spread-obj spread-resp" aria-pressed={st.input.g === x.id} onClick={() => usePlayback.getState().setScenario({ grav: x.id })}>
               <span>
@@ -148,7 +148,7 @@ function Card({ o, g, doc, fabric, start }: { o: CabinObject; g: Gravity; doc: S
 /**
  * The fire scenario's panel at the stage's left edge: every object as a button, and the picked object's card.
  */
-export function SpreadPanel({ air, g, doc, fabric, st }: { air: string; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; st: Story }) {
+export function SpreadPanel({ air, kPa, g, doc, fabric, st }: { air: string; kPa: number | undefined; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; st: Story }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const picked = usePlayback((s) => s.picked);
@@ -186,7 +186,7 @@ export function SpreadPanel({ air, g, doc, fabric, st }: { air: string; g: Gravi
       <form ref={form} id={`${id}-panel`} className="burn-panel glass" data-more={more || undefined} aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
         <p className="burn-h">Fire in this base, {air}</p>
         <p className="burn-support">Illustrative times, scaled by oxygen.</p>
-        <Scenario st={st} />
+        <Scenario st={st} kPa={kPa} />
         {o && <Card o={o} g={g} doc={doc} fabric={fabric} start={st.input.start} />}
         <details className="spread-objs">
           <summary className="spread-legend">Objects in the cabin ({OBJECTS.length})</summary>
