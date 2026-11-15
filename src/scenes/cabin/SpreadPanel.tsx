@@ -4,10 +4,71 @@ import { useStore } from "../../app/store.ts";
 import { useDataset } from "../../data/useDataset.ts";
 import { OUTCOME, type SolidsDoc } from "../../solids/logic.ts";
 import { usePlayback } from "../playback.ts";
+import HowWeKnow from "../../brief/HowWeKnow.tsx";
+import { useCited } from "../cite.ts";
 import { evidenceFor, OBJECTS, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
+import { RESPONSES, responseLines, STARTS, type Outcome, type Response, type Story } from "../spread/story.ts";
+
+/** What the chosen response does here, in words the viewer reads first. */
+export const OUTCOME_WORDS: Record<Outcome, string> = {
+  out: "The flame goes out",
+  burns: "The flame keeps burning",
+  weaker: "Not tested: drawn as a weaker flame",
+};
+
+/** A new response replays from the detector trip, so the viewer sees what it does without waiting for the spread. */
+function respond(st: Story, id: Response) {
+  if (id === st.input.response) return;
+  const un = usePlayback.subscribe((s, p) => {
+    if (s.timeline === p.timeline) return;
+    un();
+    usePlayback.getState().seek(Math.max(0, st.detect - 1));
+  });
+  usePlayback.getState().setScenario({ response: id });
+}
+
+/** The scenario: where the fire starts, the crew's response, and what the records say that response does. */
+function Scenario({ st }: { st: Story }) {
+  const lines = responseLines(st);
+  const cited = useCited(lines.evidence.refs);
+  return (
+    <>
+      <label className="spread-field">
+        <span className="spread-legend">Where it starts</span>
+        <select value={st.input.start} onChange={(e) => usePlayback.getState().setScenario({ start: e.target.value as Story["input"]["start"] })}>
+          {STARTS.map((x) => (
+            <option key={x.id} value={x.id}>
+              {x.name}
+            </option>
+          ))}
+        </select>
+      </label>
+      <fieldset className="spread-set">
+        <legend className="spread-legend">Response when the detector trips</legend>
+        {RESPONSES.map((x) => (
+          <button key={x.id} type="button" className="spread-obj spread-resp" aria-pressed={st.input.response === x.id} onClick={() => respond(st, x.id)}>
+            {x.name}
+          </button>
+        ))}
+      </fieldset>
+      <section className="spread-outcome" aria-label="What the response does" aria-live="polite">
+        <p className="spread-outcome-h" data-outcome={st.outcome}>
+          <span className="burn-mark" data-mark={st.outcome === "out" ? "dashed" : st.outcome === "weaker" ? "half" : "solid"} aria-hidden="true" />
+          {OUTCOME_WORDS[st.outcome]}
+        </p>
+        <p className="spread-text">
+          {lines.evidence.text}
+          {lines.evidence.refs.length === 0 && !/Illustration/.test(lines.evidence.text) ? " Illustration." : ""}
+        </p>
+        {cited.length > 0 && <HowWeKnow records={cited} />}
+        <p className="spread-text spread-src">{lines.unknown}</p>
+      </section>
+    </>
+  );
+}
 
 /** The detail card for one object: what it is, whether it burns, how it behaves, and the real test that matches. */
-function Card({ o, g, doc, fabric }: { o: CabinObject; g: Gravity; doc: SolidsDoc | null; fabric: Fabric }) {
+function Card({ o, g, doc, fabric, start }: { o: CabinObject; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; start: string }) {
   const inv = useDataset("investigations");
   const known = new Set(inv.status === "ready" ? inv.data.map((i) => i.id) : []);
   const ev = evidenceFor(o, doc, known);
@@ -23,6 +84,13 @@ function Card({ o, g, doc, fabric }: { o: CabinObject; g: Gravity; doc: SolidsDo
         {g === "earth" ? " at 1 g" : " here"}
       </p>
       <p className="spread-text">{o.behaviour}</p>
+      {STARTS.some((x) => x.id === o.id) && start !== o.id && (
+        <div className="spread-actions">
+          <button type="button" className="spread-btn spread-btn-main" onClick={() => usePlayback.getState().setScenario({ start: o.id as Story["input"]["start"] })}>
+            Start a fire here
+          </button>
+        </div>
+      )}
       {o.fabric && fabric.test && (
         <p className="spread-text">
           Nearest BASS-II test, {fabric.test.test}: {fabric.test.o2}% oxygen, airflow {fabric.test.flowTo} cm/s.{" "}
@@ -62,39 +130,45 @@ function Card({ o, g, doc, fabric }: { o: CabinObject; g: Gravity; doc: SolidsDo
 /**
  * The fire scenario's panel at the stage's left edge: every object as a button, and the picked object's card.
  */
-export function SpreadPanel({ air, g, doc, fabric }: { air: string; g: Gravity; doc: SolidsDoc | null; fabric: Fabric }) {
+export function SpreadPanel({ air, g, doc, fabric, st }: { air: string; g: Gravity; doc: SolidsDoc | null; fabric: Fabric; st: Story }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const picked = usePlayback((s) => s.picked);
   const o = OBJECTS.find((x) => x.id === picked);
   const form = useRef<HTMLFormElement>(null);
-  // The card sits at the top of the panel: a pick (in 3D or in the list) brings it into view.
+  // A pick (in 3D or in the list) scrolls the panel to the object's card.
   useEffect(() => {
-    if (picked) form.current?.scrollTo({ top: 0 });
+    const f = form.current;
+    const c = f?.querySelector<HTMLElement>(".spread-card");
+    if (picked && f && c) f.scrollTo({ top: c.offsetTop - f.offsetTop - 8 });
   }, [picked]);
   return (
     <div className="burn" data-open={open || undefined}>
       <button type="button" className="burn-toggle glass" aria-expanded={open} aria-controls={`${id}-panel`} onClick={() => setOpen((v) => !v)}>
-        Objects
+        Fire scenario
       </button>
       <form ref={form} id={`${id}-panel`} className="burn-panel glass" aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
         <p className="burn-h">Fire in this base, {air}</p>
-        <p className="burn-support">Times and speeds are illustrative, scaled by oxygen. Pick an object to see what it is and what the tests say.</p>
-        {o && <Card o={o} g={g} doc={doc} fabric={fabric} />}
-        <div className="spread-list" role="group" aria-label="Objects in the cabin">
-          {OBJECTS.map((x) => (
-            <button
-              key={x.id}
-              type="button"
-              className="spread-obj"
-              aria-pressed={picked === x.id}
-              onClick={() => usePlayback.getState().pick(picked === x.id ? null : x.id)}
-            >
-              <span className="burn-mark" data-mark={x.burns(g) ? "solid" : "dashed"} aria-hidden="true" />
-              {x.name}
-            </button>
-          ))}
-        </div>
+        <p className="burn-support">Illustrative times, scaled by oxygen.</p>
+        <Scenario st={st} />
+        {o && <Card o={o} g={g} doc={doc} fabric={fabric} start={st.input.start} />}
+        <details className="spread-objs">
+          <summary className="spread-legend">Objects in the cabin ({OBJECTS.length})</summary>
+          <div className="spread-list" role="group" aria-label="Objects in the cabin">
+            {OBJECTS.map((x) => (
+              <button
+                key={x.id}
+                type="button"
+                className="spread-obj"
+                aria-pressed={picked === x.id}
+                onClick={() => usePlayback.getState().pick(picked === x.id ? null : x.id)}
+              >
+                <span className="burn-mark" data-mark={x.burns(g) ? "solid" : "dashed"} aria-hidden="true" />
+                {x.name}
+              </button>
+            ))}
+          </div>
+        </details>
       </form>
     </div>
   );

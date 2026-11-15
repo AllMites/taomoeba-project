@@ -56,3 +56,10 @@ it("on a narrow stage the bar sits under the caption's real height, so a wrapped
   const play = css.match(/\.stage-play \{[^}]*top: calc\(([^;]*)\);/)?.[1] ?? "";
   expect(play).toContain("var(--stage-caption-h");
 });
+
+it("a scene's side panel starts below the caption's real height, never under a long caption", async () => {
+  const { readFileSync } = await import("node:fs");
+  const css = readFileSync(new URL("./cabin/cabin.css", import.meta.url), "utf8");
+  const top = css.match(/\.burn \{[^}]*\n\s*top: ([^;]*);/)?.[1] ?? "";
+  expect(top).toContain("var(--stage-caption-h");
+});
