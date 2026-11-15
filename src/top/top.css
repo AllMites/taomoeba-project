@@ -1,0 +1,38 @@
+/* Top for this base + brief line. Both sit over the replay, so both are glass (docs/RESKIN_PRD.md, section 6). */
+.top { display: flex; flex-direction: column; width: 100%; border-radius: var(--radius-2); overflow: hidden; }
+.top-h { padding: var(--space-4) var(--space-4) var(--space-3); color: var(--label); font-weight: 500; }
+.top-list { list-style: none; margin: 0; padding: 0; }
+/* Fixed row height: the card is the same size loading and loaded, so nothing shifts. */
+.top-row { display: flex; align-items: stretch; height: 5.5rem; border-top: 1px solid var(--line); }
+.top-open {
+  flex: 1; min-width: 0; display: grid; grid-template-columns: auto 1fr auto; align-items: first baseline; column-gap: var(--space-3);
+  padding: var(--space-3) var(--space-2) var(--space-3) var(--space-4);
+  font: inherit; color: var(--color-text); text-align: left; background: transparent; border: 0; cursor: pointer;
+}
+.top-open:hover, .top-ask:hover { background: var(--glass-hi); }
+.top-open:focus-visible, .top-ask:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+.top-num { color: var(--label); }
+.top-text { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.top-name { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.top-sum { color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.3; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.top-score { color: var(--color-text); font-variant-numeric: tabular-nums; }
+.top-ask { flex: none; width: 2.75rem; display: grid; place-items: center; color: var(--color-text-muted); background: transparent; border: 0; border-left: 1px solid var(--line); cursor: pointer; }
+.top-ask:hover { color: var(--color-text); }
+.top-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-3) var(--space-4); border-top: 1px solid var(--line); }
+.top-scale { color: var(--label); white-space: nowrap; }
+.top-all { white-space: nowrap; }
+/* The primary pill hover in base.css swaps to the accent, which is the same white here: keep it visible as a state. */
+.top-all:hover { background: var(--color-text-muted); }
+.top-note { padding: var(--space-4); height: 16.5rem; color: var(--color-text-muted); font-size: var(--text-sm); }
+
+.briefline { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-radius: var(--radius-2); }
+.briefline-wait { height: 6rem; }
+.briefline-text { font-size: var(--text-base); line-height: 1.35; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
+.briefline-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.briefline-src { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: var(--space-2); color: var(--color-text-muted); font-size: var(--text-sm); white-space: nowrap; }
+.briefline-src .t-readout { flex: none; color: var(--label); }
+/* The link is the row's own action, not a link inside a sentence: no underline until hover. */
+.briefline-src a { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--color-text); text-decoration: none; }
+.briefline-src a:hover { text-decoration: underline; }
+.briefline-rest { flex: none; }
+.briefline-more { flex: none; }
