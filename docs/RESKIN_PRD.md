@@ -424,3 +424,24 @@ The details of an object no longer open as a card in the side panel. They show i
 - The panel keeps the object list as the keyboard and screen-reader path: each row is a button, `aria-pressed` when pinned, and the pinned details are also announced (aria-live polite).
 - Narrow center and phones: there is no hover. A tap pins. The pinned callout is at most 60% of the stage width, with inner scroll.
 - Checks: a test for the three states (none, preview, pinned) and for deselect; a test that the card position stays inside the stage and out of each keep-out box for a set of anchor points; seen in a real browser while orbiting.
+
+## 18. Stage clutter budget (owner feedback with a screenshot, 2026-11-15)
+
+Problem: at 1141x847 the scene is almost fully covered: a three-line caption card, the playback bar, an object detail panel, the brief card, the top-3 card, the scene picker and three labels all sit on the stage at once. The owner: "there are so many screens here taking up space".
+
+Rule: the scene is the subject. At rest (nothing opened by the viewer), overlays cover at most 20% of the stage area at every width, measured as the union of overlay rectangles over the stage rectangle. Anything more opens on demand and closes again.
+
+### 18.1 Shell (files: src/app/app.css, src/top/)
+
+- The brief and the top-3 card are never drawn over the stage at rest, at any width. The 48px bottom bar (today's narrow-center layout: top result, score, "Top 3", "Brief") is the layout at every width. The wide variant with both cards open over the stage is removed.
+- A card opened from the bar opens upward over the stage, one at a time, and closes on Escape, on an outside press or on its close button, as today.
+
+### 18.2 Stage chrome (files: src/scenes/)
+
+- One strip at the top of the stage holds the scene picker, play or pause, the seeker with its stage marks, and the time. One row on a wide stage, two on a phone.
+- The caption is one line under that strip, cut with an ellipsis. A press on it (or on its "i") expands the full text and "How we know"; a second press, Escape or an outside press closes it. The word "Illustration" or the source mark stays visible in the one-line form.
+- The scenario panel (start point, response, gravity, outcome) is closed at rest at every width, behind one "Scenario" button. Open, it sits at one side, at most 22rem wide, with inner scroll. The outcome headline also shows as one line in the caption when a response has played, so the viewer need not open the panel to see what happened.
+- The object detail panel goes: details are the in-scene callouts of 17.5.
+- In-scene labels (window, burnt zone, detector, flame front) are at most 5 at once, one line each, and hide while the caption or the scenario panel is open over them.
+- "Reset view" is an icon button with a tooltip and an accessible name.
+- Check: a browser measurement of the covered share at 1141x847, 1440x900 and 390x844 at rest, reported with the hand-back; target 20% or less.
