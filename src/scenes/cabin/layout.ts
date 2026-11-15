@@ -2,6 +2,8 @@
 // the ventilation flow along +x. Pure, so the framing is tested: the fire must be large in the first frame.
 import type { BaseId } from "../../app/console.ts";
 import type { Mode } from "../playback.ts";
+import { OBJECTS } from "../spread/spread.ts";
+import { DETECTOR, WEAK_FLOW_X } from "../spread/story.ts";
 
 export type V3 = [number, number, number];
 
@@ -125,4 +127,53 @@ export function keepInView(cam: V3, target: V3, focus: V3, leash: number, room?:
     }
   }
   return moved;
+}
+
+/**
+ * Where the story's places stand in each base, defined here only: the air vent (upstream of the cloth), the smoke
+ * detector (its x is the story's DETECTOR.x, where the smoke is checked; height and depth follow the base's mount),
+ * the locker, the airflow arrows, where the smoke gathers, and the three start points (on their props). The bench
+ * line, and so the burn and the spread, is the same in every base.
+ */
+export type Anchors = {
+  vent: V3;
+  detector: V3;
+  locker: V3;
+  airflow: V3;
+  smoke: V3;
+  starts: Record<StartId, V3>;
+};
+export type StartId = "cloth" | "checklist" | "foam";
+
+/** Per base: the detector's mount (height, depth) and the vent's place. */
+const MOUNT: Record<BaseId, { detector: [number, number]; vent: V3 }> = {
+  iss: { detector: [0.15, -0.3], vent: [-0.74, 0.08, -0.04] },
+  moon: { detector: [0.15, -0.3], vent: [-0.74, 0.08, -0.04] },
+  rover: { detector: [0.15, -0.3], vent: [-0.74, 0.08, -0.04] },
+  earth: { detector: [0.15, -0.3], vent: [-0.74, 0.08, -0.04] },
+};
+
+const objAt = (id: string, y = 0): V3 => {
+  const o = OBJECTS.find((x) => x.id === id)!;
+  return [(o.x0 + o.x1) / 2, o.hd[0] + y, o.z];
+};
+
+export function anchorsOf(base: BaseId): Anchors {
+  const m = MOUNT[base];
+  return {
+    vent: m.vent,
+    detector: [DETECTOR.x, ...m.detector],
+    locker: objAt("locker"),
+    airflow: [-0.35, 0.26, -0.1],
+    smoke: [WEAK_FLOW_X, 0.12, -0.04],
+    starts: { cloth: objAt("cloth"), checklist: objAt("checklist"), foam: objAt("foam") },
+  };
+}
+
+/** Inside the room's walls (with a margin), for the anchor check. */
+export function insideRoom(room: Room, p: V3, margin = 0.05): boolean {
+  const [l, h, d] = room.size;
+  if (p[0] < ROOM_X - l / 2 + margin || p[0] > ROOM_X + l / 2 - margin) return false;
+  if (room.shape === "box") return p[1] > room.base + margin && p[1] < room.base + h - margin && Math.abs(p[2]) < d / 2 - margin;
+  return Math.hypot(p[1] - room.base, p[2]) < h - margin;
 }

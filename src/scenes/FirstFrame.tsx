@@ -10,7 +10,7 @@ export function FirstFrame() {
     if (done.current) return;
     done.current = true;
     // Dev only: the renderer and the first frame's time, for the draw-call and start-up checks.
-    if (import.meta.env.DEV) Object.assign(window, { __r3f: get, __firstFrameMs: performance.now() });
+    if (import.meta.env.DEV) Object.assign(window, { __r3f: get, __playback: usePlayback, __firstFrameMs: performance.now() });
     usePlayback.getState().setLive(true);
   });
   useEffect(() => () => usePlayback.getState().setLive(false), []);
