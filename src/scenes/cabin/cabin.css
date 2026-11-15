@@ -56,7 +56,8 @@
   position: absolute;
   z-index: 5;
   left: var(--space-4);
-  top: var(--replay-top, 10rem);
+  /* Below the stage caption's real height (measured by the stage; it wraps when the caption is long). */
+  top: max(var(--replay-top, 10rem), calc(var(--stage-top, 7rem) + var(--stage-caption-h, 0px) + var(--space-2)));
   /* Stops above the brief at the bottom left (measured by the stage), or a fixed gap where it is not measured. */
   bottom: calc(var(--replay-brief, calc(var(--replay-bottom, 4rem) + 10rem)) + var(--space-2));
   width: 16.5rem;
