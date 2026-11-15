@@ -64,3 +64,17 @@ describe("carbon dioxide discharge in the scene", () => {
     expect(cap).toContain("Illustration");
   });
 });
+
+describe("the gravity switch (15.10)", () => {
+  it("offers orbit and Earth as measured and the Moon as an estimate, the scenario's gravity pressed", () => {
+    const html = panel({ g: "partial" });
+    expect(html).toMatch(/In orbit<span class="spread-how">measured/);
+    expect(html).toMatch(/aria-pressed="true"[^>]*><span>On the Moon<span class="spread-how">estimate/);
+    expect(html).toMatch(/On Earth<span class="spread-how">measured/);
+    expect(html).toContain("Estimate: no fire test has run in Moon gravity");
+  });
+  it("says nothing about an estimate in orbit or on Earth", () => {
+    expect(panel({ g: "micro" })).not.toContain("Estimate: no fire test");
+    expect(panel({ g: "earth" })).not.toContain("Estimate: no fire test");
+  });
+});
