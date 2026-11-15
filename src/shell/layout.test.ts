@@ -98,3 +98,16 @@ describe("the HUD collapses on the center's width", () => {
     expect(collapsed).toContain('.console-hud[data-open="brief"] .console-brief');
   });
 });
+
+describe("mid widths and phone landscape (769 to 1100 wide)", () => {
+  const mid = atRule(appCss, "@media (min-width: 47.5625rem) and (max-width: 68.75rem)");
+  it("the nav scrolls sideways instead of running under the Ask SI pill", () => {
+    // At 768x1024 and 844x390 "Research map" covered the centre of the Ask SI pill.
+    expect(decls(mid, ".console-nav")["overflow-x"]).toBe("auto");
+  });
+  it("on a short screen a panel rises to the top of the center", () => {
+    // At 844x390 the Library under the carousel kept 94px for its content.
+    const short = atRule(appCss, "@media (min-width: 47.5625rem) and (max-width: 68.75rem) and (max-height: 30rem)");
+    expect(decls(short, '[data-mode="pinned"] > .panel-box').top).toBe("var(--space-3)");
+  });
+});

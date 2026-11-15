@@ -445,6 +445,17 @@ body { overflow: hidden; }
   [data-mode="pinned"] > .panel-box { background: var(--color-surface); }
   .console-left > .panel-box { left: calc(var(--strip-w) + var(--space-3)); }
   .console-right > .panel-box { right: calc(var(--strip-w) + var(--space-3)); }
+  /* The nav does not fit beside the brand and Ask SI below about 1000px: it scrolls sideways, as on a phone, instead
+     of running under the Ask SI pill (768 and 844 wide). The ul padding is room for the focus ring. */
+  .console-nav { overflow-x: auto; scrollbar-width: none; margin-block: calc(-1 * var(--space-1)); }
+  .console-nav::-webkit-scrollbar { display: none; }
+  .console-nav ul { width: max-content; padding: var(--space-1); }
+  .nav-tip { display: none; }
+}
+/* Phone landscape (844x390): under the carousel a drawer kept 94px for its content. On a short screen it rises to the
+   top of the center, over the carousel, like a sheet. */
+@media (min-width: 47.5625rem) and (max-width: 68.75rem) and (max-height: 30rem) {
+  [data-mode="peek"] > .panel-box, [data-mode="pinned"] > .panel-box { top: var(--space-3); }
 }
 
 /* ---- Phone (docs/RESKIN_PRD.md, section 8) ---- */
