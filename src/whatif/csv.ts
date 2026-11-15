@@ -58,7 +58,7 @@ export function csvRow(doc: WhatIfDoc, s: Sel, label: string): (string | number 
 export function toCsv(doc: WhatIfDoc, rows: { sel: Sel; label: string }[]): string {
   const m = doc.models;
   const notes = [
-    `# Flame in Freefall what-if export. ${doc.about}`,
+    `# Firebreak what-if export. ${doc.about}`,
     `# Grid made ${doc.made}. Models: extinction diameter = ${m.ext_diameter.name} (RMSE ${m.ext_diameter.rmse_mm} mm, band covered ${Math.round(m.ext_diameter.band_coverage * 100)}% on held-out test days); disruption = ${m.disruption.name} (AUC ${m.disruption.auc}); burning rate = ${m.burning_rate.name} (RMSE ${m.burning_rate.rmse} ${m.burning_rate.unit}).`,
     "# textbook_* and theory_* columns are classical droplet theory and a buoyancy scaling estimate, not data. Data source: NASA PSI FLEX (PSI-69).",
   ];

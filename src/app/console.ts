@@ -36,7 +36,7 @@ const VIEWS: View[] = ["stage", "interpret", "rank", "compare", "models", "graph
 
 /**
  * First state, from the URL so any state can be linked, screenshotted and filmed:
- * ?base=rover&view=rank&lib=1&ask=0. Without lib/ask, both panels start open on a wide screen (1280px up).
+ * ?base=rover&view=rank&lib=1&ask=0. Without lib/ask, both panels start open on a wide screen (1500px up), so the replay keeps the center.
  */
 export function initialConsole(search: string, wide: boolean) {
   const q = new URLSearchParams(search);
@@ -47,7 +47,7 @@ export function initialConsole(search: string, wide: boolean) {
 }
 
 const inBrowser = typeof window !== "undefined" && typeof window.matchMedia === "function";
-const first = initialConsole(inBrowser ? window.location.search : "", inBrowser && window.matchMedia("(min-width: 1280px)").matches);
+const first = initialConsole(inBrowser ? window.location.search : "", inBrowser && window.matchMedia("(min-width: 1500px)").matches);
 if (first.base !== "moon") useStore.setState({ habitat: habitatOf(first.base) });
 
 export const useConsole = create<ConsoleState>((set) => ({

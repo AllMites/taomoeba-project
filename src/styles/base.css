@@ -84,7 +84,7 @@ a { color: var(--color-accent); text-underline-offset: 0.18em; }
   text-decoration: none;
 }
 .pill::after { content: "→"; font-family: var(--font-sans); font-size: 1rem; }
-.pill:hover { background: var(--color-accent); color: var(--color-accent-contrast); }
+.pill:hover { background: color-mix(in srgb, var(--color-pill) 84%, var(--color-bg)); color: var(--color-pill-text); }
 .pill[aria-disabled="true"] { opacity: 0.6; cursor: not-allowed; }
 .pill[aria-disabled="true"]:hover { background: var(--color-pill); color: var(--color-pill-text); }
 

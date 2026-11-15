@@ -6,7 +6,7 @@ import { isNoCover, modeLabel, readable, type AskResult } from "./respond.ts";
  */
 export function citationText(question: string, r: AskResult, titleOf: (id: string) => string, when = new Date()): string {
   const day = when.toISOString().slice(0, 10);
-  const lines = [`Question: ${question}`, `Answer from Flame in Freefall "Ask the records" (${modeLabel(r)}), ${day}:`];
+  const lines = [`Question: ${question}`, `Answer from Firebreak "Ask the records" (${modeLabel(r)}), ${day}:`];
   for (const f of r.facts ?? []) lines.push(`- Data (${f.dataset}): ${f.statement}${f.caveat ? ` Caveat: ${f.caveat}` : ""}`);
   if (r.summary) lines.push(r.summary);
   const text = readable(r.answer).trim();

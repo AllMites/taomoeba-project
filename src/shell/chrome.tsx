@@ -12,7 +12,7 @@ export function TopBar({ view, leftOpen, askOpen }: Panels) {
   const { setView, setLeftOpen, setAskOpen } = useConsole.getState();
   return (
     <header className="console-top">
-      <h1 className="brand t-display t-upper">Flame in Freefall</h1>
+      <h1 className="brand t-display t-upper">Firebreak</h1>
       <nav className="console-nav" aria-label="Views">
         <ul>
           {/* Phone only: the rail is hidden there, so the Library toggle joins the chip row. */}

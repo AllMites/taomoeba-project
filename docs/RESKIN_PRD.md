@@ -20,7 +20,7 @@ interpret) sits on it as glass and is never more than zero clicks away. Library 
 
 ```
 ┌───────────────────────────────────────────────────────────────────────┐
-│ FLAME IN FREEFALL                        [Interpret Rank Compare Models]│  top bar
+│ FIREBREAK                                [Interpret Rank Compare Models]│  top bar
 ├──────┬────────────────────────────────────────────────────┬───────────┤
 │ rail │  ‹ ISS · [MOON BASE] · ROVER ›   ← base carousel   │           │
 │  ◎   │                                                    │  ASK SI   │
