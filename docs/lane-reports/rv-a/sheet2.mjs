@@ -1,0 +1,12 @@
+import { launch } from "./cdp.mjs";
+const p = await launch();
+await p.size(1440, 900);
+await p.go("http://localhost:5184/?lib=1&ask=1", 3000);
+const pos = () => p.eval(`({ doc: document.scrollingElement.scrollTop, view: document.querySelector(".console").dataset.view })`);
+await p.eval(`(async () => (await import("/src/app/store.ts")).useStore.setState({ highlightIds: ["PSI-159"] }))()`); await p.sleep(1200);
+console.log("highlight set directly", JSON.stringify(await pos()));
+await p.eval(`(async () => (await import("/src/app/console.ts")).useConsole.getState().setView("stage"))()`); await p.sleep(300);
+await p.eval(`document.scrollingElement.scrollTop = 0`);
+await p.eval(`(async () => (await import("/src/app/console.ts")).useConsole.getState().setView("rank"))()`); await p.sleep(1500);
+console.log("open rank with same highlight, no Ask code", JSON.stringify(await pos()));
+p.close();
