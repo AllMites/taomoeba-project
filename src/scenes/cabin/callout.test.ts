@@ -52,6 +52,15 @@ describe("callout placement (17.5): inside the stage and out of every keep-out b
     expect(clear(p)).toBe(true);
     expect(p.docked).toBe(false);
     expect(x >= p.x && x <= p.x + card.w && y >= p.y && y <= p.y + card.h).toBe(false);
+    // The leader is a visible line, not a dot: at least 56 px from the anchor to the card's nearest edge.
+    const [ax, ay, lx, ly] = p.line;
+    expect(Math.hypot(lx - ax, ly - ay)).toBeGreaterThanOrEqual(55.5);
+  });
+
+  it("prefers up and to the side, so the card does not sit over the object it names", () => {
+    const p = placeCard({ x: 640, y: 500, inFront: true }, card, stage, keepOut);
+    expect(p.y + card.h).toBeLessThan(500);
+    expect(p.x > 640 || p.x + card.w < 640).toBe(true);
   });
 
   it("the leader line runs from the object to the card's nearest edge", () => {
@@ -77,10 +86,15 @@ describe("callout placement (17.5): inside the stage and out of every keep-out b
     const phone = { w: 390, h: 560 };
     const c = { w: 234, h: 200 };
     const ko: Rect[] = [{ x: 8, y: 8, w: 374, h: 100 }, { x: 0, y: 512, w: 390, h: 48 }];
-    for (const [x, y] of [[195, 300], [40, 350], [350, 250]]) {
-      const p = placeCard({ x, y, inFront: true }, c, phone, ko);
+    for (const [x, y, room] of [[195, 300, false], [40, 350, true], [350, 250, true], [195, 420, true]] as const) {
+      const p = placeCard({ x, y, inFront: true }, c, phone, ko, 48);
+      const len = Math.hypot(p.line[2] - p.line[0], p.line[3] - p.line[1]);
+      // 48 px where the stage has room for it; at the dead centre a 200 px card has none clear of the glass, and
+      // the card stays clear and keeps the longest leader it can (still a line, not a dot).
+      expect(len).toBeGreaterThanOrEqual(room ? 47.5 : 12);
       expect(p.x >= 0 && p.x + c.w <= phone.w && p.y >= 0 && p.y + c.h <= phone.h).toBe(true);
       expect(ko.every((k) => p.x >= k.x + k.w || k.x >= p.x + c.w || p.y >= k.y + k.h || k.y >= p.y + c.h)).toBe(true);
+      expect(x > p.x && x < p.x + c.w && y > p.y && y < p.y + c.h).toBe(false);
     }
   });
 });

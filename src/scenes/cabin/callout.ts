@@ -31,12 +31,13 @@ export function nearestOn(r: Rect, px: number, py: number): [number, number] {
 }
 
 /**
- * Where a w x h card goes for an object seen at `at` (px in a `stage`), clear of the `keepOut` boxes. Beside the
- * object first (right, left, above, below, then the diagonals, a `gap` away), the first spot that is inside the stage
- * and clear wins; else the spot that covers least. An object behind the camera or off the stage docks its card at
+ * Where a w x h card goes for an object seen at `at` (px in a `stage`), clear of the `keepOut` boxes. The leader is
+ * always at least `gap` long (56 px, 48 on a phone), so it reads as a line and not a dot. Up and to the side first, so
+ * the card does not cover what it describes (up-right, up-left, right, left, above, below, down-right, down-left); the
+ * first spot inside the stage, clear, with a full-length leader wins; else the spot that costs least. An object behind the camera or off the stage docks its card at
  * the nearest stage edge, inside it and clear where it can be.
  */
-export function placeCard(at: { x: number; y: number; inFront: boolean }, card: { w: number; h: number }, stage: { w: number; h: number }, keepOut: Rect[], gap = 28, margin = 8): Placed {
+export function placeCard(at: { x: number; y: number; inFront: boolean }, card: { w: number; h: number }, stage: { w: number; h: number }, keepOut: Rect[], gap = 56, margin = 8): Placed {
   const { w, h } = card;
   const fits = (x: number, y: number) => x >= margin && y >= margin && x + w <= stage.w - margin && y + h <= stage.h - margin;
   const clampX = (x: number) => Math.max(margin, Math.min(stage.w - margin - w, x));
@@ -48,16 +49,22 @@ export function placeCard(at: { x: number; y: number; inFront: boolean }, card: 
   let ax = at.x;
   let ay = at.y;
   if (onStage) {
-    tries = [
-      [at.x + gap, at.y - h / 2],
-      [at.x - gap - w, at.y - h / 2],
-      [at.x - w / 2, at.y - gap - h],
-      [at.x - w / 2, at.y + gap],
-      [at.x + gap, at.y - gap - h],
-      [at.x - gap - w, at.y - gap - h],
-      [at.x + gap, at.y + gap],
-      [at.x - gap - w, at.y + gap],
-    ];
+    // Diagonals sit g/√2 off each axis: the leader to the card's corner is then exactly g. The full gap first; the
+    // shorter ones only for a cramped stage (a phone), where nothing else is clear of the glass.
+    tries = [1, 0.75, 0.5, 0.25].flatMap((f): [number, number][] => {
+      const g = gap * f;
+      const d = g / Math.SQRT2;
+      return [
+        [at.x + d, at.y - d - h],
+        [at.x - d - w, at.y - d - h],
+        [at.x + g, at.y - h / 2],
+        [at.x - g - w, at.y - h / 2],
+        [at.x - w / 2, at.y - g - h],
+        [at.x - w / 2, at.y + g],
+        [at.x + d, at.y + d],
+        [at.x - d - w, at.y + d],
+      ];
+    });
   } else {
     // Behind the camera the projection mirrors: point the other way.
     const dx = (at.inFront ? 1 : -1) * (at.x - stage.w / 2);
@@ -80,7 +87,13 @@ export function placeCard(at: { x: number; y: number; inFront: boolean }, card: 
     const inside = fits(x, y);
     const cx = inside ? x : clampX(x);
     const cy = inside ? y : clampY(y);
-    const c = cost(cx, cy) + (inside ? 0 : 1);
+    const [nx, ny] = nearestOn({ x: cx, y: cy, w, h }, ax, ay);
+    // A leader shorter than `gap` loses to any spot with a full one, but not to covering the glass (a pixel of
+    // overlap costs more): with no room for both, the card stays clear and takes the longest leader it can.
+    const len = Math.hypot(nx - ax, ny - ay);
+    const short = onStage && len < gap - 0.5 ? 0.9 * (1 - len / gap) + 0.05 : 0;
+    const covers = onStage && ax > cx && ax < cx + w && ay > cy && ay < cy + h ? 2 : 0;
+    const c = cost(cx, cy) + (inside ? 0 : 1) + short + covers;
     if (c === 0) {
       best = [cx, cy];
       break;
