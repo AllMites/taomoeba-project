@@ -38,6 +38,9 @@ export type Pose = { pos: V3; target: V3; fov: number };
 export function homePose(base: BaseId, mode: Mode): Pose {
   if (mode === "spread") {
     const r = ROOMS[base];
+    // Moon Base: stand back and up, aimed between the ignition point and the bench's middle, so the room shows above
+    // the bench and the start stays in frame on a phone.
+    if (base === "moon") return { pos: [0.15, 0.82, 1.8], target: [0.35, 0.12, -0.15], fov: 55 };
     const back = r.shape === "box" ? Math.min(1.5, r.size[2] / 2 - 0.15) : 0.85;
     return { pos: [0.55, 0.62, back], target: [0.7, 0, -0.05], fov: r.shape === "tube" ? 64 : 50 };
   }
