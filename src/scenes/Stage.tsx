@@ -76,7 +76,7 @@ function useFlameZone(stage: React.RefObject<HTMLElement | null>, flames: number
   useLayoutEffect(() => {
     const el = stage.current;
     if (!el || !flames) return;
-    const own = () => [...el.querySelectorAll<HTMLElement>(".stage-caption-text, .stage-pick-btn, .stage-play")];
+    const own = () => [...el.querySelectorAll<HTMLElement>(".stage-caption-text, .stage-pick-btn, .stage-play, .stage-hint, .stage-reset, .burn-panel, .burn-toggle")];
     const others = () => [...(el.parentElement?.querySelectorAll<HTMLElement>(OVER_REPLAY) ?? [])];
     let frame = 0;
     const measure = () => {
@@ -87,6 +87,11 @@ function useFlameZone(stage: React.RefObject<HTMLElement | null>, flames: number
           const r = o.getBoundingClientRect();
           return { x: r.left - box.left, y: r.top - box.top, w: r.width, h: r.height };
         });
+        // For the scene's own glass: how far down the stage's top controls reach, and how high the brief comes.
+        const ownR = [...el.querySelectorAll<HTMLElement>(".stage-caption-text, .stage-pick-btn, .stage-play")].map((o) => o.getBoundingClientRect()).filter((r) => r.height && r.top - box.top < box.height / 2);
+        const brief = el.parentElement?.querySelector<HTMLElement>(".console-brief")?.getBoundingClientRect();
+        el.style.setProperty("--replay-clear-top", `${Math.max(0, ...ownR.map((r) => r.bottom - box.top))}px`);
+        if (brief?.height) el.style.setProperty("--replay-brief", `${Math.max(0, box.bottom - brief.top)}px`);
         const next = freeZone({ w: box.width, h: box.height }, rects, flames);
         setZone((prev) => (prev && JSON.stringify(prev) === JSON.stringify(next) ? prev : next));
       });
@@ -94,8 +99,16 @@ function useFlameZone(stage: React.RefObject<HTMLElement | null>, flames: number
     measure();
     if (typeof ResizeObserver === "undefined") return () => cancelAnimationFrame(frame);
     const ro = new ResizeObserver(measure);
-    for (const o of [el, ...own(), ...others()]) ro.observe(o);
+    const watch = () => {
+      ro.disconnect();
+      for (const o of [el, ...own(), ...others()]) ro.observe(o);
+      measure();
+    };
+    watch();
+    // A scene's own glass (the model panel) mounts after the stage: it says so, and the stage watches it too.
+    window.addEventListener("replay-obstacles", watch);
     return () => {
+      window.removeEventListener("replay-obstacles", watch);
       cancelAnimationFrame(frame);
       ro.disconnect();
     };

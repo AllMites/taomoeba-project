@@ -2,7 +2,7 @@
 // timeline and its seeker, the camera's navigation state, the model-burn settings and the picked object. The scene
 // contract (SceneProps) stays as it is; scenes read and write this store instead.
 import { create } from "zustand";
-import type { Sel } from "../whatif/logic.ts";
+import type { BurnPick } from "./burn/model.ts";
 
 /** "burn": this base, model burn. "spread": this base, fire spread. "saffire": the real Saffire flight test. */
 export type Mode = "burn" | "spread" | "saffire";
@@ -28,7 +28,7 @@ export type PlaybackState = {
   /** Arrow and plus/minus keys on the focused stage. */
   nudge: Nudge;
   /** Model-burn settings (fuel, gas mix, start diameter); oxygen and pressure come from the base. */
-  sel: Sel | null;
+  sel: BurnPick | null;
   /** Show a faint flame in station air at the same spot. */
   compare: boolean;
   /** Fire spread: the object pointed at or picked. */
@@ -40,7 +40,7 @@ export type PlaybackState = {
   steer: () => void;
   resetView: () => void;
   push: (orbit: number, tilt: number, zoom: number) => void;
-  setSel: (s: Sel | null) => void;
+  setSel: (s: BurnPick | null) => void;
   setCompare: (c: boolean) => void;
   pick: (id: string | null) => void;
 };
