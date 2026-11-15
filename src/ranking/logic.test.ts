@@ -93,6 +93,8 @@ it("writes rank numerals with two digits", () => {
 
 it("words the count: Top 8 of 26 when cut, N of M experiments when filtering", () => {
   expect(countText(8, 26, false)).toBe("Top 8 of 26");
+  expect(countText(8, 26, false, 2)).toBe("Top 8 of 24 fire experiments");
+  expect(countText(5, 26, true, 2)).toBe("5 of 26 records (24 fire experiments, 2 other)");
   expect(countText(26, 26, false)).toBe("26 of 26 experiments");
   expect(countText(5, 26, true)).toBe("5 of 26 experiments");
   expect(countText(26, 26, true)).toBe("26 of 26 experiments");

@@ -41,6 +41,7 @@ export default function Ranking() {
   );
 
   const shown = visibleRows(rows, { pds, search, showAll, highlightIds });
+  const other = rows.filter((r) => r.inv.pds === "Other").length;
   const filtering = isFiltering(pds, search);
   const hiddenLit = filtering ? litFilteredOut(shown, highlightIds) : [];
   const clearFilter = () => {
@@ -113,7 +114,7 @@ export default function Ranking() {
             </label>
           </div>
           <p className="rk-count" role="status">
-            {countText(shown.length, rows.length, filtering)}
+            {countText(shown.length, rows.length, filtering, other)}
           </p>
           {hiddenLit.length > 0 && (
             <p className="rk-note">
@@ -160,7 +161,7 @@ export default function Ranking() {
                 if (id) sectionRef.current?.querySelector<HTMLElement>(`[data-id="${CSS.escape(id)}"]`)?.focus();
               }}
             >
-              Show all {rows.length} experiments
+              {other ? `Show all ${rows.length - other} fire experiments and ${other} other records` : `Show all ${rows.length} experiments`}
             </button>
           )}
         </>

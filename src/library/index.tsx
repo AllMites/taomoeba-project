@@ -23,6 +23,7 @@ export default function Library() {
   const ready = inv.status === "ready" && src.status === "ready";
   const experiments = ready ? filterExperiments(inv.data, pds, search) : [];
   const sources = ready ? filterSources(src.data, inv.data, pds, search) : [];
+  const otherCount = experiments.filter((e) => e.pds === "Other").length; // not fire experiments: the status strip leaves them out
   const filtering = pds !== "all" || search.trim() !== "";
   const shownSources = filtering || allSources ? sources : sources.slice(0, SOURCES_SHOWN);
 
@@ -54,7 +55,8 @@ export default function Library() {
       ) : (
         <>
           <h3 className="lib-sub t-readout">
-            Experiments <span className="lib-count">{experiments.length}</span>
+            Experiments <span className="lib-count">{experiments.length - otherCount}</span>
+            {otherCount > 0 && <span className="lib-count"> + {otherCount} other</span>}
           </h3>
           {experiments.length === 0 ? (
             <p className="lib-note">No experiments match.</p>

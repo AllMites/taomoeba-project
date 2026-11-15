@@ -52,8 +52,8 @@ const cardBodies = (h: string) => h.split('class="rk-card"').slice(1).map((s) =>
 it("lists Moon Base best first, top 8, with Show all", () => {
   const h = html();
   expect(cardIds(h)).toEqual(["PSI-69", "PSI-68", "PSI-159", "PSI-10", "PSI-20", "PSI-100", "PSI-26", "PSI-47"]);
-  expect(h).toContain("Show all 26 experiments");
-  expect(h).toContain("Top 8 of 26");
+  expect(h).toContain("Show all 24 fire experiments and 2 other records");
+  expect(h).toContain("Top 8 of 24 fire experiments");
   expect(h).not.toContain("26 of 26 experiments");
 });
 
