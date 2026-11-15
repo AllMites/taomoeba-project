@@ -283,7 +283,12 @@ const CLAIMS_SYSTEM = [
 ].join("\n");
 const DATA_NOTE =
   'The question is about the team\'s data. The <data_finding> was computed from the data by code. Write claims from the excerpts that explain, support or contradict it, and add to each claim a field "relation": "explains", "supports", "contradicts" or "related". Do not repeat the finding\'s numbers unless the excerpt itself states them. If no excerpt relates to it, return no claims and say so in "note".';
-const MOON_NOTE = "If a claim leans on low-gravity results, say that PSI has no partial-gravity (Moon or Mars) data.";
+export const MOON_NOTE =
+  "Tests on the space station are microgravity, not reduced gravity. If a claim leans on them, say that no PSI test ran in Moon or Mars gravity.";
+// Summary only (no number, so the summary's number check is unchanged): model-moon-validity in facts.json counts FLEX
+// runs at 30% oxygen or more and low pressure, so the gap for a Moon habitat is the gravity, not the air.
+export const MOON_AIR_NOTE =
+  "Some FLEX runs used air close to this habitat's (high oxygen, low pressure). Do not say the tests leave the habitat's air untested; what no test covers is Moon gravity.";
 const RELATIONS = new Set<Relation>(["explains", "supports", "contradicts", "related"]);
 
 type Ctx = Bm25Index["chunks"][number];
@@ -441,7 +446,7 @@ export function checkSummary(text: string, evidence: string, air = ""): string |
 async function summarize(question: string, habitat: HabitatId | undefined, claims: Claim[], facts: DataFact[], env: AskEnv, earlier: ChatMessage[]): Promise<string | undefined> {
   const air = habitat ? (HABITAT_AIR[habitat] ?? "") : "";
   const evidence = [...facts.map((f) => f.statement), ...claims.map((c) => `${c.text} (source text: "${c.excerpt}")`)].map((e, i) => `${i + 1}. ${e}`).join("\n");
-  const note = habitat === "moon" || habitat === "rover" ? `\n${MOON_NOTE}` : "";
+  const note = habitat === "moon" || habitat === "rover" ? `\n${MOON_NOTE}\n${MOON_AIR_NOTE}` : "";
   const user = `${air ? `<habitat>${air}. For comparison, ${EARTH_AIR}.</habitat>\n` : ""}<evidence>\n${asData(evidence)}\n</evidence>${note}\n<question>${asData(question)}</question>`;
   try {
     return checkSummary(await callHaiku(env, SUMMARY_SYSTEM, user, 400, 10_000, earlier), evidence, air) ?? undefined;
