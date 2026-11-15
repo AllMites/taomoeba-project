@@ -75,15 +75,24 @@ function dashboardAllowed(question: string): (f: DataFact) => boolean {
   };
 }
 
-/** Facts most related to the question, best first; [] when none clearly matches or the question is about a paper topic. */
-export function findFacts(facts: DataFact[], question: string, k = 2): DataFact[] {
+const queryTerms = (ix: FactIndex, question: string) => [...new Set(terms(question).filter((w) => !GENERIC.has(w)).map((w) => baseForm(w, ix.vocab)))];
+
+/**
+ * The question names a fire-science term that no fact uses ("Burning Rate Emulator", "water mist", "SAME smoke"):
+ * it is about that topic in the papers, not about the team's data.
+ */
+export function namesPaperTopic(facts: DataFact[], question: string): boolean {
+  if (!facts.length) return false;
+  const ix = index(facts);
+  return queryTerms(ix, question).some((w) => !(w in ix.idf) && isScopeWord(w));
+}
+
+/** Keyword-scored facts, best first, under the dashboard-ranking rules. `strict` is the coverage rule of findFacts. */
+function scoreFacts(facts: DataFact[], question: string, k: number, strict: boolean): DataFact[] {
   if (!facts.length) return [];
   const ix = index(facts);
-  const q = [...new Set(terms(question).filter((w) => !GENERIC.has(w)).map((w) => baseForm(w, ix.vocab)))];
+  const q = queryTerms(ix, question);
   if (!q.length) return [];
-  // The question names a fire-science term that no fact uses ("Burning Rate Emulator", "water mist", "SAME smoke"):
-  // it is about that topic in the papers, not about the team's data.
-  if (q.some((w) => !(w in ix.idf) && isScopeWord(w))) return [];
   const scored: { s: number; f: DataFact }[] = [];
   const allowed = dashboardAllowed(question);
   const scoped = inScope(question);
@@ -98,9 +107,26 @@ export function findFacts(facts: DataFact[], question: string, k = 2): DataFact[
     const cov = q.filter((w) => m.has(w)).length / q.length;
     // A question with no fire-science word must match a fact completely ("What is dark matter?" shares only "matter");
     // dashboard ranking questions ("Which experiment ranks highest for ISS?") keep the usual rule.
-    if (s > 0 && cov >= (scoped || isDashboard(ix.facts[i]) ? MIN_COVERAGE : 1)) scored.push({ s, f: ix.facts[i] });
+    if (s > 0 && (!strict || cov >= (scoped || isDashboard(ix.facts[i]) ? MIN_COVERAGE : 1))) scored.push({ s, f: ix.facts[i] });
   });
   const best = scored.sort((a, b) => b.s - a.s).slice(0, k).map((x) => x.f);
   // A ranking question answered by the dashboard gets ranking facts only, not a table fact that shares a word.
   return best.length && isDashboard(best[0]) ? best.filter(isDashboard) : best;
+}
+
+/** Facts most related to the question, best first; [] when none clearly matches or the question is about a paper topic. */
+export function findFacts(facts: DataFact[], question: string, k = 2): DataFact[] {
+  if (namesPaperTopic(facts, question)) return [];
+  return scoreFacts(facts, question, k, true);
+}
+
+/**
+ * Candidates for the model to pick from: findFacts' own picks first, then the best-scoring facts that share any real
+ * word with the question (no coverage threshold), up to n. Same dashboard-ranking rules as findFacts; no topic veto.
+ */
+export function factPool(facts: DataFact[], question: string, n = 10): DataFact[] {
+  const strict = scoreFacts(facts, question, 2, true);
+  const loose = scoreFacts(facts, question, n, false);
+  const pool = [...new Set([...strict, ...loose])].slice(0, n);
+  return pool.length && isDashboard(pool[0]) ? pool.filter(isDashboard) : pool;
 }
