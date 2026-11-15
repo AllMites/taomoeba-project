@@ -13,7 +13,7 @@ import type { WhatIfDoc } from "../../whatif/logic.ts";
 import { burnCase, dropletAt, startPick, type BurnCase } from "../burn/model.ts";
 import { fabricVerdict, gravityOf } from "../spread/spread.ts";
 import { parseSolids, type SolidsDoc } from "../../solids/logic.ts";
-import { burnTimeline, storyTimeline } from "../timelines.ts";
+import { burnTimeline, storyTimeline, timelineKey } from "../timelines.ts";
 import { story } from "../spread/story.ts";
 import { Cabin, CABIN_PAINT, ChipLayer, ChipTracker, windowAt, type ChipSpec } from "./Cabin.tsx";
 import { airOf, type Air } from "./air.ts";
@@ -181,9 +181,9 @@ export function CabinScene({ habitat, calm }: SceneProps) {
     mode === "spread"
       ? air.o2Percent === undefined
         ? null
-        : storyTimeline(st, `spread|${base}|${g}|${start}|${response}`, room.name)
+        : storyTimeline(st, timelineKey("spread", base, air, g, start, response), room.name)
       : c
-        ? burnTimeline(c, `burn|${base}|${JSON.stringify(pick)}`)
+        ? burnTimeline(c, timelineKey("burn", base, air, JSON.stringify(pick)))
         : null;
   const tlKey = tl?.key;
   // The stage frames the fire around the console's glass and this scene's own panel: say when the panel comes or goes.

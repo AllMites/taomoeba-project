@@ -4,7 +4,7 @@ import { parseDoc, type WhatIfDoc } from "../whatif/logic.ts";
 import { burnCase, startPick } from "./burn/model.ts";
 import { advance, clock, phaseAt } from "./playback.ts";
 import type { SaffireRecord } from "./saffire/timeline.ts";
-import { burnTimeline, MODES, saffireTimeline, sceneFor, storyTimeline } from "./timelines.ts";
+import { burnTimeline, MODES, saffireTimeline, sceneFor, storyTimeline, timelineKey } from "./timelines.ts";
 import { story } from "./spread/story.ts";
 
 const doc = parseDoc(JSON.parse(readFileSync("public/data/whatif.json", "utf8"))) as WhatIfDoc;
@@ -60,5 +60,14 @@ describe("fire in this base on the timeline", () => {
     expect(phaseAt(tl, st.detect!)).toBe("Detection and response");
     expect(phaseAt(tl, tl.end)).toBe("Aftermath");
     for (const p of tl.phases) expect(p.caption).toBeTruthy();
+  });
+});
+
+describe("switching base resets the timeline (defect: the old base's timeline stayed)", () => {
+  it("the key changes with the air the timeline was computed for, not only with the base", () => {
+    const station = { o2Percent: 21, pressureKPa: 101.3 };
+    const moon = { o2Percent: 30, pressureKPa: 70.3 };
+    expect(timelineKey("burn", "moon", station, "p")).not.toBe(timelineKey("burn", "moon", moon, "p"));
+    expect(timelineKey("spread", "moon", moon)).toBe(timelineKey("spread", "moon", moon));
   });
 });
