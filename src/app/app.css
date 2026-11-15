@@ -4,9 +4,13 @@
 html, body, #root { height: 100%; }
 body { overflow: hidden; }
 
+/* The console never scrolls, not even from code: `clip` is not a scroll container, so scrollIntoView (a lit card in
+   the Rank sheet, the picked base) scrolls only the real scrollers inside. Positioned, so a stray absolute element
+   (a visually hidden heading in a panel) is held here instead of growing the page. */
 .console {
   --top-h: 3.75rem;
   --carousel-h: 6.5rem;
+  position: relative;
   display: grid;
   height: 100dvh;
   grid-template:
@@ -14,7 +18,7 @@ body { overflow: hidden; }
     "rail left center right" minmax(0, 1fr)
     "status status status status" auto
     / auto auto minmax(0, 1fr) auto;
-  overflow: hidden;
+  overflow: clip;
 }
 
 /* ---- Shared controls ---- */
@@ -120,7 +124,7 @@ body { overflow: hidden; }
 }
 
 /* ---- Side panels ---- */
-.console-left, .console-right { min-height: 0; background: var(--color-bg); }
+.console-left, .console-right { position: relative; min-height: 0; background: var(--color-bg); }
 .console-left[hidden], .console-right[hidden] { display: none; }
 .console-left {
   grid-area: left;
@@ -156,7 +160,7 @@ body { overflow: hidden; }
   grid-area: center;
   position: relative;
   min-width: 0;
-  overflow: hidden;
+  overflow: clip;
 }
 .console-center:focus { outline: none; }
 /* The replay fills the center (lane K owns everything inside it). */
@@ -268,7 +272,7 @@ body { overflow: hidden; }
   display: flex;
   flex-direction: column;
   border-radius: var(--radius-2);
-  overflow: hidden;
+  overflow: clip;
 }
 .sheet:focus { outline: none; }
 .sheet-head {
@@ -381,7 +385,11 @@ body { overflow: hidden; }
 /* ---- Phone (docs/RESKIN_PRD.md, section 8) ---- */
 @media (max-width: 47.5rem) {
   .console {
-    --top-h: 6.75rem;
+    /* Measured at 390px: the two-row top bar is 121px, the carousel 91px. */
+    --top-h: 7.5625rem;
+    --carousel-h: 5.75rem;
+    /* A bottom sheet stops under the carousel, so the base can still be seen and picked. */
+    --bottom-sheet-h: calc(100dvh - var(--top-h) - var(--carousel-h) - 2 * var(--space-2));
     grid-template:
       "top" auto
       "center" minmax(0, 1fr)
@@ -407,20 +415,34 @@ body { overflow: hidden; }
     bottom: 0;
     z-index: 20;
     width: auto;
-    max-height: 80dvh;
+    max-height: var(--bottom-sheet-h);
     border: 0;
     border-top: 1px solid var(--line-strong);
     border-radius: var(--radius-2) var(--radius-2) 0 0;
     background: var(--color-surface);
   }
-  .console-right { height: 80dvh; }
+  /* Ask SI opens over a full-screen sheet too: "Ask about this" in the Rank sheet must show the chat. */
+  .console-right { height: var(--bottom-sheet-h); z-index: 35; }
   .panel-head { background: var(--color-surface); }
 
   .console-carousel { top: var(--space-2); max-width: calc(100% - 2 * var(--space-2)); }
   .console-ticks { inset: var(--space-2); }
-  .console-hud { flex-direction: column; align-items: stretch; left: var(--space-3); right: var(--space-3); bottom: var(--space-3); gap: var(--space-2); }
+  /* The brief line and the top 3 stack from the bottom up and never reach the carousel: on a short phone the
+     top 3 shrinks and scrolls instead. */
+  .console-hud {
+    top: calc(var(--space-2) + var(--carousel-h) + var(--space-2));
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: var(--space-3);
+    gap: var(--space-2);
+  }
   .console-brief { flex: none; max-width: none; }
-  .console-overlay { width: auto; max-height: 38dvh; }
+  .console-overlay { flex: 0 1 auto; width: auto; min-height: 0; max-height: 38dvh; }
+  /* One scroller, not two: the overlay already scrolls, so On Earth drops its own height cap here. */
+  .console-overlay .earth { max-height: none; overflow: visible; }
 
   /* Nav sheets open full screen. */
   .sheet-scrim { display: none; }

@@ -7,6 +7,7 @@ import { useDataset } from "../data/useDataset.ts";
 import ExperimentCard from "./ExperimentCard.tsx";
 import { buildRows, countText, firstRevealedId, isFiltering, litFilteredOut, litHidden, visibleRows } from "./logic.ts";
 import "./ranking.css";
+import { revealInList } from "./scroll.ts";
 
 const FILTERS: { value: PdsFilter; label: string; hint: string }[] = [
   { value: "all", label: "All", hint: "every experiment" },
@@ -61,9 +62,10 @@ export default function Ranking() {
   useEffect(() => {
     if (!litKey || !ready) return;
     const t = window.setTimeout(() => {
-      const el = sectionRef.current?.querySelector<HTMLElement>('[data-lit="true"]');
+      const el = sectionRef.current?.querySelector<HTMLElement>('[data-lit="true"]') ?? null;
       const calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      el?.scrollIntoView({ block: "center", behavior: calm ? "auto" : "smooth" });
+      // Only the sheet's own list scrolls: scrollIntoView would also move the console around it.
+      revealInList(el, !calm);
     }, 50);
     return () => window.clearTimeout(t);
   }, [litKey, ready]);

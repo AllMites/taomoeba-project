@@ -33,12 +33,21 @@ export function baseForKey(key: string, base: BaseId): BaseId | null {
   return null;
 }
 
+/** Phone layout (docs/RESKIN_PRD.md, section 8): sheets are full screen, the panels are bottom sheets. Same query as app.css. */
+export const PHONE_QUERY = "(max-width: 47.5rem)";
+export const onPhone = () =>
+  typeof window !== "undefined" && typeof window.matchMedia === "function" && window.matchMedia(PHONE_QUERY).matches;
+
 /**
  * The Ask panel's "Show the N experiments" lights cards in the ranked list, and that list lives in the
- * Rank sheet. So when cards light up, open Rank. Returns the unsubscribe.
+ * Rank sheet. So when cards light up, open Rank. On a phone the Ask bottom sheet sits over the sheets (so
+ * "Ask about this" inside a sheet shows the chat); here it steps aside so the lit cards can be seen.
+ * Returns the unsubscribe.
  */
-export function openRankOnHighlight() {
+export function openRankOnHighlight(phone: () => boolean = onPhone) {
   return useStore.subscribe((s, prev) => {
-    if (s.highlightIds !== prev.highlightIds && s.highlightIds.length > 0) useConsole.getState().setView("rank");
+    if (s.highlightIds === prev.highlightIds || s.highlightIds.length === 0) return;
+    useConsole.getState().setView("rank");
+    if (phone()) useConsole.getState().setAskOpen(false);
   });
 }

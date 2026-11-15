@@ -2,6 +2,8 @@
 
 html, body { margin: 0; }
 html { scroll-behavior: smooth; }
+/* Native checkboxes, radios and sliders take the bone white, not the browser's blue: the UI has no hue. */
+:root { accent-color: var(--color-accent); }
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0; }
 p { margin: 0; }
 /* A heading or card scrolled to inside a sheet or panel keeps a little air above it. */
