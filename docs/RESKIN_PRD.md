@@ -333,3 +333,44 @@ So "Fire in this base" (15.9) is a scenario tool, not a film. The viewer sets up
 - **Controls, final list:** start point, response, gravity. The ventilation control of 15.9 is the "Stop the ventilation" response.
 - **Aftermath card adds the lesson:** one sentence on what the chosen response did, one on what is untested, and an "Ask about this" button that opens Ask SI with the scenario as the question.
 - **Dates.** Do not put an Artemis landing date on screen: none is in the project data and schedules move.
+
+## 16. Guided path (owner request, 2026-11-15)
+
+Problem: the console is a dashboard. A first-time researcher does not know what to click first or next. The owner and the event organizer both ask for one defined path through the site, explained at each step.
+
+### 16.1 The path, six steps
+
+| # | Step name | Console state | What the viewer is told |
+|---|---|---|---|
+| 1 | Pick your base | stage, carousel in focus | Each base has its own air (oxygen and pressure). Fire behaves differently in each, so everything after this step is for the base you pick. |
+| 2 | See what matters most | Rank sheet open | The experiments are ranked for this base. Say what the score means and where it comes from. |
+| 3 | Read what it means | Interpret sheet open | What the evidence says about a flame in this air, how it differs from Earth, and what is not known. |
+| 4 | Watch a fire and respond | stage, scene "Fire in this base" | Start a fire, watch it spread, pick a response, read the outcome card. Say what is measured and what is illustration. |
+| 5 | Ask your own question | Ask SI panel open | Ask in plain words. Every answer shows its sources; numbers come from the tables, not from the model. |
+| 6 | Check how it was made | Team models sheet, with links to Research map and Library | The models, the data, and the limits. |
+
+Copy rules: each step has a name (2 to 5 words), one sentence that says what to do, and a longer "Why this step" text of 2 to 4 sentences. Every factual sentence must be true of the site as built; no Artemis date; no claim the data does not support.
+
+### 16.2 The control
+
+- One guide bar, docked under the top nav, full width of the console, glass, one hairline. It shows: "Step N of 6", the step name, the one-sentence instruction, Back, Next, and "Hide guide".
+- "Why this step" expands under the bar (a disclosure, not a modal).
+- Next and Back set the console state of the step (base stays as picked). They never reload the page.
+- The control the viewer should use next gets a solid 2px outline (no glow, no shadow, no animation loop longer than one pulse; honour prefers-reduced-motion).
+- If the viewer navigates by hand (opens a sheet, opens Ask), the step follows: the bar shows the step that matches the current state.
+- First visit: the guide is on at step 1. "Hide guide" stores the choice in localStorage (wrapped in try/catch). A "Guide" button in the top nav brings it back at the current step.
+- URL: `?guide=3` opens at step 3 with that step's state; `?guide=0` hides it. This is for screenshots and the demo video.
+- The top nav order matches the path, and each nav item that is a step shows its step number.
+- Narrow center (under 60rem) and phones: the bar is one 48px row, "N/6", the step name and Next; a tap on the name expands the instruction and "Why this step". It must not cover the carousel, the playback controls or the bottom bar.
+- Keyboard: the bar is a labelled region; Next and Back are buttons; step changes are announced with aria-live polite; focus moves to the opened sheet or panel as it does today.
+- Only one solid white pill exists on the site (Ask SI). Next is a glass button with a strong outline, not a second white pill.
+
+### 16.3 Files
+
+New folder `src/guide/` (steps data, bar component, css, tests). Mount in `src/app/App.tsx`; nav order and numbers in `src/shell/chrome.tsx`; guide state in `src/app/console.ts` (URL read). Nothing else.
+
+### 16.4 Checks
+
+- A test that each step sets the stated console state, and that a state change by hand maps back to the right step.
+- A test that `?guide=N` and the localStorage choice are read.
+- Seen in a real browser at 1440x900, 1280x720 and 390x844.
