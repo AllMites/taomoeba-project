@@ -220,6 +220,9 @@ body { overflow: hidden; }
   position: relative;
   min-width: 0;
   overflow: clip;
+  /* The HUD collapses on the center's own width, not the window's (container query "Collapsed HUD" below). */
+  container: center / inline-size;
+  --hud-bar-h: 3rem;
 }
 .console-center:focus { outline: none; }
 /* The replay fills the center (lane K owns everything inside it). */
@@ -313,6 +316,7 @@ body { overflow: hidden; }
 }
 .console-hud > * { pointer-events: auto; min-width: 0; }
 .console-brief { flex: 0 1 44ch; max-width: 44ch; }
+.hud-bar, .hud-close { display: none; }
 .console-overlay {
   flex: none;
   width: 20rem;
@@ -505,23 +509,6 @@ body { overflow: hidden; }
 
   .console-carousel { top: var(--space-2); max-width: calc(100% - 2 * var(--space-2)); }
   .console-ticks { inset: var(--space-2); }
-  /* The brief line and the top 3 stack from the bottom up and never reach the carousel: on a short phone the
-     top 3 shrinks and scrolls instead. */
-  .console-hud {
-    top: calc(var(--space-2) + var(--carousel-h) + var(--space-2));
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: flex-end;
-    left: var(--space-3);
-    right: var(--space-3);
-    bottom: var(--space-3);
-    gap: var(--space-2);
-  }
-  .console-brief { flex: none; max-width: none; }
-  .console-overlay { flex: 0 1 auto; width: auto; min-height: 0; max-height: 38dvh; }
-  /* One scroller, not two: the overlay already scrolls, so On Earth drops its own height cap here. */
-  .console-overlay .earth { max-height: none; overflow: visible; }
-
   /* Nav sheets open full screen. */
   .sheet-scrim { display: none; }
   /* Solid, not glass: a full-screen blur is heavy on a phone and nothing shows through anyway. */
@@ -543,6 +530,70 @@ body { overflow: hidden; }
   /* The carousel right above already names the base; without it the strip holds to two lines. */
   .stat-base { display: none; }
   .about-body { right: var(--space-3); }
+}
+
+/* ---- Collapsed HUD: a center narrower than 60rem ----
+ * Side panels pinned, or a phone: the brief line and the top 3 no longer fit beside each other without covering the
+ * replay, so they become one 48px bar at the foot of the center. The stage ends above it. A bar button opens one
+ * card as an overlay above the bar. Keyed on the center's width (container query), not the window's. */
+@container center (max-width: 60rem) {
+  .console-center > .stage { inset: 0 0 var(--hud-bar-h) 0; }
+  .console-ticks { inset: var(--space-3) var(--space-3) calc(var(--hud-bar-h) + var(--space-3)); }
+  .console-hud { display: block; top: calc(var(--carousel-h) + var(--space-5)); left: 0; right: 0; bottom: 0; }
+  .hud-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--hud-bar-h);
+    padding: 0 var(--space-3);
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
+  .hud-bar-top { flex: 1 1 0; min-width: 0; margin: 0; display: flex; align-items: baseline; gap: var(--space-2); }
+  .hud-bar-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; font-size: var(--text-sm); }
+  .hud-bar-score { flex: none; color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+  .hud-btn {
+    flex: none;
+    min-height: 2.75rem;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-full);
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+  }
+  .hud-btn:hover { background: var(--glass-hi); }
+  .hud-btn:focus-visible, .hud-close:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+  .hud-btn[aria-expanded="true"] { background: var(--color-pill); border-color: var(--color-pill); color: var(--color-pill-text); }
+  .console-brief, .console-overlay {
+    display: none;
+    position: absolute;
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: calc(var(--hud-bar-h) + var(--space-2));
+    width: auto;
+    max-width: 36rem;
+    max-height: calc(100% - var(--hud-bar-h) - var(--space-2));
+    overflow: visible;
+    flex-direction: column;
+  }
+  .console-hud[data-open="brief"] .console-brief, .console-hud[data-open="top"] .console-overlay { display: flex; }
+  .console-overlay > .top, .console-overlay > .earth { min-height: 0; }
+  .console-hud[data-open="brief"] .console-brief > .hud-close, .console-hud[data-open="top"] .console-overlay > .hud-close {
+    display: inline-grid;
+    position: absolute;
+    top: var(--space-1);
+    right: var(--space-1);
+    z-index: 1;
+  }
+  .console-brief .briefline-text, .console-overlay .top-h, .console-overlay .earth-h { padding-right: 2.5rem; }
 }
 
 /* ===================== Motion =====================

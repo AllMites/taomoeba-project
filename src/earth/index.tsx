@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "../app/store.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { counts, parseEarth, STATUS, STATUS_ORDER, type EarthDoc } from "./logic.ts";
@@ -42,8 +42,27 @@ export function EarthView(p: {
   onAsk?: (q: string) => void;
 }) {
   const { doc } = p;
+  const scroller = useRef<HTMLDivElement>(null);
+  const [more, setMore] = useState(false);
+  // A fade at the cut edge says there is more below; it goes once the end is in view.
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    const sync = () => setMore(el.scrollHeight - el.scrollTop - el.clientHeight > 2);
+    sync();
+    el.addEventListener("scroll", sync, { passive: true });
+    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(sync);
+    ro?.observe(el);
+    if (el.firstElementChild) ro?.observe(el.firstElementChild);
+    return () => {
+      el.removeEventListener("scroll", sync);
+      ro?.disconnect();
+    };
+  }, [doc]);
   return (
     <section className="earth glass" aria-labelledby="earth-h">
+      <div className="earth-scroll" ref={scroller} data-more={more || undefined}>
+      <div className="earth-body">
       <h2 id="earth-h" className="earth-h t-readout">
         On Earth
       </h2>
@@ -109,6 +128,8 @@ export function EarthView(p: {
           </ul>
         </>
       )}
+      </div>
+      </div>
     </section>
   );
 }
