@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BASE_ORDER } from "../../app/console.ts";
-import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, project } from "./layout.ts";
+import { chipAnchor, DROPLET, flameRadius, homePose, keepInView, lensShift, project, ROOMS, type V3 } from "./layout.ts";
 
 // The center replay at 1440 x 900 with no side panels is about 1380 x 794.
 const W = 1380;
@@ -48,5 +48,53 @@ describe("the fire sits in the clear part of the stage", () => {
     const off = lensShift(homePose("iss", "burn"), W, H, DROPLET.at, { x: 0, y: 0, w: 10, h: 10 })!;
     expect(Math.abs(off.x)).toBeLessThanOrEqual(W / 3);
     expect(Math.abs(off.y)).toBeLessThanOrEqual(H / 3);
+  });
+});
+
+describe("camera limits keep the fire in view and the camera inside the cabin (P1-2, P1-3, P1-4)", () => {
+  const LEASH = 0.1;
+  const inside = (base: keyof typeof ROOMS, cam: V3) => {
+    const r = ROOMS[base];
+    if (r.shape === "tube") return Math.hypot(cam[1] - r.base, cam[2]) < r.size[1];
+    return cam[1] > r.base && cam[1] < r.base + r.size[1] && Math.abs(cam[2]) < r.size[2] / 2;
+  };
+
+  it.each(BASE_ORDER)("%s: the home views are already within the limits", (base) => {
+    for (const mode of ["burn", "spread"] as const) {
+      const p = homePose(base, mode);
+      const cam = [...p.pos] as V3;
+      const target = [...p.target] as V3;
+      expect(keepInView(cam, target, mode === "burn" ? DROPLET.at : p.target, mode === "burn" ? LEASH : 0.3, ROOMS[base])).toBe(false);
+    }
+  });
+
+  it("a long pan is pulled back so the flame stays near the middle", () => {
+    const home = homePose("iss", "burn");
+    const cam: V3 = [home.pos[0] + 1.2, home.pos[1], home.pos[2]];
+    const target: V3 = [home.target[0] + 1.2, home.target[1], home.target[2]];
+    keepInView(cam, target, DROPLET.at, LEASH, ROOMS.iss);
+    const flame = project({ pos: cam, target, fov: home.fov }, W, H, DROPLET.at);
+    expect(Math.abs(flame.x - W / 2)).toBeLessThan(W * 0.25);
+    expect(Math.abs(flame.y - H / 2)).toBeLessThan(H * 0.25);
+  });
+
+  it("zoomed in all the way, the orbit point closes on the droplet so the flame does not rise off the top", () => {
+    const home = homePose("iss", "burn");
+    const target = [...home.target] as V3;
+    const dir = home.pos.map((v, i) => v - home.target[i]);
+    const len = Math.hypot(...dir);
+    const cam = target.map((v, i) => v + (dir[i] / len) * 0.12) as V3;
+    keepInView(cam, target, DROPLET.at, LEASH, ROOMS.iss);
+    const flame = project({ pos: cam, target, fov: home.fov }, W, H, DROPLET.at);
+    expect(Math.abs(flame.y - H / 2)).toBeLessThan(H * 0.15);
+  });
+
+  it.each(BASE_ORDER)("%s: zooming out and tilting cannot take the camera through the walls", (base) => {
+    for (const far of [[0.25, 3, 0.5], [0.25, 0.1, 3.5], [5, 0.2, 0], [0.25, -3, -2]] as V3[]) {
+      const cam = [...far] as V3;
+      const target = [...DROPLET.at] as V3;
+      keepInView(cam, target, DROPLET.at, LEASH, ROOMS[base]);
+      expect(inside(base, cam)).toBe(true);
+    }
   });
 });

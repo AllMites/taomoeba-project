@@ -79,3 +79,50 @@ export function lensShift(pose: Pose, w: number, h: number, focus: V3, zone: { x
   const cap = (v: number, m: number) => Math.max(-m, Math.min(m, v));
   return { x: cap(p.x - (zone.x + zone.w / 2), w / 3), y: cap(p.y - (zone.y + zone.h / 2), h / 3) };
 }
+
+/** The room's middle along x: the cabin is drawn around x = 0.8 (Cabin.tsx). */
+const ROOM_X = 0.8;
+
+/**
+ * Camera limits, applied after every orbit, pan, zoom or nudge. The orbit point stays within `leash` x the camera's
+ * distance of `focus`, so panning cannot lose the fire and zooming in closes on it (the camera moves with the point).
+ * Then the camera stays `margin` inside the walls of `room`. Mutates `cam` and `target`; true when anything moved.
+ */
+export function keepInView(cam: V3, target: V3, focus: V3, leash: number, room?: Room, margin = 0.08): boolean {
+  let moved = false;
+  const dist = Math.hypot(cam[0] - target[0], cam[1] - target[1], cam[2] - target[2]);
+  const off = [target[0] - focus[0], target[1] - focus[1], target[2] - focus[2]];
+  const len = Math.hypot(...off);
+  const max = leash * dist;
+  if (len > max) {
+    const k = max / len;
+    for (let i = 0; i < 3; i++) {
+      const next = focus[i] + off[i] * k;
+      cam[i] += next - target[i];
+      target[i] = next;
+    }
+    moved = true;
+  }
+  if (!room) return moved;
+  const clamp = (i: number, lo: number, hi: number) => {
+    const v = Math.min(hi, Math.max(lo, cam[i]));
+    if (v !== cam[i]) (cam[i] = v), (moved = true);
+  };
+  const [l, h, d] = room.size;
+  clamp(0, ROOM_X - l / 2 + margin, ROOM_X + l / 2 - margin);
+  if (room.shape === "box") {
+    clamp(1, room.base + margin, room.base + h - margin);
+    clamp(2, -d / 2 + margin, d / 2 - margin);
+  } else {
+    // Tube along x: radius h around the axis at y = base, z = 0.
+    const dy = cam[1] - room.base;
+    const r = Math.hypot(dy, cam[2]);
+    const lim = h - margin;
+    if (r > lim) {
+      cam[1] = room.base + (dy * lim) / r;
+      cam[2] = (cam[2] * lim) / r;
+      moved = true;
+    }
+  }
+  return moved;
+}
