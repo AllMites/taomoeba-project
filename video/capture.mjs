@@ -108,7 +108,7 @@ export const SHOTS = [
   {
     id: "s4-fire",
     slot: 7.0,
-    url: url("base=iss&view=stage&lib=0&ask=0&guide=4"),
+    url: url("base=moon&view=stage&lib=0&ask=0&guide=4"),
     async prepare(a) {
       // Off camera: set the response to Do nothing (so pressing Stop the ventilation changes it), close the panel,
       // and park the timeline a few scenario seconds before the detector trips.
@@ -127,9 +127,9 @@ export const SHOTS = [
       await a.click(SEL.scenario, 0.5);
       await a.waitUntil("the detector trips", `(() => { const s = ${a.q(SEL.seek)}; return s && Number(s.value) >= ${a.detect}; })()`, WAIT.detector);
       await a.click(SEL.respVent, 0.4);
-      await a.waitFor({ ...SEL.outcome, text: OUTCOME_TEXT }, WAIT.outcome);
-      await a.waitUntil("the flame goes out", `(() => { const s = ${a.q(SEL.seek)}; return s && Number(s.value) >= ${a.detect - 1 + QUENCH_S}; })()`, WAIT.outcome);
-      await a.hold(0.5);
+      // Moon Base: the outcome is not "goes out" (richer oxygen), so wait for any outcome card, then hold on it.
+      await a.waitFor(SEL.outcome, WAIT.outcome);
+      await a.hold(2.5);
     },
   },
   {
@@ -137,25 +137,39 @@ export const SHOTS = [
     slot: 4.5,
     url: url("base=moon&view=stage&lib=0&ask=1&guide=5"),
     async run(a) {
-      await a.click(SEL.askInput, 0.4);
-      await a.type(QUESTION, 1.2);
+      await a.click(SEL.askInput, 0.3);
+      await a.type(QUESTION, 0.9);
       if (NO_ASK) {
         console.log("  --no-ask: not sending the question");
         await a.hold(1.2);
-      } else {
-        await a.click(SEL.askSend, 0.25);
-        a.rec.pause(); // the wait for the model is not filmed
-        await a.waitFor(SEL.askDone, WAIT.answer);
-        await a.sleep(800);
-        await a.eval(`(() => { const b = ${a.q(SEL.askBody)}; const t = document.querySelector(".ask-turn:last-child"); if (b && t) b.scrollTop = t.offsetTop - b.offsetTop - 8; })()`);
-        await a.sleep(400);
-        a.rec.resume();
-        await a.hold(1.0);
-        await a.wheel(SEL.askBody, 260, 0.6);
+        return;
       }
-      await a.click(SEL.navModels, 0.45);
-      await a.waitFor(SEL.modelsTitle, WAIT.sheet);
-      await a.hold(0.9);
+      await a.click(SEL.askSend, 0.25);
+      a.rec.pause(); // the wait for the model is not filmed
+      await a.waitFor(SEL.askDone, WAIT.answer);
+      await a.sleep(800);
+      // Film the answer large: zoom the page onto the Ask panel (top right), answer at the top of the thread.
+      await a.eval(`(() => {
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.transformOrigin = "100% 6%";
+        document.body.style.transform = "scale(2.1)";
+        window.__vid = (sel, smooth) => {
+          const b = ${a.q(SEL.askBody)}; const t = [...document.querySelectorAll(".ask-turn")].pop(); const e = t && t.querySelector(sel);
+          if (!b || !e) return false;
+          for (const x of t.querySelectorAll(".ask-summary, .ask-sources, .ask-facts")) x.style.outline = "none";
+          e.style.outline = "2px solid #fff"; e.style.outlineOffset = "6px"; e.style.borderRadius = "8px";
+          b.scrollTo({ top: b.scrollTop + (e.getBoundingClientRect().top - b.getBoundingClientRect().top) / 2.1 - 14, behavior: smooth ? "smooth" : "instant" });
+          return true;
+        };
+        window.__vid(".ask-summary", false);
+      })()`);
+      await a.sleep(600);
+      a.rec.resume();
+      await a.hold(1.0); // "Every answer": the answer SI wrote
+      await a.eval(`window.__vid(".ask-sources", true)`); // "shows its sources"
+      await a.hold(1.2);
+      await a.eval(`window.__vid(".ask-facts", true)`); // "every number comes from the data"
+      await a.hold(1.5);
     },
   },
 ];
