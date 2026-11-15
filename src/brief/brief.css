@@ -35,3 +35,50 @@
   overflow-wrap: anywhere;
 }
 .brief-sources { margin: 0; padding-left: var(--space-5); font-size: 0.9375rem; overflow-wrap: anywhere; }
+
+/* Lane I: the overview above the takeaways. Tokens only, no hue: known is a solid rule, unknown a dashed one. */
+.brief .sec-h { font-size: var(--text-xl); }
+.brief-card:first-child .brief-text { font-size: var(--text-lg); }
+.brief-how summary { min-height: 44px; display: flex; align-items: center; }
+.brief-record + .brief-record { margin-top: var(--space-3); }
+.brief-summary { margin: var(--space-2) 0 0; font-size: 0.9375rem; overflow-wrap: anywhere; }
+
+.ov { display: flex; flex-direction: column; gap: var(--space-6); margin-bottom: var(--space-7); }
+.ov-lead-wrap { display: flex; flex-direction: column; gap: var(--space-1); }
+.ov-lead { margin: 0; font-size: var(--text-2xl); line-height: 1.15; max-width: 38ch; text-wrap: balance; overflow-wrap: anywhere; }
+
+.ov-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-6); }
+.ov-block { min-width: 0; border-top: 1px solid var(--line-strong); padding-top: var(--space-4); }
+.ov-h { margin: 0 0 var(--space-3); font-size: var(--text-lg); font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; }
+.ov-air { margin: 0 0 var(--space-3); color: var(--color-text-muted); }
+
+.ov-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.ov-item { padding-left: var(--space-3); border-left: 1px solid var(--line-strong); min-width: 0; }
+.ov-unknown .ov-item { border-left-style: dashed; }
+.ov-label { margin: 0 0 var(--space-1); color: var(--label); }
+.ov-text { margin: 0; font-size: 1rem; line-height: 1.4; max-width: 52ch; overflow-wrap: anywhere; text-wrap: pretty; }
+.ov-item .brief-how summary, .ov-lead-wrap .brief-how summary, .ov-table .brief-how summary { font-size: var(--text-sm); }
+
+/* Side by side: a plain table; below 40rem each row stacks as topic, then the two sides in two columns. */
+.ov-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; line-height: 1.35; table-layout: fixed; }
+.ov-table thead th { text-align: left; color: var(--label); padding: 0 var(--space-2) var(--space-2) 0; font-weight: 500; }
+.ov-table thead th:first-child { width: 32%; }
+.ov-table tbody th, .ov-table td { text-align: left; vertical-align: top; padding: var(--space-2) var(--space-2) var(--space-2) 0; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+.ov-table tbody th { font-weight: 600; }
+.ov-table td:last-child { color: var(--color-text-muted); }
+.ov-topic { display: block; }
+.ov-table .brief-how { font-weight: 400; }
+
+@media (max-width: 52rem) {
+  .ov-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 40rem) {
+  .ov-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .ov-table, .ov-table tbody { display: block; }
+  .ov-table tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--space-3); border-top: 1px solid var(--line); padding: var(--space-2) 0; }
+  .ov-table tbody th { grid-column: 1 / -1; border: 0; padding: 0; }
+  .ov-table td { border: 0; padding: var(--space-1) 0 0; }
+  .ov-table td::before { content: attr(data-label); display: block; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--label); }
+}
+.brief-sub { margin: 0 0 var(--space-2); font-size: var(--text-lg); font-weight: 600; letter-spacing: -0.01em; border-top: 1px solid var(--line-strong); padding-top: var(--space-4); }
+.ov .brief-how { flex: none; }
