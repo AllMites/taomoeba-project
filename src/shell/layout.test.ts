@@ -111,3 +111,22 @@ describe("mid widths and phone landscape (769 to 1100 wide)", () => {
     expect(decls(short, '[data-mode="pinned"] > .panel-box').top).toBe("var(--space-3)");
   });
 });
+
+describe("touch screens", () => {
+  it("fields are at least 16px on touch, phone and phone landscape, so iOS does not zoom on focus", () => {
+    // The Rank search measured 14px, the Compare selects and the replay's selects too, at every phone size.
+    const touch = atRule(read("../styles/base.css"), "@media (pointer: coarse), (max-width: 47.5rem), (max-height: 30rem)");
+    expect(touch).toMatch(/select, textarea \{\s*font-size: max\(1rem, 1em\) !important;/);
+  });
+  it("the Rank and Compare text buttons are 44px tall on touch and narrow screens", () => {
+    const rk = atRule(read("../ranking/ranking.css"), "@media (pointer: coarse), (max-width: 68.75rem)");
+    expect(decls(rk, ".rk-how summary")["line-height"]).toBe("2.75rem");
+    const cmp = atRule(read("../compare/compare.css"), "@media (pointer: coarse), (max-width: 68.75rem)");
+    expect(decls(cmp, ".cmp-open")["min-height"]).toBe("2.75rem");
+    expect(decls(cmp, ".cmp-open")["min-width"]).toBe("2.75rem");
+  });
+  it("on a phone the Compare table fits the screen, so the second experiment is not hidden off to the right", () => {
+    const phone = atRule(read("../compare/compare.css"), "@media (max-width: 40rem)");
+    expect(decls(phone, ".cmp-table")["min-width"]).toBe("0");
+  });
+});

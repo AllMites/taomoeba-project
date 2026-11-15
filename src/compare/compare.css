@@ -16,3 +16,14 @@
 .cmp-shared { display: block; margin-top: var(--space-1); color: var(--color-text-muted); }
 .cmp-open { font: inherit; font-weight: 600; padding: 0; border: 0; background: none; color: var(--color-text); text-decoration: underline; text-decoration-color: var(--color-border-strong); text-underline-offset: 3px; cursor: pointer; text-align: left; }
 .cmp-open:focus-visible, .cmp-controls select:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+/* Touch and narrow screens: the column heads that open an experiment are 44px tall tap targets (they measured 21px). */
+@media (pointer: coarse), (max-width: 68.75rem) {
+  .cmp-open { min-height: 2.75rem; min-width: 2.75rem; }
+}
+/* Phone: both experiments stay on screen beside the attribute names, instead of the second column sitting off to the
+   right of a 34rem table behind an inner scroll the eye does not see (390 wide: the second experiment was hidden). */
+@media (max-width: 40rem) {
+  .cmp-table { min-width: 0; table-layout: fixed; }
+  .cmp-table tbody th { width: 30%; }
+  .cmp-table th, .cmp-table td { overflow-wrap: anywhere; }
+}
