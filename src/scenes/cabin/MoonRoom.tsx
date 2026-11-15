@@ -113,7 +113,7 @@ const STRAPS: Item[] = CRATES.flatMap((c) => {
 });
 
 /** The view outside the window: black sky over a grey horizon, two ridges. */
-function horizon(w: number, h: number, base: number, amp: number, seed: number) {
+export function horizon(w: number, h: number, base: number, amp: number, seed: number) {
   const s = new Shape();
   s.moveTo(-w / 2, -h / 2);
   for (let i = 0; i <= 24; i++) {
@@ -124,7 +124,7 @@ function horizon(w: number, h: number, base: number, amp: number, seed: number) 
   s.lineTo(w / 2, -h / 2);
   return new ShapeGeometry(s);
 }
-function frameGeo(w: number, h: number, t: number) {
+export function frameGeo(w: number, h: number, t: number) {
   const s = new Shape();
   const rr = (sh: Shape | import("three").Path, hw: number, hh: number, r: number) => {
     sh.moveTo(-hw + r, -hh);

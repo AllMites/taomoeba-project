@@ -145,7 +145,7 @@ export function IssRoom() {
         <meshStandardMaterial color={GREY.inset} roughness={0.85} />
       </Inst>
       <Inst items={RAILS}>
-        <cylinderGeometry args={[0.016, 0.016, 1, 8]} />
+        <cylinderGeometry args={[0.028, 0.028, 1, 8]} />
         <meshStandardMaterial color={GREY.rail} roughness={0.35} metalness={0.6} />
       </Inst>
       <Inst items={STANDOFFS}>
@@ -153,7 +153,7 @@ export function IssRoom() {
         <meshStandardMaterial color={GREY.metal} roughness={0.4} metalness={0.6} />
       </Inst>
       <Inst items={CABLES}>
-        <cylinderGeometry args={[0.014, 0.014, 1, 6]} />
+        <cylinderGeometry args={[0.026, 0.026, 1, 6]} />
         <meshStandardMaterial color={GREY.cable} roughness={0.8} />
       </Inst>
       <Inst items={LIGHTS}>
