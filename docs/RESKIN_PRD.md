@@ -304,3 +304,18 @@ At 1440x900, `?lib=0&ask=0&base=moon` and `base=rover`: the flames are dots abou
 - Stage controls stay clear of the base carousel (top 96px, center), the brief line (bottom-left, 44ch) and the top-3 card (bottom-right, 320px) at center widths from 600px to 1700px, by container queries on `.stage`. On a phone the side controls collapse behind a "Model" button.
 - Tests: seeker time to droplet diameter, the no-prediction case, scene picker to scene, which objects burn, front position at a time, oxygen scaling, object to data lookup.
 - Build order, one commit each: 15.1, 15.4, 15.3, 15.5, 15.6, 15.7. Each commit passes `npx tsc --noEmit && npx vitest run && npx vite build` and is checked in a real Chrome with WebGL at 1440x900 and 390x844.
+
+### 15.9 Fire in this base (the default scene)
+
+Daniel, 15 Nov: "I want the 3D replay to literally be integrated with the scene so that you can see the fire spread, see it in the air, or if a fire starts somewhere, how it will damage the structure, what would happen. Illustrative."
+
+This turns the fire spread scene (15.6) into the main thing the replay shows. 15.6 still holds; this adds to it.
+
+- **Default scene for every base**, named "Fire in this base". The model burn becomes the second option ("Lab view: team model burn") and Saffire the third.
+- **One story on the one timeline, in five stages**, each with its own caption and a mark on the seeker: 1 Ignition, 2 Spread, 3 Smoke and air, 4 Detection and response, 5 Aftermath. It plays from a preset start point with no input.
+- **Pick where it starts.** Two or three combustible objects can be the start point. Click, tap or focus one and press "Start a fire here": the story restarts from that object and the spread path changes.
+- **See it in the air.** Smoke and hot gas are drawn as a soft volume that moves with the cabin ventilation. In microgravity it does not rise: it drifts along the airflow and gathers where the flow is weak. At 1 g it rises to the ceiling. A smoke detector sits in the cabin; it trips when smoke reaches it, and the timeline marks "Detected at <t> s".
+- **Three controls, no more:** start point, ventilation on or off, and "Compare with Earth" (1 g). What ventilation does must follow the records: read the BASS-II airflow findings in `solids.json`, the `solids-quench-flow` fact and the ACME BRE claims on flames with the airflow off at 21% oxygen and in richer oxygen. Do not write the behaviour from memory or from this paragraph.
+- **Damage, shown as what the fire and smoke touched:** burned objects char and darken, objects the smoke reached get a soot tint, objects that do not burn stay as they were. Stage 5 shows an aftermath card with counts from the run, for example "3 of 7 objects burned. Smoke reached the detector at 12 s. Flame out 9 s after ventilation stopped."
+- **No structural failure.** The project data has no record of damage to a habitat structure, so never draw a wall breach, a pressure loss or a collapse. The aftermath card says in one line that the data has no test of structural damage.
+- **Truth rules.** A stage caption cites a record where one supports it (same "How we know" pattern as the Interpret sheet). Where none does, the caption carries the word "Illustration". All times and speeds are illustrative and labelled so; oxygen scales them.
