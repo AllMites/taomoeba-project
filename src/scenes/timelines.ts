@@ -12,6 +12,14 @@ export const MODES: { id: Mode; name: string; line: string; scene: "lunar" | "sa
   { id: "saffire", name: "Real fire: Saffire flight test", line: "A fabric strip that really burned inside a cargo spacecraft in orbit.", scene: "saffire" },
 ];
 
+/**
+ * A timeline's identity. It names the air the timeline was computed for, not only the base: during a base change
+ * the picked base and the air handed to the scene can differ for a moment, and a key without the air would keep
+ * that first, wrong timeline.
+ */
+export const timelineKey = (mode: Mode, base: string, air: { o2Percent?: number; pressureKPa?: number }, ...rest: string[]) =>
+  [mode, base, air.o2Percent ?? "-", air.pressureKPa ?? "-", ...rest].join("|");
+
 export const sceneFor = (m: Mode) => MODES.find((x) => x.id === m)!.scene;
 
 /** Steady flame with no model numbers: a short loop the bar can still play. */
