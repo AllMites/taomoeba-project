@@ -2,7 +2,7 @@ import { Canvas } from "@react-three/fiber";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { useConsole } from "../../app/console.ts";
 import type { HabitatPreset, SceneProps } from "../../contracts/index.ts";
-import { compareLine, EARTH_LINE, earthSides, LIMITS, NOT_ON_RECORD, sidesFor } from "./copy.ts";
+import { earthSides, NOT_ON_RECORD, sidesFor } from "./copy.ts";
 import { FlamePair, type Slot } from "./FlamePair.tsx";
 import { issAirNow, loadIssAir } from "./iss.ts";
 import { posterFor } from "./poster.ts";
@@ -66,6 +66,7 @@ export function LunarScene({ habitat, calm }: SceneProps) {
   const pair = sidesFor(habitat, iss);
   const sides = earth ? earthSides(iss) : pair.sides;
   const same = !earth && pair.same;
+  const ui = useRef<HTMLDivElement>(null);
   const shot: Shot = earth ? "earth" : habitat?.id === "rover" ? "rover" : habitat?.id === "iss" ? "iss" : "moon";
   const world = shot === "moon" || shot === "rover";
 
@@ -111,7 +112,13 @@ export function LunarScene({ habitat, calm }: SceneProps) {
     if (!el || typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(measure);
     ro.observe(el);
-    return () => ro.disconnect();
+    if (ui.current) ro.observe(ui.current);
+    // The center replay moves the flame zone as its glass panels change (Stage.tsx, useFlameZone).
+    window.addEventListener("replay-zone", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("replay-zone", measure);
+    };
   }, [measure, same]);
 
   const frameloop = calm || !onScreen ? "demand" : "always";
@@ -154,14 +161,7 @@ export function LunarScene({ habitat, calm }: SceneProps) {
       </div>
 
       {!POSTER_CAPTURE && (
-        <div className="lunar-ui">
-          <div className="lunar-note glass">
-            <p className="lunar-limits">
-              <strong>{LIMITS[0]}</strong>
-              {!earth && <> {LIMITS[1]}</>}
-            </p>
-            <p className="lunar-compare-line">{earth ? EARTH_LINE : compareLine(same, habitat?.id === "iss")}</p>
-          </div>
+        <div className="lunar-ui" ref={ui}>
           <div className="lunar-cells" role="group" aria-label="Flame comparison" data-count={sides.length}>
             {sides.map((s, i) => (
               <div className="lunar-cell" key={s.key}>
