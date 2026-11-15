@@ -19,8 +19,8 @@ export const MOON_WINDOW = { x: 2.05, y: 0.35, w: 1.0, h: 0.55, z: -1.96 };
 const HATCH = { x: -1.3, y: 0.15, r: 0.42, z: -1.97 };
 
 const GREY = {
-  shell: "#4d4c48",
-  rib: "#5c5b56",
+  shell: "#5f5e59",
+  rib: "#6c6b65",
   floor: "#3c3b38",
   tile: "#58574f",
   metal: "#8a8882",
@@ -33,9 +33,9 @@ const GREY = {
   far: "#9a9791",
 };
 
-type Item = { p: V3; s?: V3; r?: V3 };
+export type Item = { p: V3; s?: V3; r?: V3 };
 
-function Inst({ items, children }: { items: Item[]; children: React.ReactNode }) {
+export function Inst({ items, children }: { items: Item[]; children: React.ReactNode }) {
   const ref = useRef<InstancedMesh>(null);
   useLayoutEffect(() => {
     const m = ref.current;
