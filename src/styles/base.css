@@ -1,11 +1,11 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html, body { margin: 0; }
-/* scroll-padding keeps a focused control from landing under the fixed habitat bar. */
-html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+html { scroll-behavior: smooth; }
 h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; margin: 0; }
 p { margin: 0; }
-h2, h3, [id] { scroll-margin-top: 5rem; }
+/* A heading or card scrolled to inside a sheet or panel keeps a little air above it. */
+h2, h3, [id] { scroll-margin-top: var(--space-5); }
 
 body {
   background: var(--color-bg);
@@ -21,7 +21,7 @@ body {
 a { color: var(--color-accent); text-underline-offset: 0.18em; }
 
 :focus-visible {
-  outline: 3px solid var(--color-focus);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
