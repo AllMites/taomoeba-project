@@ -11,9 +11,10 @@ export const PALETTE = {
   regolith: "#a19d96",
   sun: "#fff3e2",
   fill: "#b9c8ee", // cool camera-side fill: a truly backlit Moon reads as pure silhouette
-  beacon: "#ff6a2a",
-  earthDay: "#8fb4ff",
-  earthCloud: "#f2f4f8",
+  // The fire is the only colour on screen (docs/RESKIN_PRD.md, section 6): beacons and Earth are mono.
+  beacon: "#d9d7d0",
+  earthDay: "#8e8d89",
+  earthCloud: "#e6e4de",
 };
 
 const BASE = `${import.meta.env.BASE_URL}models/lunar/`;
@@ -79,7 +80,7 @@ for (const s of Object.values(SHOTS)) {
 export const FIELD = makeHeightField({ pads: PADS, centre: [0, 18] });
 
 /** Where the subject sits in the frame (NDC, -1..1): the part of each box the console leaves clear. */
-const AIM: Record<Framing, readonly [number, number]> = { wide: [0.12, -0.2], tall: [-0.38, -0.5], phone: [0, -0.36] };
+const AIM: Record<Framing, readonly [number, number]> = { wide: [0.08, -0.52], tall: [0.5, 0.3], phone: [0, -0.5] };
 /** Where the Earth sits in the frame (NDC), clear of the overlay column. A phone box has no free sky: no Earth. */
 const EARTH_AT = { wide: [0.62, 0.55] as const, narrow: null };
 
@@ -176,13 +177,13 @@ export function Ground() {
   );
 }
 
-const beaconMat = new MeshStandardMaterial({ color: PALETTE.beacon, emissive: new Color(PALETTE.beacon), emissiveIntensity: 3, toneMapped: false });
+const beaconMat = new MeshStandardMaterial({ color: PALETTE.beacon, emissive: new Color(PALETTE.beacon), emissiveIntensity: 1, toneMapped: false });
 
 /** Two warning beacons, one on the habitat, one on the rover. Slow pulse unless calm. */
 export function Beacons({ calm }: { calm: boolean }) {
   useFrame(({ clock }) => {
     if (calm) return;
-    beaconMat.emissiveIntensity = 1.5 + 1.5 * Math.max(0, Math.sin(clock.elapsedTime * 2.2));
+    beaconMat.emissiveIntensity = 0.6 + 0.6 * Math.max(0, Math.sin(clock.elapsedTime * 2.2));
   });
   useEffect(() => () => beaconMat.dispose(), []);
   // Positions are the highest points of each model (antenna / dome top), in the model's own frame.

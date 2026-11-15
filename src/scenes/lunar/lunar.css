@@ -31,70 +31,58 @@
   object-position: 70% 70%;
 }
 
-/* A column on the left of a wide box, a band across the top of a narrow one. */
+/*
+ * The flames are the subject. The center replay hands the scene the clear part of its box (--fz-x, -y, -w, -h),
+ * the flame slot size (--fz-s) and where the label chips go (--fz-dir: column = under, row = beside), from
+ * src/scenes/zone.ts. Without them (the dev harness) the flames stand in the middle of the box.
+ */
 .lunar-ui {
   position: absolute;
-  inset: var(--replay-top, 0px) auto auto 0;
+  left: var(--fz-x, 0px);
+  top: var(--fz-y, var(--replay-top, 0px));
+  width: var(--fz-w, 100%);
+  height: var(--fz-h, calc(100% - var(--replay-top, 0px) - var(--replay-bottom, 0px)));
   z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  width: min(100%, 22rem);
-  padding: var(--space-4);
+  display: grid;
+  place-items: center;
   pointer-events: none;
-}
-
-.lunar-note {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-3);
-  border-radius: var(--radius-1);
-}
-.lunar-limits {
-  margin: 0;
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--color-text-muted);
-}
-.lunar-limits strong {
-  color: var(--color-text);
-  font-weight: 600;
-}
-.lunar-compare-line {
-  margin: 0;
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--color-text);
 }
 
 .lunar-cells {
   display: flex;
+  justify-content: center;
   gap: var(--space-4);
+  max-width: 100%;
 }
 .lunar-cell {
   display: flex;
-  flex-direction: column;
+  flex-direction: var(--fz-dir, column);
   align-items: center;
   gap: var(--space-2);
-  flex: 1 1 0;
+  flex: 0 1 auto;
   min-width: 0;
 }
 .lunar-slot {
-  width: 7rem;
-  max-width: 100%;
+  flex: none;
+  width: var(--fz-s, 11rem);
   aspect-ratio: 1;
   display: grid;
   place-items: center;
 }
+/* A small glass chip on its flame: what the air is, then the numbers. Text on glass only, full-contrast type. */
 .lunar-tag {
-  align-self: stretch;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  padding: var(--space-2) var(--space-3);
+  align-items: center;
+  gap: 2px;
+  min-width: 8rem;
+  max-width: 100%;
+  padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-1);
+  text-align: center;
 }
+.lunar-cell:only-child .lunar-tag,
+.lunar-cells[data-count="1"] .lunar-tag { min-width: 10rem; }
 .lunar-air {
   margin: 0;
   font-size: var(--text-sm);
@@ -104,14 +92,16 @@
 .lunar-readout {
   margin: 0;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: var(--space-2);
   color: var(--color-text);
 }
 .lunar-nor {
   font-family: var(--font-sans);
   letter-spacing: 0;
   text-transform: none;
-  color: var(--color-text-muted);
+  color: var(--color-text);
 }
 
 /* Still flame for the poster fallback (no WebGL): tighter and brighter with more oxygen. Decorative. */
@@ -129,69 +119,6 @@
   aspect-ratio: 1 / 2;
   border-radius: 50% 50% 50% 50% / 72% 72% 28% 28%;
   background: radial-gradient(ellipse at 50% 78%, var(--color-text) 0 10%, var(--sphere-hot) 38%, var(--sphere-warm) 62%, transparent 72%);
-}
-
-/* Station and Earth: no surface scene. The flames stand in the middle of the dark, the words under them. */
-.lunar[data-shot="iss"] .lunar-ui,
-.lunar[data-shot="earth"] .lunar-ui {
-  inset: var(--replay-top, 0px) 0 var(--replay-bottom, 0px) 0;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column-reverse;
-}
-.lunar[data-shot="iss"] .lunar-note,
-.lunar[data-shot="earth"] .lunar-note {
-  max-width: 28rem;
-  text-align: center;
-}
-.lunar[data-shot="iss"] .lunar-cells,
-.lunar[data-shot="earth"] .lunar-cells {
-  justify-content: center;
-  gap: var(--space-6);
-}
-.lunar[data-shot="iss"] .lunar-cell,
-.lunar[data-shot="earth"] .lunar-cell {
-  flex: 0 0 auto;
-}
-.lunar[data-shot="iss"] .lunar-slot,
-.lunar[data-shot="earth"] .lunar-slot {
-  width: 11rem;
-}
-.lunar[data-shot="iss"] .lunar-tag,
-.lunar[data-shot="earth"] .lunar-tag {
-  align-items: center;
-  text-align: center;
-}
-
-@container lunar (max-width: 40rem) {
-  .lunar-ui {
-    width: 100%;
-    padding: var(--space-2) var(--space-4);
-    gap: var(--space-2);
-  }
-  .lunar-note {
-    padding: var(--space-2) var(--space-3);
-    gap: var(--space-1);
-  }
-  .lunar-limits,
-  .lunar-compare-line {
-    font-size: var(--text-xs);
-  }
-  .lunar-cells {
-    max-width: 18rem;
-  }
-  .lunar-slot {
-    width: 4rem;
-  }
-  .lunar[data-shot="iss"] .lunar-slot,
-  .lunar[data-shot="earth"] .lunar-slot {
-    width: 7rem;
-  }
-  .lunar[data-shot="iss"] .lunar-cells,
-  .lunar[data-shot="earth"] .lunar-cells {
-    gap: var(--space-4);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

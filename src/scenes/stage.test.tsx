@@ -38,4 +38,11 @@ describe("center replay, before any 3D has loaded (and for good where it cannot 
     expect(html).toMatch(/name="stage-when"\/><span[^>]*>Past<\/span>/);
     expect(html).toMatch(/name="stage-when" checked=""\/><span[^>]*>Now<\/span>/);
   });
+
+  it("says it is an illustration on the glass caption, with the longer note behind a real About control", () => {
+    const html = renderToStaticMarkup(<Stage />);
+    expect(html).toMatch(/class="stage-caption-text glass"><p>Now: [^<]*Illustration, not a simulation\.<\/p>/);
+    expect(html).toContain('<summary aria-label="About this replay">');
+    expect(html).toContain("No fire experiment on record ran in Moon gravity.");
+  });
 });

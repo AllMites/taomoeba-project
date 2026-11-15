@@ -28,8 +28,23 @@ describe("what the center replay shows", () => {
   });
 
   it("the caption names the picked base, says it is an illustration, and stays one short line", () => {
-    expect(replayFor("moon", "now", "Moon Base").caption).toBe("Now: a flame in Moon Base air beside station air. Illustration.");
-    expect(replayFor("earth", "now").caption).toMatch(/Earth.*1 g.*Illustration/);
+    expect(replayFor("moon", "now", "Moon Base").caption).toBe("Now: station air beside Moon Base air. Illustration, not a simulation.");
+    expect(replayFor("earth", "now").caption).toMatch(/Earth.*1 g.*Illustration, not a simulation/);
+    for (const b of BASE_ORDER) expect(replayFor(b, "now").caption).toContain("Illustration, not a simulation.");
     for (const b of BASE_ORDER) for (const w of ["past", "now"] as const) expect(replayFor(b, w, "Pressurized rover").caption.length).toBeLessThan(90);
+  });
+
+  it("the longer note sits behind the chip, and the stage clears room for as many flames as the scene draws", () => {
+    expect(replayFor("moon", "now").notes[0]).toBe("No fire experiment on record ran in Moon gravity.");
+    expect(replayFor("earth", "now").notes.join(" ")).toMatch(/teardrop/);
+    expect(BASE_ORDER.map((b) => replayFor(b, "now").flames)).toEqual([1, 2, 2, 2]);
+    expect(replayFor("iss", "past")).toMatchObject({ flames: 0, notes: [] });
+  });
+
+  it("the longer note sits behind the chip, and the stage clears room for as many flames as the scene draws", () => {
+    expect(replayFor("moon", "now").notes[0]).toBe("No fire experiment on record ran in Moon gravity.");
+    expect(replayFor("earth", "now").notes.join(" ")).toMatch(/teardrop/);
+    expect(BASE_ORDER.map((b) => replayFor(b, "now").flames)).toEqual([1, 2, 2, 2]);
+    expect(replayFor("iss", "past")).toMatchObject({ flames: 0, notes: [] });
   });
 });
