@@ -11,7 +11,7 @@ import {
   sourceKind,
   type AskResult,
 } from "./respond.ts";
-import { composerKey, filledSteps, FOLLOW_UPS, IDLE_STEPS, isRankingOnly, summaryLine, WORKING_STEPS, writerLine, type StepView, type TurnState } from "./thread.ts";
+import { composerKey, filledSteps, FOLLOW_UPS, isRankingOnly, summaryLine, WORKING_STEPS, writerLine, type StepView, type TurnState } from "./thread.ts";
 
 // These four have saved answers (public/data/saved-answers.json), so a first tap answers at once.
 // The panel shows three for the picked habitat (suggestionsFor in thread.ts); the first three here are the fallback.
@@ -239,8 +239,6 @@ export function Panel(p: PanelProps) {
           <div className="ask-empty">
             <p className="ask-empty-lead">Try a question</p>
             <Chips chips={p.suggestions ?? EXAMPLES.slice(0, 3)} label="Suggested questions" busy={p.busy} onPick={p.onPick} />
-            <p className="ask-empty-lead">How an answer is made</p>
-            <Steps steps={IDLE_STEPS} label="How an answer is made" />
           </div>
         ) : (
           <>

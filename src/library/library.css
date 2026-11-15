@@ -42,6 +42,9 @@
 /* A row that leaves the page: text colour, no underline until hover. */
 .lib-source a { color: var(--color-text); font-size: var(--text-sm); text-decoration: none; overflow-wrap: anywhere; }
 .lib-source a:hover { text-decoration: underline; }
+/* The whole row is the link's target (at least 44px), not just the line of text. */
+.lib-source { position: relative; }
+.lib-source a::after { content: ""; position: absolute; inset: 0; }
 .lib-more { align-self: flex-start; margin-top: var(--space-3); font-size: var(--text-sm); }
 
 .lib-step { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-2) 0; border-top: 1px solid var(--line); }

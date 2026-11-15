@@ -6,7 +6,7 @@ import { useStore } from "../app/store.ts";
 import { safeHref } from "../brief/brief.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { rankNumeral } from "../ranking/logic.ts";
-import { leadTakeaway, scoreText, TOP_N, topThree } from "./logic.ts";
+import { leadTakeaway, sameAirAs, sameAirLine, sameRows, scoreText, TOP_N, topThree } from "./logic.ts";
 import "./top.css";
 
 /** Lucide "message-circle", 1.5px stroke. */
@@ -31,16 +31,23 @@ export default function TopForBase() {
   const ready = rank.status === "ready" && inv.status === "ready" && claims.status === "ready";
   const label = habitats.status === "ready" ? habitats.data.find((h) => h.id === habitatId)?.label : undefined;
   const rows = ready ? topThree(rank.data, inv.data, claims.data, habitatId) : [];
+  const same =
+    ready && habitats.status === "ready"
+      ? sameAirLine(sameAirAs(habitats.data, habitatId, (other) => sameRows(rows, topThree(rank.data, inv.data, claims.data, other))))
+      : null;
 
   return (
     <section className="top glass" aria-labelledby="top-h">
       <h2 id="top-h" className="top-h t-readout">
         Top for {label ?? "this base"}
       </h2>
+      {same && !failed && <p className="top-same">{same}</p>}
       {failed ? (
         <p role="alert" className="top-note">
           Could not load the experiments. Reload the page to try again.
         </p>
+      ) : ready && rows.length === 0 ? (
+        <p className="top-note">No ranked experiments for this base yet.</p>
       ) : (
         <ol className="top-list" aria-busy={!ready}>
           {ready
@@ -58,7 +65,9 @@ export default function TopForBase() {
                       {rankNumeral(r.position)}
                     </span>
                     <span className="top-text">
-                      <span className="top-name">{r.inv.title}</span>
+                      <span className="top-name" title={r.inv.title}>
+                        {r.inv.title}
+                      </span>
                       <span className="top-sum">{r.summary ?? r.item.rationale}</span>
                     </span>
                     <span className="top-score t-readout" aria-hidden="true">

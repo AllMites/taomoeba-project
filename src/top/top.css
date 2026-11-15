@@ -1,6 +1,7 @@
 /* Top for this base + brief line. Both sit over the replay, so both are glass (docs/RESKIN_PRD.md, section 6). */
 .top { display: flex; flex-direction: column; width: 100%; border-radius: var(--radius-2); overflow: hidden; }
 .top-h { padding: var(--space-4) var(--space-4) var(--space-3); color: var(--label); font-weight: 500; }
+.top-same { margin-top: calc(-1 * var(--space-2)); padding: 0 var(--space-4) var(--space-3); color: var(--color-text-muted); font-size: var(--text-sm); line-height: 1.35; }
 .top-list { list-style: none; margin: 0; padding: 0; }
 /* Fixed row height: the card is the same size loading and loaded, so nothing shifts. */
 .top-row { display: flex; align-items: stretch; height: 5.5rem; border-top: 1px solid var(--line); }
@@ -28,11 +29,19 @@
 .briefline { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-3) var(--space-4); border-radius: var(--radius-2); }
 .briefline-wait { height: 6rem; }
 .briefline-text { font-size: var(--text-base); line-height: 1.35; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
-.briefline-foot { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
-.briefline-src { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: var(--space-2); color: var(--color-text-muted); font-size: var(--text-sm); white-space: nowrap; }
+/* The source gets a line of its own when it would be cut short ("Compu..." at 1440); More then sits under it, right. */
+.briefline-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; column-gap: var(--space-3); }
+.briefline-src { flex: 1 1 16rem; min-width: 0; display: flex; align-items: baseline; gap: var(--space-2); color: var(--color-text-muted); font-size: var(--text-sm); white-space: nowrap; }
 .briefline-src .t-readout { flex: none; color: var(--label); }
 /* The link is the row's own action, not a link inside a sentence: no underline until hover. */
-.briefline-src a { min-width: 0; overflow: hidden; text-overflow: ellipsis; color: var(--color-text); text-decoration: none; }
+/* 44px tall hit area: line-height, so the ellipsis still works. */
+.briefline-src a { min-width: 0; display: block; line-height: 2.75rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--color-text); text-decoration: none; }
 .briefline-src a:hover { text-decoration: underline; }
 .briefline-rest { flex: none; }
-.briefline-more { flex: none; }
+.briefline-more { flex: none; margin-left: auto; }
+/* Phone: no room for a second line, so the count gives way to the title (at 320px it was cut to two letters). More still lists every source. */
+@media (max-width: 760px) {
+  .briefline-rest { display: none; }
+  .briefline-foot { flex-wrap: nowrap; }
+  .briefline-src { flex-basis: 0; }
+}
