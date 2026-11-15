@@ -37,7 +37,7 @@ export function replayFor(base: BaseId, mode: Mode, label?: string): Replay {
   return {
     scene,
     habitat,
-    caption: mode === "spread" ? `Fire spreading in ${where}. ${ILLUSTRATION}` : `A fuel droplet burning in ${where}. ${ILLUSTRATION}`,
+    caption: mode === "spread" ? `What if a fire starts in ${where}? ${ILLUSTRATION}` : `A fuel droplet burning in ${where}. ${ILLUSTRATION}`,
     notes: base === "earth" ? [EARTH_LINE] : base === "iss" ? [compareLine(true, true)] : [LIMITS[1]],
   };
 }

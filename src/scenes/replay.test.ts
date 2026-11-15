@@ -21,7 +21,7 @@ describe("what the center replay shows", () => {
 
   it("the caption names the scene and the base, says illustration where it is drawn, and stays one short line", () => {
     expect(replayFor("moon", "burn", "Moon Base").caption).toBe("A fuel droplet burning in the Moon Base cabin. Illustration, not a simulation.");
-    expect(replayFor("earth", "spread").caption).toMatch(/^Fire spreading in a cabin on Earth, at 1 g\. Illustration/);
+    expect(replayFor("earth", "spread").caption).toMatch(/^What if a fire starts in a cabin on Earth, at 1 g\? Illustration/);
     expect(replayFor("iss", "saffire").caption).not.toMatch(/Illustration/);
     for (const b of BASE_ORDER) for (const m of ["burn", "spread", "saffire"] as const) expect(replayFor(b, m, "Pressurized rover").caption.length).toBeLessThan(100);
   });

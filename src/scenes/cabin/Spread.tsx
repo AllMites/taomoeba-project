@@ -1,21 +1,22 @@
-// Fire spread in the cabin: everyday objects on the bench, a flame front that creeps over the ones that burn, char
-// behind it, smoke and the cabin's airflow. Positions and verdicts come from ../spread/spread.ts (pure, tested).
+// Fire in this base: everyday objects on the bench, flame fronts that creep over the ones that burn, char behind
+// them, soot where the smoke reached, and the cabin's airflow. Everything comes from ../spread/story.ts (pure, tested).
 import { Edges } from "@react-three/drei";
 import { useState } from "react";
-import { Flame, FlameFront } from "../../fx/index.tsx";
+import { Flame } from "../../fx/index.tsx";
 import { usePlayback } from "../playback.ts";
-import { JUMP_M, OBJECTS, reach, spreadAt, type CabinObject, type Fabric, type Gravity } from "../spread/spread.ts";
+import { OBJECTS, type CabinObject, type Gravity } from "../spread/spread.ts";
+import { storyAt, type Story, type StoryAt } from "../spread/story.ts";
 import type { Air } from "./air.ts";
 import type { ChipSpec } from "./Cabin.tsx";
 
 /** Mono paint: the fire stays the only colour on screen. Combustible things are pale, the rest metal grey. */
-const PAINT = { fuel: "#d8d6d0", inert: "#7d7c78", glass: "#b9c2c6", outline: "#ffffff", smoke: "#9a9893", flow: "#ecebe6" };
+const PAINT = { fuel: "#d8d6d0", inert: "#7d7c78", glass: "#b9c2c6", outline: "#ffffff", smoke: "#9a9893", flow: "#ecebe6", soot: "#5d5a55", char: "#141210" };
 
 const top = (o: CabinObject) => o.hd[0];
 const midX = (o: CabinObject) => (o.x0 + o.x1) / 2;
 
 /** One object: a box on the bench. Hover, focus (via the panel) or tap outlines it white and opens its card. */
-function Thing({ o, g, lit }: { o: CabinObject; g: Gravity; lit: boolean }) {
+function Thing({ o, g, lit, soot }: { o: CabinObject; g: Gravity; lit: boolean; soot: boolean }) {
   const [hover, setHover] = useState(false);
   const picked = usePlayback((s) => s.picked === o.id);
   const [h, d] = o.hd;
@@ -36,7 +37,7 @@ function Thing({ o, g, lit }: { o: CabinObject; g: Gravity; lit: boolean }) {
     >
       <boxGeometry args={[w, h, d]} />
       <meshStandardMaterial
-        color={o.id === "window" ? PAINT.glass : burns ? PAINT.fuel : PAINT.inert}
+        color={soot ? PAINT.soot : o.id === "window" ? PAINT.glass : burns ? PAINT.fuel : PAINT.inert}
         roughness={o.id === "locker" ? 0.35 : 0.8}
         metalness={o.id === "locker" ? 0.6 : 0}
         transparent={o.id === "window"}
@@ -92,77 +93,89 @@ function Smoke({ x, y, t, g, flow }: { x: number; y: number; t: number; g: Gravi
   );
 }
 
-/** The fire at the seeker's time, the objects and the airflow. */
-export function SpreadSet({ air, g, fabric, flow, calm, chips }: { air: Air; g: Gravity; fabric: Fabric; flow: number; calm: boolean; chips?: ChipSpec[] }) {
+/** Char on the burnt span of each object: a dark sheet on its top face. */
+function Char({ o, span }: { o: CabinObject; span: [number, number] }) {
+  const w = span[1] - span[0];
+  if (w < 1e-3) return null;
+  return (
+    <mesh position={[(span[0] + span[1]) / 2, o.hd[0] + 0.0008, o.z]}>
+      <boxGeometry args={[w, 0.0012, o.hd[1] * 1.002]} />
+      <meshStandardMaterial color={PAINT.char} roughness={1} />
+    </mesh>
+  );
+}
+
+/** A flame front: low and round in orbit, a little taller on the Moon (estimate), a teardrop at 1 g. */
+function Front({ x, y, g, o2, kPa, strength, calm, flow }: { x: number; y: number; g: Gravity; o2: number; kPa?: number; strength: number; calm: boolean; flow: number }) {
+  const k = 0.35 + 0.65 * strength;
+  return (
+    <group position={[x, y, 0]} scale={[k, k * (g === "partial" ? 1.4 : 1), k]}>
+      {g === "earth" ? (
+        <Flame o2Percent={o2} pressureKPa={kPa} size={0.14} gravity="earth" calm={calm} />
+      ) : (
+        <group scale={[1, 0.55, 1]}>
+          <Flame o2Percent={o2} pressureKPa={kPa} size={0.12} airflowCmS={flow} calm={calm} />
+        </group>
+      )}
+    </group>
+  );
+}
+
+/** The object a point along the bench sits on (the burnable one on the bench line), for the flame's height. */
+const heightAt = (x: number, g: Gravity) => OBJECTS.find((o) => o.burns(g) && Math.abs(o.z) < 0.1 && o.x0 - 0.06 <= x && x <= o.x1 + 0.06)?.hd[0] ?? 0.004;
+
+/** The fire at the seeker's time, the objects, the soot and the airflow. */
+export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percent?: number; pressureKPa?: number }; calm: boolean; chips?: ChipSpec[] }) {
   const t = usePlayback((s) => s.t);
-  const o2 = air.o2Percent ?? 21;
-  const at = spreadAt(OBJECTS, g, o2, fabric, t);
-  // The object the front is on, or about to jump onto across a small gap.
-  const on = OBJECTS.filter((o) => o.burns(g) && Math.abs(o.z) < 0.1 && o.x0 <= at.front + JUMP_M && at.front <= o.x1).sort((a, b) => b.x0 - a.x0)[0];
-  const y = on ? top(on) : 0.004;
-  if (chips) placeSpreadChips(chips, g, o2, fabric, t);
+  const g = st.input.g;
+  const o2 = st.input.o2;
+  const at = storyAt(st, t);
+  const flow = at.vent ? 10 : 0;
+  if (chips) placeSpreadChips(chips, st, at);
+  const fronts = at.alive ? [...new Set([at.hi, at.lo].map((x) => Math.round(x * 1000) / 1000))] : [];
   return (
     <group>
       {OBJECTS.map((o) => (
-        <Thing key={o.id} o={o} g={g} lit={at.alive && on?.id === o.id} />
+        <Thing key={o.id} o={o} g={g} lit={at.alive && !!at.burnt[o.id]} soot={at.sooted.has(o.id)} />
       ))}
-      {/* Char on every object the front has passed; the live flame only on the one it is on (microgravity). */}
-      {OBJECTS.filter((o) => at.burnt[o.id] > 0 || o.id === on?.id).map((o) => (
-        <group key={o.id} position={[Math.max(o.x0, 0), top(o) + 0.0005, o.z]}>
-          <FlameFront
-            length={o.x1 - Math.max(o.x0, 0)}
-            width={o.hd[1]}
-            front={o.id === on?.id ? Math.max(at.burnt[o.id], 0.01) : at.burnt[o.id]}
-            o2Percent={o2}
-            pressureKPa={air.pressureKPa}
-            airflowCmS={flow}
-            intensity={g !== "earth" && at.alive && o.id === on?.id ? 1 : 0}
-            calm={calm}
-          />
-        </group>
+      {OBJECTS.map((o) => {
+        const span = at.burnt[o.id];
+        return span && <Char key={o.id} o={o} span={span} />;
+      })}
+      {fronts.map((x, i) => (
+        <Front key={i} x={x} y={heightAt(x, g)} g={g} o2={o2} kPa={air.pressureKPa} strength={at.strength} calm={calm} flow={flow} />
       ))}
-      {/* At 1 g: tall teardrop flames standing on the front. */}
-      {g === "earth" && at.alive && (
-        <group position={[at.front, y, 0]}>
-          <Flame o2Percent={o2} pressureKPa={air.pressureKPa} size={0.14} gravity="earth" calm={calm} />
-        </group>
-      )}
-      {/* A flame the airflow cannot keep alive: a small dimming flame at the ignition point. */}
-      {!fabric.lives && at.alive && (
-        <group position={[0.01, 0.01, 0]}>
-          <Flame o2Percent={o2} pressureKPa={air.pressureKPa} size={0.035} airflowCmS={flow} calm={calm} />
-        </group>
-      )}
-      {at.alive && <Smoke x={at.front} y={y} t={t} g={g} flow={flow} />}
-      <Airflow />
+      {at.alive && <Smoke x={at.hi} y={heightAt(at.hi, g)} t={t} g={g === "earth" ? "earth" : "micro"} flow={flow} />}
+      {at.vent && <Airflow />}
     </group>
   );
 }
 
 /** Glass labels on the fire: flame front, burnt zone, unburnt fuel, airflow direction. Placed by placeSpreadChips. */
-export function spreadChips(g: Gravity, flow: number): ChipSpec[] {
+export function spreadChips(g: Gravity): ChipSpec[] {
   return [
-    { id: "front", at: [0, 0.08, 0], text: "Flame front", sub: g === "earth" ? "a rising flame" : "low, it hugs the surface" },
+    { id: "front", at: [0, 0.08, 0], text: "Flame front", sub: g === "earth" ? "a rising flame" : g === "partial" ? "estimate for the Moon" : "low, it hugs the surface" },
     { id: "burnt", at: [0, 0.01, 0.1], text: "Burnt zone", below: true, hide: true },
     { id: "unburnt", at: [0, 0.02, 0.12], text: "Unburnt fuel", below: true, hide: true },
-    { id: "airflow", at: [-0.35, 0.26, -0.1], text: "Airflow", sub: `${flow} cm/s along the bench` },
+    { id: "airflow", at: [-0.35, 0.26, -0.1], text: "Airflow", sub: "10 cm/s along the bench" },
   ];
 }
 
-/** Moves the fire's labels to the front at time t (in place, so the scene does not re-render every frame). */
-export function placeSpreadChips(chips: ChipSpec[], g: Gravity, o2: number, fabric: Fabric, t: number) {
-  const at = spreadAt(OBJECTS, g, o2, fabric, t);
-  const end = fabric.lives ? reach(OBJECTS, g) : 0;
+/** Moves the fire's labels to where they belong at this moment (in place, so the scene does not re-render). */
+export function placeSpreadChips(chips: ChipSpec[], st: Story, at: StoryAt) {
+  const g = st.input.g;
   for (const c of chips) {
     if (c.id === "front") {
-      c.at = [at.front, g === "earth" ? 0.16 : 0.06, 0];
+      c.at = [at.hi, g === "earth" ? 0.16 : 0.06, 0];
       c.hide = !at.alive;
     } else if (c.id === "burnt") {
-      c.at = [at.front / 2, 0.01, 0.1];
-      c.hide = at.front < 0.12;
+      c.at = [(at.lo + at.hi) / 2, 0.01, 0.1];
+      c.hide = at.hi - at.lo < 0.1;
     } else if (c.id === "unburnt") {
-      c.at = [(at.front + end) / 2 + 0.05, 0.02, 0.12];
-      c.hide = end - at.front < 0.12;
+      c.at = [(at.hi + st.run[1]) / 2 + 0.05, 0.02, 0.12];
+      c.hide = st.run[1] - at.hi < 0.12;
+    } else if (c.id === "airflow") {
+      c.hide = !at.vent;
     }
   }
 }

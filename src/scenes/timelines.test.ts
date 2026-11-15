@@ -4,14 +4,15 @@ import { parseDoc, type WhatIfDoc } from "../whatif/logic.ts";
 import { burnCase, startPick } from "./burn/model.ts";
 import { advance, clock, phaseAt } from "./playback.ts";
 import type { SaffireRecord } from "./saffire/timeline.ts";
-import { burnTimeline, MODES, saffireTimeline, sceneFor } from "./timelines.ts";
+import { burnTimeline, MODES, saffireTimeline, sceneFor, storyTimeline } from "./timelines.ts";
+import { story } from "./spread/story.ts";
 
 const doc = parseDoc(JSON.parse(readFileSync("public/data/whatif.json", "utf8"))) as WhatIfDoc;
 const rec = JSON.parse(readFileSync("public/data/scenes/saffire.json", "utf8")) as SaffireRecord;
 
 describe("scene picker", () => {
-  it("three named scenes, model burn first; burn and spread play in the cabin, Saffire in its own scene", () => {
-    expect(MODES.map((m) => m.name)).toEqual(["This base: model burn", "This base: fire spread", "Real fire: Saffire flight test"]);
+  it("three named scenes, fire in this base first; it and the lab view play in the cabin, Saffire in its own scene", () => {
+    expect(MODES.map((m) => m.name)).toEqual(["Fire in this base", "Lab view: team model burn", "Real fire: Saffire flight test"]);
     expect(MODES.map((m) => sceneFor(m.id))).toEqual(["lunar", "lunar", "saffire"]);
   });
 });
@@ -46,5 +47,18 @@ describe("one timeline", () => {
     expect(advance(tl, 25, 1)).toEqual({ t: 30, ended: true });
     expect(clock(3.25)).toBe("3.3 s");
     expect(clock(65)).toBe("1:05");
+  });
+});
+
+describe("fire in this base on the timeline", () => {
+  it("five stage marks with their captions; the seeker's time gives the stage", () => {
+    const st = story({ g: "micro", o2: 21, start: "cloth", response: "vent" });
+    const tl = storyTimeline(st, "k", "a station module");
+    expect(tl.phases.filter((p) => p.mark)).toHaveLength(5);
+    expect(tl.end).toBe(st.end);
+    expect(phaseAt(tl, 0)).toBe("Ignition");
+    expect(phaseAt(tl, st.detect!)).toBe("Detection and response");
+    expect(phaseAt(tl, tl.end)).toBe("Aftermath");
+    for (const p of tl.phases) expect(p.caption).toBeTruthy();
   });
 });

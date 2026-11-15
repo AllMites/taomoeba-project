@@ -4,6 +4,8 @@ import { prefersCalm } from "../app/motion.ts";
 import type { SceneId, SceneModule } from "../contracts/index.ts";
 import { useDataset } from "../data/useDataset.ts";
 import { scenes } from "./registry.ts";
+import HowWeKnow from "../brief/HowWeKnow.tsx";
+import { useCited } from "./cite.ts";
 import { advance, clock, phaseAt, stageView, usePlayback } from "./playback.ts";
 import { replayFor } from "./replay.ts";
 import { MODES } from "./timelines.ts";
@@ -199,6 +201,22 @@ function PlayBar() {
           seek(Number(e.target.value));
         }}
       />
+      {tl.phases.some((p) => p.mark) && (
+        <span className="stage-marks" aria-hidden="true">
+          {tl.phases
+            .filter((p) => p.mark)
+            .map((p, i, all) => {
+              const x = ((p.at - tl.start) / span) * 100;
+              // Stages close together share a tick; only the last of a cluster carries its number.
+              const crowded = i + 1 < all.length && ((all[i + 1].at - tl.start) / span) * 100 - x < 4;
+              return (
+                <span key={p.name} className="stage-mark" style={{ left: `${x}%` }} title={p.name}>
+                  {crowded ? "" : i + 1}
+                </span>
+              );
+            })}
+        </span>
+      )}
       <span className="stage-time t-readout">
         {clock(t - tl.start)} / {clock(span)}
         {tl.rate > 1 && <span className="stage-rate"> · {tl.rate}×</span>}
@@ -206,6 +224,30 @@ function PlayBar() {
       <span className="stage-phase" aria-live="polite">
         {phase}
       </span>
+    </div>
+  );
+}
+
+/** The phase on screen, if it is a stage with its own caption (the timeline's phases are stable objects). */
+function usePhase() {
+  return usePlayback((s) => {
+    const tl = s.timeline;
+    if (!tl) return null;
+    let cur = tl.phases[0] ?? null;
+    for (const p of tl.phases) if (s.t >= p.at) cur = p;
+    return cur;
+  });
+}
+
+/** The caption: the current stage's own words where the scene gives them, with "How we know" for its records. */
+function StageCaption({ fallback, mode }: { fallback: string; mode: string }) {
+  const phase = usePhase();
+  const own = phase?.caption && usePlayback.getState().timeline?.key.startsWith(mode) ? phase : null;
+  const cited = useCited(own?.refs);
+  return (
+    <div className="stage-caption-words">
+      <p aria-live="polite">{own?.caption ?? fallback}</p>
+      {cited.length > 0 && <HowWeKnow records={cited} />}
     </div>
   );
 }
@@ -330,7 +372,7 @@ export default function Stage() {
       <div className="stage-ticks" aria-hidden="true" />
       <div className="stage-caption">
         <div className="stage-caption-text glass">
-          <p>{target.caption}</p>
+          <StageCaption fallback={target.caption} mode={mode} />
           {target.notes.length > 0 && (
             <details className="stage-info">
               <summary aria-label="About this replay">

@@ -1,13 +1,14 @@
 // One timeline per scene, in the scene's own seconds, for the stage's playback bar. Pure, so it is tested.
 import type { BurnCase } from "./burn/model.ts";
+import { captionFor, type Story } from "./spread/story.ts";
 import type { Mode, Timeline } from "./playback.ts";
 import { loopSpan, type SaffireRecord } from "./saffire/timeline.ts";
 import { PLAYBACK_SPEED } from "./saffire/timeline.ts";
 
 /** The three scenes, in picker order. Burn and spread play in the base's cabin (the registry's "lunar" slot). */
 export const MODES: { id: Mode; name: string; line: string; scene: "lunar" | "saffire" }[] = [
-  { id: "burn", name: "This base: model burn", line: "A fuel droplet burning in this base's air, sized and timed by the team's model.", scene: "lunar" },
-  { id: "spread", name: "This base: fire spread", line: "A flame creeping over everyday things in this base's cabin.", scene: "lunar" },
+  { id: "spread", name: "Fire in this base", line: "A fire starts in this base's cabin: how it spreads, where the smoke goes, what it damages.", scene: "lunar" },
+  { id: "burn", name: "Lab view: team model burn", line: "A fuel droplet burning in this base's air, sized and timed by the team's model.", scene: "lunar" },
   { id: "saffire", name: "Real fire: Saffire flight test", line: "A fabric strip that really burned inside a cargo spacecraft in orbit.", scene: "saffire" },
 ];
 
@@ -49,18 +50,16 @@ export function saffireTimeline(rec: SaffireRecord): Timeline {
   };
 }
 
-/** Fire spread: from ignition until the front stops, plus a short hold; about 15 s on screen. */
-export function spreadTimeline(endS: number, key: string): Timeline {
-  const end = Math.max(1, endS * 1.1);
+/** Fire in this base: the story's five stages, each a mark on the seeker with its caption; about 20 s on screen. */
+export function storyTimeline(st: Story, key: string, where: string): Timeline {
   return {
     key,
     start: 0,
-    end,
-    rate: Math.max(1, Math.ceil(end / 15)),
-    phases: [
-      { at: 0, name: "Ignition on the cloth" },
-      { at: Math.min(1, endS / 20), name: "Spreading with the airflow" },
-      { at: endS, name: "Stopped: nothing left that burns in reach" },
-    ],
+    end: st.end,
+    rate: Math.max(1, Math.ceil(st.end / 20)),
+    phases: st.stages.map((s) => {
+      const c = captionFor(st, s.id, where);
+      return { at: s.at, name: s.name, mark: true, caption: c.text, refs: c.refs };
+    }),
   };
 }

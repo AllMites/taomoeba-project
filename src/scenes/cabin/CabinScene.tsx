@@ -11,9 +11,10 @@ import { usePlayback } from "../playback.ts";
 import { loadWhatIf } from "../../whatif/load.ts";
 import type { WhatIfDoc } from "../../whatif/logic.ts";
 import { burnCase, dropletAt, startPick, type BurnCase } from "../burn/model.ts";
-import { fabricVerdict, gravityOf, OBJECTS, spreadEnd } from "../spread/spread.ts";
+import { fabricVerdict, gravityOf } from "../spread/spread.ts";
 import { parseSolids, type SolidsDoc } from "../../solids/logic.ts";
-import { burnTimeline, spreadTimeline } from "../timelines.ts";
+import { burnTimeline, storyTimeline } from "../timelines.ts";
+import { story } from "../spread/story.ts";
 import { Cabin, CABIN_PAINT, ChipLayer, ChipTracker, windowAt, type ChipSpec } from "./Cabin.tsx";
 import { airOf, type Air } from "./air.ts";
 import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose, type V3 } from "./layout.ts";
@@ -168,18 +169,19 @@ export function CabinScene({ habitat, calm }: SceneProps) {
   const dMm = doc && pick ? doc.axes.d0[pick.d0] : 2;
   const r = flameRadius(dMm);
 
-  // Fire spread: the cabin airflow and the nearest real fabric test decide whether the cloth's flame lives.
+  // Fire in this base: the scenario (start point, response, gravity) and its story.
   const solids = useSolids(mode === "spread");
-  const flow = usePlayback((s) => s.flow);
-  const g = gravityOf(base);
+  const start = usePlayback((s) => s.start);
+  const response = usePlayback((s) => s.response);
+  const g = usePlayback((s) => s.grav) ?? gravityOf(base);
   const o2 = air.o2Percent ?? 21;
-  const fabric = fabricVerdict(solids, o2, flow, g);
+  const st = useMemo(() => story({ g, o2, start, response }), [g, o2, start, response]);
   // The one timeline: the model burn, or the spread along the bench.
   const tl =
     mode === "spread"
       ? air.o2Percent === undefined
         ? null
-        : spreadTimeline(spreadEnd(OBJECTS, g, o2, fabric), `spread|${base}|${flow}|${fabric.lives}`)
+        : storyTimeline(st, `spread|${base}|${g}|${start}|${response}`, room.name)
       : c
         ? burnTimeline(c, `burn|${base}|${JSON.stringify(pick)}`)
         : null;
@@ -194,7 +196,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tlKey]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
-  const fire = useMemo(() => (mode === "spread" ? spreadChips(g, flow) : null), [mode, g, flow]);
+  const fire = useMemo(() => (mode === "spread" ? spreadChips(g) : null), [mode, g]);
   const chips: ChipSpec[] = [
     ...(fire ?? [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
     { id: "window", at: windowAt(base), left: true, below: true, text: room.outside === "orbit" ? "Window: Earth from orbit" : room.outside === "moon" ? "Window: the lunar surface" : "Window: daylight on Earth" },
@@ -215,11 +217,11 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         <Cabin base={base} />
         <Navigate home={home} calm={calm} />
         <LensShift home={home} focus={mode === "spread" ? home.target : DROPLET.at} />
-        {mode === "spread" ? <SpreadSet air={air} g={g} fabric={fabric} flow={flow} calm={calm} chips={fire ?? undefined} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
+        {mode === "spread" ? <SpreadSet st={st} air={air} calm={calm} chips={fire ?? undefined} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
-      {mode === "spread" && <SpreadPanel air={air.name} g={g} doc={solids} fabric={fabric} />}
+      {mode === "spread" && <SpreadPanel air={air.name} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} />}
       {mode !== "spread" && doc && pick && <BurnPanel doc={doc} pick={pick} c={c} air={air.name} compare={base === "iss" ? null : compare} />}
       <p className="sr-only">
         {mode === "spread"
