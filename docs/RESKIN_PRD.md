@@ -133,12 +133,28 @@ Canva: the board's colours are now decided here (Daniel, 15 Nov). The Canva file
 
 ## 7. 3D
 
-- **Models.** Use NASA 3D Resources (public domain, nasa3d.arc.nasa.gov / github nasa/NASA-3D-Resources):
-  - ISS: an ISS model.
-  - Moon Base: today's lunar scene (`public/models/lunar`: hdu, sev, astronaut).
-  - Pressurized rover: SEV / LTV.
-  - Check each model's licence note and credit them in `CREDITS.md`.
-- **Carousel.** Three cards on a turntable, built in R3F (already a dependency), DOM labels on top. The center card is larger and lit.
+- **Models (decided).** All from NASA 3D Resources (https://science.nasa.gov/3d-resources/), "free to download
+  and use" under the NASA Images and Media Usage Guidelines. Strip insignia and flags with the lunar lane's
+  pipeline (`docs/lane-reports/g.md`), and credit each model in `CREDITS.md`.
+
+  | Base | Model | File | Size | Triangles | Why |
+  |---|---|---|---|---|---|
+  | ISS | International Space Station (ISS) (B) | new: `public/models/iss/iss.glb` | 477 KB, Draco | 174,440, 10 meshes, no textures | Full-detail truss and modules. Untextured grey matches the mono look |
+  | ISS, small | ISS (A) | new: `public/models/iss/iss-lo.glb` | 40 KB, Draco | 6,642 | Carousel card and phone, loaded first |
+  | Moon Base | Habitat Demonstration Unit + Astronaut | shipped: `lunar/hdu.glb`, `astronaut.glb` | 120 + 65 KB | 6,584 + 6,379 | Already cleaned and in the lunar scene |
+  | Pressurized rover | Space Exploration Vehicle | shipped: `lunar/sev.glb` | 666 KB | 39,995 | It is NASA's pressurized rover concept |
+  | Earth (bonus) | Shader globe | shipped: `scenes/lunar/world.tsx` Earth material | 0 KB | — | No texture to load, and it stays mono |
+
+  - Download: ISS (B) is at `assets.science.nasa.gov/content/dam/science/cds/3d/resources/model/international-space-station-(iss)-(b)/International%20Space%20Station%20(ISS)%20(B).glb`. Use lowercase `(b)` in the folder and leave the parentheses unencoded; any other form returns an HTML 404 page.
+  - Total before the first interaction: 40 KB (ISS small) plus the poster. All models together are about 1.4 MB, well under the 3 MB budget.
+- **Carousel.** Four cards on a turntable, built in R3F (already a dependency), DOM labels on top:
+  ISS, Moon Base, Pressurized rover, then Earth as a bonus card set slightly apart.
+  The center card is larger and lit.
+- **Earth card (bonus).**
+  - Earth is not a habitat preset: its air (21% O2, 101.3 kPa) matches the ISS, so the ranking uses the ISS
+    figures.
+  - Picking Earth turns the overlay card into **On Earth**: the Earth applications with sources (today's Earth section), not a top 3.
+  - The replay shows a 1 g flame for contrast: a teardrop beside the space sphere.
 - **Backdrop.** The picked base's environment behind the carousel: slow camera drift, fog, bloom, star field. It is the same scene the replay uses, so one load serves both.
 - **Budget.**
   - Load the first frame from a poster image. Swap in the 3D when it is ready.
@@ -180,7 +196,7 @@ Canva: the board's colours are now decided here (Daniel, 15 Nov). The Canva file
 | Compare | Compare sheet |
 | What-if (team models) | Team models sheet |
 | Gaps | Rank sheet, "What to test next" tab |
-| Earth | Interpret sheet, "On Earth" tab, or `[ own sheet ]` |
+| Earth | Fourth, bonus card in the base carousel; its overlay card shows "On Earth" (§7) |
 | Trust (How we know) | Library panel, "How answers are checked" |
 | Evidence drawer | Opens from any card over everything, as now |
 
@@ -211,7 +227,7 @@ replay in the center with a poster fallback). Waves 2 and 3 add the cool parts.
 |---|---|---|---|
 | 1 | S Shell | `App.tsx`, `app.css`, `styles/` (tokens, glass), layout grid, top nav, status strip, sheets | Yes |
 | 1 | T Top for this base | `src/top/` (new): top 3 + brief line over the replay, from `rankedFor` / `briefFor` | Yes |
-| 1 | M Sheets | Wrap Brief, Ranking, Compare, What-if, Gaps, Earth in sheets (markup only) | Yes |
+| 1 | M Sheets | Wrap Brief, Ranking, Compare, What-if, Gaps in sheets (markup only); Earth content reused by the Earth card | Yes |
 | 2 | K Replay center + carousel | `src/scenes/` (center mount, carousel, cross-fade), reuses saffire + lunar | Central |
 | 2 | A Ask panel | `src/ask/`: move to the right panel, drop target, scope chip | Locked feature |
 | 3 | L Library panel + rail | `src/library/` (new): sources, filters, pipeline steps | Extra |
@@ -224,8 +240,8 @@ Wave 1 lanes touch separate files, so they run side by side. K waits for S's cen
 
 1. ~~Replay-first or stage-hub?~~ Decided: replay central, required first (§5).
 2. ~~Canva colours?~~ Decided: mono dark glass (§6).
-3. Earth: Interpret tab or its own sheet?
-4. Which NASA models for the ISS and the rover? Do they pass the size budget?
+3. ~~Earth?~~ Decided: bonus fourth card in the carousel (§7).
+4. ~~Models?~~ Decided: ISS (B) + (A), SEV, HDU, shader Earth. Budget passes (§7).
 5. ~~Light mode?~~ Decided: no (§6).
 6. Does round 1 of the decision board still apply? Ask SI is now the white pill (§6), not amber. Phone padding, the rover label clip and
    section-link fixes carry over; the structure, nav, carousel and bottom-card cards are replaced by this PRD.
