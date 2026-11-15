@@ -73,7 +73,8 @@ describe("phone (390 wide)", () => {
   it("the Library and Ask bottom sheets stop under the carousel", () => {
     // At 80dvh they reached 169px from the top, over the carousel that ends at 220px.
     const vars = decls(phone, ".console");
-    expect(vars["--bottom-sheet-h"]).toMatch(/100dvh - var\(--top-h\) - var\(--carousel-h\)/);
+    // The guide bar sits between the top nav and the carousel, so its height comes off too.
+    expect(vars["--bottom-sheet-h"]).toMatch(/100dvh - var\(--top-h\) - var\(--guide-h, 0rem\) - var\(--carousel-h\)/);
     expect(decls(phone, ".console-left")["max-height"]).toBe("var(--bottom-sheet-h)");
     expect(decls(phone, ".console-right").height).toBe("var(--bottom-sheet-h)");
   });

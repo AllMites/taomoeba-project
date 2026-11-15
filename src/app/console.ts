@@ -3,6 +3,7 @@
 import type { DragEvent } from "react";
 import { create } from "zustand";
 import type { HabitatId } from "../contracts/index.ts";
+import { initialGuide, readStored, stepForView, stepOf, type Step } from "../guide/steps.ts";
 import { pickHabitat } from "./motion.ts";
 import { useStore } from "./store.ts";
 
@@ -25,6 +26,10 @@ export interface ConsoleState {
   askOpen: boolean;
   /** Investigation ids the next question is about: the chips above the Ask composer. */
   askAbout: string[];
+  /** The guide bar is showing (docs/RESKIN_PRD.md, section 16). */
+  guideOn: boolean;
+  /** The guide step that matches the console state; kept while the guide is hidden. */
+  guideStep: Step;
   setView: (v: View) => void;
   setLeftOpen: (open: boolean) => void;
   setAskOpen: (open: boolean) => void;
@@ -48,10 +53,23 @@ export function initialConsole(search: string, wide: boolean) {
 
 const inBrowser = typeof window !== "undefined" && typeof window.matchMedia === "function";
 const first = initialConsole(inBrowser ? window.location.search : "", inBrowser && window.matchMedia("(min-width: 1500px)").matches);
+
+/**
+ * The console state with the guide on top: `?guide=N` opens step N with that step's state, `?guide=0` hides the
+ * guide; otherwise the stored choice decides, and the step is the one the first view belongs to.
+ */
+export function withGuide<T extends { view: View; askOpen: boolean }>(state: T, guide: ReturnType<typeof initialGuide>) {
+  if (guide.step) {
+    const s = stepOf(guide.step);
+    return { ...state, view: s.view, askOpen: s.ask ? true : state.askOpen, guideOn: guide.on, guideStep: guide.step };
+  }
+  return { ...state, guideOn: guide.on, guideStep: stepForView(state.view) ?? (1 as Step) };
+}
+const start = withGuide(first, initialGuide(inBrowser ? window.location.search : "", inBrowser ? readStored() : null));
 if (first.base !== "moon") useStore.setState({ habitat: habitatOf(first.base) });
 
 export const useConsole = create<ConsoleState>((set) => ({
-  ...first,
+  ...start,
   askAbout: [],
   setView: (view) => set({ view }),
   setLeftOpen: (leftOpen) => set({ leftOpen }),

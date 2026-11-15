@@ -15,6 +15,7 @@ body { overflow: hidden; }
   height: 100dvh;
   grid-template:
     "top top top top" auto
+    "guide guide guide guide" auto
     "rail left center right" minmax(0, 1fr)
     "status status status status" auto
     / auto auto minmax(0, 1fr) auto;
@@ -321,7 +322,7 @@ body { overflow: hidden; }
   flex: none;
   width: 20rem;
   /* Never reaches up into the carousel: the center's height less the carousel and the gaps. */
-  max-height: calc(100dvh - var(--top-h) - var(--carousel-h) - 8rem);
+  max-height: calc(100dvh - var(--top-h) - var(--guide-h, 0rem) - var(--carousel-h) - 8rem);
   overflow-y: auto;
   border-radius: var(--radius-2);
 }
@@ -454,9 +455,10 @@ body { overflow: hidden; }
     --top-h: 7.5625rem;
     --carousel-h: 5.75rem;
     /* A bottom sheet stops under the carousel, so the base can still be seen and picked. */
-    --bottom-sheet-h: calc(100dvh - var(--top-h) - var(--carousel-h) - 2 * var(--space-2));
+    --bottom-sheet-h: calc(100dvh - var(--top-h) - var(--guide-h, 0rem) - var(--carousel-h) - 2 * var(--space-2));
     grid-template:
       "top" auto
+      "guide" auto
       "center" minmax(0, 1fr)
       "status" auto
       / minmax(0, 1fr);

@@ -1,6 +1,8 @@
 // The fixed parts around the replay: top bar with nav, icon rail, status strip. All take the console state as props.
 import { habitatOf, useConsole, type BaseId, type View } from "../app/console.ts";
 import type { HabitatPreset } from "../contracts/index.ts";
+import { setGuideOn } from "../guide/drive.ts";
+import { STEPS, stepForView } from "../guide/steps.ts";
 import { Icon } from "./icons.tsx";
 import { NAV, navId, toggleView } from "./logic.ts";
 
@@ -8,20 +10,47 @@ const num = (n: number) => `${Math.round(n * 10) / 10}`;
 
 type Panels = { view: View; leftOpen: boolean; askOpen: boolean };
 
-export function TopBar({ view, leftOpen, askOpen }: Panels) {
+/** The nav in the order of the guided path: the sheets that are steps by step number (the Research map goes with
+ * step 6, after Team models), then the rest as listed. */
+export const NAV_PATH = [...NAV].sort((a, b) => (stepForView(a.view) ?? 99) - (stepForView(b.view) ?? 99));
+const ASK_STEP = STEPS.find((s) => s.ask)!.n;
+
+/** A step's number on its nav button: "Step 2" to assistive tech, "2" on screen. */
+function StepNo({ n }: { n: number | null }) {
+  if (!n) return null;
+  return (
+    <span className="nav-step t-readout">
+      <span className="sr-only">Step </span>
+      {n}
+      <span className="sr-only">:</span>
+    </span>
+  );
+}
+
+export function TopBar({ view, leftOpen, askOpen, guide }: Panels & { guide?: boolean }) {
   const { setView, setLeftOpen, setAskOpen } = useConsole.getState();
+  const storeGuide = useConsole((s) => s.guideOn);
+  const guideOn = guide ?? storeGuide;
   return (
     <header className="console-top">
       <h1 className="brand t-display t-upper">Firebreak</h1>
       <nav className="console-nav" aria-label="Views">
         <ul>
+          {/* Hidden guide: this brings it back at the step the console is on. */}
+          {!guideOn && (
+            <li className="nav-item">
+              <button type="button" id="nav-guide" className="nav-btn" onClick={() => setGuideOn(true)}>
+                Guide
+              </button>
+            </li>
+          )}
           {/* Phone only: the rail is hidden there, so the Library toggle joins the chip row. */}
           <li className="nav-item nav-lib">
             <button type="button" className="nav-btn" aria-pressed={leftOpen} onClick={() => setLeftOpen(!leftOpen)}>
               Library
             </button>
           </li>
-          {NAV.map((n) => (
+          {NAV_PATH.map((n) => (
             <li key={n.view} className="nav-item">
               <button
                 type="button"
@@ -31,6 +60,7 @@ export function TopBar({ view, leftOpen, askOpen }: Panels) {
                 aria-describedby={`${navId(n.view)}-tip`}
                 onClick={() => setView(toggleView(view, n.view))}
               >
+                <StepNo n={STEPS.find((s) => s.view === n.view)?.n ?? null} />
                 {n.label}
               </button>
               <span id={`${navId(n.view)}-tip`} role="tooltip" className="nav-tip glass">
@@ -42,6 +72,7 @@ export function TopBar({ view, leftOpen, askOpen }: Panels) {
       </nav>
       <button type="button" className="ask-pill" aria-pressed={askOpen} onClick={() => setAskOpen(!askOpen)}>
         <span className="ask-dot" aria-hidden="true" />
+        <StepNo n={ASK_STEP} />
         Ask SI
       </button>
     </header>

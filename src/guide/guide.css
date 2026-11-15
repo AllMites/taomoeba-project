@@ -1,0 +1,138 @@
+/* The guide bar (docs/RESKIN_PRD.md, section 16.2). Its own grid row under the top nav (app.css), glass, one
+   hairline at its foot. Tokens only; spacing from 4, 8, 16, 24, 32px. */
+
+/* The bar's height until GuideBar measures it (with "Why this step" open it is more). */
+.console:has(> .console-guide) { --guide-h: 3rem; }
+
+.console-guide {
+  grid-area: guide;
+  position: relative;
+  z-index: 13;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  container: guide / inline-size;
+}
+
+.guide-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 3rem;
+  padding: 0 var(--space-4);
+  border-width: 0 0 1px;
+  border-radius: 0;
+}
+
+/* Count, name and instruction share the first baseline. */
+.guide-head {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  min-width: 0;
+  margin: 0;
+  padding: var(--space-1) 0;
+}
+.guide-count { flex: none; color: var(--label); font-variant-numeric: tabular-nums; }
+.guide-name { flex: none; font-weight: 600; color: var(--color-text); }
+.guide-do { min-width: 0; margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); }
+
+.guide-actions { flex: none; display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+.guide-btn {
+  flex: none;
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--color-text);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background-color var(--motion-fast) var(--ease);
+}
+.guide-btn:hover { background: var(--glass-hi); }
+.guide-btn[aria-expanded="true"] { border-color: var(--line-strong); background: var(--glass-hi); }
+.guide-btn:disabled { color: var(--label); background: transparent; cursor: default; }
+/* Next: glass with a strong outline. Ask SI stays the one solid white pill. */
+.guide-next { background: var(--glass); border-color: var(--color-text); }
+
+/* "Why this step": under the bar, in the flow, so it pushes the replay down instead of covering it. */
+.guide-more {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border-width: 0 0 1px;
+  border-radius: 0;
+}
+.guide-more[hidden] { display: none; }
+.guide-more > p { max-width: 64ch; margin: 0; }
+.guide-why-h { margin: 0; font-size: var(--text-xs); color: var(--label); }
+.guide-why { font-size: var(--text-sm); line-height: 1.5; color: var(--color-text); }
+.guide-links { display: flex; flex-wrap: wrap; gap: var(--space-2); padding-top: var(--space-2); }
+
+/* The compact form's parts; the wide form's parts are .guide-long. */
+.guide-short { display: none; }
+.guide-name-btn {
+  flex: 1 1 auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0 var(--space-2);
+  font: inherit;
+  text-align: left;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-1);
+  cursor: pointer;
+}
+.guide-name-btn .guide-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.guide-name-btn svg { flex: none; color: var(--label); }
+.guide-name-btn[aria-expanded="true"] svg { rotate: 180deg; }
+
+/* Narrow (the bar under 60rem, and every phone): one 48px row, "N/6", the step name and Next. A tap on the name
+   opens the instruction, "Why this step", Back and Hide guide. */
+@container guide (max-width: 60rem) {
+  .guide-long { display: none; }
+  .guide-count .guide-short { display: inline; }
+  .guide-name-btn.guide-short { display: inline-flex; }
+  .guide-more .guide-short { display: block; }
+  .guide-more .guide-links.guide-short { display: flex; }
+  .guide-bar { gap: var(--space-2); padding: 0 var(--space-2) 0 var(--space-4); }
+  .guide-head { flex: none; }
+  .guide-more .guide-do { color: var(--color-text); font-weight: 600; }
+}
+
+/* Step numbers on the nav buttons that are steps (chrome.tsx). */
+.nav-step { margin-right: var(--space-2); font-size: var(--text-xs); color: var(--label); }
+.nav-btn[aria-pressed="true"] .nav-step, .ask-pill .nav-step { color: inherit; }
+.ask-pill .nav-step { margin-right: 0; }
+
+/* The control to use next: a solid 2px outline. One pulse at most, none under reduced motion. */
+[data-guide-next] { outline: 2px solid var(--color-focus) !important; outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  [data-guide-next] { animation: guide-pulse var(--motion-slow) var(--ease) 1; }
+  @keyframes guide-pulse { from { outline-offset: var(--space-2); outline-color: transparent; } }
+}
+
+/* Phone with a sheet open: the sheet is full screen, so the bar docks at its foot, with "Why" opening above it. */
+@media (max-width: 47.5rem) {
+  .console:not([data-view="stage"]) > .console-guide {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 31;
+    flex-direction: column-reverse;
+  }
+  .console:not([data-view="stage"]) > .console-guide .guide-bar { border-width: 1px 0 0; }
+  .console:not([data-view="stage"]) > .console-guide .guide-more { border-width: 1px 0 0; }
+  .console:has(> .console-guide) .sheet-body { padding-bottom: calc(var(--guide-h) + var(--space-4)); }
+  /* Ask SI over a full-screen sheet covers the docked bar; the bar is back when Ask closes. */
+}
