@@ -44,7 +44,7 @@ export function homePose(base: BaseId, mode: Mode): Pose {
     if (base === "iss") return { pos: [-0.15, 0.78, 0.7], target: [0.45, 0.02, -0.3], fov: 66 };
     // Rover: from the back of the cockpit, high, over the bench toward the windshield.
     if (base === "rover") return { pos: [0.35, 0.68, 1.05], target: [0.45, 0.14, -0.35], fov: 60 };
-    if (base === "moon") return { pos: [0.15, 0.82, 1.8], target: [0.35, 0.12, -0.15], fov: 55 };
+    if (base === "moon" || base === "earth") return { pos: [0.15, 0.82, 1.8], target: [0.35, 0.12, -0.15], fov: 55 };
     const back = r.shape === "box" ? Math.min(1.5, r.size[2] / 2 - 0.15) : 0.85;
     return { pos: [0.55, 0.62, back], target: [0.7, 0, -0.05], fov: r.shape === "tube" ? 64 : 50 };
   }
