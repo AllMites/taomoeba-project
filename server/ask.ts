@@ -3,6 +3,7 @@ import type { HabitatId } from "../src/contracts/habitat.ts";
 import { preferReports, score, scoreCapped, type Bm25Index, type Chunk } from "./bm25.ts";
 import { addsFacts, coverage, expandQuery, inScope, MIN_COVERAGE, nums, quotesTooMuch, sentenceCount, wordCount } from "./checks.ts";
 import { findFacts, onlyDashboard, type DataFact } from "./facts.ts";
+import { pickFacts } from "./factpick.ts";
 import { callHaiku, jsonBlock, MODEL, type ChatMessage } from "./llm.ts";
 import { POOL, rerank } from "./rerank.ts";
 import { checkSupport } from "./support.ts";
@@ -474,7 +475,9 @@ export async function live(
   about: string[] = [],
 ): Promise<AskResult> {
   const licenses = extras.licenses ?? {};
-  const facts = findFacts(extras.facts ?? [], question);
+  // Haiku picks the data facts from a keyword pool (measured: reworded questions 3/31 -> 22/31 right, docs/lane-reports/rs-f.md);
+  // a ranking question, a missing key or a failed call keep the keyword matcher's answer.
+  const facts = (await pickFacts(extras.facts ?? [], question, env)).facts;
   if (onlyDashboard(facts)) return finish("", [], "live", facts); // the ranking is the answer: no model call
   const q = retrievalQuery(question, history);
   // 1. Wide keyword pool (max 2 chunks per source), searched with the data finding's terms too.

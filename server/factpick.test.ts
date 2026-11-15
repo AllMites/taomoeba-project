@@ -169,12 +169,18 @@ describe("POST /ask with factsOnly (eval only)", () => {
     expect(json.picker).toBe("fallback");
     expect(json.facts.map((f: { id: string }) => f.id)).toEqual(ids(findFacts(facts, q)));
   });
-  it("without factsOnly the picker and veto flags are ignored: a normal answer, keyword facts, no pick call", async () => {
+  it("without factsOnly the picker and veto flags are ignored: a normal answer picks its facts with the model, the same way with or without the flags", async () => {
     const api = siteApi();
-    const { json } = await post({ question: q, factPicker: "model", factVeto: false }, api.env);
+    const { json } = await post({ question: q, factPicker: "keyword", factVeto: false }, api.env);
     expect(json.mode).toBeDefined();
     expect(json.picker).toBeUndefined();
-    expect(api.kinds).not.toContain("pick");
+    expect(api.kinds.filter((k) => k === "pick")).toHaveLength(1);
+    expect((json.facts ?? []).map((f: { id: string }) => f.id)).toEqual(["flex-diluent-co2"]);
+    const plain = await post({ question: q }, siteApi().env);
+    expect(plain.json.facts).toEqual(json.facts);
+  });
+  it("a normal answer falls back to the keyword facts when the pick call fails", async () => {
+    const { json } = await post({ question: q }, siteApi("not json").env);
     expect((json.facts ?? []).map((f: { id: string }) => f.id)).toEqual(ids(findFacts(facts, q)));
   });
   it("bad values are a 400", async () => {

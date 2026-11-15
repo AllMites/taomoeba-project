@@ -21,3 +21,15 @@ The pool's ceiling, measured offline: the right fact is in the pool for 25/25 ol
 - No Haiku measurement and no `eval_ask.mjs` runs. `.dev.vars` holds only `SPEND_MODE`, with no `ANTHROPIC_API_KEY`, and no key is set in the environment. Reading `.env` was refused.
 - So the ship rule is unproven, and `pickFacts` is **not wired into `live()`**. The coordinator runs the eval on the deployed Worker. If it passes, wiring it in is one line in `server/ask.ts` `live()`: `const facts = (await pickFacts(extras.facts ?? [], question, env)).facts;`. `steps` and the site's pipeline list need no change, because `steps.facts` still counts the facts shown.
 - The veto decision (item 4) needs the eval's "haiku, no veto" against "haiku, veto in front" rows. Until then the veto stays in front.
+
+## Measured on the deployed Worker, 2026-11-15 (coordinator)
+
+`node scripts/rag/eval_facts.mjs https://flame-in-freefall.all-mites1.workers.dev`, 71 questions x 3 groups, 0 errors, 0 fallbacks.
+
+| Picker | Old cases right first | Old in the 2 | Reworded right first | Reworded in the 2 | "None" shown a fact | Model calls |
+|---|---|---|---|---|---|---|
+| keyword | 25/25 | 25/25 | 3/31 | 3/31 | 0/15 | 0 |
+| model, veto in front | 25/25 | 25/25 | 22/31 | 22/31 | 0/15 | 60 |
+| model, no veto | 25/25 | 25/25 | 23/31 | 23/31 | 0/15 | 65 |
+
+The ship rule passes for both model rows. `pickFacts` is now wired into `live()` with the veto in front (the default): one question of difference does not justify removing a guard. The quote-only path still runs `findFacts`.
