@@ -14,9 +14,9 @@ import Solids from "../solids/index.tsx";
 import Stage from "../scenes/Stage.tsx";
 import Carousel from "../shell/Carousel.tsx";
 import { Rail, StatusStrip, TopBar } from "../shell/chrome.tsx";
-import { Icon } from "../shell/icons.tsx";
 import { openRankOnHighlight } from "../shell/logic.ts";
 import Sheet from "../shell/Sheet.tsx";
+import SidePanel, { PanelHead } from "../shell/SidePanel.tsx";
 import TopForBase, { BriefLine } from "../top/index.tsx";
 import Trust from "../trust/index.tsx";
 import WhatIf from "../whatif/index.tsx";
@@ -82,7 +82,7 @@ function Limits({ limits }: { limits: ReturnType<typeof limitsFrom> | null }) {
 }
 
 // One screen (docs/RESKIN_PRD.md). The replay fills the center; the base carousel, the brief line and the top 3
-// sit over it on glass. Library opens on the left, Ask SI on the right. Each nav view is a sheet over the replay.
+// sit over it on glass. Library on the left, Ask SI on the right: each minimized to a strip, peeked over the replay, or pinned beside it. Each nav view is a sheet over the replay.
 // Evidence is the detail drawer; it shows itself when the store has a selected investigation.
 export default function App() {
   const habitats = useDataset("habitats");
@@ -102,17 +102,14 @@ export default function App() {
       <a className="skip" href="#main">Skip to content</a>
       <div className="console" data-view={view} data-left={leftOpen} data-ask={askOpen}>
         <TopBar view={view} leftOpen={leftOpen} askOpen={askOpen} />
-        <Rail view={view} leftOpen={leftOpen} askOpen={askOpen} />
-        <aside className="console-left" aria-label="Library" hidden={!leftOpen}>
-          <header className="panel-head">
-            <span className="t-readout">Library</span>
-            <button type="button" className="icon-btn" aria-label="Close Library" onClick={() => useConsole.getState().setLeftOpen(false)}>
-              <Icon name="x" />
-            </button>
-          </header>
-          <Library />
-          <Trust />
-        </aside>
+        <Rail view={view} />
+        <SidePanel panel="left">
+          <PanelHead panel="left" />
+          <div className="panel-scroll">
+            <Library />
+            <Trust />
+          </div>
+        </SidePanel>
         <main id="main" className="console-center" tabIndex={-1}>
           <Carousel base={base} habitats={habitats.status === "ready" ? habitats.data : null} />
           <Stage />
@@ -156,9 +153,9 @@ export default function App() {
             </Sheet>
           )}
         </main>
-        <aside className="console-right" aria-label="Ask SI" hidden={!askOpen}>
+        <SidePanel panel="ask">
           <Ask />
-        </aside>
+        </SidePanel>
         <StatusStrip
           base={base}
           habitats={habitats.status === "ready" ? habitats.data : null}

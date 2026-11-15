@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState, type DragEvent, type KeyboardEvent, type RefObject } from "react";
 import { DRAG_TYPE } from "../app/console.ts";
+import { PanelHead } from "../shell/SidePanel.tsx";
 import { answerSourceIds, citationText } from "./cite.ts";
 import {
   factKind,
@@ -182,7 +183,8 @@ export const isCardDrag = (types: readonly string[] | undefined) => !!types && A
 
 /**
  * The chat panel. It fills the box the shell gives it (the right-hand panel; a bottom sheet on a phone) and is
- * always in the page, hidden while closed. The thread is passed in from above it, so closing and reopening keeps
+ * always in the page: the shell (src/shell/SidePanel.tsx) minimizes, peeks and pins it, and owns its background,
+ * hairline and header frame. `open` is pinned. The thread is passed in from above it, so closing and reopening keeps
  * the conversation. An experiment card dropped anywhere on it scopes the next question to that experiment.
  */
 export function Panel(p: PanelProps) {
@@ -207,8 +209,8 @@ export function Panel(p: PanelProps) {
   return (
     <section
       ref={p.panelRef}
-      className="ask-panel glass"
-      hidden={!p.open}
+      className="ask-panel"
+      data-open={p.open}
       aria-labelledby="ask-panel-h"
       data-drop={dropping ? "true" : undefined}
       onKeyDown={(e) => {
@@ -219,22 +221,18 @@ export function Panel(p: PanelProps) {
       onDragLeave={(e) => drag(e, -1)}
       onDrop={drop}
     >
-      <header className="ask-panel-head">
-        <h2 id="ask-panel-h" className="ask-panel-h t-readout">
-          Ask SI
-        </h2>
-        <div className="ask-panel-actions">
-          {!first && (
+      <PanelHead
+        panel="ask"
+        headingId="ask-panel-h"
+        actions={
+          !first && (
             <button type="button" className="ask-btn" onClick={p.onReset}>
               New chat
             </button>
-          )}
-          <button type="button" className="ask-btn" onClick={p.onClose}>
-            Close
-          </button>
-        </div>
-        <p className="ask-writer muted">{writerLine(p.lastResult)}</p>
-      </header>
+          )
+        }
+      />
+      <p className="ask-writer muted">{writerLine(p.lastResult)}</p>
 
       <div className="ask-body" ref={p.bodyRef}>
         {first ? (

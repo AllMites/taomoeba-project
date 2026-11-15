@@ -1,6 +1,6 @@
 /*
- * Ask SI panel. It fills the box the shell gives it (aside.console-right, 360px wide; a bottom sheet on a phone).
- * Mono: tokens only, no hue. Spacing from the token scale (4/8/12/16/24/32 px). Glass comes from .glass (base.css).
+ * Ask SI panel. It fills the box the shell gives it (aside.console-right, 340px wide; a bottom sheet on a phone).
+ * Mono: tokens only, no hue. Spacing from the token scale (4/8/12/16/24/32 px).
  */
 .ask-panel {
   position: relative;
@@ -13,12 +13,7 @@
   color: var(--color-text);
   overflow: hidden;
 }
-/* One hairline on the side that meets the replay: the left edge beside it, the top edge as a phone sheet. */
-.ask-panel.glass { border-width: 0 0 0 1px; }
-@media (max-width: 760px) {
-  .ask-panel.glass { border-width: 1px 0 0; }
-}
-.ask-panel[hidden] { display: none; }
+/* Background, hairline and header frame come from the shell (.panel-box, .panel-head in src/app/app.css): one of each per panel. */
 
 /* Buttons in the panel: transparent with a hairline. The one solid pill on the screen is in the top bar. */
 .ask-btn {
@@ -38,19 +33,8 @@
 .ask-btn[aria-disabled="true"] { color: var(--color-text-muted); cursor: not-allowed; }
 .ask-btn:focus-visible, .ask-chip:focus-visible, .ask-about-x:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 
-.ask-panel-head {
-  flex: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-3);
-  align-items: baseline;
-  justify-content: space-between;
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--line);
-}
-.ask-panel-h { flex: 1 1 auto; margin: 0; color: var(--color-text); }
-.ask-writer { flex-basis: 100%; margin: 0; overflow-wrap: anywhere; }
-.ask-panel-actions { display: flex; gap: var(--space-2); }
+/* Who wrote the last answer: one quiet line under the shared header, on the same inset as the thread. */
+.ask-writer { flex: none; margin: 0; padding: var(--space-3) var(--space-4) 0; overflow-wrap: anywhere; }
 
 .ask-body { position: relative; flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: var(--space-4); }
 .ask-empty { display: grid; gap: var(--space-3); }
