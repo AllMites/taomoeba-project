@@ -48,6 +48,13 @@ describe("the console never scrolls", () => {
   });
 });
 
+describe("no hue in the UI", () => {
+  it("native checkboxes, radios and sliders take the bone white, not the browser's blue", () => {
+    // The Research map's link checkboxes and the replay's past/now radios rendered blue.
+    expect(decls(read("../styles/base.css"), ":root")["accent-color"]).toBe("var(--color-accent)");
+  });
+});
+
 describe("phone (390 wide)", () => {
   const phone = atRule(appCss, "@media (max-width: 47.5rem)");
   it("Ask SI opens over a full-screen sheet, so Ask about this in the Rank sheet shows the chat", () => {
