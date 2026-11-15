@@ -310,6 +310,15 @@ export default function Stage() {
   const mod = loaded[current.scene];
   const section = useRef<HTMLElement>(null);
   const zone = useFlameZone(section, current.scene === "lunar" ? 1 : 0, shown);
+  // The bar and the nav sit under the caption: on a phone the caption wraps, so they follow its real height.
+  useLayoutEffect(() => {
+    const el = section.current;
+    const cap = el?.querySelector<HTMLElement>(".stage-caption-text");
+    if (!el || !cap || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => el.style.setProperty("--stage-caption-h", `${cap.offsetHeight}px`));
+    ro.observe(cap);
+    return () => ro.disconnect();
+  }, [shown]);
   useTicker();
   // A new timeline (another scene, base or setting) plays from its start, except under reduced motion.
   const tlKey = usePlayback((s) => s.timeline?.key);
