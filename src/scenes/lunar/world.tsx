@@ -19,7 +19,7 @@ export const PALETTE = {
 
 const BASE = `${import.meta.env.BASE_URL}models/lunar/`;
 export const MODEL_URLS = { hdu: `${BASE}hdu.glb`, sev: `${BASE}sev.glb`, astronaut: `${BASE}astronaut.glb` } as const;
-const DRACO = `${BASE}draco/`;
+export const DRACO = `${BASE}draco/`;
 
 /** Where things stand, metres, Y up. HDU at the origin. */
 const LAYOUT = {
