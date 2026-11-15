@@ -279,9 +279,9 @@
 /* The brief and the top-3 card leave no room at the bottom: the bar takes the row under the caption and the picker. */
 @container stage (max-width: 80rem) {
   .stage-caption { right: calc(var(--space-4) + var(--stage-pick-w, 17rem) + var(--space-2)); }
-  .stage-play { left: var(--space-4); right: var(--space-4); width: auto; transform: none; bottom: auto; top: calc(var(--stage-top) + 3.25rem + var(--space-2)); }
-  .stage-nav { left: auto; right: var(--space-4); transform: none; bottom: auto; top: calc(var(--stage-top) + 3.25rem + 4.75rem + var(--space-3)); }
-  .stage-scene { --replay-top: calc(var(--stage-top) + 3.25rem + 4.75rem + var(--space-4)); --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4)); }
+  .stage-play { left: var(--space-4); right: var(--space-4); width: auto; transform: none; bottom: auto; top: calc(var(--stage-top) + max(3.25rem, var(--stage-caption-h, 0px) + var(--space-1)) + var(--space-2)); }
+  .stage-nav { left: auto; right: var(--space-4); transform: none; bottom: auto; top: calc(var(--stage-top) + max(3.25rem, var(--stage-caption-h, 0px) + var(--space-1)) + 4.75rem + var(--space-3)); }
+  .stage-scene { --replay-top: calc(var(--stage-top) + max(3.25rem, var(--stage-caption-h, 0px) + var(--space-1)) + 4.75rem + var(--space-4)); --replay-bottom: calc(var(--console-safe-bottom, 0rem) + var(--space-4)); }
   /* No room for the hint beside the flame's labels here; the stage's label still says how to move. */
   .stage-hint { display: none; }
 }

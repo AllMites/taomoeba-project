@@ -49,3 +49,10 @@ describe("center replay, before any 3D has loaded (and for good where it cannot 
     expect(html).toContain("No fire experiment on record ran in Moon gravity.");
   });
 });
+
+it("on a narrow stage the bar sits under the caption's real height, so a wrapped caption is not covered", async () => {
+  const { readFileSync } = await import("node:fs");
+  const css = readFileSync(new URL("./stage.css", import.meta.url), "utf8");
+  const play = css.match(/\.stage-play \{[^}]*top: calc\(([^;]*)\);/)?.[1] ?? "";
+  expect(play).toContain("var(--stage-caption-h");
+});

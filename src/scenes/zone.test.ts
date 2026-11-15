@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { FLAME_SIZES, flameLayout, freeZone, type Rect } from "./zone.ts";
+import { FLAME_SIZES, flameLayout, freeZone, roomAbove, type Rect } from "./zone.ts";
 
 const inside = (a: Rect, b: Rect) => a.x >= b.x && a.y >= b.y && a.x + a.w <= b.x + b.w && a.y + a.h <= b.y + b.h;
 const overlaps = (a: Rect, b: Rect) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
@@ -64,5 +64,17 @@ describe("clear zone in the replay", () => {
 
   it("returns an empty zone when the box is covered", () => {
     expect(freeZone({ w: 400, h: 400 }, [{ x: 0, y: 0, w: 400, h: 400 }], 2).s).toBe(0);
+  });
+});
+
+describe("Saffire fact chips stay out of the top-3 card (P2-7)", () => {
+  const stack = { x: 1000, y: 120, w: 272, h: 420 };
+  it("stops the stack above a card under it, by the margin", () => {
+    expect(roomAbove(stack, { x: 940, y: 390, w: 320, h: 380 })).toBe(390 - 12 - 120);
+  });
+  it("lets it run when the card is elsewhere, gone or above it", () => {
+    expect(roomAbove(stack, { x: 20, y: 390, w: 320, h: 380 })).toBeNull();
+    expect(roomAbove(stack, null)).toBeNull();
+    expect(roomAbove(stack, { x: 1000, y: 0, w: 300, h: 100 })).toBeNull();
   });
 });

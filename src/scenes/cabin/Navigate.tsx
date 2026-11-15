@@ -4,10 +4,12 @@ import { useEffect, useRef } from "react";
 import { Spherical, Vector3, type PerspectiveCamera } from "three";
 import type { OrbitControls as Controls } from "three-stdlib";
 import { usePlayback } from "../playback.ts";
-import type { Pose } from "./layout.ts";
+import { keepInView, type Pose, type Room, type V3 } from "./layout.ts";
 
 const S = new Spherical();
 const V = new Vector3();
+const CAM: V3 = [0, 0, 0];
+const TGT: V3 = [0, 0, 0];
 
 /**
  * Drag to orbit, wheel or pinch to zoom, right-drag or two fingers to pan, with damping and limits. The camera starts
@@ -20,6 +22,10 @@ export function Navigate({
   minDistance = 0.12,
   maxDistance = 3.5,
   follow,
+  focus,
+  leash = 0.1,
+  room,
+  maxPolar = Math.PI - 0.15,
 }: {
   home?: Pose;
   calm: boolean;
@@ -27,6 +33,13 @@ export function Navigate({
   maxDistance?: number;
   /** A scene with its own camera rig: the rig moves the camera until the viewer does; orbit then pivots on this point. */
   follow?: Vector3;
+  /** The fire: the orbit point stays within `leash` x the camera distance of it, so pan and zoom keep it in view. */
+  focus?: V3;
+  leash?: number;
+  /** The cabin: the camera stays inside its walls. */
+  room?: Room;
+  /** Lowest the camera may tilt, radians from straight down onto the scene (a cabin: not under the bench). */
+  maxPolar?: number;
 }) {
   const rig = !!follow;
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
@@ -69,13 +82,13 @@ export function Navigate({
     V.copy(camera.position).sub(c.target);
     S.setFromVector3(V);
     S.theta += nudge.orbit;
-    S.phi = Math.min(Math.PI - 0.15, Math.max(0.15, S.phi + nudge.tilt));
+    S.phi = Math.min(maxPolar, Math.max(0.15, S.phi + nudge.tilt));
     S.radius = Math.min(maxDistance, Math.max(minDistance, S.radius * (nudge.zoom || 1)));
     V.setFromSpherical(S);
     camera.position.copy(c.target).add(V);
     c.update();
     invalidate();
-  }, [nudge, camera, invalidate, minDistance, maxDistance]);
+  }, [nudge, camera, invalidate, minDistance, maxDistance, maxPolar]);
 
   return (
     <OrbitControls
@@ -86,8 +99,18 @@ export function Navigate({
       minDistance={minDistance}
       maxDistance={maxDistance}
       minPolarAngle={0.15}
-      maxPolarAngle={Math.PI - 0.15}
+      maxPolarAngle={maxPolar}
       onStart={() => usePlayback.getState().steer()}
+      onChange={() => {
+        const c = controls.current;
+        if (!c || !focus) return;
+        camera.position.toArray(CAM);
+        c.target.toArray(TGT);
+        if (!keepInView(CAM, TGT, focus, leash, room)) return;
+        camera.position.fromArray(CAM);
+        c.target.fromArray(TGT);
+        camera.lookAt(c.target);
+      }}
     />
   );
 }

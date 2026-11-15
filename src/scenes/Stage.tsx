@@ -310,6 +310,23 @@ export default function Stage() {
   const mod = loaded[current.scene];
   const section = useRef<HTMLElement>(null);
   const zone = useFlameZone(section, current.scene === "lunar" ? 1 : 0, shown);
+  // The bar and the nav sit under the caption: on a phone the caption wraps, so they follow its real height. A
+  // scene's side panel stops above the brief, or near the bottom when the console folds the brief into its bar.
+  useLayoutEffect(() => {
+    const el = section.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const cap = el.querySelector<HTMLElement>(".stage-caption-text");
+    const brief = el.parentElement?.querySelector<HTMLElement>(".console-brief");
+    const fit = () => {
+      if (cap) el.style.setProperty("--stage-caption-h", `${cap.offsetHeight}px`);
+      const b = brief?.getBoundingClientRect();
+      el.style.setProperty("--replay-brief", b?.height ? `${Math.max(0, el.getBoundingClientRect().bottom - b.top)}px` : "calc(var(--console-safe-bottom, 0rem) + 1rem)");
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    for (const o of [el, cap, brief]) if (o) ro.observe(o);
+    return () => ro.disconnect();
+  }, [shown]);
   useTicker();
   // A new timeline (another scene, base or setting) plays from its start, except under reduced motion.
   const tlKey = usePlayback((s) => s.timeline?.key);

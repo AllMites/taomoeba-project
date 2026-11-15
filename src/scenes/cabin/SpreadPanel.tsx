@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { askAbout, useConsole } from "../../app/console.ts";
 import { useStore } from "../../app/store.ts";
 import { useDataset } from "../../data/useDataset.ts";
@@ -67,14 +67,20 @@ export function SpreadPanel({ air, g, doc, fabric }: { air: string; g: Gravity; 
   const [open, setOpen] = useState(false);
   const picked = usePlayback((s) => s.picked);
   const o = OBJECTS.find((x) => x.id === picked);
+  const form = useRef<HTMLFormElement>(null);
+  // The card sits at the top of the panel: a pick (in 3D or in the list) brings it into view.
+  useEffect(() => {
+    if (picked) form.current?.scrollTo({ top: 0 });
+  }, [picked]);
   return (
     <div className="burn" data-open={open || undefined}>
       <button type="button" className="burn-toggle glass" aria-expanded={open} aria-controls={`${id}-panel`} onClick={() => setOpen((v) => !v)}>
         Objects
       </button>
-      <form id={`${id}-panel`} className="burn-panel glass" aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
+      <form ref={form} id={`${id}-panel`} className="burn-panel glass" aria-label="Fire spread settings" onSubmit={(e) => e.preventDefault()}>
         <p className="burn-h">Fire in this base, {air}</p>
         <p className="burn-support">Times and speeds are illustrative, scaled by oxygen. Pick an object to see what it is and what the tests say.</p>
+        {o && <Card o={o} g={g} doc={doc} fabric={fabric} />}
         <div className="spread-list" role="group" aria-label="Objects in the cabin">
           {OBJECTS.map((x) => (
             <button
@@ -89,7 +95,6 @@ export function SpreadPanel({ air, g, doc, fabric }: { air: string; g: Gravity; 
             </button>
           ))}
         </div>
-        {o && <Card o={o} g={g} doc={doc} fabric={fabric} />}
       </form>
     </div>
   );

@@ -28,8 +28,12 @@ function Thing({ o, g, lit, soot }: { o: CabinObject; g: Gravity; lit: boolean; 
       onPointerOver={(e) => {
         e.stopPropagation();
         setHover(true);
+        document.body.style.cursor = "pointer";
       }}
-      onPointerOut={() => setHover(false)}
+      onPointerOut={() => {
+        setHover(false);
+        document.body.style.cursor = "";
+      }}
       onClick={(e) => {
         e.stopPropagation();
         usePlayback.getState().pick(picked ? null : o.id);
@@ -44,7 +48,7 @@ function Thing({ o, g, lit, soot }: { o: CabinObject; g: Gravity; lit: boolean; 
         opacity={o.id === "window" ? 0.35 : 1}
         emissive={lit ? "#1a0d04" : "#000000"}
       />
-      {(hover || picked) && <Edges color={PAINT.outline} threshold={15} />}
+      {(hover || picked) && <Edges color={PAINT.outline} threshold={15} lineWidth={2.5} />}
     </mesh>
   );
 }

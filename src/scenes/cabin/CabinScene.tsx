@@ -215,7 +215,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
       >
         <FirstFrame />
         <Cabin base={base} />
-        <Navigate home={home} calm={calm} />
+        <Navigate home={home} calm={calm} focus={mode === "spread" ? home.target : DROPLET.at} leash={mode === "spread" ? 0.3 : 0.1} room={room} maxPolar={1.75} />
         <LensShift home={home} focus={mode === "spread" ? home.target : DROPLET.at} />
         {mode === "spread" ? <SpreadSet st={st} air={air} calm={calm} chips={fire ?? undefined} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
         <ChipTracker chips={chips} refs={chipEls} />

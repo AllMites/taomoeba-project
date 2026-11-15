@@ -143,7 +143,7 @@
 .spread-obj:hover { background: var(--glass-hi); }
 .spread-obj[aria-pressed="true"] { border-color: var(--color-text); }
 .spread-obj:focus-visible, .spread-btn:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.spread-card { display: grid; gap: var(--space-2); padding-top: var(--space-2); border-top: 1px solid var(--line-strong); }
+.spread-card { display: grid; gap: var(--space-2); padding-bottom: var(--space-2); border-bottom: 1px solid var(--line-strong); }
 .spread-card-h { margin: 0; font-size: var(--text-sm); font-weight: 600; }
 .spread-burns, .spread-text { margin: 0; font-size: var(--text-xs); line-height: 1.45; }
 .spread-src { color: var(--color-text-muted); }
