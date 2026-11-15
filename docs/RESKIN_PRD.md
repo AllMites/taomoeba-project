@@ -374,3 +374,37 @@ New folder `src/guide/` (steps data, bar component, css, tests). Mount in `src/a
 - A test that each step sets the stated console state, and that a state change by hand maps back to the right step.
 - A test that `?guide=N` and the localStorage choice are read.
 - Seen in a real browser at 1440x900, 1280x720 and 390x844.
+
+## 17. Scene detail: each base is its own place (owner request, 2026-11-15)
+
+Problem: the four cabins look the same and read as a bunch of cubes. The owner wants a detailed environment, built differently for each base.
+
+### 17.1 Rules that hold
+
+- Detail comes from form, light and surface, not from colour. Scene materials stay neutral (greys, off-white, dark metal). The flame, the smoke and one small screen glow per base are the only light sources that draw the eye. No new saturated colours.
+- Built in code with three.js and the installed `@react-three/drei` (RoundedBox, Instances, Edges, Text and the like). No new dependency, no downloaded model, no texture file over 50 KB. Canvas-drawn textures are fine.
+- The story does not change: `src/scenes/spread/story.ts` positions (ignition points, vent, detector, locker, airflow) and the picked-object ids keep their meaning. If a prop moves, the story position it stands for moves with it, in one place.
+- Camera limits and home poses (`layout.ts`) still hold: the fire is in view at home, and the camera stays inside the walls.
+- Speed: the scene must still reach its first frame in about one second and hold a smooth frame rate on a laptop with integrated graphics. Budget: under 150 draw calls per base (use instancing and merged geometry), no real-time shadow maps, no post-processing pass. Measure with `renderer.info.render.calls` and report it.
+- Every object the viewer can pick keeps a readable name, and it must look like what it is named: cloth looks like cloth, a cable like a cable.
+
+### 17.2 The four places
+
+| Base | What it must read as at a glance | Required set pieces |
+|---|---|---|
+| ISS | A station lab module: a tube with no floor, every wall in use | Four walls of rack fronts with seams and latches; handrails; a hatch ring at each end; cable bundles along a standoff; a laptop on an arm; soft stowage bags held by straps; an air diffuser grille (the vent); the work bench as a glovebox-style frame; a round window with Earth |
+| Moon Base | A surface habitat with weight: things rest on a floor | Curved shell with ribs; a floor of panels; a workbench on legs; an airlock hatch with a wheel; bunks or a suit rack; a plant rack with a grow light (the one glow); storage crates stacked; a window with the grey horizon and Earth small above it |
+| Pressurized rover | A cramped vehicle cockpit | Two seats with headrests; a wide windshield with the lunar surface; a dashboard with screens and a hand controller; overhead stowage; side hatches; ribbed floor; everything within arm's reach |
+| Earth | An ordinary lab room on Earth | Lab bench with stools; a fume hood; ceiling light panels; a door; a window with daylight; shelves; things sit on surfaces and hang down, so gravity is visible |
+
+The three start points (cloth near the air vent, paper on the desk, foam pad by the bench) keep their ids and map to a fitting prop in each base: for example in the rover the cloth is a seat cover by the cabin vent, the paper is a checklist on the dashboard, and the foam is a seat cushion.
+
+### 17.3 Props, not cubes
+
+Replace each cube stand-in with a shaped prop: cloth as a draped, slightly folded sheet; paper as a small stack with one sheet lifted; foam as a rounded pad; cable as tubes in a bundle with ties; the locker with a door seam, hinge and handle; the detector as a ceiling disc with a ring light; the vent as a slatted grille. Burn and char states still apply to the same meshes or their stand-ins.
+
+### 17.4 Checks
+
+- A test that every base defines all required story anchors and all three start points, inside its room bounds.
+- Screenshots of each base at home pose and one close view of the props, at 1440x900 and 390x844, saved with the lane report. The coordinator looks at them before shipping.
+- Draw calls and first-frame time per base, reported.

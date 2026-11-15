@@ -1,7 +1,7 @@
 # Firebreak: 30-second demo video script
 
 Status: draft 1. Locked choices: hybrid film (animated open and end card, real captures of the live site between them), narration on, 16:9.
-Open: who records the voice; required length and format per the submission rules (not read yet).
+Voice: a generated voice as the timing track first; a teammate may record over it. Open: required length and format per the submission rules (not read yet).
 
 ## The one idea
 
@@ -13,7 +13,7 @@ The middle of the film follows the guided path on the site (docs/RESKIN_PRD.md s
 
 | Time | Picture | Narration (about 78 words in all) | On-screen text |
 |---|---|---|---|
-| 0.0 to 4.0 | Black. A blue flame ball fades up, round, not rising. | NASA has burned things in orbit and on Earth. Never in Moon gravity. | No fire test has run in Moon gravity. |
+| 0.0 to 4.0 | Black. A blue flame ball fades up, round, not rising. | NASA has burned things in orbit and on Earth. None of those tests ran in Moon gravity. | No fire test has run in Moon gravity. |
 | 4.0 to 7.5 | The flame shrinks into the Firebreak console. | Firebreak turns those experiments into answers for one habitat. | Firebreak |
 | 7.5 to 11.0 | Step 1 and 2: pick Moon Base; the ranked list opens. | Pick a base. Its air decides which experiments matter most. | 1 Pick your base. 2 See what matters most. |
 | 11.0 to 14.5 | Step 3: Interpret sheet, lead sentence, then "What the data cannot tell you". | Read what the evidence means, and what it cannot tell you. | 3 Read what it means. |
