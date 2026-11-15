@@ -160,7 +160,7 @@
   "id": "flex-dext-share-he-methanol",
   "dataset": "PSI-69 FLEX experiment table (cleaned)",
   "source": "psi:PSI-69",
-  "statement": "For methanol in the FLEX table, the share of the droplet left when the flame went out (extinction diameter divided by initial diameter) tends to be larger with more helium: rank correlation 0.31 over 60 runs, 22 of them with helium.",
+  "statement": "For methanol droplets in the FLEX table, the flame went out sooner, with more of the droplet still unburned, in runs with more helium (a weak trend): rank correlation 0.31 between helium fraction and extinction diameter divided by initial diameter, over 60 runs, 22 of them with helium.",
   "numbers": [
    "0.31",
    "22",
@@ -168,13 +168,13 @@
   ],
   "keywords": "helium he put out extinguish extinguishes suppress suppressant flame goes out sooner earlier extinction Methanol droplet FLEX",
   "method": "Spearman correlation between he fraction and extinction diameter / initial diameter, over runs without co2",
-  "caveat": "A larger share left means the flame went out sooner. Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
+  "caveat": "Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
  },
  {
   "id": "flex-dext-share-he-heptane",
   "dataset": "PSI-69 FLEX experiment table (cleaned)",
   "source": "psi:PSI-69",
-  "statement": "For heptane in the FLEX table, the share of the droplet left when the flame went out (extinction diameter divided by initial diameter) shows no clear trend with helium: rank correlation -0.10 over 40 runs, 16 of them with helium.",
+  "statement": "For heptane droplets in the FLEX table, the flame went out neither clearly sooner nor clearly later in runs with more helium: rank correlation -0.10 between helium fraction and extinction diameter divided by initial diameter, over 40 runs, 16 of them with helium.",
   "numbers": [
    "0.10",
    "16",
@@ -182,7 +182,7 @@
   ],
   "keywords": "helium he put out extinguish extinguishes suppress suppressant flame goes out sooner earlier extinction Heptane droplet FLEX",
   "method": "Spearman correlation between he fraction and extinction diameter / initial diameter, over runs without co2",
-  "caveat": "A larger share left means the flame went out sooner. Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
+  "caveat": "Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
  },
  {
   "id": "flex-diluent-co2",
@@ -204,7 +204,7 @@
   "id": "flex-dext-share-co2-methanol",
   "dataset": "PSI-69 FLEX experiment table (cleaned)",
   "source": "psi:PSI-69",
-  "statement": "For methanol in the FLEX table, the share of the droplet left when the flame went out (extinction diameter divided by initial diameter) tends to be larger with more carbon dioxide: rank correlation 0.39 over 94 runs, 56 of them with carbon dioxide.",
+  "statement": "For methanol droplets in the FLEX table, the flame went out sooner, with more of the droplet still unburned, in runs with more carbon dioxide (a weak trend): rank correlation 0.39 between carbon dioxide fraction and extinction diameter divided by initial diameter, over 94 runs, 56 of them with carbon dioxide.",
   "numbers": [
    "0.39",
    "56",
@@ -212,13 +212,13 @@
   ],
   "keywords": "carbon dioxide co2 put out extinguish extinguishes suppress suppressant flame goes out sooner earlier extinction Methanol droplet FLEX",
   "method": "Spearman correlation between co2 fraction and extinction diameter / initial diameter, over runs without he",
-  "caveat": "A larger share left means the flame went out sooner. Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
+  "caveat": "Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
  },
  {
   "id": "flex-dext-share-co2-heptane",
   "dataset": "PSI-69 FLEX experiment table (cleaned)",
   "source": "psi:PSI-69",
-  "statement": "For heptane in the FLEX table, the share of the droplet left when the flame went out (extinction diameter divided by initial diameter) tends to be larger with more carbon dioxide: rank correlation 0.24 over 64 runs, 40 of them with carbon dioxide.",
+  "statement": "For heptane droplets in the FLEX table, the flame went out sooner, with more of the droplet still unburned, in runs with more carbon dioxide (a weak trend): rank correlation 0.24 between carbon dioxide fraction and extinction diameter divided by initial diameter, over 64 runs, 40 of them with carbon dioxide.",
   "numbers": [
    "0.24",
    "40",
@@ -226,7 +226,7 @@
   ],
   "keywords": "carbon dioxide co2 put out extinguish extinguishes suppress suppressant flame goes out sooner earlier extinction Heptane droplet FLEX",
   "method": "Spearman correlation between co2 fraction and extinction diameter / initial diameter, over runs without he",
-  "caveat": "A larger share left means the flame went out sooner. Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
+  "caveat": "Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test."
  },
  {
   "id": "cfig-runs",

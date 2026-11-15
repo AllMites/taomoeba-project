@@ -132,15 +132,17 @@ for dil, col in (("helium", "he"), ("carbon dioxide", "co2")):
         k = sum(1 for x in sub if num(x[col]))
         if k > 5:
             rho = spearman([num(x[col]) or 0.0 for x in sub], [num(x["dext"]) / num(x["d0"]) for x in sub])
-            trend = (f"tends to be larger with more {dil}" if rho >= 0.2 else f"tends to be smaller with more {dil}" if rho <= -0.2
-                     else f"shows no clear trend with {dil}")
+            # Said as sooner/later, not as a ratio: the summary writer read "share left is larger" backwards.
+            size = "weak" if abs(rho) < 0.4 else "moderate" if abs(rho) < 0.6 else "strong"
+            trend = (f"the flame went out sooner, with more of the droplet still unburned, in runs with more {dil} (a {size} trend)" if rho >= 0.2
+                     else f"the flame went out later, with less of the droplet left, in runs with more {dil} (a {size} trend)" if rho <= -0.2
+                     else f"the flame went out neither clearly sooner nor clearly later in runs with more {dil}")
             add(f"flex-dext-share-{col}-{fuel.lower()}", FLEX, "PSI-69",
-                f"For {fuel.lower()} in the FLEX table, the share of the droplet left when the flame went out (extinction diameter "
-                f"divided by initial diameter) {trend}: rank correlation {r(rho)} over {len(sub)} runs, {k} of them with {dil}.",
+                f"For {fuel.lower()} droplets in the FLEX table, {trend}: rank correlation {r(rho)} between {dil} fraction and "
+                f"extinction diameter divided by initial diameter, over {len(sub)} runs, {k} of them with {dil}.",
                 f"{dil} {col} put out extinguish extinguishes suppress suppressant flame goes out sooner earlier extinction {fuel} droplet FLEX",
                 f"Spearman correlation between {col} fraction and extinction diameter / initial diameter, over runs without {other}",
-                "A larger share left means the flame went out sooner. Oxygen and pressure also differ between runs, so this is a "
-                "pattern in the table, not a controlled test.")
+                "Oxygen and pressure also differ between runs, so this is a pattern in the table, not a controlled test.")
 
 # ---------------- 2. CFI-G table (PSI-159) ----------------
 CFIG = "PSI-159 ACME CFI-G gas-flame table (cleaned)"
