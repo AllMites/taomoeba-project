@@ -319,3 +319,17 @@ This turns the fire spread scene (15.6) into the main thing the replay shows. 15
 - **Damage, shown as what the fire and smoke touched:** burned objects char and darken, objects the smoke reached get a soot tint, objects that do not burn stay as they were. Stage 5 shows an aftermath card with counts from the run, for example "3 of 7 objects burned. Smoke reached the detector at 12 s. Flame out 9 s after ventilation stopped."
 - **No structural failure.** The project data has no record of damage to a habitat structure, so never draw a wall breach, a pressure loss or a collapse. The aftermath card says in one line that the data has no test of structural damage.
 - **Truth rules.** A stage caption cites a record where one supports it (same "How we know" pattern as the Interpret sheet). Where none does, the caption carries the word "Illustration". All times and speeds are illustrative and labelled so; oxygen scales them.
+
+### 15.10 What the scene is for: a fire scenario you can try to control
+
+Daniel, 15 Nov: "The real goal is NASA Artemis, boots on the ground. Having a way to actually see what would happen, see the hypothetical scenarios, how would you control it."
+
+So "Fire in this base" (15.9) is a scenario tool, not a film. The viewer sets up a fire, watches it, then tries a response and sees what the evidence says about it. This sharpens 15.9; where the two differ, this section wins.
+
+- **The question on screen:** "What if a fire starts here?" The caption for stage 1 asks it, with the base name.
+- **Scenario = start point.** Each start point has a one-line name ("Cloth near the air vent", "Cable behind the panel", "Paper on the desk").
+- **Response, at stage 4, is a choice the viewer makes:** "Do nothing", "Stop the ventilation", "Discharge carbon dioxide". The story then plays that outcome. Each response shows one evidence line with its record ("How we know"), and one line on what is not known. Take both from the records: the BASS-II airflow findings and `solids-quench-flow`, the ACME BRE claims on flames with the airflow off at 21% oxygen and in richer oxygen, and the FLEX carbon dioxide facts (`flex-dext-share-co2-*`, a weak trend in droplet tests). Where the records do not say whether a response works for a material or an air, the outcome is drawn as uncertain (the flame weakens but the card says "Not tested") and never as a clean success. Add a response only if a record speaks to it.
+- **Gravity is the honest gap for the Moon.** No test in the data ran in Moon gravity. For Moon Base and the rover, draw the flame and smoke between the orbit behaviour and the Earth behaviour (a weak, slow rise) and label the scene "Estimate: no fire test has run in Moon gravity". The compare control becomes a three-way switch, "In orbit (measured)", "On the Moon (estimate)", "On Earth (measured)", so the viewer sees what is measured and what is drawn between. ISS defaults to orbit, Earth to Earth.
+- **Controls, final list:** start point, response, gravity. The ventilation control of 15.9 is the "Stop the ventilation" response.
+- **Aftermath card adds the lesson:** one sentence on what the chosen response did, one on what is untested, and an "Ask about this" button that opens Ask SI with the scenario as the question.
+- **Dates.** Do not put an Artemis landing date on screen: none is in the project data and schedules move.
