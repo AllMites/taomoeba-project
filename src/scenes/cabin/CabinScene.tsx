@@ -21,6 +21,7 @@ import { chipAnchor, DROPLET, flameRadius, homePose, lensShift, ROOMS, type Pose
 import { BurnPanel } from "./BurnPanel.tsx";
 import { Navigate } from "./Navigate.tsx";
 import { FirstFrame } from "../FirstFrame.tsx";
+import { CalloutLayer, CalloutTracker } from "./Callout.tsx";
 import { SpreadSet, spreadChips } from "./Spread.tsx";
 import { OUTCOME_WORDS, SpreadPanel } from "./SpreadPanel.tsx";
 import "./cabin.css";
@@ -204,6 +205,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
     return () => usePlayback.getState().setHeadline(null);
   }, [responded, st.outcome]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
+  const calloutEls = useRef(new Map());
   const fire = useMemo(() => (mode === "spread" ? spreadChips(g, st.detect, base) : null), [mode, g, st.detect, base]);
   const chips: ChipSpec[] = [
     ...(fire ?? [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
@@ -219,6 +221,8 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         frameloop={calm ? "demand" : "always"}
         camera={{ fov: home.fov, near: 0.01, far: 60, position: home.pos }}
         gl={{ antialias: true, powerPreference: "high-performance" }}
+        // A press on an empty spot of the scene unpins the callout.
+        onPointerMissed={(e) => e.type === "click" && usePlayback.getState().pick(null)}
         onCreated={({ gl }) => {
           gl.setClearColor(CABIN_PAINT.outsideSky);
           // Char is drawn as the prop's own shape clipped to the burnt span.
@@ -231,8 +235,10 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         <LensShift home={home} focus={mode === "spread" ? home.target : DROPLET.at} />
         {mode === "spread" ? <SpreadSet base={base} st={st} air={air} calm={calm} chips={fire ?? undefined} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
         <ChipTracker chips={chips} refs={chipEls} />
+        {mode === "spread" && <CalloutTracker els={calloutEls} />}
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />
+      {mode === "spread" && <CalloutLayer els={calloutEls} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} start={start} />}
       {mode === "spread" && <SpreadPanel where={room.name} air={air.name} kPa={air.pressureKPa} g={g} doc={solids} fabric={fabricVerdict(solids, o2, 10, g)} st={st} />}
       {mode !== "spread" && doc && pick && <BurnPanel doc={doc} pick={pick} c={c} air={air.name} compare={base === "iss" ? null : compare} />}
       <p className="sr-only">

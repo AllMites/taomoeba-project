@@ -1,7 +1,7 @@
 // Fire in this base: everyday objects on the bench, flame fronts that creep over the ones that burn, char behind
 // them, soot where the smoke reached, and the cabin's airflow. Everything comes from ../spread/story.ts (pure, tested).
 import { Edges } from "@react-three/drei";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { CanvasTexture, DoubleSide, FrontSide, Plane, Vector3 } from "three";
 import type { BaseId } from "../../app/console.ts";
 import { Flame } from "../../fx/index.tsx";
@@ -10,6 +10,7 @@ import { OBJECTS, type CabinObject, type Gravity } from "../spread/spread.ts";
 import { smokeAt, storyAt, type Puff, type Story, type StoryAt } from "../spread/story.ts";
 import type { Air } from "./air.ts";
 import type { ChipSpec } from "./Cabin.tsx";
+import { nextPick } from "./callout.ts";
 import { Kit, surfaceMaterial } from "./kit.ts";
 import { anchorsOf, type V3 } from "./layout.ts";
 import { propParts } from "./props.ts";
@@ -21,11 +22,11 @@ const top = (o: CabinObject) => o.hd[0];
 const midX = (o: CabinObject) => (o.x0 + o.x1) / 2;
 
 /**
- * One object, shaped like what it is (props.ts). Hover, focus (via the panel) or tap outlines it white and opens its
- * card. The body takes the object's state: pale when it burns here, grey when it does not, darker where smoke reached.
+ * One object, shaped like what it is (props.ts). Hover outlines it white and previews its callout; a press pins the
+ * callout (Callout.tsx). The body takes the object's state: pale when it burns here, grey when it does not, darker where smoke reached.
  */
 function Thing({ o, g, lit, soot }: { o: CabinObject; g: Gravity; lit: boolean; soot: boolean }) {
-  const [hover, setHover] = useState(false);
+  const hover = usePlayback((s) => s.hovered === o.id);
   const picked = usePlayback((s) => s.picked === o.id);
   const parts = propParts(o);
   const burns = o.burns(g);
@@ -35,16 +36,18 @@ function Thing({ o, g, lit, soot }: { o: CabinObject; g: Gravity; lit: boolean; 
       position={[midX(o), 0, o.z]}
       onPointerOver={(e) => {
         e.stopPropagation();
-        setHover(true);
+        // Touch has no hover: a tap pins (the preview would only flash).
+        if (e.pointerType !== "touch") usePlayback.getState().hover(o.id);
         document.body.style.cursor = "pointer";
       }}
       onPointerOut={() => {
-        setHover(false);
+        if (usePlayback.getState().hovered === o.id) usePlayback.getState().hover(null);
         document.body.style.cursor = "";
       }}
       onClick={(e) => {
         e.stopPropagation();
-        usePlayback.getState().pick(picked ? null : o.id);
+        const st = usePlayback.getState();
+        st.pick(nextPick(st.picked, o.id));
       }}
     >
       <mesh geometry={parts.body}>

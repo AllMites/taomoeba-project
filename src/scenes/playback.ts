@@ -37,8 +37,10 @@ export type PlaybackState = {
   sel: BurnPick | null;
   /** Show a faint flame in station air at the same spot. */
   compare: boolean;
-  /** Fire spread: the object pointed at or picked. */
+  /** Fire spread: the object picked (its callout pinned). */
   picked: string | null;
+  /** Fire spread: the object under the pointer (its callout previewed). */
+  hovered: string | null;
   /** Fire in this base: where it starts, the crew's response, and the gravity (null: the base's own). */
   start: ObjId;
   response: Response;
@@ -57,6 +59,7 @@ export type PlaybackState = {
   setSel: (s: BurnPick | null) => void;
   setCompare: (c: boolean) => void;
   pick: (id: string | null) => void;
+  hover: (id: string | null) => void;
   setLive: (live: boolean) => void;
   setHeadline: (h: string | null) => void;
   setScenario: (p: Partial<Pick<PlaybackState, "start" | "response" | "grav">>) => void;
@@ -76,12 +79,13 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   sel: null,
   compare: false,
   picked: null,
+  hovered: null,
   live: false,
   headline: null,
   start: "cloth",
   response: "vent",
   grav: null,
-  setMode: (mode) => set({ mode, picked: null }),
+  setMode: (mode) => set({ mode, picked: null, hovered: null }),
   // A new timeline (another scene, base or setting) starts from its beginning; the same one keeps its place.
   setTimeline: (tl) => {
     const cur = get().timeline;
@@ -99,6 +103,7 @@ export const usePlayback = create<PlaybackState>((set, get) => ({
   setSel: (sel) => set({ sel }),
   setCompare: (compare) => set({ compare }),
   pick: (picked) => set({ picked }),
+  hover: (hovered) => set((s) => (s.hovered === hovered ? s : { hovered })),
   setScenario: (p) => set(p),
   setLive: (live) => set((s) => (s.live === live ? s : { live })),
   setHeadline: (headline) => set((s) => (s.headline === headline ? s : { headline })),

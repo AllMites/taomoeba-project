@@ -209,3 +209,45 @@
 .spread-grav .spread-obj { justify-content: center; text-align: center; padding: var(--space-1); min-height: 2.75rem; line-height: 1.2; }
 .spread-how { display: block; font-size: var(--text-xs); color: var(--color-text-muted); }
 .spread-estimate { padding-left: var(--space-2); border-left: 2px dashed var(--color-text); }
+
+/*
+ * Object callouts in the scene (17.5): a glass card at a fixed readable size, joined to its object by a hairline
+ * with a dot at the object end. Placed every frame by Callout.tsx; the card never scales with distance.
+ */
+.callouts { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+.callout-wire { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.callout-wire line { stroke: var(--color-text); stroke-width: 1; opacity: 0.8; }
+.callout-wire circle { fill: var(--color-text); }
+.callout-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: min(20rem, 60cqw);
+  max-height: min(24rem, 60cqh);
+  overflow: auto;
+  padding: var(--space-3);
+  border-radius: var(--radius-2);
+  color: var(--color-text);
+  pointer-events: auto;
+}
+.callout-card[data-kind="preview"] { width: min(16rem, 60cqw); pointer-events: none; }
+.callout-preview { display: grid; gap: var(--space-1); }
+.callout-name { margin: 0; font-size: var(--text-sm); font-weight: 600; }
+.callout-card .spread-card { border-bottom: 0; padding-bottom: 0; }
+.callout-card .spread-card-h { padding-right: 2.75rem; }
+.callout-close {
+  position: absolute;
+  top: var(--space-1);
+  right: var(--space-1);
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.callout-close:hover { background: var(--glass-hi); }
+.callout-close:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
