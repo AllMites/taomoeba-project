@@ -63,6 +63,12 @@ describe("phone (390 wide)", () => {
     const sheet = Number(decls(phone, ".sheet.glass")["z-index"]);
     expect(ask).toBeGreaterThan(sheet);
   });
+  it("the brief line and the top 3 never reach up into the carousel; the top 3 shrinks instead", () => {
+    // At 320x568 the brief line (122 to 265px) sat over the carousel (129 to 220px).
+    expect(decls(phone, ".console-hud").top).toBe("calc(var(--space-2) + var(--carousel-h) + var(--space-2))");
+    expect(decls(phone, ".console-hud")["justify-content"]).toBe("flex-end");
+    expect(decls(phone, ".console-overlay")["min-height"]).toBe("0");
+  });
   it("the Library and Ask bottom sheets stop under the carousel", () => {
     // At 80dvh they reached 169px from the top, over the carousel that ends at 220px.
     const vars = decls(phone, ".console");

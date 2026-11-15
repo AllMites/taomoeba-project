@@ -427,9 +427,20 @@ body { overflow: hidden; }
 
   .console-carousel { top: var(--space-2); max-width: calc(100% - 2 * var(--space-2)); }
   .console-ticks { inset: var(--space-2); }
-  .console-hud { flex-direction: column; align-items: stretch; left: var(--space-3); right: var(--space-3); bottom: var(--space-3); gap: var(--space-2); }
+  /* The brief line and the top 3 stack from the bottom up and never reach the carousel: on a short phone the
+     top 3 shrinks and scrolls instead. */
+  .console-hud {
+    top: calc(var(--space-2) + var(--carousel-h) + var(--space-2));
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: var(--space-3);
+    gap: var(--space-2);
+  }
   .console-brief { flex: none; max-width: none; }
-  .console-overlay { width: auto; max-height: 38dvh; }
+  .console-overlay { flex: 0 1 auto; width: auto; min-height: 0; max-height: 38dvh; }
   /* One scroller, not two: the overlay already scrolls, so On Earth drops its own height cap here. */
   .console-overlay .earth { max-height: none; overflow: visible; }
 
