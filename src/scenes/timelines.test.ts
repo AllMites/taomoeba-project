@@ -57,7 +57,7 @@ describe("fire in this base on the timeline", () => {
     expect(tl.phases.filter((p) => p.mark)).toHaveLength(5);
     expect(tl.end).toBe(st.end);
     expect(phaseAt(tl, 0)).toBe("Ignition");
-    expect(phaseAt(tl, st.detect!)).toBe("Detection and response");
+    expect(phaseAt(tl, st.detect!)).toBe(`Detected at ${Math.round(st.detect)} s, response`);
     expect(phaseAt(tl, tl.end)).toBe("Aftermath");
     for (const p of tl.phases) expect(p.caption).toBeTruthy();
   });

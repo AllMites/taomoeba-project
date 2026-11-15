@@ -61,8 +61,8 @@ const RISE = { micro: 0, partial: 0.12, earth: 0.3 } as const;
 const CEILING_JET = { micro: 0, partial: 0.06, earth: 0.2 } as const;
 /** Still air: how far smoke drifts out from the fire, metres after s seconds (illustrative, slow). */
 const stillRadius = (s: number) => 0.05 + 0.03 * Math.sqrt(Math.max(0, s));
-/** The smoke detector: on the air return at the downstream end of the bench. */
-export const DETECTOR = { x: 2.15, y: 0.45, z: -0.22 };
+/** The smoke detector: on the back wall by the locker, where the air slows against it (drawn in the home view). */
+export const DETECTOR = { x: 1.45, y: 0.15, z: -0.3 };
 /** Height the smoke rises to at 1 g before it spreads (drawn). */
 export const LAYER_Y = 0.6;
 export const riseOf = (g: Gravity) => RISE[g];
@@ -323,4 +323,44 @@ export function captionFor(st: Story, id: Stage["id"], baseName: string): Captio
     case "after":
       return { text: "What the fire and smoke touched. Times and speeds illustrative.", refs: [] };
   }
+}
+
+/** One soft puff of the smoke volume, metres; o is its opacity (0..1). */
+export type Puff = { x: number; y: number; z: number; r: number; o: number };
+
+/** Where the airflow is weak: against the locker's face, where the air slows and smoke gathers (drawn). */
+export const WEAK_FLOW_X = 1.35;
+/** How far along the bench the smoke volume is drawn (the cabin past the locker). */
+export const SMOKE_END_X = 2.6;
+
+/**
+ * The smoke in the air at time t, as soft puffs from the fire to the smoke's downstream edge. In orbit it does not
+ * rise: it drifts with the ventilation close to the bench and gathers where the flow is weak (against the locker); with the ventilation off it pools round the fire. At 1 g it rises to a layer under the ceiling and
+ * spreads there. The Moon is drawn between (estimate). Illustration: positions are drawn, not measured.
+ */
+export function smokeAt(st: Story, t: number, n = 12): Puff[] {
+  if (t < SMOKE_S) return [];
+  const g = st.input.g;
+  const at = storyAt(st, t);
+  // Drawn only as far as the cabin's far end past the locker; the smoke beyond is out of sight.
+  const head = Math.min(at.smoke, SMOKE_END_X);
+  const age = t - SMOKE_S;
+  const fade = t > st.out + 4 ? Math.max(0.35, 1 - (t - st.out - 4) / 60) : 1;
+  const rise = g === "earth" ? 1 : g === "partial" ? 0.4 : 0;
+  const out: Puff[] = [];
+  for (let i = 0; i < n; i++) {
+    const u = n === 1 ? 0 : i / (n - 1);
+    // From the flame front (where the smoke is made) to the smoke's downstream edge.
+    const src = Math.min(at.hi, head);
+    const x = src + (head - src) * u;
+    const weak = !at.vent ? 1 : x >= WEAK_FLOW_X ? 1 : 0;
+    // Rising: the first third climbs above the fire, the rest spreads under the layer.
+    const climb = Math.min(1, u * 3);
+    const y = 0.06 + 0.04 * u + rise * (LAYER_Y - 0.06) * climb;
+    const z = -0.04 + 0.05 * Math.sin(i * 1.7 + age * 0.05);
+    const r = (0.05 + 0.05 * u) * (1 + 0.8 * weak) * Math.min(1, 0.4 + age / 8);
+    const o = (0.22 + 0.2 * weak) * fade;
+    out.push({ x, y, z, r, o });
+  }
+  return out;
 }
