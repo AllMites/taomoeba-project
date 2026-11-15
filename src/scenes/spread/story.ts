@@ -302,7 +302,7 @@ export function captionFor(st: Story, id: Stage["id"], baseName: string): Captio
       return { text: `What if a fire starts here, in the ${baseName}? ${STARTS.find((x) => x.id === s.start)!.name}. Illustration.`, refs: [] };
     case "spread":
       return s.g === "earth"
-        ? { text: "At 1 g hot gas rises and the flames stand tall as they spread. Speed illustrative, scaled by oxygen.", refs: [] }
+        ? { text: "At 1 g hot gas rises and the flames stand tall as they spread. Illustration: speed scaled by oxygen.", refs: [] }
         : s.g === "partial"
           ? { text: `The flame spreads with the cabin air, a little taller than in orbit.${moon} Illustration.`, refs: [] }
           : {
@@ -321,7 +321,7 @@ export function captionFor(st: Story, id: Stage["id"], baseName: string): Captio
       return { text: `The detector trips at ${r0(st.detect)} s. Response: ${name}. ${r.text}${st.outcome === "weaker" ? " Not tested here." : ""}${s.response === "co2" ? " Illustration." : ""}`, refs: r.refs };
     }
     case "after":
-      return { text: "What the fire and smoke touched. Times and speeds illustrative.", refs: [] };
+      return { text: "What the fire and smoke touched. Illustration: times and speeds are drawn.", refs: [] };
   }
 }
 
@@ -363,4 +363,11 @@ export function smokeAt(st: Story, t: number, n = 12): Puff[] {
     out.push({ x, y, z, r, o });
   }
   return out;
+}
+
+/** The experiments behind the chosen response's records, for Ask SI's "about" chips. */
+export function scenarioIds(st: Story): string[] {
+  const of: Record<string, string> = { "fact:solids-quench-flow": "PSI-25", "fact:flex-dext-share-co2-methanol": "PSI-69", "solids:sample:2-5": "PSI-99" };
+  const ids = responseLines(st).evidence.refs.map((r) => of[r] ?? r.match(/PSI-\d+/)?.[0]).filter((x): x is string => !!x);
+  return [...new Set(ids)];
 }
