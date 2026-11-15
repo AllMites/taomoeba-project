@@ -1,26 +1,28 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Ask from "../ask/index.tsx";
 import Brief from "../brief/index.tsx";
 import Compare from "../compare/index.tsx";
-import type { HabitatPreset, Investigation } from "../contracts/index.ts";
-import { pickerHabitats } from "../data/select.ts";
+import type { Investigation } from "../contracts/index.ts";
 import { useDataset } from "../data/useDataset.ts";
 import Earth from "../earth/index.tsx";
 import Evidence from "../evidence/index.tsx";
 import Gaps from "../gaps/index.tsx";
 import Graph from "../graph/index.tsx";
+import Library from "../library/index.tsx";
 import Ranking from "../ranking/index.tsx";
+import Stage from "../scenes/Stage.tsx";
+import Carousel from "../shell/Carousel.tsx";
+import { Rail, StatusStrip, TopBar } from "../shell/chrome.tsx";
+import { Icon } from "../shell/icons.tsx";
+import { openRankOnHighlight } from "../shell/logic.ts";
+import Sheet from "../shell/Sheet.tsx";
+import TopForBase, { BriefLine } from "../top/index.tsx";
 import Trust from "../trust/index.tsx";
 import WhatIf from "../whatif/index.tsx";
-import Stage from "../scenes/Stage.tsx";
 import "./app.css";
-import { FLAME_O2, flameVars } from "./flame.ts";
-import { heroReturnFocus, STICKY_SELECT_ID } from "./focus.ts";
-import { pickHabitat, prefersCalm } from "./motion.ts";
-import { useStore } from "./store.ts";
-import { displayClass } from "./type.ts";
+import { useConsole } from "./console.ts";
 
-/** Counts behind the limits strip, all from the fire experiments (pds is not "Other"). */
+/** Counts behind the limits block, all from the fire experiments (pds is not "Other"). */
 export function limitsFrom(items: Investigation[]) {
   const fire = items.filter((i) => i.pds !== "Other");
   return {
@@ -32,8 +34,6 @@ export function limitsFrom(items: Investigation[]) {
   };
 }
 
-const num = (n: number) => `${Math.round(n * 10) / 10}`;
-
 function Dots({ filled, total }: { filled: number; total: number }) {
   return (
     <span className="dots" aria-hidden="true">
@@ -44,225 +44,123 @@ function Dots({ filled, total }: { filled: number; total: number }) {
   );
 }
 
-/**
- * Decorative scene per habitat, generated with Higgsfield (GPT Image 2). Space Apps requires a visible mark on
- * SI-generated images: each file has one baked into its corner, and SiMark repeats it where a crop could hide that.
- */
-const SCENES: Record<string, { src: string; alt: string } | undefined> = {
-  iss: { src: "/img/iss.webp", alt: "Illustration: inside a space station module, seen through a round window." },
-  moon: { src: "/img/moon.webp", alt: "Illustration: a small habitat on the lunar surface, seen through a window." },
-  rover: { src: "/img/rover.webp", alt: "Illustration: a rover cabin with two seats facing the lunar surface." },
-};
-
-function SiMark() {
-  return <span className="si-mark t-readout">SI-generated image</span>;
-}
-
-function Picker({ habitats }: { habitats: HabitatPreset[] }) {
-  const habitat = useStore((s) => s.habitat);
+/** What the ranking cannot say. Sits at the foot of the Rank sheet. */
+function Limits({ limits }: { limits: ReturnType<typeof limitsFrom> | null }) {
   return (
-    <fieldset className="picker">
-      <legend className="t-readout">Pick your habitat</legend>
-      <div className="choices">
-        {pickerHabitats(habitats).map((h) => (
-          <label key={h.id} className="choice">
-            {SCENES[h.id] && (
-              <span className="choice-view">
-                <img src={SCENES[h.id]!.src} alt={SCENES[h.id]!.alt} width={1920} height={1086} decoding="async" />
-                <SiMark />
-              </span>
-            )}
-            <input type="radio" name="habitat" value={h.id} checked={habitat === h.id} onChange={() => pickHabitat(h.id)} />
-            <span className="choice-top">
-              <span className="choice-dot" aria-hidden="true" />
-              <span className={`choice-name ${displayClass(h.label)}`}>{h.label}</span>
-              {/* Always rendered so its width is reserved; CSS shows it on the checked card only. */}
-              <span className="choice-check t-readout" aria-hidden="true">
-                Picked
-              </span>
+    <aside className="limits" aria-labelledby="limits-h">
+      <h2 id="limits-h" className="sec-h">What this data cannot tell you</h2>
+      {limits && (
+        <ul className="limit-cards">
+          <li className="limit">
+            <span className="limit-n t-display">0 of {limits.total}</span>
+            <span className="limit-t">experiments ran in Moon or Mars gravity.</span>
+            <Dots filled={limits.flight} total={limits.total} />
+            <span className="muted">
+              {limits.flight} ran in microgravity (solid dots), {limits.ground} are ground tests or computer models.
             </span>
-            <span className="choice-stat t-readout">
-              <span>
-                <b>{num(h.o2Percent)}%</b> oxygen
-              </span>
-              <span>
-                <b>{num(h.pressureKPa)}</b> kPa
-              </span>
-            </span>
-            <span className="choice-note">{h.note}</span>
-          </label>
-        ))}
-      </div>
-    </fieldset>
+          </li>
+          <li className="limit">
+            <span className="limit-n t-display">{limits.noO2} of {limits.total}</span>
+            <span className="limit-t">have no tested oxygen level on record.</span>
+            <Dots filled={limits.total - limits.noO2} total={limits.total} />
+            <span className="muted">Solid dots: on record.</span>
+          </li>
+          <li className="limit">
+            <span className="limit-n t-display">{limits.noPressure} of {limits.total}</span>
+            <span className="limit-t">have no tested air pressure on record.</span>
+            <Dots filled={limits.total - limits.noPressure} total={limits.total} />
+            <span className="muted">Solid dots: on record.</span>
+          </li>
+        </ul>
+      )}
+      <p className="limit-note">
+        Results from weightlessness and from Earth gravity bracket Moon gravity. They do not replace a test there.
+      </p>
+    </aside>
   );
 }
 
-/**
- * The porthole: a thick raised frame around dark glass holding the flame sphere, with one leader line
- * to the picked habitat's air. The sphere's size and glow follow the habitat's oxygen (flame.ts).
- */
-function Porthole({ picked }: { picked: HabitatPreset | undefined }) {
-  return (
-    <div className="porthole">
-      <div className="porthole-glass">
-        <div className="hero-copy">
-          <h1 className="brand t-display t-upper">
-            Flame in <span className="brand-line">Freefall</span>
-          </h1>
-          <p className="lede t-statement">Pick where your crew will live, and see which NASA fire experiments match its air.</p>
-        </div>
-        <SiMark />
-        <div className="hero-stage" aria-hidden="true">
-          <div className="sphere-drift">
-            <div className="sphere" />
-          </div>
-          <span className="leader" />
-          {picked && (
-            <span className="readout t-readout">
-              <span className="readout-name">{picked.label}</span>
-              <span>
-                O₂ <b>{num(picked.o2Percent)}%</b>
-              </span>
-              <span>
-                <b>{num(picked.pressureKPa)}</b> kPa
-              </span>
-            </span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Sections below the fold rise and fade in once as they enter view. Sections already in view are never
- * hidden; nothing is hidden at all under reduced motion or without IntersectionObserver.
- */
-function useReveal() {
-  useEffect(() => {
-    if (prefersCalm() || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          (e.target as HTMLElement).dataset.reveal = "done";
-          io.unobserve(e.target);
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px" },
-    );
-    for (const el of document.querySelectorAll<HTMLElement>("main > section, main > aside")) {
-      if (el.getBoundingClientRect().top < window.innerHeight) continue;
-      el.dataset.reveal = "pending";
-      io.observe(el);
-    }
-    return () => io.disconnect();
-  }, []);
-}
-
-function StickyBar({ habitats }: { habitats: HabitatPreset[] }) {
-  const habitat = useStore((s) => s.habitat);
-  return (
-    <div className="sticky">
-      <label htmlFor={STICKY_SELECT_ID} className="t-readout">
-        Your habitat
-      </label>
-      <select id={STICKY_SELECT_ID} value={habitat} onChange={(e) => pickHabitat(e.target.value as typeof habitat)}>
-        {pickerHabitats(habitats).map((h) => (
-          <option key={h.id} value={h.id}>
-            {h.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
-// One page, top to bottom: hero + habitat picker, ask box, habitat brief, ranked experiments, model what-ifs, limits.
+// One screen (docs/RESKIN_PRD.md). The replay fills the center; the base carousel, the brief line and the top 3
+// sit over it on glass. Library opens on the left, Ask SI on the right. Each nav view is a sheet over the replay.
 // Evidence is the detail drawer; it shows itself when the store has a selected investigation.
 export default function App() {
   const habitats = useDataset("habitats");
   const inv = useDataset("investigations");
-  const drawerOpen = useStore((s) => s.selectedInvestigationId !== null);
-  const habitatId = useStore((s) => s.habitat);
-  const picked = habitats.status === "ready" ? habitats.data.find((h) => h.id === habitatId) : undefined;
+  const sources = useDataset("sources");
+  const base = useConsole((s) => s.base);
+  const view = useConsole((s) => s.view);
+  const leftOpen = useConsole((s) => s.leftOpen);
+  const askOpen = useConsole((s) => s.askOpen);
   const isFixture = (habitats.status === "ready" && habitats.isFixture) || (inv.status === "ready" && inv.isFixture);
-
-  const heroRef = useRef<HTMLElement>(null);
-  const [pastHero, setPastHero] = useState(false);
-  useEffect(() => {
-    const el = heroRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver(([e]) => {
-      const past = !!e && !e.isIntersecting;
-      // The bar is about to go away: keep keyboard focus by moving it to the picker's checked radio.
-      if (!past) heroReturnFocus(document)?.focus({ preventScroll: true });
-      setPastHero(past);
-    });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
-  useReveal();
-
   const limits = useMemo(() => (inv.status === "ready" ? limitsFrom(inv.data) : null), [inv]);
+
+  useEffect(() => openRankOnHighlight(), []);
 
   return (
     <>
       <a className="skip" href="#main">Skip to content</a>
-      {habitats.status === "ready" && pastHero && !drawerOpen && <StickyBar habitats={habitats.data} />}
-      <header className="hero" ref={heroRef} style={flameVars(picked?.o2Percent ?? FLAME_O2.soft)}>
-        <Porthole picked={picked} />
-        {habitats.status === "ready" ? <Picker habitats={habitats.data} /> : <div className="picker-wait" aria-hidden="true" />}
-      </header>
-      <main id="main" tabIndex={-1}>
-        <Ask />
-        <Brief />
-        <Stage />
-        <Ranking />
-        <Compare />
-        <Graph />
-        <WhatIf />
-        <Gaps />
-        <Earth />
-        <Trust />
-        <aside className="limits" aria-labelledby="limits-h">
-          <h2 id="limits-h" className="sec-h">What this data cannot tell you</h2>
-          {limits && (
-            <ul className="limit-cards">
-              <li className="limit">
-                <span className="limit-n t-display">0 of {limits.total}</span>
-                <span className="limit-t">experiments ran in Moon or Mars gravity.</span>
-                <Dots filled={limits.flight} total={limits.total} />
-                <span className="muted">
-                  {limits.flight} ran in microgravity (solid dots), {limits.ground} are ground tests or computer models.
-                </span>
-              </li>
-              <li className="limit">
-                <span className="limit-n t-display">{limits.noO2} of {limits.total}</span>
-                <span className="limit-t">have no tested oxygen level on record.</span>
-                <Dots filled={limits.total - limits.noO2} total={limits.total} />
-                <span className="muted">Solid dots: on record.</span>
-              </li>
-              <li className="limit">
-                <span className="limit-n t-display">{limits.noPressure} of {limits.total}</span>
-                <span className="limit-t">have no tested air pressure on record.</span>
-                <Dots filled={limits.total - limits.noPressure} total={limits.total} />
-                <span className="muted">Solid dots: on record.</span>
-              </li>
-            </ul>
-          )}
-          <p className="limit-note">
-            Results from weightlessness and from Earth gravity bracket Moon gravity. They do not replace a test there.
-          </p>
+      <div className="console" data-view={view} data-left={leftOpen} data-ask={askOpen}>
+        <TopBar view={view} leftOpen={leftOpen} askOpen={askOpen} />
+        <Rail view={view} leftOpen={leftOpen} askOpen={askOpen} />
+        <aside className="console-left" aria-label="Library" hidden={!leftOpen}>
+          <header className="panel-head">
+            <span className="t-readout">Library</span>
+            <button type="button" className="icon-btn" aria-label="Close Library" onClick={() => useConsole.getState().setLeftOpen(false)}>
+              <Icon name="x" />
+            </button>
+          </header>
+          <Library />
+          <Trust />
         </aside>
-      </main>
-      <footer className="foot">
-        <p>Data: NASA Physical Sciences Informatics (PSI).</p>
-        <p className="muted">Summaries are written by SI from quoted sources. Each one shows its source on request.</p>
-        <p className="muted">The flame and the three habitat views are SI-generated illustrations, not NASA photographs.</p>
-        {isFixture && <span className="badge">sample data</span>}
-      </footer>
+        <main id="main" className="console-center" tabIndex={-1}>
+          <Carousel base={base} habitats={habitats.status === "ready" ? habitats.data : null} />
+          <Stage />
+          <div className="console-ticks" aria-hidden="true" />
+          <div className="console-hud">
+            <div className="console-brief">
+              <BriefLine />
+            </div>
+            <div className="console-overlay">{base === "earth" ? <Earth /> : <TopForBase />}</div>
+          </div>
+          {view === "interpret" && (
+            <Sheet view="interpret">
+              <Brief />
+            </Sheet>
+          )}
+          {view === "rank" && (
+            <Sheet view="rank">
+              <Ranking />
+              <Gaps />
+              <Limits limits={limits} />
+            </Sheet>
+          )}
+          {view === "compare" && (
+            <Sheet view="compare">
+              <Compare />
+            </Sheet>
+          )}
+          {view === "models" && (
+            <Sheet view="models">
+              <WhatIf />
+            </Sheet>
+          )}
+          {view === "graph" && (
+            <Sheet view="graph">
+              <Graph />
+            </Sheet>
+          )}
+        </main>
+        <aside className="console-right" aria-label="Ask SI" hidden={!askOpen}>
+          <Ask />
+        </aside>
+        <StatusStrip
+          base={base}
+          habitats={habitats.status === "ready" ? habitats.data : null}
+          sources={sources.status === "ready" ? sources.data.length : null}
+          experiments={limits ? limits.total : null}
+          isFixture={isFixture}
+        />
+      </div>
       <Evidence />
     </>
   );
