@@ -15,21 +15,22 @@ beforeEach(() => {
 });
 
 describe("center replay, before any 3D has loaded (and for good where it cannot load)", () => {
-  it("shows the picked base's still picture, with no canvas and no button to press first", () => {
+  it("shows a plain loading card on glass (the cabin has no still picture yet), with no canvas and no button to press first", () => {
     const html = renderToStaticMarkup(<Stage />);
-    expect(html).toContain('class="stage-poster" src="/img/scenes/lunar-moon.webp"');
-    expect(html).toContain('srcSet="/img/scenes/lunar-moon-narrow.webp"');
+    expect(html).toMatch(/class="stage-loading glass" role="status"/);
+    expect(html).not.toContain("stage-poster");
+    expect(html).not.toContain("lunar-moon.webp");
     expect(html).not.toContain("<canvas");
     expect(html).not.toContain("stage-scene");
     expect(html).not.toMatch(/Load 3D view|role="alert"/);
   });
 
-  it("follows the base in the console store", () => {
+  it("follows the base in the console store, and never shows the old exterior shot under a cabin caption", () => {
     picked.base = "rover";
-    expect(renderToStaticMarkup(<Stage />)).toContain('src="/img/scenes/lunar-rover.webp"');
+    expect(renderToStaticMarkup(<Stage />)).not.toContain("lunar-rover.webp");
     picked.base = "earth";
     const earth = renderToStaticMarkup(<Stage />);
-    expect(earth).toContain('src="/img/scenes/lunar-iss.webp"');
+    expect(earth).not.toContain("lunar-iss.webp");
     expect(earth).toContain("a cabin on Earth");
   });
 

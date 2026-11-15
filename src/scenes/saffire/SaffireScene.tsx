@@ -1,4 +1,5 @@
 import { Canvas } from "@react-three/fiber";
+import { FirstFrame } from "../FirstFrame.tsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Claim, SceneProps, Source } from "../../contracts/index.ts";
 import { useDataset } from "../../data/useDataset.ts";
@@ -181,6 +182,7 @@ export function SaffireScene({ habitat, calm }: SceneProps) {
             });
           }}
         >
+          <FirstFrame />
           <World
             rec={ready}
             calm={calm}

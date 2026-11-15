@@ -37,7 +37,7 @@ export function homePose(base: BaseId, mode: Mode): Pose {
   if (mode === "spread") {
     const r = ROOMS[base];
     const back = r.shape === "box" ? Math.min(1.5, r.size[2] / 2 - 0.15) : 0.85;
-    return { pos: [0.55, 0.62, back], target: [0.7, 0, -0.05], fov: 50 };
+    return { pos: [0.55, 0.62, back], target: [0.7, 0, -0.05], fov: r.shape === "tube" ? 64 : 50 };
   }
   const [x, y, z] = DROPLET.at;
   return { pos: [x - 0.22, y + 0.2, z + 0.72], target: [x, y - 0.06, z], fov: 40 };

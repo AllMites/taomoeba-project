@@ -9,8 +9,8 @@ export type Replay = {
   scene: SceneId;
   /** The habitat preset handed to the scene. Earth has none of its own: its air is the station's. */
   habitat: HabitatId;
-  /** Still picture shown first, and for good where the 3D cannot run. */
-  poster: string;
+  /** Still picture shown first, and for good where the 3D cannot run. None yet for the cabin scenes. */
+  poster?: string;
   /** Portrait crop of the poster for a phone, where one exists. */
   posterNarrow?: string;
   /** One line on the glass chip. Says "illustration" wherever the flame is drawn, not filmed or replayed. */
@@ -34,12 +34,9 @@ export function replayFor(base: BaseId, mode: Mode, label?: string): Replay {
     };
   }
   const where = base === "earth" ? "a cabin on Earth, at 1 g" : base === "iss" ? "a station module" : `the ${label ?? "base"} cabin`;
-  const surface = base === "moon" || base === "rover";
   return {
     scene,
     habitat,
-    poster: surface ? `/img/scenes/lunar-${base}.webp` : "/img/scenes/lunar-iss.webp",
-    posterNarrow: surface ? `/img/scenes/lunar-${base}-narrow.webp` : undefined,
     caption: mode === "spread" ? `Fire spreading in ${where}. ${ILLUSTRATION}` : `A fuel droplet burning in ${where}. ${ILLUSTRATION}`,
     notes: base === "earth" ? [EARTH_LINE] : base === "iss" ? [compareLine(true, true)] : [LIMITS[1]],
   };

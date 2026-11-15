@@ -80,7 +80,7 @@ export const OBJECTS: CabinObject[] = [
     hd: [0.008, 0.3],
     burns: always,
     behaviour: "Acrylic softens and burns with a steady flame. In space the flame can sit anchored where the air comes from.",
-    saffire: "2-7",
+    saffire: "2-8",
     evidence: ["PSI-99", "PSI-25"],
   },
   {
@@ -120,13 +120,13 @@ export const OBJECTS: CabinObject[] = [
   },
   {
     id: "window",
-    name: "Glass window",
+    name: "Glass screen",
     x0: 0.5,
     x1: 1.1,
-    z: -0.6,
-    hd: [0.6, 0.02],
+    z: -0.2,
+    hd: [0.2, 0.01],
     burns: never,
-    behaviour: "Glass does not burn. A fire behind it heats it, but the flame cannot spread onto it.",
+    behaviour: "Glass does not burn. A flame beside it heats it, but cannot spread onto it.",
     evidence: [],
   },
 ];
