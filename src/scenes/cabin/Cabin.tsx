@@ -1,12 +1,12 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import { Vector3 } from "three";
-import { BackSide, DoubleSide } from "three";
 import type { BaseId } from "../../app/console.ts";
 import { ROOMS, type V3 } from "./layout.ts";
 import { MOON_WINDOW, MoonRoom } from "./MoonRoom.tsx";
 import { ISS_WINDOW, IssRoom } from "./IssRoom.tsx";
 import { ROVER_WINDOW, RoverRoom } from "./RoverRoom.tsx";
+import { EARTH_WINDOW, EarthRoom } from "./EarthRoom.tsx";
 
 // Mono palette for the cabin: physical surfaces, not UI. The only colour on screen is the fire.
 export const CABIN_PAINT = {
@@ -54,10 +54,10 @@ export const MAX_CHIPS = 5;
 const WIN_R = 0.2;
 /** Where the window sits on the far wall: right of the flame as the camera sees it, clear of the model panel on the left. */
 const winAt = (r: (typeof ROOMS)[BaseId]) =>
-  r === ROOMS.moon ? { x: MOON_WINDOW.x, y: MOON_WINDOW.y, r: MOON_WINDOW.h / 2 } : r === ROOMS.iss ? { x: ISS_WINDOW.x, y: ISS_WINDOW.y, r: ISS_WINDOW.r } : r === ROOMS.rover ? { x: ROVER_WINDOW.x - 0.6, y: ROVER_WINDOW.y, r: ROVER_WINDOW.h / 2 } : r.shape === "tube" ? { x: 1.2, y: 0.02, r: 0.15 } : r.size[2] < 3 ? { x: 1.4, y: -0.2, r: WIN_R } : { x: 1.9, y: -0.3, r: WIN_R };
+  r === ROOMS.moon ? { x: MOON_WINDOW.x, y: MOON_WINDOW.y, r: MOON_WINDOW.h / 2 } : r === ROOMS.iss ? { x: ISS_WINDOW.x, y: ISS_WINDOW.y, r: ISS_WINDOW.r } : r === ROOMS.rover ? { x: ROVER_WINDOW.x - 0.6, y: ROVER_WINDOW.y, r: ROVER_WINDOW.h / 2 } : r === ROOMS.earth ? { x: EARTH_WINDOW.x, y: EARTH_WINDOW.y, r: EARTH_WINDOW.h / 2 } : r.shape === "tube" ? { x: 1.2, y: 0.02, r: 0.15 } : r.size[2] < 3 ? { x: 1.4, y: -0.2, r: WIN_R } : { x: 1.9, y: -0.3, r: WIN_R };
 /** The far wall at the window's height: a tube's wall curves, a box's is flat. */
 const winZ = (r: (typeof ROOMS)[BaseId]) =>
-  r === ROOMS.moon ? MOON_WINDOW.z + 0.03 : r === ROOMS.iss ? ISS_WINDOW.z + 0.02 : r === ROOMS.rover ? ROVER_WINDOW.z + 0.03 : r.shape === "tube" ? -Math.sqrt(r.size[1] ** 2 - (winAt(r).y - r.base) ** 2) + 0.14 : -r.size[2] / 2 + 0.02;
+  r === ROOMS.moon ? MOON_WINDOW.z + 0.03 : r === ROOMS.iss ? ISS_WINDOW.z + 0.02 : r === ROOMS.rover ? ROVER_WINDOW.z + 0.03 : r === ROOMS.earth ? EARTH_WINDOW.z + 0.03 : r.shape === "tube" ? -Math.sqrt(r.size[1] ** 2 - (winAt(r).y - r.base) ** 2) + 0.14 : -r.size[2] / 2 + 0.02;
 
 /** Moves each chip to its point's screen position every frame; hides chips whose point is behind the camera. */
 export function ChipTracker({ chips, refs }: { chips: ChipSpec[]; refs: React.RefObject<Map<string, HTMLDivElement>> }) {
@@ -114,58 +114,17 @@ export function ChipTracker({ chips, refs }: { chips: ChipSpec[]; refs: React.Re
 
 /** The base's cabin: walls, a bench along the airflow, a window on the far wall, soft cabin light. */
 export function Cabin({ base }: { base: BaseId }) {
-  const r = ROOMS[base];
-  const w = winAt(r);
   return (
     <group>
       <ambientLight intensity={0.5} />
       <hemisphereLight args={["#e8e6e0", "#2a2a28", 1.1]} />
       <directionalLight position={[1.5, 2.5, 2]} intensity={1.1} />
-      {base === "moon" ? (
-        <MoonRoom />
-      ) : base === "iss" ? (
-        <IssRoom />
-      ) : base === "rover" ? (
-        <RoverRoom />
-      ) : r.shape === "tube" ? (
-        <mesh position={[0.8, r.base, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[r.size[1], r.size[1], r.size[0], 16, 1, true]} />
-          <meshStandardMaterial color={CABIN_PAINT.wall} side={BackSide} roughness={0.9} flatShading />
-        </mesh>
-      ) : (
-        <mesh position={[0.8, r.base + r.size[1] / 2, 0]}>
-          <boxGeometry args={r.size} />
-          <meshStandardMaterial color={CABIN_PAINT.wall} side={BackSide} roughness={0.9} />
-        </mesh>
-      )}
+      {base === "moon" ? <MoonRoom /> : base === "iss" ? <IssRoom /> : base === "rover" ? <RoverRoom /> : <EarthRoom />}
       {/* Bench (an aluminium rail in a module, a table in a habitat). */}
       <mesh position={[0.75, -0.03, 0]}>
         <boxGeometry args={[3.2, 0.06, 0.36]} />
         <meshStandardMaterial color={CABIN_PAINT.bench} roughness={0.6} metalness={0.4} />
       </mesh>
-      {/* Window on the far wall, and what lies outside it (Moon Base draws its own). */}
-      {base === "earth" && <group position={[w.x, w.y, winZ(r)]} scale={w.r / WIN_R}>
-        <mesh>
-          <ringGeometry args={[WIN_R * 0.84, WIN_R, 40]} />
-          <meshStandardMaterial color={CABIN_PAINT.frame} side={DoubleSide} metalness={0.5} roughness={0.4} />
-        </mesh>
-        <mesh position={[0, 0, -0.01]}>
-          <circleGeometry args={[WIN_R * 0.84, 40]} />
-          <meshBasicMaterial color={r.outside === "earth" ? CABIN_PAINT.earthSky : CABIN_PAINT.outsideSky} />
-        </mesh>
-        {r.outside === "moon" && (
-          <mesh position={[0, 0, -0.005]}>
-            <circleGeometry args={[WIN_R * 0.84, 40, Math.PI, Math.PI]} />
-            <meshBasicMaterial color={CABIN_PAINT.regolith} />
-          </mesh>
-        )}
-        {r.outside === "orbit" && (
-          <mesh position={[WIN_R * 0.25, -WIN_R * 0.35, -0.005]}>
-            <circleGeometry args={[WIN_R * 0.4, 40]} />
-            <meshBasicMaterial color={CABIN_PAINT.earthSky} />
-          </mesh>
-        )}
-      </group>}
     </group>
   );
 }
