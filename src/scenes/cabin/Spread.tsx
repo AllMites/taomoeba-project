@@ -1,14 +1,18 @@
 // Fire in this base: everyday objects on the bench, flame fronts that creep over the ones that burn, char behind
 // them, soot where the smoke reached, and the cabin's airflow. Everything comes from ../spread/story.ts (pure, tested).
 import { Edges } from "@react-three/drei";
-import { useState } from "react";
-import { CanvasTexture } from "three";
+import { useMemo, useState } from "react";
+import { CanvasTexture, DoubleSide, FrontSide, Plane, Vector3 } from "three";
+import type { BaseId } from "../../app/console.ts";
 import { Flame } from "../../fx/index.tsx";
 import { usePlayback } from "../playback.ts";
 import { OBJECTS, type CabinObject, type Gravity } from "../spread/spread.ts";
-import { DETECTOR, smokeAt, storyAt, type Puff, type Story, type StoryAt } from "../spread/story.ts";
+import { smokeAt, storyAt, type Puff, type Story, type StoryAt } from "../spread/story.ts";
 import type { Air } from "./air.ts";
 import type { ChipSpec } from "./Cabin.tsx";
+import { Kit, surfaceMaterial } from "./kit.ts";
+import { anchorsOf, type V3 } from "./layout.ts";
+import { propParts } from "./props.ts";
 
 /** Mono paint: the fire stays the only colour on screen. Combustible things are pale, the rest metal grey. */
 const PAINT = { fuel: "#d8d6d0", inert: "#7d7c78", glass: "#b9c2c6", outline: "#ffffff", smoke: "#9a9893", flow: "#ecebe6", soot: "#5d5a55", char: "#141210" };
@@ -16,16 +20,19 @@ const PAINT = { fuel: "#d8d6d0", inert: "#7d7c78", glass: "#b9c2c6", outline: "#
 const top = (o: CabinObject) => o.hd[0];
 const midX = (o: CabinObject) => (o.x0 + o.x1) / 2;
 
-/** One object: a box on the bench. Hover, focus (via the panel) or tap outlines it white and opens its card. */
+/**
+ * One object, shaped like what it is (props.ts). Hover, focus (via the panel) or tap outlines it white and opens its
+ * card. The body takes the object's state: pale when it burns here, grey when it does not, darker where smoke reached.
+ */
 function Thing({ o, g, lit, soot }: { o: CabinObject; g: Gravity; lit: boolean; soot: boolean }) {
   const [hover, setHover] = useState(false);
   const picked = usePlayback((s) => s.picked === o.id);
-  const [h, d] = o.hd;
-  const w = o.x1 - o.x0;
+  const parts = propParts(o);
   const burns = o.burns(g);
+  const metal = o.id === "locker";
   return (
-    <mesh
-      position={[midX(o), h / 2, o.z]}
+    <group
+      position={[midX(o), 0, o.z]}
       onPointerOver={(e) => {
         e.stopPropagation();
         setHover(true);
@@ -40,17 +47,25 @@ function Thing({ o, g, lit, soot }: { o: CabinObject; g: Gravity; lit: boolean; 
         usePlayback.getState().pick(picked ? null : o.id);
       }}
     >
-      <boxGeometry args={[w, h, d]} />
-      <meshStandardMaterial
-        color={soot ? PAINT.soot : o.id === "window" ? PAINT.glass : burns ? PAINT.fuel : PAINT.inert}
-        roughness={o.id === "locker" ? 0.35 : 0.8}
-        metalness={o.id === "locker" ? 0.6 : 0}
-        transparent={o.id === "window"}
-        opacity={o.id === "window" ? 0.35 : 1}
-        emissive={lit ? "#1a0d04" : "#000000"}
-      />
-      {(hover || picked) && <Edges color={PAINT.outline} threshold={15} lineWidth={2.5} />}
-    </mesh>
+      <mesh geometry={parts.body}>
+        <meshStandardMaterial
+          vertexColors
+          map={parts.map ?? null}
+          color={soot ? PAINT.soot : o.id === "window" ? PAINT.glass : metal ? "#a9a8a3" : burns ? PAINT.fuel : PAINT.inert}
+          roughness={metal ? 0.4 : o.id === "panel" || o.id === "window" ? 0.12 : 0.85}
+          metalness={metal ? 0.55 : 0}
+          transparent={parts.opacity !== undefined}
+          opacity={parts.opacity ?? 1}
+          depthWrite={parts.opacity === undefined}
+          side={parts.twoSided || parts.opacity !== undefined ? DoubleSide : FrontSide}
+          emissive={lit ? "#1a0d04" : "#000000"}
+        />
+      </mesh>
+      {parts.trim.map(([k, geo]) => (
+        <mesh key={k} geometry={geo} material={surfaceMaterial(k)} />
+      ))}
+      {(hover || picked) && <Edges geometry={parts.bounds} position={parts.center} color={PAINT.outline} lineWidth={2} />}
+    </group>
   );
 }
 
@@ -103,30 +118,72 @@ function SmokeCloud({ puffs }: { puffs: Puff[] }) {
   );
 }
 
-/** The smoke detector on the air return: a disc whose ring lights white when it trips. */
-function Detector({ tripped }: { tripped: boolean }) {
+/** The detector's housing and mount, merged once: a disc with slots, a domed cover, an arm to the back. */
+let detectorGeo: ReturnType<Kit["build"]> | null = null;
+function detectorParts() {
+  if (detectorGeo) return detectorGeo;
+  const k = new Kit();
+  k.cyl("paint", 0.05, 0.052, 0.018, { r: [Math.PI / 2, 0, 0], c: "#e4e2dc" }, 28);
+  k.ball("paint", 0.036, { p: [0, 0, 0.006], s: [1, 1, 0.35], c: "#eceae4" }, 20);
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2;
+    k.box("dark", [0.012, 0.003, 0.004], { p: [Math.cos(a) * 0.044, Math.sin(a) * 0.044, 0.009], r: [0, 0, a], c: "#3a3936" });
+  }
+  k.box("metal", [0.12, 0.12, 0.008], { p: [0, 0, -0.014], c: "#8d8b86" });
+  k.cyl("metal", 0.006, 0.006, 0.12, { p: [0, -0.11, -0.014], c: "#8d8b86" }, 8);
+  k.box("dark", [0.006, 0.006, 0.003], { p: [0.03, 0.03, 0.011], c: "#20201e" });
+  return (detectorGeo = k.build());
+}
+
+/** The smoke detector on the air return: a disc on its mount whose ring lights white when it trips. */
+function Detector({ at, tripped }: { at: V3; tripped: boolean }) {
   return (
-    <group position={[DETECTOR.x, DETECTOR.y, DETECTOR.z]}>
-      <mesh rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.05, 0.05, 0.02, 20]} />
-        <meshStandardMaterial color={PAINT.fuel} roughness={0.7} />
-      </mesh>
-      <mesh position={[0, 0, 0.011]}>
-        <ringGeometry args={[0.022, 0.032, 24]} />
-        <meshBasicMaterial color={tripped ? PAINT.outline : PAINT.inert} />
+    <group position={at}>
+      {[...detectorParts()].map(([k, geo]) => (
+        <mesh key={k} geometry={geo} material={surfaceMaterial(k)} />
+      ))}
+      <mesh position={[0, 0, 0.0095]}>
+        <ringGeometry args={[0.024, 0.031, 32]} />
+        <meshBasicMaterial color={tripped ? PAINT.outline : "#55544f"} toneMapped={false} />
       </mesh>
     </group>
   );
 }
 
-/** Char on the burnt span of each object: a dark sheet on its top face. */
-function Char({ o, span }: { o: CabinObject; span: [number, number] }) {
-  const w = span[1] - span[0];
-  if (w < 1e-3) return null;
+/** The cabin air vent upstream of the cloth: a slatted grille in a frame on a duct, facing along the flow (+x). */
+let ventGeo: ReturnType<Kit["build"]> | null = null;
+function Vent({ at }: { at: V3 }) {
+  if (!ventGeo) {
+    const k = new Kit();
+    const [h, d] = [0.16, 0.3];
+    k.box("metal", [0.012, h, 0.014], { p: [0.04, 0, d / 2 - 0.007], c: "#9b9994" });
+    k.box("metal", [0.012, h, 0.014], { p: [0.04, 0, -d / 2 + 0.007], c: "#9b9994" });
+    k.box("metal", [0.012, 0.014, d], { p: [0.04, h / 2 - 0.007, 0], c: "#9b9994" });
+    k.box("metal", [0.012, 0.014, d], { p: [0.04, -h / 2 + 0.007, 0], c: "#9b9994" });
+    for (let i = 0; i < 7; i++) k.box("metal", [0.026, 0.004, d - 0.02], { p: [0.036, -h / 2 + 0.025 + i * 0.018, 0], r: [0, 0, -0.5], c: "#b9b7b1" });
+    k.box("dark", [0.06, h - 0.01, d - 0.01], { p: [0.0, 0, 0], c: "#262624" });
+    k.box("paint", [0.08, h + 0.03, d + 0.03], { p: [-0.05, 0, 0], c: "#6c6b66" });
+    k.cyl("paint", 0.05, 0.05, 0.03, { p: [-0.1, 0, 0], r: [0, 0, Math.PI / 2], c: "#5d5c57" }, 16);
+    ventGeo = k.build();
+  }
   return (
-    <mesh position={[(span[0] + span[1]) / 2, o.hd[0] + 0.0008, o.z]}>
-      <boxGeometry args={[w, 0.0012, o.hd[1] * 1.002]} />
-      <meshStandardMaterial color={PAINT.char} roughness={1} />
+    <group position={at}>
+      {[...ventGeo].map(([k, geo]) => (
+        <mesh key={k} geometry={geo} material={surfaceMaterial(k)} />
+      ))}
+    </group>
+  );
+}
+
+/** Char on the burnt span of each object: the prop's own shape in black, clipped to the span along the bench. */
+function Char({ o, span }: { o: CabinObject; span: [number, number] }) {
+  const planes = useMemo(() => [new Plane(new Vector3(1, 0, 0), 0), new Plane(new Vector3(-1, 0, 0), 0)], []);
+  planes[0].constant = -span[0];
+  planes[1].constant = span[1];
+  if (span[1] - span[0] < 1e-3) return null;
+  return (
+    <mesh geometry={propParts(o).body} position={[midX(o), 0.0004, o.z]}>
+      <meshStandardMaterial color={PAINT.char} roughness={1} clippingPlanes={planes} side={DoubleSide} polygonOffset polygonOffsetFactor={-2} polygonOffsetUnits={-2} />
     </mesh>
   );
 }
@@ -189,7 +246,8 @@ function Co2Puff({ from, to, k, opacity }: { from: [number, number, number]; to:
 const heightAt = (x: number, g: Gravity) => OBJECTS.find((o) => o.burns(g) && Math.abs(o.z) < 0.1 && o.x0 - 0.06 <= x && x <= o.x1 + 0.06)?.hd[0] ?? 0.004;
 
 /** The fire at the seeker's time, the objects, the soot and the airflow. */
-export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percent?: number; pressureKPa?: number }; calm: boolean; chips?: ChipSpec[] }) {
+export function SpreadSet({ base, st, air, calm, chips }: { base: BaseId; st: Story; air: { o2Percent?: number; pressureKPa?: number }; calm: boolean; chips?: ChipSpec[] }) {
+  const set = anchorsOf(base);
   const t = usePlayback((s) => s.t);
   const g = st.input.g;
   const o2 = st.input.o2;
@@ -212,7 +270,8 @@ export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percen
         <Front key={i} x={x} y={heightAt(x, g)} g={g} o2={o2} kPa={air.pressureKPa} strength={at.strength} calm={calm} flow={flow} />
       ))}
       <SmokeCloud puffs={smokeAt(st, t, 22)} />
-      <Detector tripped={at.tripped} />
+      <Detector at={set.detector} tripped={at.tripped} />
+      <Vent at={set.vent} />
       {at.vent && <Airflow />}
       {puff && <Co2Puff from={[st.xs + 0.5, 0.2, -0.18]} to={[at.hi, heightAt(at.hi, g) + 0.03, 0]} k={puff.k} opacity={puff.opacity} />}
     </group>
@@ -220,9 +279,10 @@ export function SpreadSet({ st, air, calm, chips }: { st: Story; air: { o2Percen
 }
 
 /** Glass labels on the fire: flame front, burnt zone, unburnt fuel, airflow direction. Placed by placeSpreadChips. */
-export function spreadChips(g: Gravity, detect: number): ChipSpec[] {
+export function spreadChips(g: Gravity, detect: number, base: BaseId): ChipSpec[] {
+  const d = anchorsOf(base).detector;
   return [
-    { id: "detector", at: [DETECTOR.x, DETECTOR.y - 0.05, DETECTOR.z], text: "Smoke detector", sub: `detected at ${Math.round(detect)} s`, below: true, hide: true },
+    { id: "detector", at: [d[0], d[1] - 0.05, d[2]], text: "Smoke detector", sub: `detected at ${Math.round(detect)} s`, below: true, hide: true },
     { id: "front", at: [0, 0.08, 0], text: "Flame front", sub: g === "earth" ? "a rising flame" : g === "partial" ? "estimate for the Moon" : "low, it hugs the surface" },
     { id: "burnt", at: [0, 0.01, 0.1], text: "Burnt zone", below: true, hide: true },
     { id: "unburnt", at: [0, 0.02, 0.12], text: "Unburnt fuel", below: true, hide: true },

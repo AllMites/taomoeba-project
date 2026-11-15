@@ -204,7 +204,7 @@ export function CabinScene({ habitat, calm }: SceneProps) {
     return () => usePlayback.getState().setHeadline(null);
   }, [responded, st.outcome]);
   const chipEls = useRef(new Map<string, HTMLDivElement>());
-  const fire = useMemo(() => (mode === "spread" ? spreadChips(g, st.detect) : null), [mode, g, st.detect]);
+  const fire = useMemo(() => (mode === "spread" ? spreadChips(g, st.detect, base) : null), [mode, g, st.detect, base]);
   const chips: ChipSpec[] = [
     ...(fire ?? [{ id: "flame", at: chipAnchor(DROPLET.at, r), text: `Flame in ${air.name}`, sub: air.readout }]),
     { id: "window", at: windowAt(base), left: true, below: true, text: room.outside === "orbit" ? "Window: Earth from orbit" : room.outside === "moon" ? "Window: the lunar surface" : "Window: daylight on Earth" },
@@ -219,13 +219,17 @@ export function CabinScene({ habitat, calm }: SceneProps) {
         frameloop={calm ? "demand" : "always"}
         camera={{ fov: home.fov, near: 0.01, far: 60, position: home.pos }}
         gl={{ antialias: true, powerPreference: "high-performance" }}
-        onCreated={({ gl }) => gl.setClearColor(CABIN_PAINT.outsideSky)}
+        onCreated={({ gl }) => {
+          gl.setClearColor(CABIN_PAINT.outsideSky);
+          // Char is drawn as the prop's own shape clipped to the burnt span.
+          gl.localClippingEnabled = true;
+        }}
       >
         <FirstFrame />
         <Cabin base={base} />
         <Navigate home={home} calm={calm} focus={mode === "spread" ? home.target : DROPLET.at} leash={mode === "spread" ? 0.3 : 0.1} room={room} maxPolar={1.75} />
         <LensShift home={home} focus={mode === "spread" ? home.target : DROPLET.at} />
-        {mode === "spread" ? <SpreadSet st={st} air={air} calm={calm} chips={fire ?? undefined} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
+        {mode === "spread" ? <SpreadSet base={base} st={st} air={air} calm={calm} chips={fire ?? undefined} /> : <BurnFire c={c} air={air} d0={dMm} calm={calm} compare={compare && base !== "iss"} />}
         <ChipTracker chips={chips} refs={chipEls} />
       </Canvas>
       <ChipLayer chips={chips} refs={chipEls} />

@@ -98,3 +98,17 @@ describe("camera limits keep the fire in view and the camera inside the cabin (P
     }
   });
 });
+
+describe("every base defines the story's places inside its own room (17.4)", () => {
+  it.each(BASE_ORDER)("%s: vent, detector, locker, airflow, smoke and the three start points are inside the walls", async (base) => {
+    const { anchorsOf, insideRoom } = await import("./layout.ts");
+    const { STARTS, DETECTOR } = await import("../spread/story.ts");
+    const a = anchorsOf(base);
+    for (const k of ["vent", "detector", "locker", "airflow", "smoke"] as const) expect(insideRoom(ROOMS[base], a[k]), `${base} ${k}`).toBe(true);
+    for (const s of STARTS) expect(insideRoom(ROOMS[base], a.starts[s.id as keyof typeof a.starts]), `${base} ${s.id}`).toBe(true);
+    // The detector stands where the story checks the smoke.
+    expect(a.detector[0]).toBe(DETECTOR.x);
+    // The vent is upstream of the cloth (the flow runs along +x).
+    expect(a.vent[0]).toBeLessThan(a.starts.cloth[0]);
+  });
+});
