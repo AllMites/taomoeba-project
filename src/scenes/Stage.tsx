@@ -440,6 +440,7 @@ export default function Stage() {
       <div className="stage-ticks" aria-hidden="true" />
       <div className="stage-strip">
         <ScenePicker />
+        <div className="stage-strip-slot" />
         <PlayBar />
       </div>
       <div className="stage-caption" data-open={capOpen || undefined}>

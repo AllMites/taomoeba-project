@@ -326,3 +326,45 @@
 @container stage (max-width: 37.5rem) {
   .stage-caption-words > p { font-size: var(--text-xs); }
 }
+
+/*
+ * One control strip at the bottom of the stage, right above the bottom bar (--hud-bar-h): scene, scenario, play,
+ * seeker, time. Menus open upward from it. At the top only the carousel and the caption remain.
+ */
+.stage {
+  --stage-strip-bottom: calc(var(--hud-bar-h, 0rem) + var(--console-safe-bottom, 0rem) + var(--space-2));
+  --stage-row2: var(--stage-top);
+  --stage-side-btn: 0rem;
+}
+.stage-strip {
+  top: auto;
+  bottom: var(--stage-strip-bottom);
+  flex-wrap: wrap;
+  row-gap: var(--space-1);
+}
+.stage-strip .stage-play { flex: 1 1 18rem; }
+.stage-pick-list { top: auto; bottom: calc(100% + var(--space-2)); max-height: calc(100cqh - var(--stage-strip-bottom) - var(--stage-top) - 4rem); overflow: auto; }
+.stage-strip-slot { display: contents; }
+.stage-strip .burn { position: relative; inset: auto; z-index: auto; }
+.stage-strip .burn-toggle { position: static; width: auto; top: auto; right: auto; min-height: 2.75rem; display: inline-flex; align-items: center; gap: var(--space-2); white-space: nowrap; }
+.stage-strip .burn-toggle .stage-pick-name { overflow: hidden; text-overflow: ellipsis; max-width: 14rem; }
+.stage-strip .burn[data-open] .burn-toggle svg { transform: rotate(180deg); }
+.stage-strip .burn-panel {
+  position: absolute;
+  top: auto;
+  right: auto;
+  left: 0;
+  bottom: calc(100% + var(--space-2));
+  width: min(22rem, calc(100cqw - 2 * var(--space-4)));
+  /* Up to the caption's real height, never over it; inner scroll below that. */
+  max-height: calc(100cqh - var(--stage-strip-bottom) - var(--stage-strip-h, 2.75rem) - var(--stage-top) - max(2.75rem, var(--stage-caption-h, 0px)) - 2 * var(--space-2));
+}
+.stage:has(.burn[data-open]) .stage-hint, .stage:has(.stage-pick[open]) .stage-hint { visibility: hidden; }
+.stage-nav { bottom: calc(var(--stage-strip-bottom) + var(--stage-strip-h, 2.75rem) + var(--space-2)); }
+.stage-caption { right: var(--space-4); }
+@container stage (max-width: 37.5rem) {
+  .stage-strip .stage-play { flex-basis: 100%; }
+  .stage-strip .burn { position: static; }
+  .stage-strip .burn-panel { left: 0; right: 0; width: auto; }
+  .stage-strip .burn-toggle .stage-pick-name { max-width: 8rem; }
+}

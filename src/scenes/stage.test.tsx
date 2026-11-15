@@ -50,15 +50,22 @@ describe("center replay, before any 3D has loaded (and for good where it cannot 
   });
 });
 
-it("the caption sits under the strip's real height, so a strip that wraps on a phone is not covered (18.2)", async () => {
+it("one control strip at the bottom, above the bottom bar; the caption alone at the top; menus open upward (18.2)", async () => {
   const { readFileSync } = await import("node:fs");
   const css = readFileSync(new URL("./stage.css", import.meta.url), "utf8");
-  const row2 = css.match(/--stage-row2: calc\(([^;]*)\);/)?.[1] ?? "";
-  expect(row2).toContain("var(--stage-strip-h");
+  expect(css).toMatch(/--stage-strip-bottom: calc\(var\(--hud-bar-h/);
+  expect(css).toMatch(/\.stage-strip \{[^}]*bottom: var\(--stage-strip-bottom\);/);
+  expect(css).toMatch(/--stage-row2: var\(--stage-top\);/);
   expect(css).toMatch(/\.stage-caption \{[^}]*top: var\(--stage-row2\);/);
-  // Play, seeker and time live in the one strip with the scene picker.
+  // The hint sits above the strip's real height, so it never covers it.
+  expect(css).toMatch(/\.stage-nav \{ bottom: calc\(var\(--stage-strip-bottom\) \+ var\(--stage-strip-h/);
+  expect(css).toMatch(/\.stage-pick-list \{ top: auto; bottom: calc\(100% \+/);
+  expect(css).toMatch(/\.stage-strip \.burn-panel \{[^}]*bottom: calc\(100% \+/);
+  // Scene picker, then the scene's own scenario slot, then play, seeker and time.
   const html = renderToStaticMarkup(<Stage />);
-  expect(html).toMatch(/class="stage-strip"><details class="stage-pick"/);
+  expect(html).toMatch(/class="stage-strip"><details class="stage-pick"[\s\S]*<div class="stage-strip-slot"><\/div>/);
+  const src = readFileSync(new URL("./Stage.tsx", import.meta.url), "utf8");
+  expect(src).toMatch(/<ScenePicker \/>\s*<div className="stage-strip-slot" \/>\s*<PlayBar \/>/);
 });
 
 it("a scene's side panel starts below the caption's real height, never under a long caption", async () => {
