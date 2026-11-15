@@ -92,26 +92,44 @@ in the guidelines. Weighing it:
 
 ## 6. Visual direction
 
-Flat, clean, modern, grey. Frosted, translucent glass panels like Safari's, clean vector icons with high contrast. Cinematic 3D only in the
-center; panels stay calm and readable over it.
+**Mono, dark, transparent.** Modelled on the IT Empire reference: warm near-black, bone-white type, smoked-glass
+panels, one solid white pill for the main action. The UI has **no hue at all**. The only colour on screen is
+the fire in the replay, so nothing in the interface competes with it.
 
-| Token role | Value | Note |
-|---|---|---|
-| Page / space | `[ near-black grey, e.g. #0e0f11 ]` | IT Empire base; fill from the Canva hex if given |
-| Glass panel | `rgba(255,255,255,0.06)` + `backdrop-filter: blur(24px) saturate(140%)` | 1px border `rgba(255,255,255,0.12)` |
-| Text | `[ #f2f2f0 ]`, muted `[ #a4a8ae ]` | ≥ 4.5:1 over the darkest stage frame, so test over the real 3D |
-| Accent | `[ Canva accent ]`, fallback amber `#ffbb5c` | One accent. The flame keeps its own colour |
-| Display font | `[ Canva font ]`, fallback **Archivo** wide | IT Empire uses a wide geometric display face |
-| Body / UI | `[ Canva font ]`, fallback Archivo | |
-| Mono readouts | JetBrains Mono | Status strip, units, ids |
-| Icons | One outline set, 1.5 px stroke, 20/24 px | e.g. Lucide; no emoji |
+Not this: neon cyan or magenta, glowing borders, gradient text, scanlines, HUD corner brackets on every box,
+or a grid overlay. The reference keeps its corner ticks to one frame (the hero); we do the same, around the replay only.
+
+| Token | Value | Use | Contrast |
+|---|---|---|---|
+| `--space` | `#0b0b0a` | Page, behind the 3D | — |
+| `--glass` | `rgba(14,14,13,0.72)` + `backdrop-filter: blur(20px) saturate(120%)` | Panels, sheets, the top-3 card | Composites to about `#1a1a18` even over the brightest replay frame |
+| `--glass-hi` | `rgba(255,255,255,0.06)` | Hover, selected row | — |
+| `--line` | `rgba(255,255,255,0.10)` | Hairlines, panel borders | — |
+| `--line-strong` | `rgba(255,255,255,0.24)` | Focus ring base, selected card border | — |
+| `--text` | `#ecebe6` | Body, headings | 16.5:1 on space, 14.6:1 on glass |
+| `--muted` | `#a3a19b` | Secondary text, units | 7.6:1 on space, 6.8:1 on glass |
+| `--label` | `#85837d` | Small mono capitals only | 5.2:1 on space, 4.6:1 on glass. Never on bare 3D |
+| `--primary` | `#f2f1ed` fill, `#0b0b0a` text | The one solid pill: Ask SI, "See all" | 17.4:1 |
+| `--focus` | `#ecebe6` 2px ring, 2px offset | Every focusable element | — |
+| `--flame` | from `src/fx/palette.ts` | Replay only, plus a 6px dot in the Ask SI pill | 8.5:1 |
+| `--in-range` / `--out-range` | `#ecebe6` solid vs `#85837d` dashed | "Inside tested range" vs "extrapolated". Shown by form, not hue | — |
+
+Type: keep what we ship.
+- Display: **Archivo** at 125% width, uppercase, tracking +0.04em. This is the IT Empire title look.
+- Body: Archivo at normal width.
+- Readouts: JetBrains Mono, tabular numbers.
+- No new font dependency.
+
+Icons: one outline set (Lucide), 1.5px stroke, colour `--text`. No filled or coloured icons.
+
+Selected state, as on the reference's rail and tabs: white fill with dark icon or text. Unselected: transparent with a `--line` border.
 
 Glass rules:
-- Blur only on panels that sit over the 3D.
-- If `backdrop-filter` is missing, or the user prefers reduced transparency, fall back to a solid `#16181b` at 0.92 opacity.
+- Blur only on panels over the 3D.
+- Without `backdrop-filter`, or when the viewer prefers reduced transparency, use solid `#161615`.
+- No light mode: the console is dark by design.
 
-**Open:** `[ Canva hex codes and font names ]`. We could not read the Canva file from here. Paste them
-in, or Rec: ship the fallbacks above.
+Canva: the board's colours are now decided here (Daniel, 15 Nov). The Canva file is used for reference only.
 
 ## 7. 3D
 
@@ -205,9 +223,9 @@ Wave 1 lanes touch separate files, so they run side by side. K waits for S's cen
 ## 14. Open questions for tonight
 
 1. ~~Replay-first or stage-hub?~~ Decided: replay central, required first (§5).
-2. Canva hex codes and fonts, or ship the fallbacks?
+2. ~~Canva colours?~~ Decided: mono dark glass (§6).
 3. Earth: Interpret tab or its own sheet?
 4. Which NASA models for the ISS and the rover? Do they pass the size budget?
-5. Keep a light mode? Rec: no; the console is dark by design. The old site had both.
+5. ~~Light mode?~~ Decided: no (§6).
 6. Does round 1 of the decision board still apply? Ask SI amber, phone padding, the rover label clip and
    section-link fixes carry over; the structure, nav, carousel and bottom-card cards are replaced by this PRD.
