@@ -33,7 +33,7 @@ const n = (count: number, one: string, many = `${one}s`) => `${count} ${count ==
 export function aboutAnswer(c: AboutCounts): string[] {
   return [
     "Firebreak gathers NASA's open fire experiments in space. For the air of one habitat, it shows which experiments matter, what they mean and what is not known.",
-    `It is built from ${n(c.experiments, "fire experiment")} and ${n(c.sources, "source")}. The models are CatBoost, TypeSafe and Claude. Numbers come from the tables, not from the model.`,
+    `It is built from ${n(c.experiments, "NASA experiment record")} and the ${n(c.sources, "source")} Ask SI searches. The models are CatBoost, TypeSafe and Claude. Numbers come from the tables, not from the model.`,
     "Ask SI searches the sources, picks passages, writes an answer, then checks each sentence against its source. It refuses what the records do not cover.",
     "To start, pick a base, then follow the guide: rank, what it means, the fire scenario, ask.",
   ];
