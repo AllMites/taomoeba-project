@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState, type DragEvent, type KeyboardEvent, type RefObject } from "react";
 import { DRAG_TYPE } from "../app/console.ts";
-import { citationText } from "./cite.ts";
+import { answerSourceIds, citationText } from "./cite.ts";
 import {
   factKind,
   isDataOnly,
@@ -170,6 +170,8 @@ type PanelProps = {
   onReset: () => void;
   onOpenExperiment: (id: string) => void;
   onShow: (ids: string[]) => void;
+  /** Light the answer's sources in the Research map. */
+  onGraph?: (ids: string[]) => void;
   onRemoveAbout?: (id: string) => void;
   /** An experiment card was dropped on the panel. */
   onDropAbout?: (id: string) => void;
@@ -244,7 +246,7 @@ export function Panel(p: PanelProps) {
           <>
             <ol className="ask-thread" aria-label="Conversation">
               {p.turns.map((t) => (
-                <TurnView key={t.id} turn={t} titleOf={p.titleOf} onOpen={p.onOpenExperiment} onShow={p.onShow} />
+                <TurnView key={t.id} turn={t} titleOf={p.titleOf} onOpen={p.onOpenExperiment} onShow={p.onShow} onGraph={p.onGraph} />
               ))}
             </ol>
             {/* Follow-ups end the thread, under the last answer, so the composer stays short in a narrow panel. */}
@@ -284,11 +286,13 @@ export function TurnView({
   titleOf,
   onOpen,
   onShow,
+  onGraph,
 }: {
   turn: TurnState;
   titleOf: (id: string) => string;
   onOpen: (id: string) => void;
   onShow: (ids: string[]) => void;
+  onGraph?: (ids: string[]) => void;
 }) {
   const o = turn.outcome;
   return (
@@ -310,7 +314,7 @@ export function TurnView({
           <StepsSummary result={o.result} noCover />
         </div>
       )}
-      {o?.kind === "answer" && <Answer result={o.result} titleOf={titleOf} onOpen={onOpen} onShow={onShow} />}
+      {o?.kind === "answer" && <Answer result={o.result} titleOf={titleOf} onOpen={onOpen} onShow={onShow} onGraph={onGraph} />}
       {o?.kind === "answer" && <CopyCitation text={() => citationText(turn.question, o.result, titleOf)} />}
     </li>
   );
@@ -354,13 +358,16 @@ export function Answer({
   titleOf,
   onOpen,
   onShow,
+  onGraph,
 }: {
   result: AskResult;
   titleOf: (id: string) => string;
   onOpen: (id: string) => void;
   onShow: (ids: string[]) => void;
+  onGraph?: (ids: string[]) => void;
 }) {
   const n = result.investigationIds.length;
+  const usedIds = answerSourceIds(result);
   const facts = result.facts ?? [];
   const dataOnly = isDataOnly(result.answer);
   return (
@@ -432,6 +439,11 @@ export function Answer({
       {n > 0 && (
         <button type="button" className="ask-btn ask-show" onClick={() => onShow(result.investigationIds)}>
           Show the {n} {n === 1 ? "experiment" : "experiments"} this answer used
+        </button>
+      )}
+      {onGraph && usedIds.length > 0 && (
+        <button type="button" className="ask-btn ask-show" onClick={() => onGraph(usedIds)}>
+          Show its sources in the Research map
         </button>
       )}
     </div>

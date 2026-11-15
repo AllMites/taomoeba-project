@@ -50,6 +50,9 @@ const QUESTIONS = [
   "How could ACME research reduce pollution on Earth?",
   "How did NASA help firefighters' breathing equipment?",
   "What is PBI fabric and how do firefighters use it?",
+  // the "Solid materials in microgravity" Ask buttons (src/solids/index.tsx, SOLIDS_ASK)
+  "What oxygen levels have fabrics been burned at in microgravity?",
+  "Why did silicone burn on Earth but not in space in SAFFIRE-II?",
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

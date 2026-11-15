@@ -13,6 +13,8 @@ export interface AppState {
   highlightIds: string[];
   /** A question another section asks the Ask box to send (the what-if tool's "Ask about this"); n makes repeats distinct. */
   askRequest?: { question: string; n: number } | null; // optional so older test states still type-check
+  /** Sources and experiments an Ask answer used, lit in the research graph ("Show in the research graph"); n makes repeats distinct. */
+  graphFocus?: { ids: string[]; n: number } | null;
   setHabitat: (h: HabitatId) => void;
   setPds: (p: PdsFilter) => void;
   setSearch: (s: string) => void;
@@ -20,6 +22,7 @@ export interface AppState {
   setHighlightIds: (ids: string[]) => void;
   requestAsk?: (question: string) => void;
   clearAskRequest?: () => void;
+  setGraphFocus?: (ids: string[]) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -29,6 +32,7 @@ export const useStore = create<AppState>((set) => ({
   selectedInvestigationId: null,
   highlightIds: [],
   askRequest: null,
+  graphFocus: null,
   setHabitat: (habitat) => set({ habitat }),
   setPds: (pds) => set({ pds }),
   setSearch: (search) => set({ search }),
@@ -36,4 +40,5 @@ export const useStore = create<AppState>((set) => ({
   setHighlightIds: (highlightIds) => set({ highlightIds }),
   requestAsk: (question) => set((st) => ({ askRequest: { question, n: (st.askRequest?.n ?? 0) + 1 } })),
   clearAskRequest: () => set({ askRequest: null }),
+  setGraphFocus: (ids) => set((st) => ({ graphFocus: ids.length ? { ids, n: (st.graphFocus?.n ?? 0) + 1 } : null })),
 }));

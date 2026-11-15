@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { GraphView } from "./index.tsx";
-import { find, LINKS, neighbours, parseGraph, visibleEdges, visibleNodes } from "./logic.ts";
+import { find, focusIn, linkGroups, LINKS, neighbours, parseGraph, timeline, visibleEdges, visibleNodes, type Tone } from "./logic.ts";
 
 const raw = JSON.parse(readFileSync(`${process.cwd()}/public/data/graph.json`, "utf8"));
 const doc = parseGraph(raw)!;
@@ -45,5 +45,44 @@ describe("research graph", () => {
     expect(sel).toContain("Open experiment details");
     expect(sel).toContain("Reports on");
     expect(sel).toContain("FLEX-2");
+  });
+  it("Ask focus: only ids that are dots light up; the rest are counted", () => {
+    const f = focusIn(doc, ["PSI-69", "ntrs:20150023456", "team:model-report"]);
+    expect([...f.lit]).toEqual(["PSI-69", "ntrs:20150023456"]);
+    expect(f.missing).toBe(1);
+    const html = renderToStaticMarkup(<GraphView doc={doc} focus={{ ids: ["PSI-69", "ntrs:20150023456", "team:model-report"], n: 1 }} onClearFocus={() => {}} />);
+    expect(html).toContain("Lit: the 2 sources and experiments your Ask answer used.");
+    expect(html).toContain("1 more is the team");
+    expect(html.match(/g-hit/g)?.length).toBe(2);
+  });
+  it("habitat: experiments not tested in that air fade, and the line says how many were", () => {
+    const tones = new Map<string, Tone>(doc.nodes.filter((n) => n.kind === "experiment").map((n) => [n.id, "none"]));
+    tones.set("PSI-69", "both");
+    tones.set("PSI-68", "o2");
+    const hab = { label: "Moon Base", o2: 30, kPa: 70.3, tones, both: 1, o2Only: 1 };
+    const html = renderToStaticMarkup(<GraphView doc={doc} habitat={hab} />);
+    expect(html).toContain("Fade experiments not tested in <b>Moon Base</b> air");
+    expect(html.match(/g-node g-experiment[^"]*g-fade/g)?.length).toBe(24);
+    expect(html.match(/g-node g-experiment[^"]*g-half/g)?.length).toBe(1);
+  });
+  it("timeline: reports by year in one row per experiment; nothing undated is placed", () => {
+    const t = timeline(doc);
+    expect(doc.nodes.filter((n) => n.year !== undefined).length).toBeGreaterThanOrEqual(35);
+    const flex = t.rows.find((r) => r.node.id === "PSI-69")!;
+    expect(flex.reports.length).toBeGreaterThan(5);
+    for (const r of t.rows) expect(r.reports.every((x, i, a) => i === 0 || a[i - 1].year! <= x.year!)).toBe(true);
+    expect(t.from).toBeLessThanOrEqual(1995);
+    const html = renderToStaticMarkup(<GraphView doc={doc} initialMode="timeline" />);
+    expect(html).toContain("Timeline:");
+    expect(html).toContain('aria-pressed="true">Timeline');
+  });
+  it("list view: every dot as a list item with its links and reasons, keyboard reachable", () => {
+    const html = renderToStaticMarkup(<GraphView doc={doc} initialMode="list" onOpen={() => {}} />);
+    expect(html).toContain("PSI experiments (26)");
+    expect(html.match(/<details id="gl-/g)?.length).toBe(visibleNodes(doc, ON).length);
+    expect(html).toContain("The next flight of the same experiment series");
+    const byId = new Map(doc.nodes.map((n) => [n.id, n]));
+    const g = linkGroups(visibleEdges(doc, ON), byId, "PSI-69");
+    expect(g[0].type).toBe("reports_on");
   });
 });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { citationText } from "./cite.ts";
+import { answerSourceIds, citationText } from "./cite.ts";
 import { NO_STEPS, type AskResult } from "./respond.ts";
 
 const r = {
@@ -27,5 +27,16 @@ describe("copy answer with sources", () => {
     expect(t).toContain("2. FLEX (PSI-69) [psi:PSI-69]");
     expect(t.match(/ntrs:1\]/g)).toHaveLength(1);
     expect(t).not.toContain("In helium the burning rate rose."); // excerpts stay on the page
+  });
+});
+
+describe("answer sources for the research graph", () => {
+  it("joins claim sources, experiments and fact sources, PSI records as experiment ids, no repeats", () => {
+    const ids = answerSourceIds({
+      claims: [{ sourceIds: ["ntrs:1", "psi:PSI-69"] }, { sourceIds: ["ntrs:1"] }] as AskResult["claims"],
+      investigationIds: ["PSI-69", "PSI-68"],
+      facts: [{ id: "f", statement: "", dataset: "", caveat: "", source: "team:model-report" }],
+    });
+    expect(ids).toEqual(["ntrs:1", "PSI-69", "PSI-68", "team:model-report"]);
   });
 });

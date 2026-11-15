@@ -160,6 +160,12 @@ export default function Ask() {
     const top = centredScrollTop({ scrollTop: list.scrollTop, scrollHeight: list.scrollHeight, clientHeight: list.clientHeight, top: l.top }, { top: b.top, height: b.height });
     list.scrollTo({ top, behavior: calmMotion() ? "auto" : "smooth" });
   }
+  /** Light the answer's sources in the Research map and open it; the map frames the lit dots itself. */
+  function showInGraph(ids: string[]) {
+    if (narrow()) close(); // a bottom sheet would cover the map
+    useStore.getState().setGraphFocus?.(ids);
+    useConsole.getState().setView("graph");
+  }
   function openExperiment(id: string) {
     if (narrow()) close(); // the drawer would open behind the sheet
     setSelected(id);
@@ -201,6 +207,7 @@ export default function Ask() {
       onReset={reset}
       onOpenExperiment={openExperiment}
       onShow={showExperiments}
+      onGraph={showInGraph}
       onRemoveAbout={(id) => useConsole.getState().removeAskAbout(id)}
       onDropAbout={askAbout}
     />
