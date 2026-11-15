@@ -4,7 +4,10 @@ import { loadWhatIf } from "../whatif/load.ts";
 import { evalLines, KINDS, parseEval, type AskEval } from "./logic.ts";
 import "./trust.css";
 
-/** "How we know": measured accuracy of every part of the page, what each kind of number is, and what is not covered. */
+/**
+ * "How answers are checked": measured accuracy of every part of the site, what each kind of number is, and what is not
+ * covered. Lives in the left panel under the Library, so it is laid out for 320px.
+ */
 export default function Trust() {
   const [ev, setEv] = useState<AskEval | null | "none">(null);
   const [doc, setDoc] = useState<WhatIfDoc | null>(null);
@@ -30,17 +33,16 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
   const agreeAll = t ? Object.values(t.direction_agreement).every((v) => v === 1) : false;
   return (
     <section className="trust" aria-labelledby="trust-h">
-      <div className="sec-label">
-        <p className="sec-word t-readout">Checked</p>
-        <h2 id="trust-h" className="sec-h">
-          How we know
-        </h2>
-      </div>
-      <p className="trust-intro">Every part of this page was tested, and every number says what kind of number it is.</p>
+      <h2 id="trust-h" className="trust-h t-readout">
+        How answers are checked
+      </h2>
+      <p className="trust-intro">Every part of this site was tested, and every number says what kind of number it is.</p>
 
       <div className="trust-grid">
-        <article className="trust-card">
-          <h3 className="trust-h3">Ask the records, measured</h3>
+        <details className="trust-card" open>
+          <summary>
+            <h3 className="trust-h3">Ask the records, measured</h3>
+          </summary>
           {ev === null && <p className="muted">Loading the scores</p>}
           {ev === "none" && <p className="muted">Not measured on this copy of the site yet.</p>}
           {ev && ev !== "none" && (
@@ -58,10 +60,12 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
               </p>
             </>
           )}
-        </article>
+        </details>
 
-        <article className="trust-card">
-          <h3 className="trust-h3">Team models, tested on days they never saw</h3>
+        <details className="trust-card">
+          <summary>
+            <h3 className="trust-h3">Team models, tested on days they never saw</h3>
+          </summary>
           {m ? (
             <ul className="trust-list">
               <li>
@@ -87,11 +91,13 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
               never sit in both training and testing.
             </p>
           )}
-        </article>
+        </details>
 
         {t && (
-          <article className="trust-card">
+          <details className="trust-card">
+            <summary>
             <h3 className="trust-h3">Physics cross-check</h3>
+          </summary>
             <ul className="trust-list">
               {agreeAll && <li>On every FLEX run, the burning-rate model moves the same way as textbook theory for oxygen, helium and CO₂.</li>}
               <li>
@@ -105,11 +111,13 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
                 of the textbook rate.
               </li>
             </ul>
-          </article>
+          </details>
         )}
 
-        <article className="trust-card">
-          <h3 className="trust-h3">What each kind of number is</h3>
+        <details className="trust-card">
+          <summary>
+            <h3 className="trust-h3">What each kind of number is</h3>
+          </summary>
           <dl className="trust-kinds">
             {KINDS.map((k) => (
               <div key={k.name}>
@@ -118,10 +126,12 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
               </div>
             ))}
           </dl>
-        </article>
+        </details>
 
-        <article className="trust-card">
-          <h3 className="trust-h3">Not covered</h3>
+        <details className="trust-card">
+          <summary>
+            <h3 className="trust-h3">Not covered</h3>
+          </summary>
           <ul className="trust-list">
             <li>
               No experiment here ran in Moon or Mars gravity; gravity effects are a labelled theory estimate only. ACME&apos;s E-FIELD Flames
@@ -132,7 +142,7 @@ export function TrustView({ ev, doc }: { ev: AskEval | null | "none"; doc: WhatI
             <li>Some NASA reports allow short quotes only: the page shows at most 15 words from them and links the full report.</li>
             <li>The Ask box answers from the library it has; a question outside it is refused, not guessed.</li>
           </ul>
-        </article>
+        </details>
       </div>
     </section>
   );

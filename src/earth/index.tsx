@@ -4,7 +4,10 @@ import { useDataset } from "../data/useDataset.ts";
 import { counts, parseEarth, STATUS, STATUS_ORDER, type EarthDoc } from "./logic.ts";
 import "./earth.css";
 
-/** "On Earth": what NASA fire research gives people on the ground, with how far each benefit has come and its sources. */
+/**
+ * "On Earth": what NASA fire research gives people on the ground, with how far each benefit has come and its sources.
+ * A compact glass card: it takes the place of the top 3 over the replay when the Earth base is picked.
+ */
 export default function Earth() {
   const [doc, setDoc] = useState<EarthDoc | null | "error">(null);
   const investigations = useDataset("investigations");
@@ -40,29 +43,26 @@ export function EarthView(p: {
 }) {
   const { doc } = p;
   return (
-    <section className="earth" aria-labelledby="earth-h">
-      <div className="sec-label">
-        <p className="sec-word t-readout">Down to Earth</p>
-        <h2 id="earth-h" className="sec-h">
-          On Earth too
-        </h2>
-      </div>
-      <p className="earth-intro">
-        Fire research in orbit also protects people on the ground. Each card says how far the benefit has come and links the NASA source it
-        comes from.
-      </p>
+    <section className="earth glass" aria-labelledby="earth-h">
+      <h2 id="earth-h" className="earth-h t-readout">
+        On Earth
+      </h2>
+      <p className="earth-intro">Fire research in orbit also protects people on the ground. Each item links its NASA source.</p>
       {doc === null && <p className="muted">Loading</p>}
       {doc === "error" && <p className="muted">The Earth benefits could not be loaded.</p>}
       {doc && doc !== "error" && (
         <>
-          <ul className="earth-legend" aria-label="What the labels mean">
-            {STATUS_ORDER.map((s) => (
-              <li key={s}>
-                <span className={`earth-badge earth-${s}`}>{STATUS[s].label}</span> <span className="muted">{STATUS[s].text}</span>{" "}
-                <span className="muted">({counts(doc)[s]})</span>
-              </li>
-            ))}
-          </ul>
+          <details className="earth-key">
+            <summary>What the labels mean</summary>
+            <ul className="earth-legend">
+              {STATUS_ORDER.map((s) => (
+                <li key={s}>
+                  <span className={`earth-badge earth-${s}`}>{STATUS[s].label}</span> <span className="muted">{STATUS[s].text}</span>{" "}
+                  <span className="muted">({counts(doc)[s]})</span>
+                </li>
+              ))}
+            </ul>
+          </details>
           <ul className="earth-cards">
             {[...doc.items]
               .sort((a, b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status))

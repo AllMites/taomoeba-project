@@ -150,7 +150,7 @@ export default function Ranking() {
           {!filtering && !showAll && shown.length < rows.length && !litHidden(rows, highlightIds) && (
             <button
               type="button"
-              className="pill rk-more"
+              className="quiet rk-more"
               onClick={() => {
                 // The button goes away, so move focus to the first card it revealed instead of dropping it on the page.
                 const id = firstRevealedId(rows);

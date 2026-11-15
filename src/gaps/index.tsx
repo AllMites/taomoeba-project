@@ -7,7 +7,7 @@ import { loadWhatIf } from "../whatif/load.ts";
 import { coverage, flexNear, nextTests, PLANNED } from "./logic.ts";
 import "./gaps.css";
 
-/** "What to test next": where the record runs out for the habitat picked at the top of the page. */
+/** "What to test next": where the record runs out for the picked base. */
 export default function Gaps() {
   const habitatId = useStore((s) => s.habitat);
   const habitats = useDataset("habitats");
@@ -49,7 +49,7 @@ export function GapsView(p: { habitat: HabitatPreset; investigations: Investigat
       </div>
       <p className="gaps-intro">
         For {h.label} air ({h.o2Percent}% oxygen, {h.pressureKPa} kPa): what the {fire} fire experiments on record cover, and what they do not.
-        Change the habitat at the top of the page to see another.
+        Pick another base to see its gaps.
       </p>
       <div className="gaps-grid">
         <article className="gaps-card">

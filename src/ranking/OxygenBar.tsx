@@ -2,8 +2,8 @@ import type { RankFactor } from "../contracts/index.ts";
 import { covers, fmt, rangeText, scalePct, TICK_BELOW } from "./logic.ts";
 
 /**
- * Fixed 0 to 100% oxygen scale on a depth-blue track. The tested span is green only when it covers the
- * habitat (and says so in words), muted otherwise. A range narrower than one point is a tick, not a
+ * Fixed 0 to 100% oxygen scale. No hue: the tested span is solid when it covers the habitat and a dashed
+ * outline when it misses, and the caption says which in words. A range narrower than one point is a tick, not a
  * widened span. The habitat is an accent marker with its value above it.
  */
 export default function OxygenBar({

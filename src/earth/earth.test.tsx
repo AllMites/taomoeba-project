@@ -31,7 +31,8 @@ describe("on Earth too", () => {
   });
   it("renders labelled cards, in-use first, with experiment buttons and Ask buttons", () => {
     const html = renderToStaticMarkup(<EarthView doc={doc} titleOf={(id) => `T-${id}`} onOpen={() => {}} onAsk={() => {}} />);
-    expect(html).toContain("On Earth too");
+    expect(html).toMatch(/<h2[^>]*>On Earth<\/h2>/);
+    expect(html).toContain('class="earth glass"'); // it sits over the replay, so it is glass
     expect(html.indexOf("Water-mist")).toBeLessThan(html.indexOf("Cleaner engines"));
     expect(html).toContain("T-PSI-102");
     expect(html).toContain("Ask: How does water mist put out fires?");

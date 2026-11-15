@@ -23,13 +23,13 @@
 .brief-how { flex: 1 1 14rem; min-width: 0; }
 .brief-more { margin-top: var(--space-5); }
 
-/* Source disclosure: quiet text button, the quote under a flame-coloured rule. */
+/* Source disclosure: quiet text button, the quote beside a hairline rule. */
 .brief-how summary { cursor: pointer; color: var(--color-text-muted); font-size: 0.9375rem; padding: var(--space-1) 0; width: fit-content; }
 .brief-how summary:hover { color: var(--color-text); }
 .brief-excerpt {
   margin: var(--space-2) 0;
   padding-left: var(--space-3);
-  border-left: 1px solid var(--color-flame);
+  border-left: 1px solid var(--line-strong);
   font-size: 0.9375rem;
   color: var(--color-text-muted);
   overflow-wrap: anywhere;

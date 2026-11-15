@@ -1,31 +1,26 @@
 /* Research graph: a notes-style graph of experiments, reports and pages. Colours come from tokens only. */
-.graph {
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-2);
-  min-width: 0;
-}
+/* No box of its own: the section sits inside a glass sheet, which is the surface. */
+.graph { min-width: 0; }
 .graph-intro { margin: 0 0 var(--space-4); max-width: 66ch; color: var(--color-text-muted); }
 .graph-tools { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: end; justify-content: space-between; margin-bottom: var(--space-3); }
 .graph-search { display: flex; gap: var(--space-2); align-items: center; flex: 1 1 18rem; min-width: 0; }
 .graph-search label { font-weight: 600; font-size: var(--text-sm); }
-.graph-search input { flex: 1; min-width: 0; font: inherit; padding: var(--space-1) var(--space-2); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-surface-2); color: var(--color-text); }
+.graph-search input { flex: 1; min-width: 0; font: inherit; padding: var(--space-1) var(--space-2); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: transparent; color: var(--color-text); min-height: 2.75rem; }
 .graph-zoom { display: flex; gap: var(--space-1); }
 .graph-body { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr) minmax(0, 20rem); align-items: start; }
 @media (max-width: 860px) { .graph-body { grid-template-columns: minmax(0, 1fr); } }
 .graph-canvas { min-width: 0; }
-.graph-canvas svg { display: block; width: 100%; aspect-ratio: 1 / 1; max-height: 78vh; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-1); touch-action: none; cursor: grab; user-select: none; }
+.graph-canvas svg { display: block; width: 100%; aspect-ratio: 1 / 1; max-height: 70vh; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-1); touch-action: none; cursor: grab; user-select: none; }
 .graph-canvas svg:active { cursor: grabbing; }
 .graph-small { margin: var(--space-1) 0 0; font-size: var(--text-sm); }
-.graph-panel { min-width: 0; padding: var(--space-3); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-bg); max-height: 78vh; overflow: auto; }
+.graph-panel { min-width: 0; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-1); background: transparent; max-height: 70vh; overflow: auto; }
 .graph-h3 { margin: 0 0 var(--space-2); font-size: var(--text-base, 1rem); }
 .graph-h4 { margin: var(--space-3) 0 var(--space-1); font-size: var(--text-sm); }
 .graph-kinds, .graph-types, .graph-group ul { list-style: none; margin: 0 0 var(--space-3); padding: 0; display: grid; gap: var(--space-1); font-size: var(--text-sm); }
 .graph-types li { display: grid; gap: 2px; }
 .graph-types label { display: flex; gap: var(--space-2); align-items: center; cursor: pointer; }
 .graph-kind { margin: 0 0 var(--space-1); font-size: var(--text-sm); color: var(--color-text-muted); display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
-.graph-badge { font-size: 0.85em; padding: 0 var(--space-2); border-radius: var(--radius-1); background: var(--color-badge-bg); color: var(--color-badge-text); }
+.graph-badge { font-size: 0.85em; padding: 0 var(--space-2); border-radius: var(--radius-1); background: var(--glass-hi); color: var(--color-text); }
 .graph-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin: var(--space-2) 0; }
 .graph-link { font: inherit; text-align: left; padding: 0; border: 0; background: none; color: var(--color-accent); text-decoration: underline; cursor: pointer; }
 .graph-link:focus-visible, .graph-search input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }

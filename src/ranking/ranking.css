@@ -3,9 +3,9 @@
 .rk-intro { order: -1; color: var(--color-text-muted); }
 .rk-how { font-size: 0.9375rem; }
 .rk-how summary { cursor: pointer; color: var(--color-accent); width: fit-content; padding: var(--space-1) 0; }
-.rk-how p { margin: var(--space-2) 0 0; max-width: 60ch; padding: var(--space-4); background: var(--color-surface); border-radius: var(--radius-2); }
+.rk-how p { margin: var(--space-2) 0 0; max-width: 60ch; padding: var(--space-4); background: var(--glass-hi); border-radius: var(--radius-2); }
 .rk-muted { color: var(--color-text-muted); }
-.rk-alert { padding: var(--space-3) var(--space-4); border: 2px solid var(--color-text); border-radius: var(--radius-2); background: var(--color-badge-bg); color: var(--color-badge-text); }
+.rk-alert { padding: var(--space-3) var(--space-4); border: 2px solid var(--color-text); border-radius: var(--radius-2); background: transparent; color: var(--color-text); }
 
 /* ---- Filters: segmented pills ---- */
 .rk-filters { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-5); align-items: flex-end; }
@@ -26,15 +26,18 @@
 }
 .rk-search { display: flex; flex-direction: column; gap: var(--space-1); font-size: 0.875rem; color: var(--color-text-muted); flex: 1 1 14rem; max-width: 24rem; }
 .rk-search input {
-  font: inherit; color: var(--color-text); background: var(--color-surface); width: 100%; min-height: 2.75rem;
+  font: inherit; color: var(--color-text); background: transparent; width: 100%; min-height: 2.75rem;
   border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); padding: var(--space-2) var(--space-4);
 }
 .rk-count { margin: var(--space-4) 0 var(--space-3); color: var(--color-text-muted); }
-.rk-note { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-left: 1px solid var(--color-flame); background: var(--color-surface); border-radius: 0 var(--radius-1) var(--radius-1) 0; }
+.rk-note { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: 0 0 var(--space-3); padding: var(--space-2) var(--space-2) var(--space-2) var(--space-4); border-left: 1px solid var(--line-strong); background: var(--glass-hi); border-radius: 0 var(--radius-1) var(--radius-1) 0; }
 
 /* ---- Experiments: one row each, in rank order. Who it is on the left, how well it fits on the right. ---- */
 .rk-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--color-border); }
-.rk-li { display: flex; min-width: 0; border-bottom: 1px solid var(--color-border); }
+.rk-li { display: flex; flex-direction: column; min-width: 0; border-bottom: 1px solid var(--color-border); }
+.rk-li[draggable="true"] { cursor: grab; }
+/* Sits under the card, right edge: a card is one button, so this action is its sibling. */
+.rk-ask { align-self: flex-end; margin: 0 var(--space-4) var(--space-4); font-size: 0.875rem; }
 .rk-card {
   --rk-num-w: 5.25rem;
   position: relative;
@@ -49,11 +52,11 @@
 .rk-card > .rk-o2 { grid-column: 2; grid-row: 1; }
 .rk-card > .rk-dots { grid-column: 2; grid-row: 2; }
 .rk-card > .rk-why { grid-column: 2; grid-row: 3; }
-.rk-card:hover { background: var(--color-surface); }
+.rk-card:hover { background: var(--glass-hi); }
 .rk-card:hover .rk-num, .rk-card[data-selected="true"] .rk-num { color: var(--color-text); }
-.rk-card[data-selected="true"] { border-color: var(--color-accent); background: var(--color-surface); }
-/* Lit by an answer: a warm edge, and the words "In the answer". */
-.rk-card[data-lit="true"] { border-color: var(--color-flame); box-shadow: 0 0 0 1px var(--color-flame); background: var(--color-highlight-bg); }
+.rk-card[data-selected="true"] { border-color: var(--line-strong); background: var(--glass-hi); }
+/* Lit by an answer: a solid white edge, and the words "In the answer". */
+.rk-card[data-lit="true"] { border-color: var(--color-text); background: var(--glass-hi); }
 @media (max-width: 56rem) {
   .rk-card { grid-template-columns: minmax(0, 1fr); --rk-num-w: 3.75rem; padding-inline: var(--space-2); }
   .rk-card > .rk-head, .rk-card > .rk-sum, .rk-card > .rk-o2, .rk-card > .rk-dots, .rk-card > .rk-why { grid-column: 1; grid-row: auto; }
@@ -64,7 +67,7 @@
 .rk-num { flex: none; width: var(--rk-num-w); font-size: clamp(2rem, 1.4rem + 1.8vw, 3rem); line-height: 0.9; color: var(--color-text-muted); letter-spacing: 0; transition: color var(--motion-fast) var(--ease); }
 .rk-headtext { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--space-2); }
 .rk-title { font-size: var(--text-lg); line-height: 1.1; overflow-wrap: break-word; }
-.rk-lit { align-self: flex-start; color: var(--color-flame); border: 1px solid var(--color-flame); border-radius: var(--radius-full); padding: 2px var(--space-2); font-size: 0.75rem; }
+.rk-lit { align-self: flex-start; color: var(--color-pill-text); background: var(--color-pill); border: 1px solid var(--color-pill); border-radius: var(--radius-full); padding: 2px var(--space-2); font-size: 0.75rem; }
 .rk-meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); }
 .rk-id { color: var(--color-text-muted); font-size: 0.75rem; }
 .rk-tag {
@@ -82,13 +85,16 @@
 
 /* ---- Oxygen bar ---- */
 .rk-o2 { display: block; padding-top: var(--space-5); }
-.rk-o2-track { display: block; position: relative; height: 0.625rem; background: var(--color-meter-track); border-radius: var(--radius-full); margin-bottom: var(--space-2); }
+.rk-o2-track { display: block; position: relative; height: 0.625rem; background: var(--glass-hi); border: 1px solid var(--line); border-radius: var(--radius-full); margin-bottom: var(--space-2); }
 .rk-o2-span { position: absolute; top: 0; bottom: 0; background: var(--color-text-muted); border-radius: var(--radius-full); }
-.rk-o2[data-covers="true"] .rk-o2-span, .rk-o2[data-covers="true"] .rk-o2-tick { background: var(--color-match); }
+/* Covers the habitat: solid. Misses it: a dashed outline. Told apart by form and by the words in the caption. */
+.rk-o2[data-covers="true"] .rk-o2-span, .rk-o2[data-covers="true"] .rk-o2-tick { background: var(--color-text); }
+.rk-o2[data-covers="false"] .rk-o2-span { background: transparent; border: 1px dashed var(--label); }
 .rk-o2-tick { position: absolute; top: -3px; bottom: -3px; width: 3px; margin-left: -1.5px; background: var(--color-text-muted); border-radius: 2px; }
+.rk-o2[data-covers="false"] .rk-o2-tick { background: transparent; width: 0; margin-left: -1px; border-left: 2px dashed var(--label); border-radius: 0; }
 .rk-o2-mark {
   position: absolute; top: -5px; bottom: -5px; width: 4px; margin-left: -2px;
-  background: var(--color-marker); box-shadow: 0 0 0 2px var(--color-surface); border-radius: 2px;
+  background: var(--color-marker); border-radius: 2px;
   transition: left var(--motion-mid) var(--ease);
 }
 .rk-o2-val { position: absolute; bottom: calc(100% + 2px); left: 50%; translate: -50% 0; color: var(--color-accent); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; white-space: nowrap; }
@@ -109,27 +115,11 @@
 .rk-dot-slash { stroke: var(--color-unknown); stroke-width: 1.8; stroke-linecap: round; }
 .rk-why { display: block; font-size: 0.875rem; color: var(--color-text-muted); }
 
-.pill.rk-more { display: flex; width: fit-content; margin: var(--space-6) auto 0; }
-.rk-empty { padding: var(--space-6); text-align: center; background: var(--color-surface); border: 1px dashed var(--color-unknown); border-radius: var(--radius-2); }
+.rk-more { display: flex; align-items: center; width: fit-content; margin: var(--space-6) auto 0; }
+.rk-empty { padding: var(--space-6); text-align: center; background: transparent; border: 1px dashed var(--color-unknown); border-radius: var(--radius-2); }
 .rk-empty p { margin: 0 0 var(--space-3); font-weight: 600; }
 
-/* Motion: an answer lights its cards one after another, 60ms apart, a warm edge sweeping once. */
+/* Motion: an answer lights its cards one after another, 60ms apart. */
 @media (prefers-reduced-motion: no-preference) {
   .rk-card[data-lit="true"] { transition-delay: calc(var(--lit-i, 0) * 60ms); }
-  .rk-card[data-lit="true"]::after {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    padding: 2px;
-    border-radius: inherit;
-    background: linear-gradient(100deg, transparent 35%, var(--color-flame) 50%, transparent 65%) 0 0 / 300% 100% no-repeat;
-    -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-    pointer-events: none;
-    animation: rk-sweep var(--motion-slow) var(--ease) calc(var(--lit-i, 0) * 60ms) both;
-  }
-  @keyframes rk-sweep {
-    from { background-position: 100% 0; opacity: 1; }
-    to { background-position: 0% 0; opacity: 0; }
-  }
 }

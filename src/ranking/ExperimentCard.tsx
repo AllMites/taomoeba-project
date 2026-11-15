@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { askAbout, dragProps } from "../app/console.ts";
 import { useStore } from "../app/store.ts";
 import { cardTransitionName, openFromCard } from "../app/motion.ts";
 import { displayClass } from "../app/type.ts";
@@ -6,6 +7,15 @@ import FactorDots from "./FactorDots.tsx";
 import { rankNumeral, type Row } from "./logic.ts";
 import OxygenBar from "./OxygenBar.tsx";
 import PdsTag from "./PdsTag.tsx";
+
+/** "Ask about this": scopes the next question to this experiment and opens the Ask panel. Same result as dragging the card there. */
+export function AskAboutButton({ id, title }: { id: string; title: string }) {
+  return (
+    <button type="button" className="quiet rk-ask" aria-label={`Ask about ${title}`} onClick={() => askAbout(id)}>
+      Ask about this
+    </button>
+  );
+}
 
 export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { row: Row; habitatO2: number; lit: boolean; litIndex?: number }) {
   const selected = useStore((s) => s.selectedInvestigationId === row.inv.id);
@@ -15,7 +25,8 @@ export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { 
     parts.filter(Boolean).map((p) => `${uid}-${p}`).join(" ");
   // Short name (rank, title, lit), the rest as description: the whole card as a name ran to ~600 characters.
   return (
-    <li className="rk-li" style={{ viewTransitionName: cardTransitionName(inv.id) }}>
+    // The row is the drag handle (a <button> does not start a drag in every browser); the Ask panel is the drop target.
+    <li className="rk-li" style={{ viewTransitionName: cardTransitionName(inv.id) }} {...dragProps(inv.id)}>
       <button
         type="button"
         className="rk-card"
@@ -59,6 +70,7 @@ export default function ExperimentCard({ row, habitatO2, lit, litIndex = 0 }: { 
           {item.rationale}
         </span>
       </button>
+      <AskAboutButton id={inv.id} title={inv.title} />
     </li>
   );
 }

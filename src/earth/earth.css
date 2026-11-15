@@ -1,25 +1,39 @@
-/* "On Earth too": benefits on the ground, each with its source. Colours come from tokens only. */
+/* "On Earth": benefits on the ground, each with its source. A compact glass card over the replay (320px slot). */
 .earth {
-  padding: clamp(var(--space-5), 4vw, var(--space-7));
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-height: 50vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-4);
   border-radius: var(--radius-2);
+  min-width: 0;
 }
-.earth-intro { margin: 0 0 var(--space-4); max-width: 62ch; color: var(--color-text-muted); }
-.earth-legend { list-style: none; margin: 0 0 var(--space-5); padding: 0; display: grid; gap: var(--space-2); font-size: var(--text-sm); }
-.earth-badge { display: inline-block; font-size: var(--text-sm); font-weight: 600; padding: 1px var(--space-2); border-radius: var(--radius-1); border: 1px solid var(--color-border-strong); }
-.earth-in-use { background: var(--color-highlight-bg); border-color: var(--color-accent); }
-.earth-research { background: var(--color-bg); }
-.earth-heritage { background: var(--color-bg); border-style: dashed; }
-.earth-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
-.earth-card { display: grid; gap: var(--space-2); padding: var(--space-4); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-bg); min-width: 0; justify-items: start; }
-.earth-h3 { margin: 0; font-size: var(--text-base, 1rem); }
-.earth-text { margin: 0; }
+.earth-h { margin: 0; color: var(--color-text); }
+.earth-intro { margin: 0; font-size: var(--text-sm); color: var(--color-text-muted); }
+.earth-key { font-size: var(--text-sm); }
+.earth-key summary { cursor: pointer; min-height: 2.75rem; display: flex; align-items: center; gap: var(--space-2); color: var(--color-text-muted); list-style: none; }
+.earth-key summary::-webkit-details-marker { display: none; }
+.earth-key summary::after { content: ""; flex: none; margin-left: auto; width: 0.45rem; height: 0.45rem; border-right: 1.5px solid var(--label); border-bottom: 1.5px solid var(--label); rotate: 45deg; }
+.earth-key[open] summary::after { rotate: -135deg; }
+.earth-key summary:hover { color: var(--color-text); }
+.earth-legend { list-style: none; margin: 0 0 var(--space-2); padding: 0; display: grid; gap: var(--space-2); }
+/* Status by form, not hue: in use = solid white fill, research = outline, heritage = dashed outline. The word is always there. */
+.earth-badge { display: inline-block; font-size: var(--text-xs); font-weight: 600; padding: 1px var(--space-2); border-radius: var(--radius-1); border: 1px solid var(--color-border-strong); }
+.earth-in-use { background: var(--color-pill); border-color: var(--color-pill); color: var(--color-pill-text); }
+.earth-research { background: transparent; }
+.earth-heritage { background: transparent; border-style: dashed; border-color: var(--label); }
+.earth-cards { list-style: none; margin: 0; padding: 0; display: grid; }
+.earth-card { display: grid; gap: var(--space-2); padding: var(--space-4) 0; border-top: 1px solid var(--line); min-width: 0; justify-items: start; }
+.earth-h3 { margin: 0; font-family: var(--font-sans); font-size: var(--text-base); font-weight: 600; }
+.earth-text { margin: 0; font-size: var(--text-sm); }
 .earth-small { margin: 0; font-size: var(--text-sm); }
 .earth-exps { display: grid; gap: var(--space-1); }
-.earth-exps ul, .earth-sources { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-2); }
-.earth-exp { font: inherit; font-size: var(--text-sm); padding: 1px var(--space-2); border: 1px solid var(--color-border-strong); border-radius: 999px; background: var(--color-surface); color: var(--color-text); cursor: pointer; }
-.earth-exp:hover { border-color: var(--color-accent); }
+.earth-exps ul, .earth-sources { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.earth-exp { font: inherit; font-size: var(--text-sm); min-height: 2.75rem; padding: var(--space-1) var(--space-3); border: 1px solid var(--color-border-strong); border-radius: var(--radius-full); background: transparent; color: var(--color-text); cursor: pointer; }
+.earth-exp:hover { background: var(--glass-hi); }
 .earth-exp:focus-visible, .earth-ask:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
-.earth-sources { flex-direction: column; font-size: var(--text-sm); }
-.earth-ask { text-align: left; }
+.earth-sources { flex-direction: column; font-size: var(--text-sm); overflow-wrap: anywhere; }
+.earth-sources a { color: var(--color-text); text-decoration-color: var(--color-border-strong); }
+.earth-ask { text-align: left; font-size: var(--text-sm); border-radius: var(--radius-2); }
