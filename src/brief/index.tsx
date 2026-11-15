@@ -3,8 +3,9 @@ import { useStore } from "../app/store.ts";
 import type { Claim, Source } from "../contracts/index.ts";
 import { briefFor } from "../data/select.ts";
 import { useDataset } from "../data/useDataset.ts";
-import { orderBrief, parseCount, safeHref, singleExperiment } from "./brief.ts";
-import NewTabLink from "../app/NewTabLink.tsx";
+import { orderBrief, parseCount, singleExperiment } from "./brief.ts";
+import HowWeKnow from "./HowWeKnow.tsx";
+import Overview from "./Overview.tsx";
 import "./brief.css";
 
 const SHOWN = 5;
@@ -40,26 +41,7 @@ function TakeawayCard({ claim, sources }: { claim: Claim; sources: Source[] }) {
             See experiment
           </button>
         )}
-        <details className="brief-how">
-          <summary>How we know</summary>
-          <p className="brief-excerpt">{claim.excerpt}</p>
-          {cited.length > 0 && (
-            <ul className="brief-sources">
-              {cited.map((s) => {
-                const href = safeHref(s.url);
-                return (
-                  <li key={s.id}>
-                    {href ? (
-                      <NewTabLink href={href}>{s.title}</NewTabLink>
-                    ) : (
-                      s.title
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </details>
+        <HowWeKnow records={[{ quote: claim.excerpt, cited: cited.map((s) => ({ title: s.title, url: s.url })) }]} />
       </div>
     </li>
   );
@@ -89,6 +71,7 @@ export default function Brief() {
   const claims = useDataset("claims");
   const sources = useDataset("sources");
   const habitats = useDataset("habitats");
+  const investigations = useDataset("investigations");
   const label = habitats.status === "ready" ? (habitats.data.find((h) => h.id === habitat)?.label ?? habitat) : habitat;
 
   let body;
@@ -99,10 +82,23 @@ export default function Brief() {
   } else {
     const items = orderBrief(briefFor(claims.data, habitat));
     // key resets "Show all" when the habitat changes
-    body = items.length ? (
+    const list = items.length ? (
       <List key={habitat} claims={items} sources={sources.data} />
     ) : (
       <p className="muted">No brief for this habitat yet.</p>
+    );
+    body = (
+      <>
+        <Overview
+          habitat={habitat}
+          claims={claims.data}
+          sources={sources.data}
+          habitats={habitats.status === "ready" ? habitats.data : []}
+          investigations={investigations.status === "ready" ? investigations.data : []}
+        />
+        <h3 className="brief-sub">The evidence, point by point</h3>
+        {list}
+      </>
     );
   }
 
