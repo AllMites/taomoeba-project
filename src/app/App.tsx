@@ -8,6 +8,7 @@ import { useDataset } from "../data/useDataset.ts";
 import Earth from "../earth/index.tsx";
 import Evidence from "../evidence/index.tsx";
 import Gaps from "../gaps/index.tsx";
+import Graph from "../graph/index.tsx";
 import Ranking from "../ranking/index.tsx";
 import Trust from "../trust/index.tsx";
 import WhatIf from "../whatif/index.tsx";
@@ -220,6 +221,7 @@ export default function App() {
         <Stage />
         <Ranking />
         <Compare />
+        <Graph />
         <WhatIf />
         <Gaps />
         <Earth />

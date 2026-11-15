@@ -1,0 +1,69 @@
+/* Research graph: a notes-style graph of experiments, reports and pages. Colours come from tokens only. */
+.graph {
+  padding: clamp(var(--space-5), 4vw, var(--space-7));
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2);
+  min-width: 0;
+}
+.graph-intro { margin: 0 0 var(--space-4); max-width: 66ch; color: var(--color-text-muted); }
+.graph-tools { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: end; justify-content: space-between; margin-bottom: var(--space-3); }
+.graph-search { display: flex; gap: var(--space-2); align-items: center; flex: 1 1 18rem; min-width: 0; }
+.graph-search label { font-weight: 600; font-size: var(--text-sm); }
+.graph-search input { flex: 1; min-width: 0; font: inherit; padding: var(--space-1) var(--space-2); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-surface-2); color: var(--color-text); }
+.graph-zoom { display: flex; gap: var(--space-1); }
+.graph-body { display: grid; gap: var(--space-4); grid-template-columns: minmax(0, 1fr) minmax(0, 20rem); align-items: start; }
+@media (max-width: 860px) { .graph-body { grid-template-columns: minmax(0, 1fr); } }
+.graph-canvas { min-width: 0; }
+.graph-canvas svg { display: block; width: 100%; aspect-ratio: 1 / 1; max-height: 78vh; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-1); touch-action: none; cursor: grab; user-select: none; }
+.graph-canvas svg:active { cursor: grabbing; }
+.graph-small { margin: var(--space-1) 0 0; font-size: var(--text-sm); }
+.graph-panel { min-width: 0; padding: var(--space-3); border: 1px solid var(--color-border-strong); border-radius: var(--radius-1); background: var(--color-bg); max-height: 78vh; overflow: auto; }
+.graph-h3 { margin: 0 0 var(--space-2); font-size: var(--text-base, 1rem); }
+.graph-h4 { margin: var(--space-3) 0 var(--space-1); font-size: var(--text-sm); }
+.graph-kinds, .graph-types, .graph-group ul { list-style: none; margin: 0 0 var(--space-3); padding: 0; display: grid; gap: var(--space-1); font-size: var(--text-sm); }
+.graph-types li { display: grid; gap: 2px; }
+.graph-types label { display: flex; gap: var(--space-2); align-items: center; cursor: pointer; }
+.graph-kind { margin: 0 0 var(--space-1); font-size: var(--text-sm); color: var(--color-text-muted); display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
+.graph-badge { font-size: 0.85em; padding: 0 var(--space-2); border-radius: var(--radius-1); background: var(--color-badge-bg); color: var(--color-badge-text); }
+.graph-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin: var(--space-2) 0; }
+.graph-link { font: inherit; text-align: left; padding: 0; border: 0; background: none; color: var(--color-accent); text-decoration: underline; cursor: pointer; }
+.graph-link:focus-visible, .graph-search input:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+
+/* dots: monochrome, told apart by size and outline (the reskin's "no hue" rule) */
+.g-node { cursor: pointer; transition: opacity 0.15s; }
+.g-node circle { stroke: var(--color-bg); }
+.g-experiment circle { fill: var(--color-text); }
+.g-report circle { fill: var(--color-text-muted); }
+.g-restricted circle { fill: var(--color-bg); stroke: var(--color-text-muted); stroke-dasharray: 2 1.5; }
+.g-page circle { fill: var(--color-border-strong); }
+.g-area circle { fill: var(--color-surface-2); stroke: var(--color-text-muted); }
+.g-sel circle { stroke: var(--color-focus); stroke-width: 2.5; }
+.g-labels text { fill: var(--color-text); paint-order: stroke; stroke: var(--color-bg); stroke-width: 3px; stroke-linejoin: round; pointer-events: none; transition: opacity 0.15s; }
+.g-dim { opacity: 0.12; }
+
+/* links: told apart by line pattern */
+.g-edge { stroke: var(--color-text-muted); opacity: 0.5; transition: opacity 0.15s; }
+.g-edge.g-dim { opacity: 0.05; }
+.g-edge.g-lit { opacity: 1; stroke: var(--color-text); }
+.g-follow_up { stroke: var(--color-text); }
+.g-builds_on { stroke-dasharray: 8 3; }
+.g-psi_related { stroke-dasharray: 2 2; }
+.g-same_event { stroke-dasharray: 1 3; }
+.g-mentions { stroke-dasharray: 4 4; opacity: 0.35; }
+.g-same_hardware { stroke: var(--color-border-strong); }
+.g-area { stroke: var(--color-border); }
+
+/* legend keys */
+.g-key, .g-swatch { display: inline-block; flex: none; }
+.g-key { width: 0.8rem; height: 0.8rem; border-radius: 50%; margin-right: var(--space-1); vertical-align: middle; }
+.g-key-experiment { background: var(--color-text); }
+.g-key-report { background: var(--color-text-muted); }
+.g-key-restricted { border: 1.5px dashed var(--color-text-muted); }
+.g-key-page { background: var(--color-border-strong); width: 0.6rem; height: 0.6rem; }
+.g-swatch { width: 1.6rem; height: 0; border-top: 2px solid var(--color-text-muted); vertical-align: middle; }
+.g-swatch.g-follow_up { border-top-width: 3px; border-color: var(--color-text); }
+.g-swatch.g-builds_on, .g-swatch.g-mentions { border-top-style: dashed; }
+.g-swatch.g-psi_related, .g-swatch.g-same_event { border-top-style: dotted; }
+.g-swatch.g-same_hardware { border-color: var(--color-border-strong); }
+.g-swatch.g-area { border-color: var(--color-border); }
