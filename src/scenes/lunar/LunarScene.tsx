@@ -22,7 +22,7 @@ const ALT: Record<Shot, string> = {
 // Dev only: /scenes.html?scene=lunar&habitat=moon&calm=1&poster hides the flames and readouts for poster capture.
 const POSTER_CAPTURE = import.meta.env.DEV && typeof location !== "undefined" && new URLSearchParams(location.search).has("poster");
 
-function hasWebGL() {
+export function hasWebGL() {
   try {
     const c = document.createElement("canvas");
     const gl = c.getContext("webgl2") ?? c.getContext("webgl");

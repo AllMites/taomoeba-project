@@ -1,0 +1,44 @@
+/* The cabin replay. Chips are glass with a leader line down-left to the point they name (the anchor). */
+.cabin { position: absolute; inset: 0; }
+.cabin canvas { touch-action: none; }
+
+.scene-chips { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.scene-chip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+  pointer-events: none;
+  width: max-content;
+  /* The anchor is the top-left of this box; the chip sits up and right of it with a leader line. */
+  transform: translate(0, -100%);
+  padding: 0 0 14px 14px;
+}
+.scene-chip::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  border-left: 1px solid var(--color-text);
+  transform: skewX(45deg);
+  transform-origin: bottom left;
+  opacity: 0.7;
+}
+.scene-chip-below { transform: none; padding: 14px 0 0 14px; }
+.scene-chip-below::before { top: 0; bottom: auto; transform: skewX(-45deg); transform-origin: top left; }
+.scene-chip-box {
+  display: grid;
+  gap: 2px;
+  padding: 6px 10px;
+  border-radius: var(--radius-1);
+  max-width: 22ch;
+}
+.scene-chip-text { font-size: var(--text-sm); color: var(--color-text); line-height: 1.25; }
+.scene-chip-sub { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+/* On a narrow stage the caption already names the air; the chips would only crowd the console's glass. */
+@container stage (max-width: 37.5rem) {
+  .scene-chips { display: none; }
+}

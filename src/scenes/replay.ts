@@ -36,26 +36,16 @@ export function replayFor(base: BaseId, when: When, label?: string): Replay {
       flames: 0,
     };
   }
-  if (base === "moon" || base === "rover") {
-    return {
-      scene: "lunar",
-      habitat,
-      poster: `/img/scenes/lunar-${base}.webp`,
-      posterNarrow: `/img/scenes/lunar-${base}-narrow.webp`,
-      caption: `Now: station air beside ${label ?? "your base"} air. ${ILLUSTRATION}`,
-      notes: [LIMITS[1], compareLine(false, false)],
-      flames: 2,
-    };
-  }
-  if (base === "earth") {
-    return {
-      scene: "lunar",
-      habitat,
-      poster: "/img/scenes/lunar-iss.webp",
-      caption: `On Earth: the same air at 1 g beside weightless. ${ILLUSTRATION}`,
-      notes: [EARTH_LINE],
-      flames: 2,
-    };
-  }
-  return { scene: "lunar", habitat, poster: "/img/scenes/lunar-iss.webp", caption: `Now: a flame in station air. ${ILLUSTRATION}`, notes: [compareLine(true, true)], flames: 1 };
+  // Replay v2: the flame burns inside the picked base's cabin (the scene places its own fire).
+  const where = base === "earth" ? "a cabin on Earth, at 1 g" : base === "iss" ? "a station module" : `the ${label ?? "base"} cabin`;
+  const poster = base === "moon" || base === "rover" ? `/img/scenes/lunar-${base}.webp` : "/img/scenes/lunar-iss.webp";
+  return {
+    scene: "lunar",
+    habitat,
+    poster,
+    posterNarrow: base === "moon" || base === "rover" ? `/img/scenes/lunar-${base}-narrow.webp` : undefined,
+    caption: `Now: a flame inside ${where}. ${ILLUSTRATION}`,
+    notes: base === "earth" ? [EARTH_LINE] : base === "iss" ? [compareLine(true, true)] : [LIMITS[1]],
+    flames: 0,
+  };
 }
