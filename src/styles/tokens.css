@@ -1,7 +1,7 @@
 /*
  * DESIGN TOKENS. Values come from docs/DESIGN_SYSTEM.md (the team's mood board); components use these names only.
- * Fire on space: near-black and deep blue for depth, coral and amber for anything alive.
- * Dark is the default. The light scheme follows the OS setting.
+ * Mono dark glass: warm near-black, bone-white type, no hue in the UI. The fire in the replay is the only colour.
+ * Dark only: the console has no light mode (docs/RESKIN_PRD.md, section 6).
  * Rules: body text >= 4.5:1 on --color-bg / --color-surface / --color-surface-2; UI marks >= 3:1.
  * Blue never carries meaning. Green (--color-match) means "covers your habitat" and nothing else.
  *
@@ -58,36 +58,44 @@
  *            All become 0s under reduced motion.
  */
 :root {
-  color-scheme: dark light;
+  color-scheme: dark;
 
-  /* dark (default) */
-  --color-bg: #0b0d12;
-  --color-surface: #15171c;
-  --color-surface-2: #1f2f38;
-  --color-border: #2b3a52;
-  --color-border-strong: #6b7785;
+  /* Mono dark glass (docs/RESKIN_PRD.md, section 6). The UI has no hue; the only colour on screen is the fire. */
+  --color-bg: #0b0b0a;
+  --color-surface: #161615;
+  --color-surface-2: #1f1f1d;
+  --color-border: rgb(255 255 255 / 0.1);
+  --color-border-strong: #85837d;
   --color-edge: var(--color-border-strong);
-  --color-text: #f0efec;
-  --color-text-muted: #aab4bf;
-  --color-unknown: #6b7785;
-  --color-accent: #ffbb5c;
-  --color-accent-contrast: #15171c;
-  --color-flame: #ff8a73;
-  --color-depth: #003a70;
-  --color-match: #7cc563;
-  --color-focus: #ffbb5c;
+  --color-text: #ecebe6;
+  --color-text-muted: #a3a19b;
+  --color-unknown: #85837d;
+  --color-accent: #ecebe6;
+  --color-accent-contrast: #0b0b0a;
+  --color-flame: #ecebe6;
+  --color-depth: #1f1f1d;
+  --color-match: #ecebe6;
+  --color-focus: #ecebe6;
   --color-highlight: var(--color-accent);
-  --color-highlight-bg: #2b261f;
+  --color-highlight-bg: rgb(255 255 255 / 0.06);
   --color-glow: var(--color-flame);
-  --color-badge-bg: #33281a;
-  --color-badge-text: #ffd9a0;
-  --color-pill: #f0efec;
-  --color-pill-text: #15171c;
+  --color-badge-bg: #1f1f1d;
+  --color-badge-text: #ecebe6;
+  --color-pill: #f2f1ed;
+  --color-pill-text: #0b0b0a;
+
+  /* Console tokens. Use these names in new console code. */
+  --glass: rgb(14 14 13 / 0.72);
+  --glass-hi: rgb(255 255 255 / 0.06);
+  --line: rgb(255 255 255 / 0.1);
+  --line-strong: rgb(255 255 255 / 0.24);
+  --label: #85837d;
+  --flame: #ff8a73;
 
   --sphere-core: #5b9dff;
   --sphere-warm: #ff8a73;
   --sphere-hot: #ffbb5c;
-  --porthole-sky: radial-gradient(120% 90% at 72% 42%, var(--color-depth) 0%, #061a30 42%, var(--color-bg) 100%);
+  --porthole-sky: radial-gradient(120% 90% at 72% 42%, var(--color-depth) 0%, #121211 42%, var(--color-bg) 100%);
 
   --color-meter-track: var(--color-depth);
   --color-meter-fill: var(--color-accent);
@@ -100,22 +108,21 @@
   --color-tag-suppression: var(--color-surface-2);
   --color-tag-suppression-text: var(--color-text);
 
-  --material-bg: rgb(31 47 56 / 0.72);
-  --material-blur: 18px;
+  --material-bg: var(--glass);
+  --material-blur: 20px;
   --porthole-edge: rgb(255 255 255 / 0.14);
 
   --shadow-1: none;
   --shadow-2: -24px 0 64px rgb(0 0 0 / 0.55);
   --shadow-porthole: inset 0 0 0 1px var(--porthole-edge), inset 0 24px 64px rgb(0 0 0 / 0.75), inset 0 -8px 32px rgb(0 0 0 / 0.5);
 
-  /* The porthole glass looks out into space, so it stays dark in both schemes. */
-  --glass-sky: radial-gradient(120% 90% at 72% 42%, #003a70 0%, #061a30 42%, #0b0d12 100%);
-  --glass-text: #f2efe9;
-  --glass-muted: #aab4bf;
-  --glass-accent: #ffbb5c;
-  --glass-panel: rgb(11 13 18 / 0.72);
-  --glass-edge: rgb(242 239 233 / 0.28);
-  --scrim-image: linear-gradient(180deg, rgb(11 13 18 / 0) 45%, rgb(11 13 18 / 0.55) 100%);
+  --glass-sky: radial-gradient(120% 90% at 72% 42%, #1f1f1d 0%, #121211 42%, #0b0b0a 100%);
+  --glass-text: #ecebe6;
+  --glass-muted: #a3a19b;
+  --glass-accent: #ecebe6;
+  --glass-panel: var(--glass);
+  --glass-edge: var(--line-strong);
+  --scrim-image: linear-gradient(180deg, rgb(11 11 10 / 0) 45%, rgb(11 11 10 / 0.55) 100%);
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -150,41 +157,6 @@
   --motion-mid: 320ms;
   --motion-slow: 480ms;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-bg: #f0efec;
-    --color-surface: #ffffff;
-    --color-surface-2: #ebe6da;
-    --color-border: #c9c1b2;
-    --color-border-strong: #6b7280;
-    --color-text: #15171c;
-    --color-text-muted: #4a5563;
-    --color-unknown: #6b7280;
-    --color-accent: #9a4a12;
-    --color-accent-contrast: #ffffff;
-    --color-flame: #a5533a;
-    --color-depth: #cfd8df;
-    --color-match: #00703f;
-    --color-focus: #003a70;
-    --color-highlight-bg: #f6ede6;
-    --color-badge-bg: #f7e6cf;
-    --color-badge-text: #5a2c08;
-    --color-pill: #15171c;
-    --color-pill-text: #f0efec;
-
-    --sphere-core: #3d7fe0;
-    --sphere-warm: #ff7a5c;
-    --sphere-hot: #f2a33a;
-    --porthole-sky: radial-gradient(120% 90% at 72% 42%, #ffffff 0%, #e2e8ec 45%, var(--color-depth) 100%);
-
-    --material-bg: rgb(235 230 218 / 0.8);
-    --porthole-edge: rgb(255 255 255 / 0.85);
-
-    --shadow-2: -24px 0 64px rgb(40 30 10 / 0.2);
-    --shadow-porthole: inset 0 0 0 1px var(--porthole-edge), inset 0 24px 56px rgb(21 23 28 / 0.28), inset 0 -8px 28px rgb(21 23 28 / 0.12);
-  }
 }
 
 @media (max-width: 40rem) {
